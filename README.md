@@ -115,3 +115,27 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# Application Flow
+
+1. Go to main page
+    1. Initialize new session on server
+    2. Initialize new session in Max
+2. Build experiment with data drawn from server
+    1. Populate session with experiment data
+3. Advance to demographics page
+    1. Populate session with demographics
+4. Show sensor instructions
+5. Show sensor reliability
+    1. Request sensor reliability information from Max
+    2. Display readout
+    3. Request stop of sensor reliability information from Max
+6. For each media file
+    1. Request playback from Max
+    2. When playback is complete, send data to Node from Max
+    3. Send advance signal from Node to Max
+7. Advance to final questions page and gather answers
+8. Show final output page
+    1. Request statistics from Max
+    2. Display statistics
+9. On any page other than main page, after 10 minutes of no activity go back to main page
