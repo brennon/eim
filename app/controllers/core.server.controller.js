@@ -3,8 +3,12 @@
 /**
  * Module dependencies.
  */
+var util = require('util');
+
 exports.index = function(req, res) {
-	res.render('index', {
-		user: req.user || null
-	});
+  req.session.regenerate(function() {
+    res.render('index', {
+      user: req.user || null
+    });
+  });
 };

@@ -5,16 +5,21 @@ module.exports = function(grunt) {
 	var watchFiles = {
 		serverViews: ['app/views/**/*.*'], 
 		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
+    serverTests: ['app/tests/**/*.js'],
 		clientViews: ['public/modules/**/views/*.html'],
 		clientJS: ['public/js/*.js', 'public/modules/**/*.js'],
-		clientCSS: ['public/modules/**/*.css'],
-		mochaTests: ['app/tests/**/*.js']
+    clientTests: ['public/modules/**/*.test.js'],
+		clientCSS: ['public/modules/**/*.css']
 	};
 
 	// Project Configuration
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		watch: {
+      serverTests: {
+        files: [watchFiles.serverTests, watchFiles.serverJS],
+        tasks: ['test:server']
+      },
 			serverViews: {
 				files: watchFiles.serverViews,
 				options: {
@@ -125,10 +130,10 @@ module.exports = function(grunt) {
 			}
 		},
 		mochaTest: {
-			src: watchFiles.mochaTests,
+			src: watchFiles.serverTests,
 			options: {
 				reporter: 'spec',
-				require: 'server.js'
+				require: 'server.js',
 			}
 		},
 		karma: {
@@ -167,4 +172,10 @@ module.exports = function(grunt) {
 
 	// Test task.
 	grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
+
+  // Just Angular tests task
+  grunt.registerTask('test:client', ['env:test', 'karma:unit']);
+
+  // Just Node tests task
+  grunt.registerTask('test:server', ['env:test', 'mochaTest']);
 };
