@@ -3,6 +3,9 @@
 /**
  * Module dependencies.
  */
+
+require('../models/user.server.model');
+
 var should = require('should'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User');

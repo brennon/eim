@@ -3,9 +3,22 @@
 /**
  * Module dependencies.
  */
-var util = require('util');
+var osc = require('./core.osc.controller');
+
+var oscResetMessage = {
+  oscType: 'message',
+  address: '/eim/control',
+  args: [{
+    type: 'string',
+    value: 'reset'
+  }]
+};
 
 exports.index = function(req, res) {
+
+  // Send OSC message to reset Max session
+  osc.sendJSONMessage(oscResetMessage);
+
   req.session.regenerate(function() {
     res.render('index', {
       user: req.user || null
