@@ -46,7 +46,8 @@ describe('Media Model Unit Tests:', function () {
 
       beforeEach(function(done) {
         validMediaDoc = {
-          type: 'audio'
+          type: 'audio',
+          artist: 'The Verve'
         };
         done();
       });
@@ -62,6 +63,15 @@ describe('Media Model Unit Tests:', function () {
 
       it('should require a non-empty type property', function (done) {
         validMediaDoc.type = '';
+        invalidMedia = new Media(validMediaDoc);
+        return invalidMedia.save(function (err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should require an artist property', function (done) {
+        delete validMediaDoc.artist;
         invalidMedia = new Media(validMediaDoc);
         return invalidMedia.save(function (err) {
           should.exist(err);
