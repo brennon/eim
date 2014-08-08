@@ -22,7 +22,9 @@ describe('Media Model Unit Tests:', function () {
       // Add model fields
       // ...
       type: 'audio',
-      artist: 'The Verve'
+      artist: 'The Verve',
+      title: 'Bittersweet Symphony',
+      label: 'R004'
     });
 
     media.save(function () {
@@ -48,7 +50,9 @@ describe('Media Model Unit Tests:', function () {
       beforeEach(function(done) {
         validMediaDoc = {
           type: 'audio',
-          artist: 'The Verve'
+          artist: 'The Verve',
+          title: 'Bittersweet Symphony',
+          label: 'R004'
         };
         done();
       });
@@ -89,6 +93,22 @@ describe('Media Model Unit Tests:', function () {
 
       it('should require a non-empty artist property', function (done) {
         shouldRequireNonemptyProperty('artist', done);
+      });
+
+      it('should require a title property', function(done) {
+        shouldRequireProperty('title', done);
+      });
+
+      it('should require a non-empty title property', function (done) {
+        shouldRequireNonemptyProperty('title', done);
+      });
+
+      it('should require a label property', function(done) {
+        shouldRequireProperty('label', done);
+      });
+
+      it('should require a non-empty label property', function (done) {
+        shouldRequireNonemptyProperty('label', done);
       });
     });
   });
