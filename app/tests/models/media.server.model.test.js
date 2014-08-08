@@ -39,9 +39,9 @@ describe('Media Model Unit Tests:', function () {
     });
   });
 
-  describe('Schema', function () {
+  describe('Schema', function() {
 
-    describe('validations', function () {
+    describe('validations', function() {
 
       var validMediaDoc, invalidMedia;
 
@@ -53,40 +53,42 @@ describe('Media Model Unit Tests:', function () {
         done();
       });
 
-      it('should require a type property', function (done) {
-        delete validMediaDoc.type;
+      function shouldRequireProperty(propertyName, done) {
+        delete validMediaDoc[propertyName];
+        invalidMedia = new Media(validMediaDoc);
+        invalidMedia.save(function(err) {
+          should.exist(err);
+          if (typeof done === 'function') {
+            done();
+          }
+        });
+      }
+
+      function shouldRequireNonemptyProperty(propertyName, done) {
+        validMediaDoc[propertyName] = null;
         invalidMedia = new Media(validMediaDoc);
         return invalidMedia.save(function (err) {
           should.exist(err);
-          done();
+          if (typeof done === 'function') {
+            done();
+          }
         });
+      }
+
+      it('should require a type property', function(done) {
+        shouldRequireProperty('type', done);
       });
 
       it('should require a non-empty type property', function (done) {
-        validMediaDoc.type = '';
-        invalidMedia = new Media(validMediaDoc);
-        return invalidMedia.save(function (err) {
-          should.exist(err);
-          done();
-        });
+        shouldRequireNonemptyProperty('type', done);
       });
 
       it('should require an artist property', function (done) {
-        delete validMediaDoc.artist;
-        invalidMedia = new Media(validMediaDoc);
-        return invalidMedia.save(function (err) {
-          should.exist(err);
-          done();
-        });
+        shouldRequireProperty('artist', done);
       });
 
       it('should require a non-empty artist property', function (done) {
-        validMediaDoc.artist = '';
-        invalidMedia = new Media(validMediaDoc);
-        return invalidMedia.save(function (err) {
-          should.exist(err);
-          done();
-        });
+        shouldRequireNonemptyProperty('artist', done);
       });
     });
   });
