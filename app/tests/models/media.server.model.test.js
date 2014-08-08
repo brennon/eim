@@ -57,10 +57,12 @@ describe('Media Model Unit Tests:', function () {
         done();
       });
 
-      function shouldRequireProperty(propertyName, done) {
-        delete validMediaDoc[propertyName];
-        invalidMedia = new Media(validMediaDoc);
-        invalidMedia.save(function(err) {
+      function shouldRequireProperty(propertyName, validDocument, done) {
+        var oldValue = validDocument[propertyName];
+        delete validDocument[propertyName];
+        var invalidInstance = new Media(validDocument);
+        validDocument[propertyName] = oldValue;
+        invalidInstance.save(function(err) {
           should.exist(err);
           if (typeof done === 'function') {
             done();
@@ -68,10 +70,12 @@ describe('Media Model Unit Tests:', function () {
         });
       }
 
-      function shouldRequireNonemptyProperty(propertyName, done) {
-        validMediaDoc[propertyName] = null;
-        invalidMedia = new Media(validMediaDoc);
-        return invalidMedia.save(function (err) {
+      function shouldRequireNonemptyProperty(propertyName, validDocument, done) {
+        var oldValue = validDocument[propertyName];
+        validDocument[propertyName] = null;
+        var invalidInstance = new Media(validDocument);
+        validDocument[propertyName] = oldValue;
+        return invalidInstance.save(function (err) {
           should.exist(err);
           if (typeof done === 'function') {
             done();
@@ -80,35 +84,35 @@ describe('Media Model Unit Tests:', function () {
       }
 
       it('should require a type property', function(done) {
-        shouldRequireProperty('type', done);
+        shouldRequireProperty('type', validMediaDoc, done);
       });
 
       it('should require a non-empty type property', function (done) {
-        shouldRequireNonemptyProperty('type', done);
+        shouldRequireNonemptyProperty('type', validMediaDoc, done);
       });
 
       it('should require an artist property', function (done) {
-        shouldRequireProperty('artist', done);
+        shouldRequireProperty('artist', validMediaDoc, done);
       });
 
       it('should require a non-empty artist property', function (done) {
-        shouldRequireNonemptyProperty('artist', done);
+        shouldRequireNonemptyProperty('artist', validMediaDoc, done);
       });
 
       it('should require a title property', function(done) {
-        shouldRequireProperty('title', done);
+        shouldRequireProperty('title', validMediaDoc, done);
       });
 
       it('should require a non-empty title property', function (done) {
-        shouldRequireNonemptyProperty('title', done);
+        shouldRequireNonemptyProperty('title', validMediaDoc, done);
       });
 
       it('should require a label property', function(done) {
-        shouldRequireProperty('label', done);
+        shouldRequireProperty('label', validMediaDoc, done);
       });
 
       it('should require a non-empty label property', function (done) {
-        shouldRequireNonemptyProperty('label', done);
+        shouldRequireNonemptyProperty('label', validMediaDoc, done);
       });
     });
   });
