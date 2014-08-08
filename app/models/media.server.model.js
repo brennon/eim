@@ -13,6 +13,10 @@ var MediaSchema = new Schema({
 	type: {
     type: String,
     required: true
+  },
+  artist: {
+    type: String,
+    required: true
   }
 });
 
