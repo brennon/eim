@@ -10,8 +10,10 @@ var mongoose = require('mongoose'),
  * Media Schema
  */
 var MediaSchema = new Schema({
-	// Media model fields   
-	// ...
+	type: {
+    type: String,
+    required: true
+  }
 });
 
 mongoose.model('Media', MediaSchema);

@@ -21,6 +21,7 @@ describe('Media Model Unit Tests:', function () {
     media = new Media({
       // Add model fields
       // ...
+      type: 'audio'
     });
 
     media.save(function () {
@@ -33,6 +34,39 @@ describe('Media Model Unit Tests:', function () {
       return media.save(function (err) {
         should.not.exist(err);
         done();
+      });
+    });
+  });
+
+  describe('Schema', function () {
+
+    describe('validations', function () {
+
+      var validMediaDoc, invalidMedia;
+
+      beforeEach(function(done) {
+        validMediaDoc = {
+          type: 'audio'
+        };
+        done();
+      });
+
+      it('should require a type property', function (done) {
+        delete validMediaDoc.type;
+        invalidMedia = new Media(validMediaDoc);
+        return invalidMedia.save(function (err) {
+          should.exist(err);
+          done();
+        });
+      });
+
+      it('should require a non-empty type property', function (done) {
+        validMediaDoc.type = '';
+        invalidMedia = new Media(validMediaDoc);
+        return invalidMedia.save(function (err) {
+          should.exist(err);
+          done();
+        });
       });
     });
   });
