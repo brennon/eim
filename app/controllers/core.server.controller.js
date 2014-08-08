@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-var osc = require('./core.osc.controller');
+var osc = require('./osc.server.controller.js');
 
 var oscResetMessage = {
   oscType: 'message',

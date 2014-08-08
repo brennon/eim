@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-require('../models/user.server.model');
+require('../../models/user.server.model.js');
 
 var should = require('should'),
 	mongoose = require('mongoose'),

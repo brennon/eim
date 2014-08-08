@@ -6,8 +6,8 @@
 
 var should = require('should');
 var request = require('supertest');
-var config = require('../../config/config');
-var oscController = require('../controllers/core.osc.controller');
+var config = require('../../../config/config');
+var oscController = require('../../controllers/osc.server.controller.js');
 var sinon = require('sinon');
 
 describe('CoreServerController', function() {

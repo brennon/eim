@@ -4,7 +4,7 @@ var dgram = require('dgram');
 var osc = require('osc-min');
 var sinon = require('sinon');
 var should = require('should');
-var controller = require('../controllers/core.osc.controller');
+var controller = require('../../controllers/osc.server.controller.js');
 var path = require('path');
 
 describe('OSCController', function() {
@@ -50,8 +50,8 @@ describe('OSCController', function() {
     it('should ensure that the socket has been initialized', function(done) {
 
       // Need to remove the cached module to ensure that the socket is undefined
-      delete require.cache[require.resolve('../controllers/core.osc.controller.js')];
-      controller = require('../controllers/core.osc.controller');
+      delete require.cache[require.resolve('../../controllers/osc.server.controller.js')];
+      controller = require('../../controllers/osc.server.controller.js');
       var spy = sinon.spy(dgram, 'createSocket');
       controller.sendJSONMessage(message, function() {
         spy.calledWith('udp4').should.equal(true);
