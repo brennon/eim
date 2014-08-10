@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  * ExperimentSchema Schema
  */
 var ExperimentSchemaSchema = new Schema({
-	trial_count: {
+	trialCount: {
     type: Number,
     required: true
   }
