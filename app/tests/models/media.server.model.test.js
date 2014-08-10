@@ -5,7 +5,7 @@
  */
 var should = require('should'),
   mongoose = require('mongoose'),
-  Media = mongoose.model('Media');
+  Media;
 
 /**
  * Globals
@@ -15,7 +15,28 @@ var media;
 /**
  * Unit tests
  */
+
 describe('Media Model Unit Tests:', function () {
+
+  // Ensure that we are connected to the database
+  // before running any tests
+  before(function(done) {
+
+    var connectedCallback = function() {
+      Media = mongoose.model('Media');
+      done();
+      mongoose.connection.removeListener('connected', connectedCallback);
+    };
+
+    if (mongoose.connection.readyState != 1) {
+
+      mongoose.connection.on('connected', connectedCallback);
+
+    } else {
+      connectedCallback();
+    }
+  });
+
   beforeEach(function (done) {
 
     media = new Media({
@@ -24,7 +45,7 @@ describe('Media Model Unit Tests:', function () {
       type: 'audio',
       artist: 'The Verve',
       title: 'Bittersweet Symphony',
-      label: 'R004'
+      label: 'R005'
     });
 
     media.save(function () {
@@ -45,7 +66,7 @@ describe('Media Model Unit Tests:', function () {
 
     describe('validations', function() {
 
-      var validMediaDoc, invalidMedia;
+      var validMediaDoc;
 
       beforeEach(function(done) {
         validMediaDoc = {

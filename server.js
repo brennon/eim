@@ -11,20 +11,21 @@ var init = require('./config/init')(),
  * Please note that the order of loading is important.
  */
 
+var app;
+
 // Bootstrap db connection
-var db = mongoose.connect(config.db);
+var db = mongoose.connect(config.db, function() {
+  app = require('./config/express')(db);
 
-// Init the express application
-var app = require('./config/express')(db);
+  // Bootstrap passport config
+  require('./config/passport')();
 
-// Bootstrap passport config
-require('./config/passport')();
+  // Start the app by listening on <port>
+  app.listen(config.port);
 
-// Start the app by listening on <port>
-app.listen(config.port);
+  // Expose app
+  exports = module.exports = app;
 
-// Expose app
-exports = module.exports = app;
-
-// Logging initialization
-console.log('EIM application started on port ' + config.port);
+  // Logging initialization
+  console.log('EIM application started on port ' + config.port);
+});

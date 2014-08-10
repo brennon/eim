@@ -10,8 +10,10 @@ var mongoose = require('mongoose'),
  * ExperimentSchema Schema
  */
 var ExperimentSchemaSchema = new Schema({
-	// ExperimentSchema model fields   
-	// ...
+	trial_count: {
+    type: Number,
+    required: true
+  }
 });
 
 mongoose.model('ExperimentSchema', ExperimentSchemaSchema);

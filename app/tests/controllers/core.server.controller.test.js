@@ -9,10 +9,31 @@ var request = require('supertest');
 var config = require('../../../config/config');
 var oscController = require('../../controllers/osc.server.controller.js');
 var sinon = require('sinon');
+var mongoose = require('mongoose');
+var util = require('util');
 
 describe('CoreServerController', function() {
 
+  // Ensure that we are connected to the database
+  // before running any tests
+  before(function(done) {
+
+    var connectedCallback = function() {
+      done();
+      mongoose.connection.removeListener('connected', connectedCallback);
+    };
+
+    if (mongoose.connection.readyState != 1) {
+
+      mongoose.connection.on('connected', connectedCallback);
+
+    } else {
+      connectedCallback();
+    }
+  });
+
   describe('sessions', function() {
+
     var agent = request.agent('localhost:' + config.port);
     var cookieA, cookieB;
 
@@ -38,25 +59,16 @@ describe('CoreServerController', function() {
 
     it('should reset Max on any visit to the index', function(done) {
 
-      // Reset message that should be sent to Max
-      var resetMessage = {
-        oscType: 'message',
-        address: '/eim/control',
-        args: [{
-          type: 'string',
-          value: 'reset'
-        }]
-      };
-
-      var spy = sinon.spy(oscController, 'sendJSONMessage');
+      var jsonSpy = sinon.spy(oscController, 'sendJSONMessage');
 
       // Get index
-      request('localhost:' + config.port).get('/').end(function(err, res) {
+      request('localhost:' + config.port).get('/').end(function(err) {
         if (err) {
+          oscController.sendJSONMessage.restore();
           done(err);
         }
 
-        spy.called.should.be.true;
+        jsonSpy.called.should.be.true;
         oscController.sendJSONMessage.restore();
         done();
       });
