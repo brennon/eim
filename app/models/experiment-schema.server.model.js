@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+  MediaSchema = require('./media.server.model').schema;
 
 /**
  * ExperimentSchema Schema
@@ -13,7 +14,20 @@ var ExperimentSchemaSchema = new Schema({
 	trialCount: {
     type: Number,
     required: true
-  }
+  },
+  mediaPool: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Media'
+  }]
 });
 
+// Validator that requires the value is an array and contains at least one entry
+function requiredArrayValidator(value) {
+  return Object.prototype.toString.call(value) === '[object Array]' && value.length > 0;
+}
+
+// Use the above validator for `mediaPool`
+ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
+
+// Register schema for `ExperimentSchema` model
 mongoose.model('ExperimentSchema', ExperimentSchemaSchema);

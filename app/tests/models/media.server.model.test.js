@@ -40,8 +40,6 @@ describe('Media Model Unit Tests:', function () {
   beforeEach(function (done) {
 
     media = new Media({
-      // Add model fields
-      // ...
       type: 'audio',
       artist: 'The Verve',
       title: 'Bittersweet Symphony',

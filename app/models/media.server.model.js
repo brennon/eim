@@ -40,3 +40,5 @@ var MediaSchema = new Schema({
 });
 
 mongoose.model('Media', MediaSchema);
+
+module.exports.schema = MediaSchema;

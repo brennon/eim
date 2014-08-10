@@ -5,12 +5,13 @@
  */
 var should = require('should'),
   mongoose = require('mongoose'),
-  ExperimentSchema;
+  util = require('util'),
+  ExperimentSchema, Media;
 
 /**
  * Globals
  */
-var experimentSchema;
+var experimentSchema, mediaA;
 
 /**
  * Unit tests
@@ -23,6 +24,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
 
     var connectedCallback = function() {
       ExperimentSchema = mongoose.model('ExperimentSchema');
+      Media = mongoose.model('Media');
       done();
       mongoose.connection.removeListener('connected', connectedCallback);
     };
@@ -38,12 +40,22 @@ describe('ExperimentSchema Model Unit Tests:', function () {
 
   beforeEach(function (done) {
 
-    experimentSchema = new ExperimentSchema({
-      trialCount: 3
+    mediaA = new Media({
+      type: 'audio',
+        artist: 'The Verve',
+      title: 'Bittersweet Symphony',
+      label: 'R005'
     });
 
-    experimentSchema.save(function() {
-      done();
+    mediaA.save(function() {
+      experimentSchema = new ExperimentSchema({
+        trialCount: 3,
+        mediaPool: [mediaA._id]
+      });
+
+      experimentSchema.save(function() {
+        done();
+      });
     });
   });
 
@@ -64,7 +76,8 @@ describe('ExperimentSchema Model Unit Tests:', function () {
 
       beforeEach(function(done) {
         validExperimentSchemaDoc = {
-          trialCount: 3
+          trialCount: 3,
+          mediaPool: [mediaA.id]
         };
         done();
       });
@@ -102,6 +115,99 @@ describe('ExperimentSchema Model Unit Tests:', function () {
       it('should require a non-empty type property', function (done) {
         shouldRequireNonemptyProperty('trialCount', validExperimentSchemaDoc, done);
       });
+
+      it('should require a mediaPool property', function(done) {
+        shouldRequireProperty('mediaPool', validExperimentSchemaDoc, done);
+      });
+
+      it('should require a non-empty mediaPool property', function (done) {
+        shouldRequireNonemptyProperty('mediaPool', validExperimentSchemaDoc, done);
+      });
+
+      it('should reference Media objects through the mediaPool property', function(done) {
+        var Experiment = mongoose.model('ExperimentSchema');
+        Experiment.findOne({}).populate('mediaPool').exec(function(err, person) {
+          if (err) {
+            done(err);
+          } else {
+            person.mediaPool[0].title.should.equal(mediaA.title);
+            done();
+          }
+        });
+      });
+    });
+  });
+
+  describe('#build', function() {
+
+    var firstMedia, secondMedia, thirdMedia, fullExperimentSchema;
+
+    before(function(done) {
+      firstMedia = new Media({
+        type: 'audio',
+        artist: 'The Verve',
+        title: 'Bittersweet Symphony',
+        label: 'R005'
+      });
+
+      secondMedia = new Media({
+        type: 'audio',
+        artist: 'Pearl Jam',
+        title: 'Nothingman',
+        label: 'S003'
+      });
+
+      thirdMedia = new Media({
+        type: 'audio',
+        artist: 'Neil Young',
+        title: 'My My, Hey Hey',
+        label: 'R010'
+      });
+
+      firstMedia.save(function(err) {
+        if (err) {
+          done(err);
+        } else {
+          secondMedia.save(function(err) {
+            if (err) {
+              done(err);
+            } else {
+              thirdMedia.save(function(err) {
+                if (err) {
+                  done(err);
+                } else {
+                  fullExperimentSchema = new ExperimentSchema({
+                    trials: 3,
+                    mediaPool: [firstMedia._id, secondMedia._id, thirdMedia._id]
+                  });
+                  fullExperimentSchema.save(function(err) {
+                    if (err) {
+                      done(err);
+                    } else {
+                      done();
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+
+    it('should build an experiment of the correct length', function(done) {
+
+
+//      mediaA.save(function() {
+//        experimentSchema = new ExperimentSchema({
+//          trialCount: 3,
+//          mediaPool: [mediaA._id]
+//        });
+//
+//        experimentSchema.save(function() {
+//          done();
+//        });
+//      });
     });
   });
 
