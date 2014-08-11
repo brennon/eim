@@ -5,7 +5,8 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-  MediaSchema = require('./media.server.model').schema;
+  MediaSchema = require('./media.server.model').schema,
+  _ = require('lodash');
 
 /**
  * ExperimentSchema Schema
@@ -28,6 +29,20 @@ function requiredArrayValidator(value) {
 
 // Use the above validator for `mediaPool`
 ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
+
+ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
+
+  // Populate mediaPool
+  this.populate('mediaPool');
+
+  var selectedMedia = _.sample(this.mediaPool, this.trialCount);
+
+  if (typeof callback === 'function') {
+    callback(null, {media: selectedMedia});
+  } else {
+    return builtExperiment;
+  }
+};
 
 // Register schema for `ExperimentSchema` model
 mongoose.model('ExperimentSchema', ExperimentSchemaSchema);

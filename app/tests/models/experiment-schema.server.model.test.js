@@ -20,9 +20,9 @@ describe('ExperimentSchema Model Unit Tests:', function () {
 
   // Ensure that we are connected to the database
   // before running any tests
-  before(function(done) {
+  before(function (done) {
 
-    var connectedCallback = function() {
+    var connectedCallback = function () {
       ExperimentSchema = mongoose.model('ExperimentSchema');
       Media = mongoose.model('Media');
       done();
@@ -42,18 +42,18 @@ describe('ExperimentSchema Model Unit Tests:', function () {
 
     mediaA = new Media({
       type: 'audio',
-        artist: 'The Verve',
+      artist: 'The Verve',
       title: 'Bittersweet Symphony',
       label: 'R005'
     });
 
-    mediaA.save(function() {
+    mediaA.save(function () {
       experimentSchema = new ExperimentSchema({
         trialCount: 3,
         mediaPool: [mediaA._id]
       });
 
-      experimentSchema.save(function() {
+      experimentSchema.save(function () {
         done();
       });
     });
@@ -68,13 +68,13 @@ describe('ExperimentSchema Model Unit Tests:', function () {
     });
   });
 
-  describe('Schema', function() {
+  describe('Schema', function () {
 
-    describe('validations', function() {
+    describe('validations', function () {
 
       var validExperimentSchemaDoc;
 
-      beforeEach(function(done) {
+      beforeEach(function (done) {
         validExperimentSchemaDoc = {
           trialCount: 3,
           mediaPool: [mediaA.id]
@@ -87,7 +87,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
         delete validDocument[propertyName];
         var invalidInstance = new ExperimentSchema(validDocument);
         validDocument[propertyName] = oldValue;
-        invalidInstance.save(function(err) {
+        invalidInstance.save(function (err) {
           should.exist(err);
           if (typeof done === 'function') {
             done();
@@ -108,7 +108,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
         });
       }
 
-      it('should require a type property', function(done) {
+      it('should require a type property', function (done) {
         shouldRequireProperty('trialCount', validExperimentSchemaDoc, done);
       });
 
@@ -116,7 +116,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
         shouldRequireNonemptyProperty('trialCount', validExperimentSchemaDoc, done);
       });
 
-      it('should require a mediaPool property', function(done) {
+      it('should require a mediaPool property', function (done) {
         shouldRequireProperty('mediaPool', validExperimentSchemaDoc, done);
       });
 
@@ -124,9 +124,9 @@ describe('ExperimentSchema Model Unit Tests:', function () {
         shouldRequireNonemptyProperty('mediaPool', validExperimentSchemaDoc, done);
       });
 
-      it('should reference Media objects through the mediaPool property', function(done) {
+      it('should reference Media objects through the mediaPool property', function (done) {
         var Experiment = mongoose.model('ExperimentSchema');
-        Experiment.findOne({}).populate('mediaPool').exec(function(err, person) {
+        Experiment.findOne({}).populate('mediaPool').exec(function (err, person) {
           if (err) {
             done(err);
           } else {
@@ -138,11 +138,12 @@ describe('ExperimentSchema Model Unit Tests:', function () {
     });
   });
 
-  describe('#build', function() {
+  describe('#buildExperiment', function () {
 
     var firstMedia, secondMedia, thirdMedia, fullExperimentSchema;
 
-    before(function(done) {
+    beforeEach(function (done) {
+
       firstMedia = new Media({
         type: 'audio',
         artist: 'The Verve',
@@ -164,23 +165,23 @@ describe('ExperimentSchema Model Unit Tests:', function () {
         label: 'R010'
       });
 
-      firstMedia.save(function(err) {
+      firstMedia.save(function (err) {
         if (err) {
           done(err);
         } else {
-          secondMedia.save(function(err) {
+          secondMedia.save(function (err) {
             if (err) {
               done(err);
             } else {
-              thirdMedia.save(function(err) {
+              thirdMedia.save(function (err) {
                 if (err) {
                   done(err);
                 } else {
                   fullExperimentSchema = new ExperimentSchema({
-                    trials: 3,
+                    trialCount: 3,
                     mediaPool: [firstMedia._id, secondMedia._id, thirdMedia._id]
                   });
-                  fullExperimentSchema.save(function(err) {
+                  fullExperimentSchema.save(function (err) {
                     if (err) {
                       done(err);
                     } else {
@@ -195,20 +196,62 @@ describe('ExperimentSchema Model Unit Tests:', function () {
       });
     });
 
-    it('should build an experiment of the correct length', function(done) {
-
-
-//      mediaA.save(function() {
-//        experimentSchema = new ExperimentSchema({
-//          trialCount: 3,
-//          mediaPool: [mediaA._id]
-//        });
-//
-//        experimentSchema.save(function() {
-//          done();
-//        });
-//      });
+    it('should build an experiment of the correct length', function (done) {
+      // Get an experiment schema from database
+      ExperimentSchema.findOne({_id: fullExperimentSchema._id}, function (err, result) {
+        if (err) {
+          done(err);
+        } else {
+          // Build an experiment based on this schema
+          result.buildExperiment(function(err, result) {
+            if (err) {
+              done(err);
+            } else {
+              result.media.length.should.equal(3);
+              done();
+            }
+          });
+        }
+      });
     });
+
+    it('should contain labels of media files in the media property', function(done) {
+      // Get an experiment schema from database
+      ExperimentSchema.findOne({_id: fullExperimentSchema._id}).populate('mediaPool').exec(function (err, exp) {
+
+        if (err) {
+          done(err);
+        } else {
+
+          // Build a list of labels from original schema's pool
+          var labels = [];
+          exp.mediaPool.forEach(function(media) {
+            labels.push(media.label);
+          });
+
+
+          // Build an experiment based on this schema
+          exp.buildExperiment(function(err, build) {
+            if (err) {
+              done(err);
+            } else {
+
+              // Check the label of each media entry and make sure it exists in original schema's pool
+              build.media.forEach(function(media) {
+                labels.should.containEql(media.label);
+              });
+
+              done();
+            }
+          });
+        }
+      });
+    });
+
+    afterEach(function(done) {
+      ExperimentSchema.remove().exec();
+      done();
+    })
   });
 
   afterEach(function (done) {
