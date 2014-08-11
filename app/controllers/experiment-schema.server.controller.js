@@ -75,7 +75,11 @@ exports.random = function(req, res, next) {
     } else if (count < 1) {
       return errorHandler(null, 'no experiment schemae found in database');
     } else {
-      ExperimentSchema.find({}).skip(count - 1).limit(1).populate('mediaPool').exec(function (err, schema) {
+
+      // Get a random number from [0, totalSchemae)
+      var rand = Math.floor(Math.random() * count);
+
+      ExperimentSchema.find({}).skip(rand).limit(1).populate('mediaPool').exec(function (err, schema) {
         schema[0].buildExperiment(function(err, builtExperiment) {
           res.json(200, builtExperiment);
           if (typeof next === 'function') {
