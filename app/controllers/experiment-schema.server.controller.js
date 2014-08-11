@@ -68,7 +68,6 @@ exports.random = function(req, res, next) {
     }
   }
 
-  var count = ExperimentSchema.find({}).count();
   ExperimentSchema.count({}, function(err, count) {
     if (err) {
       return errorHandler(err, 'error reading from database');
@@ -79,8 +78,13 @@ exports.random = function(req, res, next) {
       // Get a random number from [0, totalSchemae)
       var rand = Math.floor(Math.random() * count);
 
-      ExperimentSchema.find({}).skip(rand).limit(1).populate('mediaPool').exec(function (err, schema) {
+      // Get a random schema
+      ExperimentSchema.find({}).skip(rand).limit(1).populate('mediaPool', 'artist title label').exec(function (err, schema) {
+
+        // Using the controller, build an experiment from this schema
         schema[0].buildExperiment(function(err, builtExperiment) {
+
+          // Send the response
           res.json(200, builtExperiment);
           if (typeof next === 'function') {
             next();
