@@ -24,8 +24,8 @@ describe('Media Model Unit Tests:', function () {
 
     var connectedCallback = function() {
       Media = mongoose.model('Media');
-      done();
       mongoose.connection.removeListener('connected', connectedCallback);
+      done();
     };
 
     if (mongoose.connection.readyState != 1) {

@@ -38,7 +38,7 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
   var selectedMedia = _.sample(this.mediaPool, this.trialCount);
 
   if (typeof callback === 'function') {
-    callback(null, {media: selectedMedia});
+    return callback(null, {media: selectedMedia});
   } else {
     return builtExperiment;
   }
