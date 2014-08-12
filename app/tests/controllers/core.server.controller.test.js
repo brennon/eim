@@ -12,7 +12,7 @@ var sinon = require('sinon');
 var mongoose = require('mongoose');
 var util = require('util');
 
-describe('CoreServerController', function() {
+describe('Core Controller Tests', function() {
 
   // Ensure that we are connected to the database
   // before running any tests
@@ -68,7 +68,7 @@ describe('CoreServerController', function() {
           done(err);
         }
 
-        jsonSpy.called.should.be.true;
+        jsonSpy.called.should.equal(true);
         oscController.sendJSONMessage.restore();
         done();
       });

@@ -8,13 +8,13 @@ var util = require('util');
 var controller, ExperimentSchema, Media;
 var firstMedia, secondMedia, thirdMedia, fullExperimentSchema;
 
-describe('ExperimentSchemaController tests', function() {
+describe('ExperimentSchema Controller Tests', function () {
 
   // Ensure that we are connected to the database
   // before running any tests
-  before(function(done) {
+  before(function (done) {
 
-    var connectedCallback = function() {
+    var connectedCallback = function () {
       controller = require('../../controllers/experiment-schema');
       ExperimentSchema = mongoose.model('ExperimentSchema');
       Media = mongoose.model('Media');
@@ -31,7 +31,7 @@ describe('ExperimentSchemaController tests', function() {
     }
   });
 
-  before(function(done) {
+  before(function (done) {
 
     firstMedia = new Media({
       type: 'audio',
@@ -85,40 +85,37 @@ describe('ExperimentSchemaController tests', function() {
     });
   });
 
-  describe('#list', function() {
+  describe('#list', function () {
 
-    it('should respond with JSON', function(done) {
+    it('should respond with JSON', function () {
       var mockResponse = httpMocks.createResponse();
-      controller.list(null, mockResponse, function() {
-        mockResponse._isJSON().should.be.true;
-        done();
+      controller.list(null, mockResponse, function () {
+        mockResponse._isJSON().should.equal(true, 'Response was not JSON');
       });
     });
 
-    it('should respond with success', function(done) {
+    it('should respond with success', function () {
       var mockResponse = httpMocks.createResponse();
-      controller.list(null, mockResponse, function() {
+      controller.list(null, mockResponse, function () {
         mockResponse.statusCode.should.equal(200);
-        done();
       });
     });
 
-    it('should return a JSON array', function(done) {
+    it('should return a JSON array', function () {
       var mockResponse = httpMocks.createResponse();
-      controller.list(null, mockResponse, function() {
+      controller.list(null, mockResponse, function () {
         var data = JSON.parse(mockResponse._getData());
         _.isArray(data).should.equal(true, 'Response was not a JSON array');
-        done();
       });
     });
   });
 
-  describe('#random', function() {
+  describe('#random', function () {
 
     it('should respond with JSON', function(done) {
       var mockResponse = httpMocks.createResponse();
       controller.random(null, mockResponse, function() {
-        mockResponse._isJSON().should.be.true;
+        mockResponse._isJSON().should.equal(true);
         done();
       });
     });
@@ -140,10 +137,10 @@ describe('ExperimentSchemaController tests', function() {
         done();
       });
     });
+  });
 
-    after(function() {
-      ExperimentSchema.remove().exec();
-      Media.remove().exec();
-    });
+  after(function () {
+    ExperimentSchema.remove().exec();
+    Media.remove().exec();
   });
 });

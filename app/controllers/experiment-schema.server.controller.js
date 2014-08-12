@@ -38,41 +38,33 @@ var mongoose = require('mongoose'),
 /**
  * List of Experiment schemas
  */
-exports.list = function(req, res, next) {
+exports.list = function(req, res) {
+
   ExperimentSchema.find({}, function(err, schemae) {
     if (err) {
-      res.json(500, { error: 'error reading from database' });
-
-      if (typeof next === 'function') {
-        next(err);
-      }
+      res.json(500, { error: err });
     } else {
       res.json(200, schemae);
-
-      if (typeof next === 'function') {
-        next();
-      }
     }
   });
 };
 
+
 /**
  * Build a random experiment from a random ExperimentSchema
  */
-exports.random = function(req, res, next) {
+exports.random = function(req, res) {
 
-  function errorHandler(err, message) {
+  function errorHandler(message) {
     res.json(500, { error: message });
-    if (typeof next === 'function') {
-      next(err);
-    }
   }
 
   ExperimentSchema.count({}, function(err, count) {
+
     if (err) {
-      return errorHandler(err, 'error reading from database');
+      return errorHandler(err);
     } else if (count < 1) {
-      return errorHandler(null, 'no experiment schemae found in database');
+      return errorHandler('no experiment schemae found in database');
     } else {
 
       // Get a random number from [0, totalSchemae)
@@ -86,9 +78,6 @@ exports.random = function(req, res, next) {
 
           // Send the response
           res.json(200, builtExperiment);
-          if (typeof next === 'function') {
-            next();
-          }
         });
       });
     }
