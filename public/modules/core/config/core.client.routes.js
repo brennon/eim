@@ -19,6 +19,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('sound-test', {
         url: '/sound-test',
         templateUrl: 'modules/core/views/sound-test.client.view.html'
+      })
+      .state('eda-instructions', {
+        url: '/eda-instructions',
+        templateUrl: 'modules/core/views/eda-instructions.client.view.html'
       });
   }
 ]);
