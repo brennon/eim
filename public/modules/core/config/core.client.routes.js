@@ -23,6 +23,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('eda-instructions', {
         url: '/eda-instructions',
         templateUrl: 'modules/core/views/eda-instructions.client.view.html'
+      })
+      .state('pox-instructions', {
+        url: '/pox-instructions',
+        templateUrl: 'modules/core/views/pox-instructions.client.view.html'
       });
   }
 ]);
