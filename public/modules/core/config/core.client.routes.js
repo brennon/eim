@@ -27,6 +27,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('pox-instructions', {
         url: '/pox-instructions',
         templateUrl: 'modules/core/views/pox-instructions.client.view.html'
+      })
+      .state('signal-test', {
+        url: '/signal-test',
+        templateUrl: 'modules/core/views/signal-test.client.view.html'
       });
   }
 ]);
