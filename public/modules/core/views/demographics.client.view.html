@@ -6,9 +6,9 @@
 
       <form>
         Sex: <input type="radio" ng-model="subject.gender" value="male" />Male
-        <input type="radio" ng-model="subject.gender" value="female" />Female<br />
-        Nationality: <select ng-model="rawNationality" ng-change="nationalityChanged()" ng-options="nationality for nationality in nationalities"></select><br />
-        Birth Year: <select ng-model="subject.birthyear" ng-options="year for year in years"></select>
+        <input type="radio" ng-model="subject.gender" ng-change="genderChanged(subject.gender)" value="female" />Female<br />
+        Nationality: <select ng-model="subject.rawNationality" ng-change="nationalityChanged(subject.rawNationality)" ng-options="nationality for nationality in nationalities"></select><br />
+        Birth Year: <select ng-model="subject.birthyear" ng-change="yearChanged(subject.birthyear)" ng-options="year for year in years"></select>
       </form>
     </div>
   </div>
@@ -18,10 +18,9 @@
     </div>
   </div>
   <div>
-    <h2>Subject Data</h2>
+    <h3>Controller Data</h3>
     <pre>Sex: {{subject.gender}}</pre>
     <pre>Nationality: {{subject.nationality}}</pre>
     <pre>Birth year: {{subject.birthyear}}</pre>
-
   </div>
 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('DemographicsController', ['$scope',
-  function($scope) {
+angular.module('core').controller('DemographicsController', ['$scope', 'TrialData',
+  function($scope, TrialData) {
 
     // Subject will hold all data
     $scope.subject = {};
@@ -15,9 +15,21 @@ angular.module('core').controller('DemographicsController', ['$scope',
       $scope.years.push(i);
     }
 
+    // Save data to Trial Data
+
     // Downcase nationality for persisting
-    $scope.nationalityChanged = function() {
-      $scope.subject.nationality = $scope.rawNationality.toLowerCase();
+    $scope.nationalityChanged = function(newValue) {
+      $scope.subject.nationality = newValue.toLowerCase();
+      TrialData.answers.nationality = $scope.subject.nationality;
+      console.log(TrialData);
     };
+
+    $scope.yearChanged = function(year) {
+      TrialData.answers.birthyear = year;
+    }
+
+    $scope.genderChanged = function(gender) {
+      TrialData.answers.gender = gender;
+    }
   }
 ]);
