@@ -25,10 +25,10 @@ angular.module('core').controller('DemographicsController', ['$scope', 'TrialDat
 
     $scope.yearChanged = function(year) {
       TrialData.answers.birthyear = year;
-    }
+    };
 
     $scope.genderChanged = function(gender) {
       TrialData.answers.gender = gender;
-    }
+    };
   }
 ]);
