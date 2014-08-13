@@ -7,6 +7,7 @@
       <form name="demographicForm" class="form" novalidate>
 
         <label for="genderRadio" class="radio control-label">Gender</label>
+
         <div class="radio" id="genderRadio">
           <label>
             <input type="radio" name="gender" id="genderRadioMale" ng-model="subject.gender"
@@ -45,7 +46,11 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <p><button ui-sref="start" class="btn btn-primary btn-lg" ng-disabled="demographicForm.$invalid">Continue</button></p>
+      <p>
+        <button ui-sref="musical-background" class="btn btn-primary btn-lg" ng-disabled="demographicForm.$invalid">
+          Continue
+        </button>
+      </p>
     </div>
   </div>
   <display-trial-data></display-trial-data>

@@ -35,6 +35,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('demographics', {
         url: '/demographics',
         templateUrl: 'modules/core/views/demographics.client.view.html'
+      })
+      .state('musical-background', {
+        url: '/musical-background',
+        templateUrl: 'modules/core/views/musical-background.client.view.html'
       });
   }
 ]);
