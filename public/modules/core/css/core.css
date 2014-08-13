@@ -46,22 +46,23 @@ slider span.pointer {
     height: 20px;
     top: 1px;
     background-color: #fff;
-    border: 1px solid #000;
+    border: 1px solid #5a5a5a;
     z-index: 2;
-    -webkit-border-radius: 1em/1em;
-    border-radius: 1em/1em;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
 }
 slider span.pointer:after {
     content: '';
     background-color: #2C3B44;
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     position: absolute;
-    top: 6px;
-    left: 6px;
-    -webkit-border-radius: 1em/1em;
-    border-radius: 1em/1em;
+    top: 5px;
+    left: 5px;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
 }
+
 slider span.pointer:hover:after {
     background-color: #000;
 }
@@ -80,4 +81,15 @@ slider span.bubble.selection {
 }
 slider span.bubble.limit {
     color: #808080;
+    visibility: hidden;
+}
+
+slider span.bar.steps {
+    background-color: rgb(91, 142, 158);
+}
+
+.slider-image {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
 }
