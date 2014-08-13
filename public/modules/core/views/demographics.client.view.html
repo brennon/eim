@@ -1,0 +1,27 @@
+<div data-ng-controller="DemographicsController">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1>Personal Details</h1>
+
+      <form>
+        Sex: <input type="radio" ng-model="subject.gender" value="male" />Male
+        <input type="radio" ng-model="subject.gender" value="female" />Female<br />
+        Nationality: <select ng-model="rawNationality" ng-change="nationalityChanged()" ng-options="nationality for nationality in nationalities"></select><br />
+        Birth Year: <select ng-model="subject.birthyear" ng-options="year for year in years"></select>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <p><a ui-sref="demographics" class="btn btn-primary btn-lg">Continue</a></p>
+    </div>
+  </div>
+  <div>
+    <h2>Subject Data</h2>
+    <pre>Sex: {{subject.gender}}</pre>
+    <pre>Nationality: {{subject.nationality}}</pre>
+    <pre>Birth year: {{subject.birthyear}}</pre>
+
+  </div>
+</div>

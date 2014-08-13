@@ -31,6 +31,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('signal-test', {
         url: '/signal-test',
         templateUrl: 'modules/core/views/signal-test.client.view.html'
+      })
+      .state('demographics', {
+        url: '/demographics',
+        templateUrl: 'modules/core/views/demographics.client.view.html'
       });
   }
 ]);
