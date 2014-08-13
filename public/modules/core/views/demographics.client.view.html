@@ -11,7 +11,7 @@
           <label>
             <input type="radio" name="gender" id="genderRadioMale" ng-model="subject.gender"
                    ng-change="genderChanged(subject.gender)"
-                   value="male">
+                   value="male" required>
             Male
           </label>
         </div>
@@ -29,7 +29,8 @@
           <select id="nationality" name="nationality" ng-model="subject.nationality"
                   ng-change="nationalityChanged(subject.nationality)"
                   ng-options="nationality for nationality in nationalities"
-                  class="form-control"></select>
+                  class="form-control"
+                  required></select>
         </div>
 
         <div class="form-group">
@@ -37,14 +38,14 @@
           <select id="birthYear" name="birthYear" ng-model="subject.birthyear"
                   ng-change="yearChanged(subject.birthyear)"
                   ng-options="year for year in years"
-                  class="form-control"></select>
+                  class="form-control" required></select>
         </div>
       </form>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <p><a ui-sref="demographics" class="btn btn-primary btn-lg">Continue</a></p>
+      <p><button ui-sref="start" class="btn btn-primary btn-lg" ng-disabled="demographicForm.$invalid">Continue</button></p>
     </div>
   </div>
   <display-trial-data></display-trial-data>
