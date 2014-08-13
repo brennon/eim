@@ -4,12 +4,17 @@
 angular.module('core').factory('TrialData', [
   function() {
     var trialData = {
-      answers: {
-        nationality: null,
-        birthyear: null,
-        gender: null
+      data: {
+        answers: {
+          nationality: null,
+          birthyear: null,
+          gender: null
+        },
+        metadata: {}
       },
-      metadata: {}
+      toJson: function() {
+        return angular.toJson(this.data, true);
+      }
     };
 
     return trialData;
