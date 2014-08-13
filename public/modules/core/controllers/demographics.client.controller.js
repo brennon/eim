@@ -21,7 +21,6 @@ angular.module('core').controller('DemographicsController', ['$scope', 'TrialDat
     $scope.nationalityChanged = function(newValue) {
       $scope.subject.nationality = newValue.toLowerCase();
       TrialData.answers.nationality = $scope.subject.nationality;
-      console.log(TrialData);
     };
 
     $scope.yearChanged = function(year) {
