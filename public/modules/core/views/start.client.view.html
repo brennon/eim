@@ -12,23 +12,18 @@
 
       <p>The experiment will last approximately 15 minutes.</p>
 
-      <p>Please indicate your answers by selecting the relevant checkbox or clicking on the 5-point scale.</p>
+      <p>Please indicate your answers by selecting the relevant checkboxes or clicking on the 5-point scale. Many questions require you to respond with such a 5-point scale. As such, an example is provided here for you to try before beginning the experiment. You may either click anywhere along the scale to move the button to your selected answer, or select your answer by clicking and dragging the button itself.</p>
 
-      <h3>Checkbox:</h3>
+      <form>
+        <slider-scale use-image="false"
+                      slider-ng-model="none" slider-floor="1" slider-ceiling="5" slider-step="1"
+                      slider-stretch="0" slider-initial-value="3"></slider-scale>
+      </form>
 
-      <p>Just click in the box to indicate your answer.</p>
-
-      <!-- TODO: Build checkbox directive -->
-      <p class="text-danger">TODO: Build checkbox directive</span></p>
-
-      <h3>5-point Scale:</h3>
-
-      <p>Click on one of the segments to select your answer.</p>
-
-      <!-- TODO: Build scale directive -->
-      <p class="text-danger">TODO: Build scale directive</p>
 
       <p><a ui-sref="sound-test" class="btn btn-primary btn-lg">Continue</a></p>
     </div>
   </div>
+
+  <display-trial-data></display-trial-data>
 </div>
