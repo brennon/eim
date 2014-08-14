@@ -4,7 +4,8 @@
  */
 var init = require('./config/init')(),
 	config = require('./config/config'),
-	mongoose = require('mongoose');
+	mongoose = require('mongoose'),
+  http = require('http');
 
 /**
  * Main application entry file.
@@ -21,7 +22,11 @@ var db = mongoose.connect(config.db, function() {
   require('./config/passport')();
 
   // Start the app by listening on <port>
-  app.listen(config.port);
+  var server = http.createServer(app);
+  server.listen(config.port);
+
+  // Fire up SocketIO
+  require('./app/controllers/socket')(server);
 
   // Expose app
   exports = module.exports = app;

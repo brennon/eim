@@ -5,16 +5,37 @@ angular.module('core').controller('SoundTestController', ['$scope', '$http',
 //    $scope.trialDataJson = function() {
 //      return TrialData.toJson();
 //    }
+//    var io = io();
+//    console.log(io);
 
-    function startSoundTest() {
-      $http.get('/api/osc/send/startSoundTest');
+    var s = io();
+
+    s.on('oscMessageSent', function(data) {
+      console.log('socket "oscMessageSent" event received with data: ' + data);
+    });
+
+    var startSoundTestOSCMessage = {
+      oscType: 'message',
+      address: '/eim/control',
+      args: {
+        type: 'string',
+        value: 'startSoundTest'
+      }
     };
 
-    startSoundTest();
+    var stopSoundTestOSCMessage = {
+      oscType: 'message',
+      address: '/eim/control',
+      args: {
+        type: 'string',
+        value: 'stopSoundTest'
+      }
+    };
+
+    s.emit('sendOSCMessage', startSoundTestOSCMessage);
 
     $scope.stopSoundTest = function() {
-      console.log('***** stopping sound test');
-      $http.get('/api/osc/send/stopSoundTest');
+      s.emit('sendOSCMessage', stopSoundTestOSCMessage);
     };
   }
 ]);
