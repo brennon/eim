@@ -37,3 +37,25 @@ exports.sendJSONMessage = function(data, callback) {
     sendMessage();
   }
 };
+
+exports.sendMessage = function(req, res) {
+  var message = {
+    oscType: 'message',
+    address: '/eim/control',
+    args: {
+      type: 'string',
+      value: req.params.message
+    }
+  };
+
+  exports.sendJSONMessage({
+    oscType: 'message',
+    address: '/eim/control',
+    args: {
+      type: 'string',
+      value: req.params.message
+    }
+  }, function() {
+    res.json(200, { sentMessage: message });
+  });
+};
