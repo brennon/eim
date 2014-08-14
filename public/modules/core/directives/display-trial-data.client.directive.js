@@ -4,6 +4,6 @@
 angular.module('core').directive('displayTrialData', function() {
   return {
     restrict: 'AE',
-    template: '<div><h3>Trial Data</h3><pre>Subject: {{trialDataJson()}}</pre></div>'
+    template: '<div><h3>Trial Data</h3><pre>{{trialDataJson()}}</pre></div>'
   }
 });
