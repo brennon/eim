@@ -23,7 +23,12 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <p><a ui-sref="eda-instructions" class="btn btn-primary btn-lg">Continue</a></p>
+      <button ui-sref="eda-instructions" class="btn btn-primary btn-lg" ng-click="stopSoundTest()">Continue</button>
     </div>
   </div>
+  <div class="row">
+    <!-- TODO: Ensure that all data is reset on any visit to this page (reloading and clicking a link) -->
+    <p class="text-danger">TODO: Ensure that all data is reset on any visit to this page (reloading <em>and</em> clicking a link)</p>
+  </div>
+  <display-trial-data></display-trial-data>
 </div>
