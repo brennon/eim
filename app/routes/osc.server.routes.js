@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = function(app) {
-  var controller = require('../../app/controllers/experiment-schema');
-  app.route('/api/experiment-schemas/random').get(controller.random);
+  var controller = require('../controllers/osc');
+  app.route('/api/osc/send/:message').get(controller.sendMessage);
 };
