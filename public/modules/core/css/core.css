@@ -85,11 +85,5 @@ slider span.bubble.limit {
 }
 
 slider span.bar.steps {
-    background-color: rgb(91, 142, 158);
-}
-
-.slider-image {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
+    background-color: #449d44;
 }
