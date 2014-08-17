@@ -17,10 +17,6 @@
 			});
 		}));
 
-		it('should expose the authentication service', function() {
-			expect(scope.authentication).toBeTruthy();
-		});
-
 //    it('should augment the scope with an experimentSchema property', function() {
 //      httpBackend.when('GET', '/api/experiment-schemas/random').respond({one:1});
 //      httpBackend.flush();

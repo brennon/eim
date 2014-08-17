@@ -18,9 +18,6 @@ var app;
 var db = mongoose.connect(config.db, function() {
   app = require('./config/express')(db);
 
-  // Bootstrap passport config
-  require('./config/passport')();
-
   // Start the app by listening on <port>
   var server = http.createServer(app);
   server.listen(config.port);
