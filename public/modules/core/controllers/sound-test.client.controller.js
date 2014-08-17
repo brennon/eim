@@ -9,21 +9,25 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
       console.log('socket "oscMessageSent" event received with data: ' + data);
     });
 
-    var oscMessage = {
+    socket.emit('sendOSCMessage', {
       oscType: 'message',
-      address: '/eim/control',
+      address: '/eim/control/startSoundTest',
       args: {
         type: 'string',
-        value: ''
+        value: TrialData.data.metadata.session_number
       }
-    };
-
-    oscMessage.args.value = 'startSoundTest';
-    socket.emit('sendOSCMessage', oscMessage);
+    });
 
     $scope.stopSoundTest = function() {
-      oscMessage.args.value = 'stopSoundTest';
-      socket.emit('sendOSCMessage', oscMessage);
+      console.log('stopping sound test');
+      socket.emit('sendOSCMessage', {
+        oscType: 'message',
+        address: '/eim/control/stopSoundTest',
+        args: {
+          type: 'string',
+          value: TrialData.data.metadata.session_number
+        }
+      });
     };
 
     $scope.trialDataJson = function() {
