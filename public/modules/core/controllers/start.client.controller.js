@@ -20,7 +20,11 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     $scope.maxReady = false;
     $scope.backendReady = false;
     $scope.experimentReady = function() {
-      return $scope.maxReady && $scope.backendReady;
+      if ($scope.debugMode) {
+        return true;
+      } else {
+        return $scope.maxReady && $scope.backendReady;
+      }
     };
 
     // Reset TrialData

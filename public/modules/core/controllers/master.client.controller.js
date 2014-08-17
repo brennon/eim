@@ -1,10 +1,31 @@
 'use strict';
 
-angular.module('core').controller('MasterController', ['$scope', 'TrialData',
-  function($scope, TrialData) {
+angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys',
+  function($scope, TrialData, hotkeys) {
     $scope.trialDataJson = function() {
       return TrialData.toJson();
     };
+
+    // Global debug mode flag
+    $scope.debugMode = false;
+
+    // Setup hotkeys
+    hotkeys.add({
+      combo: 'd d',
+      description: 'Toggle debug mode',
+      callback: function() {
+        $scope.debugMode = !$scope.debugMode;
+
+        var alertMessage = 'Debug mode has been ';
+        if ($scope.debugMode) {
+          alertMessage += 'enabled.';
+        } else {
+          alertMessage += 'disabled.';
+        }
+
+        $scope.addAlert({type: 'info', msg: alertMessage});
+      }
+    });
 
     // Store/show alerts
     $scope.alerts = [];
