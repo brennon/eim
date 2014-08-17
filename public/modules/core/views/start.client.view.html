@@ -1,5 +1,6 @@
 <div data-ng-controller="StartController">
   <div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
     <div class="col-md-12">
       <h1>Instructions</h1>
 
@@ -21,7 +22,7 @@
       </form>
 
 
-      <p><a ui-sref="sound-test" class="btn btn-primary btn-lg">Continue</a></p>
+      <p><a ui-sref="sound-test" class="btn btn-primary btn-lg" ng-disabled="!experimentReady()">Continue</a></p>
     </div>
   </div>
 

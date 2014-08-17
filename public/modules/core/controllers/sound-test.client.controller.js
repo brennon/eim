@@ -1,41 +1,33 @@
 'use strict';
 
-angular.module('core').controller('SoundTestController', ['$scope', '$http',
-  function($scope, $http) {
-//    $scope.trialDataJson = function() {
-//      return TrialData.toJson();
-//    }
-//    var io = io();
-//    console.log(io);
+angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
+  function($scope, TrialData) {
 
-    var s = io();
+    var socket = io();
 
-    s.on('oscMessageSent', function(data) {
+    socket.on('oscMessageSent', function(data) {
       console.log('socket "oscMessageSent" event received with data: ' + data);
     });
 
-    var startSoundTestOSCMessage = {
+    var oscMessage = {
       oscType: 'message',
       address: '/eim/control',
       args: {
         type: 'string',
-        value: 'startSoundTest'
+        value: ''
       }
     };
 
-    var stopSoundTestOSCMessage = {
-      oscType: 'message',
-      address: '/eim/control',
-      args: {
-        type: 'string',
-        value: 'stopSoundTest'
-      }
-    };
-
-    s.emit('sendOSCMessage', startSoundTestOSCMessage);
+    oscMessage.args.value = 'startSoundTest';
+    socket.emit('sendOSCMessage', oscMessage);
 
     $scope.stopSoundTest = function() {
-      s.emit('sendOSCMessage', stopSoundTestOSCMessage);
+      oscMessage.args.value = 'stopSoundTest';
+      socket.emit('sendOSCMessage', oscMessage);
+    };
+
+    $scope.trialDataJson = function() {
+      return TrialData.toJson();
     };
   }
 ]);

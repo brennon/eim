@@ -25,6 +25,9 @@ var db = mongoose.connect(config.db, function() {
   var server = http.createServer(app);
   server.listen(config.port);
 
+  // Require OSC
+  require('./app/controllers/osc').init();
+
   // Fire up SocketIO
   require('./app/controllers/socket')(server);
 
