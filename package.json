@@ -3,6 +3,10 @@
   "description": "Emotion in Motion Experiment Platform",
   "version": "0.0.1",
   "author": "Brennon Bortz",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:brennon/eim.git"
+  },
   "engines": {
     "node": "0.10.x",
     "npm": "1.4.x"
@@ -13,6 +17,7 @@
     "postinstall": "bower install --config.interactive=false"
   },
   "dependencies": {
+    "angular-hotkeys": "^1.4.3",
     "body-parser": "~1.2.0",
     "bower": "~1.3.1",
     "compression": "~1.0.1",
