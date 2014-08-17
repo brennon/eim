@@ -19,7 +19,6 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
     });
 
     $scope.stopSoundTest = function() {
-      console.log('stopping sound test');
       socket.emit('sendOSCMessage', {
         oscType: 'message',
         address: '/eim/control/stopSoundTest',
