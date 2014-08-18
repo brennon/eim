@@ -3,7 +3,8 @@
 var util = require('util'),
   winston = require('winston'),
   logger = new winston.Logger(),
-  production = (process.env.NODE_ENV || '').toLowerCase() === 'production';
+  production = (process.env.NODE_ENV || '').toLowerCase() === 'production',
+  metadata = require('./terminal');
 
 // Add winston-loggly
 require('winston-loggly');
@@ -51,17 +52,17 @@ function formatArgs(args){
 }
 
 console.log = function(){
-  logger.info.apply(logger, formatArgs(arguments));
+  logger.info.apply(logger, [formatArgs(arguments), metadata]);
 };
 console.info = function(){
-  logger.info.apply(logger, formatArgs(arguments));
+  logger.info.apply(logger, [formatArgs(arguments), metadata]);
 };
 console.warn = function(){
-  logger.warn.apply(logger, formatArgs(arguments));
+  logger.warn.apply(logger, [formatArgs(arguments), metadata]);
 };
 console.error = function(){
-  logger.error.apply(logger, formatArgs(arguments));
+  logger.error.apply(logger, [formatArgs(arguments), metadata]);
 };
 console.debug = function(){
-  logger.debug.apply(logger, formatArgs(arguments));
+  logger.debug.apply(logger, [formatArgs(arguments), metadata]);
 };
