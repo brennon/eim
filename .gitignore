@@ -6,3 +6,5 @@ node_modules/
 app/tests/coverage/
 .bower-*/
 .idea/
+daemon/
+application.log

@@ -22,10 +22,17 @@ switch((process.env.NODE_ENV || '').toLowerCase()){
   case 'production':
     production = true;
     logger.add(winston.transports.File, {
-      filename: __dirname + '/application.log',
+      filename: require('path').join(__dirname, '..', 'application.log'),
       handleExceptions: true,
       exitOnError: false,
       level: 'warn'
+    });
+    logger.add(winston.transports.Loggly, {
+      level: 'info',
+      subdomain: 'brennon',
+      inputToken: '81009487-63da-400f-af48-4b3f91d3bbd5',
+      json: true,
+      tags: ['Node.js']
     });
     break;
   case 'test':
