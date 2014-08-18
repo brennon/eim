@@ -16,6 +16,10 @@ var app;
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db, function() {
+
+  // Log with winston
+  require('./config/logging');
+
   app = require('./config/express')(db);
 
   // Start the app by listening on <port>
