@@ -29,7 +29,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
       mongoose.connection.removeListener('connected', connectedCallback);
     };
 
-    if (mongoose.connection.readyState != 1) {
+    if (mongoose.connection.readyState !== 1) {
 
       mongoose.connection.on('connected', connectedCallback);
 
@@ -196,7 +196,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
       });
     });
 
-    it('should build an experiment of the correct length', function (done) {
+    it('should services an experiment of the correct length', function (done) {
       // Get an experiment schema from database
       ExperimentSchema.findOne({_id: fullExperimentSchema._id}, function (err, result) {
         if (err) {
@@ -251,7 +251,7 @@ describe('ExperimentSchema Model Unit Tests:', function () {
     afterEach(function(done) {
       ExperimentSchema.remove().exec();
       done();
-    })
+    });
   });
 
   afterEach(function (done) {

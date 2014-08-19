@@ -12,6 +12,32 @@ exports.outgoingPort = 7000;
 exports.incomingPort = 7001;
 exports.outgoingHost = 'localhost';
 
+// Incoming message handler
+function incomingMessageHandler(msg, rinfo) {
+  var oscFromBuffer = osc.fromBuffer(msg, false);
+
+  // Emit incoming message event with data
+  exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
+}
+
+// Create listener socket
+function createOSCReceiver(callback) {
+  setTimeout(function() {
+
+    // Create socket and bind to port
+    oscReceiver = dgram.createSocket('udp4');
+    oscReceiver.bind(exports.incomingPort, function() {
+
+      // Attach incoming message handler callback
+      oscReceiver.on('message', incomingMessageHandler);
+
+      if (typeof callback === 'function') {
+        callback();
+      }
+    });
+  }, 0);
+}
+
 // Main initialization
 exports.init = function(callback) {
   setTimeout(function createSocket() {
@@ -27,32 +53,6 @@ exports.init = function(callback) {
 
 // Consumers of this module can listen here for OSC-related events
 exports.eventEmitter = new EventEmitter();
-
-// Incoming message handler
-function incomingMessageHandler(msg, rinfo) {
-  var oscFromBuffer = osc.fromBuffer(msg, false);
-
-  // Emit incoming message event with data
-  exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
-};
-
-// Create listener socket
-function createOSCReceiver(callback) {
-  setTimeout(function() {
-
-    // Create socket and bind to port
-    oscReceiver = dgram.createSocket('udp4');
-    oscReceiver.bind(exports.incomingPort, function() {
-
-      // Attach incoming message handler callback
-      oscReceiver.on('message', incomingMessageHandler);
-
-      if (typeof callback === 'function') {
-        callback();
-      };
-    })
-  }, 0);
-}
 
 // Send an OSC message that meets osc-min's message definition over the outgoing socket
 exports.sendJSONMessage = function(data, callback) {

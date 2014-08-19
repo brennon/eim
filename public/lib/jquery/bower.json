@@ -5,7 +5,7 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "build",
+    "services",
     "speed",
     "test",
     "*.md",

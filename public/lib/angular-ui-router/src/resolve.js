@@ -42,7 +42,7 @@ function $Resolve(  $q,    $injector) {
   this.study = function (invocables) {
     if (!isObject(invocables)) throw new Error("'invocables' must be an object");
     
-    // Perform a topological sort of invocables to build an ordered plan
+    // Perform a topological sort of invocables to services an ordered plan
     var plan = [], cycle = [], visited = {};
     function visit(value, key) {
       if (visited[key] === VISIT_DONE) return;

@@ -40,7 +40,7 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
   if (typeof callback === 'function') {
     return callback(null, {media: selectedMedia});
   } else {
-    return builtExperiment;
+    return {media: selectedMedia};
   }
 };
 

@@ -10,15 +10,15 @@ var path = require('path');
 describe('OSCController', function() {
 
   it('should set the outgoing port', function() {
-    controller.outgoingPort.should.be.ok;
+    controller.outgoingPort.should.be(7000);
   });
 
   it('should set the outgoing host', function() {
-    controller.outgoingHost.should.be.ok;
+    controller.outgoingHost.should.be('127.0.0.1');
   });
 
   it('should set the incoming port', function() {
-    controller.incomingPort.should.be.ok;
+    controller.incomingPort.should.be(7001);
   });
 
   describe('#init', function() {

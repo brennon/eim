@@ -23,7 +23,7 @@ describe('Core Controller Tests', function() {
       mongoose.connection.removeListener('connected', connectedCallback);
     };
 
-    if (mongoose.connection.readyState != 1) {
+    if (mongoose.connection.readyState !== 1) {
 
       mongoose.connection.on('connected', connectedCallback);
 

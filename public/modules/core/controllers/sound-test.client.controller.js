@@ -3,6 +3,7 @@
 angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
   function($scope, TrialData) {
 
+    /* global io */
     var socket = io();
 
     socket.on('oscMessageSent', function(data) {

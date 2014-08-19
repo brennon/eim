@@ -84,7 +84,7 @@ exports.protocol = parser.protocol;
 exports.connect = lookup;
 
 /**
- * Expose constructors for standalone build.
+ * Expose constructors for standalone services.
  *
  * @api public
  */
@@ -4381,7 +4381,7 @@ var global=typeof self !== "undefined" ? self : typeof window !== "undefined" ? 
 		'decode': utf8decode
 	};
 
-	// Some AMD build optimizers, like r.js, check for specific condition patterns
+	// Some AMD services optimizers, like r.js, check for specific condition patterns
 	// like the following:
 	if (
 		typeof define == 'function' &&

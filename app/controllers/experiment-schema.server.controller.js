@@ -73,7 +73,7 @@ exports.random = function(req, res) {
       // Get a random schema
       ExperimentSchema.find({}).skip(rand).limit(1).populate('mediaPool', 'artist title label').exec(function (err, schema) {
 
-        // Using the controller, build an experiment from this schema
+        // Using the controller, services an experiment from this schema
         schema[0].buildExperiment(function(err, builtExperiment) {
 
           // Send the response

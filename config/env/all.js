@@ -15,7 +15,7 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        'public/modules/angular-hotkeys/build/hotkeys.min.css'
+        'public/modules/angular-hotkeys/services/hotkeys.min.css'
 			],
 			js: [
 				'public/lib/angular/angular.js',
@@ -30,7 +30,7 @@ module.exports = {
         'public/lib/angular-slider/angular-slider.min.js',
         'public/lib/socket.io-client/socket.io.js',
         'public/lib/UUID.js/dist/uuid.core.js',
-        'public/modules/angular-hotkeys/build/hotkeys.min.js'
+        'public/modules/angular-hotkeys/services/hotkeys.min.js'
 			]
 		},
 		css: [

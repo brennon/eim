@@ -21,7 +21,7 @@ describe('ExperimentSchema Route Tests', function() {
       done();
     };
 
-    if (mongoose.connection.readyState != 1) {
+    if (mongoose.connection.readyState !== 1) {
 
       mongoose.connection.on('connected', connectedCallback);
 
@@ -90,7 +90,7 @@ describe('ExperimentSchema Route Tests', function() {
       request('localhost:' + config.port)
         .get('/api/experiment-schemas/random')
         .end(function(err, res) {
-          res.statusCode.should.equal(200, "Response status was not 200 OK");
+          res.statusCode.should.equal(200, 'Response status was not 200 OK');
           done();
         });
     });

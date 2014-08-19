@@ -15,7 +15,7 @@
 //    <script>
 //    window.myCustomTags = [ 'yourCustomDirective', 'somebodyElsesDirective' ]; // optional
 //    </script>
-//    <script src="build/angular-ui-ieshiv.js"></script>
+//    <script src="services/angular-ui-ieshiv.js"></script>
 // <![endif]-->
 
 (function (window, document) {

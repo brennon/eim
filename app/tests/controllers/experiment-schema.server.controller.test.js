@@ -22,7 +22,7 @@ describe('ExperimentSchema Controller Tests', function () {
       done();
     };
 
-    if (mongoose.connection.readyState != 1) {
+    if (mongoose.connection.readyState !== 1) {
 
       mongoose.connection.on('connected', connectedCallback);
 

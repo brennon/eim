@@ -8,6 +8,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     $scope.poxQuality = 0;
 
     // Setup socket
+    /* global io */
     var socket = io();
 
     // Log incoming OSC messages

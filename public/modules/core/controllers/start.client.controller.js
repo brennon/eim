@@ -31,9 +31,11 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     TrialData.reset();
 
     // Setup socket
+    /* global io */
     var socket = io();
 
     // Generate new session identifier
+    /* global UUID */
     var sessionID = UUID.generate();
     TrialData.data.metadata.session_number = sessionID;
 
@@ -64,16 +66,6 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
       }
     });
 
-    $scope.stopSoundTest = function() {
-      oscMessage.args.value = 'stopSoundTest';
-      socket.emit('sendOSCMessage', oscMessage);
-    };
-
-    // Expose TrialData for debugging
-    $scope.trialDataJson = function() {
-      return TrialData.toJson();
-    };
-
     // Get a new experiment setup from the backend
     $http.get('/api/experiment-schemas/random')
       .success(function(data) {
@@ -86,8 +78,8 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
         if (data.media.length > 0) {
             $scope.backendReady = true;
         } else {
-          throw new Error('No media was found in the fetched experiment schema');
           $scope.addGenericErrorAlert();
+          throw new Error('No media was found in the fetched experiment schema');
         }
       })
       .error(function(data) {

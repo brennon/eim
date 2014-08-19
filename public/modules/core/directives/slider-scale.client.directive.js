@@ -20,5 +20,5 @@ angular.module('core').directive('sliderScale', function() {
           return htmlString;
       }
     }
-  }
+  };
 });

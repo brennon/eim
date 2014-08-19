@@ -1,4 +1,6 @@
-/*! 
+/* jshint ignore:start */
+
+/*!
  * angular-hotkeys v1.4.3
  * https://chieffancypants.github.io/angular-hotkeys
  * Copyright (c) 2014 Wes Cruver
@@ -1517,3 +1519,5 @@
         define(Mousetrap);
     }
 }) (window, document);
+
+/* jshint ignore:end */

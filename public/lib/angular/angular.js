@@ -23,7 +23,7 @@
  * If fewer arguments are specified than necessary for interpolation, the extra
  * interpolation markers will be preserved in the final string.
  *
- * Since data will be parsed statically during a build step, some restrictions
+ * Since data will be parsed statically during a services step, some restrictions
  * are applied with respect to how minErr instances are created and called.
  * Instances should have names of the form namespaceMinErr for a minErr created
  * using minErr('namespace') . Error codes, namespaces and template strings
@@ -7491,7 +7491,7 @@ function $HttpProvider() {
 
     /**
      * Interceptors stored in reverse order. Inner interceptors before outer interceptors.
-     * The reversal is needed so that we can build up the interception chain around the
+     * The reversal is needed so that we can services up the interception chain around the
      * server request.
      */
     var reversedInterceptors = [];
@@ -21658,7 +21658,7 @@ var selectDirective = ['$compile', '$parse', function($compile,   $parse) {
             }
           }
 
-          // We now build up the list of options we need (we merge later)
+          // We now services up the list of options we need (we merge later)
           for (index = 0; length = keys.length, index < length; index++) {
 
             key = index;
