@@ -1,7 +1,11 @@
+/* jshint ignore:end */
+
 /* Modernizr 2.7.1 (Custom Build) | MIT & BSD
  * Build: http://modernizr.com/download/#-inputtypes-load
  */
 ;
+
+
 
 window.AngularSlider = (function( window, document, undefined ) {
 
@@ -1822,3 +1826,5 @@ angular.module('vr.directives.slider', ['ngTouch']).directive('slider',
       }
     }
   ]);
+
+/* jshint ignore:end */

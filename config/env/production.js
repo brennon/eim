@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/emotion-in-motion',
+	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/emotion-in-motion-production',
 	assets: {
 		lib: {
 			css: [
@@ -17,7 +17,11 @@ module.exports = {
 				'public/lib/angular-sanitize/angular-sanitize.js', 
 				'public/lib/angular-ui-router/release/angular-ui-router.min.js',
 				'public/lib/angular-ui-utils/ui-utils.min.js',
-				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js'
+				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
+        'public/lib/angular-slider/angular-slider.js',
+        'public/lib/socket.io-client/socket.io.js',
+        'public/lib/UUID.js/dist/uuid.core.js',
+        'public/modules/angular-hotkeys/services/hotkeys.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',
