@@ -8,3 +8,5 @@ app/tests/coverage/
 .idea/
 daemon/
 application.log
+config/terminal.js
+config/terminal.js
