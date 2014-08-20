@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/emotion-in-motion-test',
+	db: 'mongodb://localhost:28017/emotion-in-motion-test',
 	port: 3001,
 	app: {
 		title: 'Emotion in Motion - Test Environment'

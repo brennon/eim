@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/emotion-in-motion-production',
+	db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost:28017/emotion-in-motion-production',
 	assets: {
 		lib: {
 			css: [
