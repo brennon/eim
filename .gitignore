@@ -9,4 +9,3 @@ app/tests/coverage/
 daemon/
 application.log
 config/terminal.js
-config/terminal.js
