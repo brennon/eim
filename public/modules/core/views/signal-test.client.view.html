@@ -18,17 +18,12 @@
     <div class="col-md-6">
       <div>
         <h2>Heart Sensor</h2>
-        <button class="btn btn-lg btn-danger">No Signal</button>
+        <button class="btn btn-lg" ng-class="{'btn-danger': !poxQuality, 'btn-success': poxQuality}">{{ poxQuality ? "Signal OK" : "No Signal" }}</button>
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <!-- TODO: Send start signal check message -->
-      <p class="text-danger">TODO: Send start signal check message</p>
-
-      <!-- TODO: Add signal check listeners -->
-      <p class="text-danger">TODO: Add signal check listeners</p>
 
       <p>If either sensor does not display 'Signal OK', please contact a mediator for assistance. When both sensors display 'Signal OK', click 'Continue' and wait for a moment as we make a test recording.</p>
 
