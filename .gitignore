@@ -9,3 +9,4 @@ app/tests/coverage/
 daemon/
 application.log
 config/terminal.js
+.foreverignore
