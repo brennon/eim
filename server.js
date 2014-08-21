@@ -1,40 +1,55 @@
 'use strict';
+
 /**
  * Module dependencies.
  */
-var init = require('./config/init')(),
-	config = require('./config/config'),
-	mongoose = require('mongoose'),
-  http = require('http');
+
+var Promise = require('bluebird');
+Promise.longStackTraces();
+
+var init = require('./config/init')();
+var config = require('./config/config');
+var mongoose = Promise.promisifyAll(require('mongoose'));
+var http = Promise.promisifyAll(require('http'));
+require('./config/logging');
 
 /**
  * Main application entry file.
  * Please note that the order of loading is important.
  */
 
-var app;
+var app, server;
 
-// Bootstrap db connection
-var db = mongoose.connect(config.db, function() {
+mongoose.connectAsync(config.db)
+  .then(function() {
+    console.log('EIM application starting');
+    console.log('Connected to database');
 
-  // Log with winston
-  require('./config/logging');
+    app = require('./config/express')(mongoose);
+    console.log('Started Express server');
+  })
+  .then(function() {
+    return http.createServer(app);
+  })
+  .then(function(createdServer) {
+    server = createdServer;
+    return server.listenAsync(config.port);
+  })
+  .then(function() {
+    // Require OSC
+    require('./app/controllers/osc').init();
+    console.log('Initialized OSC');
 
-  app = require('./config/express')(db);
+    // Fire up SocketIO
+    require('./app/controllers/socket')(server);
+    console.log('Initialized Socket.IO');
 
-  // Start the app by listening on <port>
-  var server = http.createServer(app);
-  server.listen(config.port);
+    // Expose app
+    exports = module.exports = app;
 
-  // Require OSC
-  require('./app/controllers/osc').init();
-
-  // Fire up SocketIO
-  require('./app/controllers/socket')(server);
-
-  // Expose app
-  exports = module.exports = app;
-
-  // Logging initialization
-  console.log('EIM application started on port ' + config.port);
-});
+    // Logging initialization
+    console.log('EIM application successfully started on port ' + config.port);
+  })
+  .catch(function(e) {
+    console.error('Error starting EIM application: ', e);
+  });
