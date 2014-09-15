@@ -6,6 +6,12 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     // Signal quality indicators
     $scope.edaQuality = 0;
     $scope.poxQuality = 0;
+    $scope.testRecordingComplete = false;
+
+    // Has test recording been completed?
+    $scope.allSignalsGood = function() {
+      return $scope.edaQuality && $scope.poxQuality;
+    };
 
     // Setup socket
     /* global io */
@@ -40,10 +46,28 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
       });
     };
 
+    // Function to send stop signal test message
+    var sendStartSignalTestRecordingMessage = function() {
+      socket.emit('sendOSCMessage', {
+        oscType: 'message',
+        address: '/eim/control/startTestRecording',
+        args: {
+          type: 'string',
+          value: '' + TrialData.data.metadata.session_number
+        }
+      });
+    };
+
+    // Watch for both good signals
+    $scope.$watch($scope.allSignalsGood, function sendStartRecordingIfSignalsGood(newValue, oldValue) {
+      console.log('got newValue: ', newValue);
+      if (newValue) {
+        sendStartSignalTestRecordingMessage();
+      }
+    });
+
     // Setup listener for incoming OSC messages
     socket.on('oscMessageReceived', function(data) {
-
-      console.log('got OSC message');
 
       // If it was an EDA signal quality message
       if (data.address === '/eim/status/signalQuality/eda') {
@@ -60,6 +84,16 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
         $scope.$apply(function updatePOXQuality() {
           $scope.poxQuality = data.args[0].value;
         });
+
+      // If the test recording has complete
+      } else if (data.address === '/eim/status/testRecordingComplete') {
+
+        // Update continue button
+        $scope.$apply(function (){
+          $scope.testRecordingComplete = true;
+        });
+
+        sendStopSignalTestMessage();
       }
     });
 
