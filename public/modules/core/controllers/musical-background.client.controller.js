@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core').controller('DemographicsController', ['$scope', 'TrialData',
+angular.module('core').controller('MusicalBackgroundController', ['$scope', 'TrialData',
   function($scope, TrialData) {
 
     // Expose TrialData on scope
