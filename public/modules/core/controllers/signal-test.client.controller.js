@@ -8,6 +8,14 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     $scope.poxQuality = 0;
     $scope.testRecordingComplete = false;
 
+    $scope.readyToAdvance = function() {
+      if ($scope.debugMode) {
+        return true;
+      } else {
+        return $scope.testRecordingComplete;
+      }
+    };
+
     // Has test recording been completed?
     $scope.allSignalsGood = function() {
       return $scope.edaQuality && $scope.poxQuality;
@@ -60,7 +68,6 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
 
     // Watch for both good signals
     $scope.$watch($scope.allSignalsGood, function sendStartRecordingIfSignalsGood(newValue, oldValue) {
-      console.log('got newValue: ', newValue);
       if (newValue) {
         sendStartSignalTestRecordingMessage();
       }
