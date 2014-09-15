@@ -5,7 +5,6 @@
             <h1>Musical Background</h1>
 
             <form name="musicalForm" class="form" novalidate>
-
                 <label for="musicianRadio" class="radio control-label">Do you consider yourself a musician or to have
                     specialist
                     musical knowledge?</label>
@@ -147,7 +146,7 @@
                                ng-model="subject.styles.hipHop"
                                ng-change="stylesChanged(subject.styles.hipHop)"
                                value="true">
-                        HipHop
+                        Hip-Hop
                     </label>
                 </div>
 
@@ -186,9 +185,6 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <!-- TODO: Unbold non-labels -->
-            <p class="text-danger">TODO: Unbold non-labels</p>
-
             <p>
                 <button ui-sref="musical-background" class="btn btn-primary btn-lg" ng-disabled="musicalForm.$invalid">
                     Continue
