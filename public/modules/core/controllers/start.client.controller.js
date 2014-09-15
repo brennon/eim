@@ -19,7 +19,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     // Are all pieces of experiment ready to begin?
     $scope.maxReady = false;
     $scope.backendReady = false;
-    $scope.experimentReady = function() {
+    $scope.readyToAdvance = function() {
       if ($scope.debugMode) {
         return true;
       } else {
@@ -89,7 +89,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
 
     // If we aren't ready to go after 10 seconds, throw an error
     $timeout(function() {
-      if (!$scope.experimentReady()) {
+      if (!$scope.readyToAdvance()) {
         $scope.addGenericErrorAlert();
         throw new Error('The experiment was not setup after 10 seconds');
       }
