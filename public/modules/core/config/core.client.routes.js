@@ -39,6 +39,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('musical-background', {
         url: '/musical-background',
         templateUrl: 'modules/core/views/musical-background.client.view.html'
+      })
+      .state('media-playback', {
+        url: '/media-playback',
+        templateUrl: 'modules/core/views/media-playback.client.view.html'
       });
   }
 ]);
