@@ -2,6 +2,7 @@
 
 // TODO: Restructure module to return object
 // TODO: Max errors should be handled also in Angular in order to display error
+// TODO: Switch outgoingHost back to localhost
 
 var dgram = require('dgram');
 var osc = require('osc-min');
@@ -11,7 +12,7 @@ var oscSender, oscReceiver;
 
 exports.outgoingPort = 7000;
 exports.incomingPort = 7001;
-exports.outgoingHost = 'localhost';
+exports.outgoingHost = '192.168.1.10';
 
 // Incoming message handler
 function incomingMessageHandler(msg, rinfo) {
