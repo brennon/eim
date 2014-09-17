@@ -71,20 +71,17 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
           }
         });
 
-//        for (var i in data.media) {
-//          TrialData.data.media.push(data.media[i].label);
-//        }
-//
-//        // Only proceed if we've got some media!
-//        if (data.media.length > 0) {
-//            $scope.backendReady = true;
-//        } else {
-//          $scope.addGenericErrorAlert();
-//          throw new Error('No media was found in the fetched experiment schema');
-//        }
+        for (var i in data.media) {
+          TrialData.data.media.push(data.media[i].label);
+        }
 
-        // TODO: Remove this
-        $scope.backendReady = true;
+        // Only proceed if we've got some media!
+        if (data.media.length > 0) {
+            $scope.backendReady = true;
+        } else {
+          $scope.addGenericErrorAlert();
+          throw new Error('No media was found in the fetched experiment schema');
+        }
       })
       .error(function(data) {
         $scope.addGenericErrorAlert();
