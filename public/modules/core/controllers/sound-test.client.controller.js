@@ -12,23 +12,38 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
 
     socket.emit('sendOSCMessage', {
       oscType: 'message',
-      address: '/eim/control/startSoundTest',
-      args: {
-        type: 'string',
-        value: TrialData.data.metadata.session_number
-      }
+      address: '/eim/control/soundTest',
+      args: [
+        {
+          type: 'integer',
+          value: 1
+        },
+        {
+          type: 'string',
+          value: TrialData.data.metadata.session_number
+        }
+      ]
     });
 
     $scope.stopSoundTest = function() {
       socket.emit('sendOSCMessage', {
         oscType: 'message',
-        address: '/eim/control/stopSoundTest',
-        args: {
-          type: 'string',
-          value: TrialData.data.metadata.session_number
-        }
+        address: '/eim/control/soundTest',
+        args: [
+          {
+            type: 'integer',
+            value: 0
+          },
+          {
+            type: 'string',
+            value: TrialData.data.metadata.session_number
+          }
+        ]
       });
     };
+
+    // Send stop sound test message when controller is destroyed
+    $scope.$on('$destroy', $scope.stopSoundTest);
 
     $scope.trialDataJson = function() {
       return TrialData.toJson();
