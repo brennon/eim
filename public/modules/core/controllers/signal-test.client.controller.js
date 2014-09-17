@@ -1,5 +1,8 @@
 'use strict';
 
+// TODO: Watch for and log sensor issues
+// TODO: In the event of sensor issues, still allow user to advance after delay
+
 angular.module('core').controller('SignalTestController', ['$scope', 'TrialData',
   function($scope, TrialData) {
 
@@ -12,7 +15,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
       if ($scope.debugMode) {
         return true;
       } else {
-        return $scope.testRecordingComplete;
+        return $scope.allSignalsGood();
       }
     };
 
@@ -34,11 +37,18 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     var sendStartSignalTestMessage = function() {
       socket.emit('sendOSCMessage', {
         oscType: 'message',
-        address: '/eim/control/startSignalTest',
-        args: {
-          type: 'string',
-          value: '' + TrialData.data.metadata.session_number
-        }
+        address: '/eim/control/signalTest',
+        args: [
+          {
+            type: 'integer',
+            value: 1
+          }
+          ,
+          {
+            type: 'string',
+            value: '' + TrialData.data.metadata.session_number
+          }
+        ]
       });
     };
 
@@ -46,11 +56,18 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     var sendStopSignalTestMessage = function() {
       socket.emit('sendOSCMessage', {
         oscType: 'message',
-        address: '/eim/control/stopSignalTest',
-        args: {
-          type: 'string',
-          value: '' + TrialData.data.metadata.session_number
-        }
+        address: '/eim/control/signalTest',
+        args: [
+          {
+            type: 'integer',
+            value: 0
+          }
+          ,
+          {
+            type: 'string',
+            value: '' + TrialData.data.metadata.session_number
+          }
+        ]
       });
     };
 
@@ -66,12 +83,12 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
       });
     };
 
-    // Watch for both good signals
-    $scope.$watch($scope.allSignalsGood, function sendStartRecordingIfSignalsGood(newValue, oldValue) {
-      if (newValue) {
-        sendStartSignalTestRecordingMessage();
-      }
-    });
+//    // Watch for both good signals
+//    $scope.$watch($scope.allSignalsGood, function sendStartRecordingIfSignalsGood(newValue, oldValue) {
+//      if (newValue) {
+//        sendStartSignalTestRecordingMessage();
+//      }
+//    });
 
     // Setup listener for incoming OSC messages
     socket.on('oscMessageReceived', function(data) {
@@ -103,6 +120,9 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
         sendStopSignalTestMessage();
       }
     });
+
+    // Send stop signal test message when controller is destroyed
+    $scope.$on('$destroy', sendStopSignalTestMessage);
 
     sendStartSignalTestMessage();
   }
