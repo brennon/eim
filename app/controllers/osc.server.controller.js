@@ -1,6 +1,7 @@
 'use strict';
 
 // TODO: Restructure module to return object
+// TODO: Max errors should be handled also in Angular in order to display error
 
 var dgram = require('dgram');
 var osc = require('osc-min');
@@ -16,8 +17,45 @@ exports.outgoingHost = 'localhost';
 function incomingMessageHandler(msg, rinfo) {
   var oscFromBuffer = osc.fromBuffer(msg, false);
 
-  // Emit incoming message event with data
-  exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
+  // Check if this is a log message coming from Max
+  console.log(oscFromBuffer);
+  if (oscFromBuffer.address === '/eim/status/log') {
+
+    buildLogMessageFromMessage(oscFromBuffer.args);
+
+  } else {
+
+    // Emit incoming message event with data
+    exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
+  }
+}
+
+function buildLogMessageFromMessage(msg) {
+
+  if (msg.constructor.name !== 'Array') {
+    return console.error('Malformed OSC error message received: ' + msg);
+  }
+
+  console.log(msg[0]);
+
+  var level = msg[0].value.toUpperCase();
+
+  var logMessageParts = msg.splice(1);
+
+  var logMessage = "";
+
+  for (var i = 0; i < logMessageParts.length; i++) {
+    logMessage += logMessageParts[i].value;
+    if (i !== logMessageParts.length - 1) {
+      logMessage += " ";
+    }
+  }
+
+  if (level === 'INFO') {
+    console.info('MaxMSP: ' + logMessage);
+  } else if (level === 'ERROR') {
+    console.error('MaxMSP: ' + logMessage);
+  }
 }
 
 // Create listener socket
