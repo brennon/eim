@@ -14,6 +14,8 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
      * 5. Request experiment setup from backend
      * 6. Wait for message: /eim/status/experimentReady
      * 7.
+     *
+     * TODO: Update sequence
      */
 
     // Are all pieces of experiment ready to begin?
@@ -48,18 +50,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     socket.on('oscMessageReceived', function(data) {
 
       // If we received the resetComplete message
-      if (data.address === '/eim/status/resetComplete') {
-
-        // Send experiment start message
-        socket.emit('sendOSCMessage', {
-          oscType: 'message',
-          address: '/eim/control/startExperiment',
-          args: {
-            type: 'string',
-            value: TrialData.data.metadata.session_number
-          }
-        });
-      } else if (data.address === '/eim/status/experimentReady') {
+      if (data.address === '/eim/status/startExperiment') {
         $scope.$apply(function() {
           $scope.maxReady = true;
         });
@@ -70,17 +61,30 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     $http.get('/api/experiment-schemas/random')
       .success(function(data) {
 
-        for (var i in data.media) {
-          TrialData.data.media.push(data.media[i].label);
-        }
+        // Send experiment start message
+        socket.emit('sendOSCMessage', {
+          oscType: 'message',
+          address: '/eim/control/startExperiment',
+          args: {
+            type: 'string',
+            value: TrialData.data.metadata.session_number
+          }
+        });
 
-        // Only proceed if we've got some media!
-        if (data.media.length > 0) {
-            $scope.backendReady = true;
-        } else {
-          $scope.addGenericErrorAlert();
-          throw new Error('No media was found in the fetched experiment schema');
-        }
+//        for (var i in data.media) {
+//          TrialData.data.media.push(data.media[i].label);
+//        }
+//
+//        // Only proceed if we've got some media!
+//        if (data.media.length > 0) {
+//            $scope.backendReady = true;
+//        } else {
+//          $scope.addGenericErrorAlert();
+//          throw new Error('No media was found in the fetched experiment schema');
+//        }
+
+        // TODO: Remove this
+        $scope.backendReady = true;
       })
       .error(function(data) {
         $scope.addGenericErrorAlert();
