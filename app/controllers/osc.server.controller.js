@@ -7,19 +7,19 @@
 var dgram = require('dgram');
 var osc = require('osc-min');
 var EventEmitter = require('events').EventEmitter;
+var util = require('util');
 
 var oscSender, oscReceiver;
 
 exports.outgoingPort = 7000;
 exports.incomingPort = 7001;
-exports.outgoingHost = '192.168.1.10';
+exports.outgoingHost = 'localhost';
 
 // Incoming message handler
 function incomingMessageHandler(msg, rinfo) {
   var oscFromBuffer = osc.fromBuffer(msg, false);
 
   // Check if this is a log message coming from Max
-  console.log(oscFromBuffer);
   if (oscFromBuffer.address === '/eim/status/log') {
 
     buildLogMessageFromMessage(oscFromBuffer.args);
@@ -27,6 +27,8 @@ function incomingMessageHandler(msg, rinfo) {
   } else {
 
     // Emit incoming message event with data
+    console.debug('Received OSC message: ' + util.inspect(oscFromBuffer));
+
     exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
   }
 }
@@ -100,6 +102,8 @@ exports.sendJSONMessage = function(data, callback) {
     var buffer = osc.toBuffer(data);
 
     oscSender.send(buffer, 0, buffer.length, exports.outgoingPort, exports.outgoingHost, callback);
+
+    console.debug('Sent OSC message: ' + util.inspect(data));
   }
 
   // If outgoing port is not yet open, open it

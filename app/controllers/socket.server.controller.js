@@ -32,12 +32,12 @@ module.exports = function socketModule(http) {
 
   // Logging function for incoming events
   function logEventReceived(event, data) {
-    console.log(event + ' event received from client with data: ' + util.inspect(data));
+    console.log(event + ' event received from client with data: ' + data);
   }
 
   // Logging function for emitted events
   function logEventEmitted(event, data) {
-    console.log(event + ' event emitted with data: ' + util.inspect(data));
+    console.log(event + ' event emitted with data: ' + data);
   }
 
   // Setup event handlers
@@ -50,7 +50,6 @@ module.exports = function socketModule(http) {
       // Send OSC message
       osc.sendJSONMessage(data, function() {
         socket.emit('oscMessageSent', data);
-        logEventEmitted('oscMessageSent', data);
       });
     });
 
@@ -59,7 +58,6 @@ module.exports = function socketModule(http) {
 
       // Just pass the data on to the socket
       socket.emit('oscMessageReceived', data);
-      logEventEmitted('oscMessageReceived', data);
     });
   });
 };

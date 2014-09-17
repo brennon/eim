@@ -25,7 +25,7 @@ switch((process.env.NODE_ENV || '').toLowerCase()){
       filename: require('path').join(__dirname, '..', 'application.log'),
       handleExceptions: true,
       exitOnError: false,
-      level: 'warn'
+      level: 'debug'
     });
     logger.add(winston.transports.Loggly, {
       level: 'info',
@@ -42,7 +42,7 @@ switch((process.env.NODE_ENV || '').toLowerCase()){
     logger.add(winston.transports.Console, {
       colorize: true,
       timestamp: true,
-      level: 'info'
+      level: 'debug'
     });
     logger.add(winston.transports.Loggly, {
       level: 'info',
