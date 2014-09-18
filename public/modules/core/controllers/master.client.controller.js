@@ -55,13 +55,19 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
 
     $scope.blackoutClass = false;
     $scope.hideBody = function() {
-      $scope.blackoutClass = true;
+      $scope.$apply(function() {
+        $scope.blackoutClass = true;
+      });
     };
     $scope.showBody = function() {
-      $scope.blackoutClass = false;
+      $scope.$apply(function() {
+        $scope.blackoutClass = false;
+      });
     };
     $scope.toggleBodyVisibility = function() {
-      $scope.blackoutClass = !$scope.blackoutClass;
+      $scope.$apply(function() {
+        $scope.blackoutClass = !$scope.blackoutClass;
+      });
     };
   }
 ]);
