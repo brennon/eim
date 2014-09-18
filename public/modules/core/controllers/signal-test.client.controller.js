@@ -30,6 +30,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
 
     // Log incoming OSC messages
     socket.on('oscMessageSent', function(data) {
+      console.log('signal-test.client.controller.js: oscMessageSent');
       console.log('socket "oscMessageSent" event received with data: ' + data);
     });
 
@@ -83,15 +84,9 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
       });
     };
 
-//    // Watch for both good signals
-//    $scope.$watch($scope.allSignalsGood, function sendStartRecordingIfSignalsGood(newValue, oldValue) {
-//      if (newValue) {
-//        sendStartSignalTestRecordingMessage();
-//      }
-//    });
-
     // Setup listener for incoming OSC messages
     socket.on('oscMessageReceived', function(data) {
+      console.log('signal-test.client.controller.js: oscMessageReceived');
 
       // If it was an EDA signal quality message
       if (data.address === '/eim/status/signalQuality/eda') {
