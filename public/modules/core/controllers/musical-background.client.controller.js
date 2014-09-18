@@ -8,19 +8,6 @@ angular.module('core').controller('MusicalBackgroundController', ['$scope', 'Tri
 
     // Save data to Trial Data
 
-    // Downcase nationality for persisting
-    $scope.nationalityChanged = function(nationality) {
-      TrialData.data.answers.nationality = nationality.toLowerCase();
-    };
-
-    $scope.yearChanged = function(year) {
-      TrialData.data.answers.birthyear = year;
-    };
-
-    $scope.genderChanged = function(gender) {
-      TrialData.data.answers.gender = gender;
-    };
-
     $scope.musicianChanged = function(isMusician) {
       TrialData.data.answers.musical_background = isMusician.toLowerCase() === "true" ? true : false;
     };
