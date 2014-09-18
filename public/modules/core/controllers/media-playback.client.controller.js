@@ -16,6 +16,7 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
 
     // Log incoming OSC messages
     function oscMessageSentListener(data) {
+      console.log('media-playback.client.controller.js: oscMessageSent');
       console.log('socket "oscMessageSent" event received with data: ' + data);
     }
     socket.on('oscMessageSent', oscMessageSentListener);
@@ -81,6 +82,7 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
 
     // Setup listener for incoming OSC messages
     function oscMessageReceivedListener(data) {
+      console.log('media-playback.client.controller.js: oscMessageReceived');
       // If it was a media playback message
       if (data.address === '/eim/status/playback') {
 
