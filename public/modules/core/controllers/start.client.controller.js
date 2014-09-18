@@ -56,7 +56,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
           address: '/eim/control/startExperiment',
           args: {
             type: 'string',
-            value: TrialData.data.metadata.session_number
+            value: '' + TrialData.data.metadata.session_number
           }
         });
 
