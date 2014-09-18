@@ -6,10 +6,7 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
     /* global io */
     var socket = io();
 
-    socket.on('oscMessageSent', function(data) {
-      console.log('socket "oscMessageSent" event received with data: ' + data);
-    });
-
+    // Send a message to Max to start the sound test
     socket.emit('sendOSCMessage', {
       oscType: 'message',
       address: '/eim/control/soundTest',
@@ -25,6 +22,7 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
       ]
     });
 
+    // Function to send a message to Max to stop the sound test
     $scope.stopSoundTest = function() {
       socket.emit('sendOSCMessage', {
         oscType: 'message',
