@@ -23,11 +23,11 @@ angular.module('core').controller('DemographicsController', ['$scope', 'TrialDat
     };
 
     $scope.yearChanged = function(year) {
-      TrialData.data.answers.birthyear = year;
+      TrialData.data.answers.dob = year;
     };
 
     $scope.genderChanged = function(gender) {
-      TrialData.data.answers.gender = gender;
+      TrialData.data.answers.sex = gender;
     };
 
     $scope.trialDataJson = function() {
