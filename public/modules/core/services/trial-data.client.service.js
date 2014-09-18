@@ -40,6 +40,9 @@ angular.module('core').factory('TrialData', [
           session_number: null,
           location: 'taipei_city',
           terminal: null
+        },
+        state: {
+          mediaPlayCount: 0
         }
       };
     }
@@ -80,6 +83,9 @@ angular.module('core').factory('TrialData', [
           session_number: null,
           location: 'taipei_city',
           terminal: null
+        },
+        state: {
+          mediaPlayCount: 0
         }
       },
 

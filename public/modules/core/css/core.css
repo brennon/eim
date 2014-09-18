@@ -87,3 +87,20 @@ slider span.bubble.limit {
 slider span.bar.steps {
     background-color: #449d44;
 }
+
+div.cover {
+    -webkit-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+div.cover.blackout {
+    background: #000000;
+    z-index: 1;
+}

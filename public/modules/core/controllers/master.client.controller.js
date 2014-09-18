@@ -52,5 +52,16 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
     $scope.addGenericErrorAlert = function() {
       $scope.addAlert({type: 'danger', msg: 'There seems to be a problem. Please contact a mediator for assistance.'});
     };
+
+    $scope.blackoutClass = false;
+    $scope.hideBody = function() {
+      $scope.blackoutClass = true;
+    };
+    $scope.showBody = function() {
+      $scope.blackoutClass = false;
+    };
+    $scope.toggleBodyVisibility = function() {
+      $scope.blackoutClass = !$scope.blackoutClass;
+    };
   }
 ]);
