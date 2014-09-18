@@ -20,7 +20,7 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
         },
         {
           type: 'string',
-          value: TrialData.data.metadata.session_number
+          value: '' + TrialData.data.metadata.session_number
         }
       ]
     });
@@ -36,7 +36,7 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
           },
           {
             type: 'string',
-            value: TrialData.data.metadata.session_number
+            value: '' + TrialData.data.metadata.session_number
           }
         ]
       });
