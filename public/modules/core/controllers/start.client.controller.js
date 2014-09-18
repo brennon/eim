@@ -3,21 +3,6 @@
 angular.module('core').controller('StartController', ['$scope', '$http', '$timeout', 'TrialData',
   function($scope, $http, $timeout, TrialData) {
 
-    /**
-     * Controller sequence of events:
-     *
-     * 1. Reset TrialData
-     * 2. Send message to reset experiment: /eim/control/reset
-     * 2. Wait for message: /eim/status/resetComplete
-     * 3. Generate a new session ID
-     * 4. Store session ID in TrialData
-     * 5. Request experiment setup from backend
-     * 6. Wait for message: /eim/status/experimentReady
-     * 7.
-     *
-     * TODO: Update sequence
-     */
-
     // Are all pieces of experiment ready to begin?
     $scope.maxReady = false;
     $scope.backendReady = false;
@@ -36,25 +21,29 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     /* global io */
     var socket = io();
 
-    // Generate new session identifier
+    // Generate new session identifier and store it in TrialData
     /* global UUID */
     var sessionID = UUID.generate();
     TrialData.data.metadata.session_number = sessionID;
 
-    // Setup OSC 'message sent' logger
-    socket.on('oscMessageSent', function(data) {
-      console.log('socket "oscMessageSent" event received with data: ' + data);
-    });
-
-    // Configure handlers for incoming OSC messages
-    socket.on('oscMessageReceived', function(data) {
+    // Configure handler for incoming OSC messages
+    var oscMessageReceivedListener = function(data) {
+      console.log('start.client.controller.js: oscMessageReceived');
 
       // If we received the resetComplete message
-      if (data.address === '/eim/status/startExperiment') {
+      if (data.address === '/eim/status/experimentReady') {
         $scope.$apply(function() {
           $scope.maxReady = true;
         });
       }
+    };
+
+    // Attach handler for incoming OSC messages
+    socket.on('oscMessageReceived', oscMessageReceivedListener);
+
+    // Destroy handler for incoming OSC messages when $scope is destroyed
+    $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
+      socket.removeListener('oscMessageReceived', oscMessageReceivedListener);
     });
 
     // Get a new experiment setup from the backend
@@ -71,6 +60,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
           }
         });
 
+        // Add received media to TrialData
         for (var i in data.media) {
           TrialData.data.media.push(data.media[i].label);
         }
