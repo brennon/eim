@@ -28,12 +28,6 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     /* global io */
     var socket = io();
 
-    // Log incoming OSC messages
-    socket.on('oscMessageSent', function(data) {
-      console.log('signal-test.client.controller.js: oscMessageSent');
-      console.log('socket "oscMessageSent" event received with data: ' + data);
-    });
-
     // Function to send start signal test message
     var sendStartSignalTestMessage = function() {
       socket.emit('sendOSCMessage', {
@@ -72,21 +66,8 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
       });
     };
 
-    // Function to send stop signal test message
-    var sendStartSignalTestRecordingMessage = function() {
-      socket.emit('sendOSCMessage', {
-        oscType: 'message',
-        address: '/eim/control/startTestRecording',
-        args: {
-          type: 'string',
-          value: '' + TrialData.data.metadata.session_number
-        }
-      });
-    };
-
-    // Setup listener for incoming OSC messages
-    socket.on('oscMessageReceived', function(data) {
-      console.log('signal-test.client.controller.js: oscMessageReceived');
+    // Configure handler for incoming OSC messages
+    var oscMessageReceivedListener = function(data) {
 
       // If it was an EDA signal quality message
       if (data.address === '/eim/status/signalQuality/eda') {
@@ -96,7 +77,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
           $scope.edaQuality = data.args[0].value;
         });
 
-      // If it was a POX signal quality message
+        // If it was a POX signal quality message
       } else if (data.address === '/eim/status/signalQuality/pox') {
 
         // Update POX signal quality
@@ -104,7 +85,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
           $scope.poxQuality = data.args[0].value;
         });
 
-      // If the test recording has complete
+        // If the test recording has complete
       } else if (data.address === '/eim/status/testRecordingComplete') {
 
         // Update continue button
@@ -114,10 +95,17 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
 
         sendStopSignalTestMessage();
       }
-    });
+    };
 
-    // Send stop signal test message when controller is destroyed
-    $scope.$on('$destroy', sendStopSignalTestMessage);
+    // Attach handler for incoming OSC messages
+    socket.on('oscMessageReceived', oscMessageReceivedListener);
+
+    // Destroy handler for incoming OSC messages when $scope is destroyed,
+    // and send stop signal test message
+    $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
+      socket.removeListener('oscMessageReceived', oscMessageReceivedListener);
+      sendStopSignalTestMessage();
+    });
 
     sendStartSignalTestMessage();
   }
