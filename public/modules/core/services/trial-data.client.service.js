@@ -95,6 +95,46 @@ angular.module('core').factory('TrialData', [
 
       reset: function () {
         this.data = blankDataObject();
+      },
+
+      setValueForPath: function(path, value) {
+        var schema = this;  // a moving reference to internal objects within this (this TrialData)
+        var pList = path.split('.');
+        var len = pList.length;
+        for(var i = 0; i < len-1; i++) {
+          var elem = pList[i];
+          if( !schema[elem] ) schema[elem] = {}
+          schema = schema[elem];
+        }
+
+        schema[pList[len-1]] = value;
+      },
+
+      setValueForPathForCurrentMedia: function(path, value) {
+        var schema = this;  // a moving reference to internal objects within this (this TrialData)
+        var pList = path.split('.');
+        var len = pList.length;
+        for(var i = 0; i < len-1; i++) {
+          var elem = pList[i];
+          if( !schema[elem] ) schema[elem] = {}
+          schema = schema[elem];
+        }
+
+        // Check that we are assigning to the right index
+        var index;
+
+        // If no media have played (we're likely debugging)
+        if (this.data.state.mediaPlayCount <= 0) {
+          index = 0;
+        } else {
+          index = this.data.state.mediaPlayCount - 1;
+
+          if (index >= schema[pList[len-1]].length) {
+            index = schema[pList[len-1]].length - 1;
+          }
+        }
+
+        schema[pList[len-1]][index] = value;
       }
     };
 

@@ -43,6 +43,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       .state('media-playback', {
         url: '/media-playback',
         templateUrl: 'modules/core/views/media-playback.client.view.html'
+      })
+      .state('media-questionnaire', {
+        url: '/media-questionnaire',
+        templateUrl: 'modules/core/views/media-questionnaire.client.view.html'
       });
   }
 ]);

@@ -8,6 +8,10 @@
 	display: none !important;
 }
 
+.clearBoth {
+    clear: both;
+}
+
 slider {
     display: inline-block;
     position: relative;

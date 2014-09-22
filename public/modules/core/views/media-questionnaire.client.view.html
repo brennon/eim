@@ -1,0 +1,45 @@
+<div data-ng-controller="MediaQuestionnaireController">
+  <div class="row">
+    <div class="col-md-12">
+
+      <h1>Media Questions</h1>
+    </div>
+    <form name="musicalForm" class="form" novalidate>
+
+      <div class="col-md-12">
+        <label>How involved and engaged were you with the media you have just heard?</label>
+      </div>
+
+      <div class="col-md-12">
+        <slider-scale controller-value-changed="setResponse(path, value, associated)"
+                      controller-data-path="data.answers.ratings.engagement" associated-to-media="true" use-image="true"
+                      image-type="extremes" left-image-src="/modules/core/img/scale-left-engaged.png"
+                      right-image-src="/modules/core/img/scale-right-engaged.png"
+                      slider-floor="1" slider-ceiling="5" slider-step="1"
+                      slider-stretch="0" slider-initial-value="3" required></slider-scale>
+      </div>
+
+      <div class="col-md-12">
+        <label>How positive or negative did the music make you feel?</label>
+      </div>
+
+      <slider-scale controller-value-changed="setResponse(path, value, associated)"
+                    controller-data-path="data.answers.ratings.positivity" associated-to-media="true" use-image="true"
+                    image-type="single" single-image-src="/modules/core/img/scale-above-positivity.png"
+                    slider-floor="1" slider-ceiling="5" slider-step="1"
+                    slider-stretch="0" slider-initial-value="3" required></slider-scale>
+
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+        <button ui-sref="media-playback" class="btn btn-primary btn-lg"
+                ng-disabled="!debugMode && musicalForm.$invalid">
+          Continue
+        </button>
+      </p>
+    </div>
+  </div>
+  <display-trial-data></display-trial-data>
+</div>
