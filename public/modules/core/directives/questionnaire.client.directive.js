@@ -1,37 +1,102 @@
 'use strict';
 
-// TODO: Add ability to show textual descriptions of extremes
-// TODO: Add textual descriptions of extremes to all slides
+angular.module('core').directive('questionnaire', ['$compile', function($compile) {
 
-angular.module('core').directive('sliderScale', function() {
+  function createLikertQuestion(specification) {
+
+    // Create base element
+    var row = angular.element('<div class="row"></div>');
+
+    var label = angular.element('<div class="col-md-12"><label class="questionLabel">' + specification.questionLabel + '</label></div>');
+
+    var cols = angular.element('<div class="col-md-12"></div>');
+    var slider = angular.element('<slider-scale></slider-scale>');
+
+    // Default values
+    slider.attr('slider-step', 1);
+    slider.attr('slider-stretch', 0);
+    slider.attr('required', 'true');
+
+    // Persistence properties
+    slider.attr('controller-data-path', specification.questionStoragePath);
+    slider.attr('associated-to-media', specification.questionIsAssociatedToMedia);
+
+    // Slider range properties
+    slider.attr('slider-floor', specification.questionLikertMinimum);
+    slider.attr('slider-ceiling', specification.questionLikertMaximum);
+    slider.attr('slider-initial-value', specification.questionLikertInitialValue);
+
+    // Image properties
+    slider.attr('use-image', specification.questionLikertUseImage);
+    slider.attr('image-type', specification.questionLikertImageType);
+    slider.attr('left-image-src', specification.questionLikertLeftImageSrc);
+    slider.attr('right-image-src', specification.questionLikertRightImageSrc);
+    slider.attr('single-image-src', specification.questionLikertSingleImageSrc);
+
+    // Append slider to columns element, and columns element to row element
+    cols.append(slider);
+    row.append(label);
+    row.append(cols);
+
+    return row;
+  }
+
   return {
-    replace: true,
+    replace: false,
     restrict: 'E',
     scope: {
-      controllerValueChanged: '&'
+      questionnaireData: '='
     },
-    template: function(element, attrs) {
 
-      var htmlString = '';
+    link: function(scope, element, attrs) {
 
-      var associated;
-      if (attrs.associatedToMedia.toLowerCase() === 'true') {
-        associated = true;
-      } else {
-        associated = false;
+      var data = scope.questionnaireData;
+
+      // Create an element for the title
+      var titleElement = angular.element('<div class="row"><div class="col-md-12"><h1>' + data.title + '</h1></div></div>');
+
+      // Append title element
+      element.append(titleElement);
+
+      var formElement = angular.element('<form name="questionnaireForm" class="form" novalidate></form>');
+
+      // Iterate over structure
+      for (var i = 0; i < data.structure.length; i++) {
+
+        // Create an element for each structure entry
+        var questionElement;
+        var item = data.structure[i];
+
+        switch (item.questionType) {
+          case 'likert':
+            questionElement = createLikertQuestion(item);
+
+            // Add max/min descriptions if they are present
+            if (item.questionLikertMinimumDescription && item.questionLikertMaximumDescription) {
+              var descriptionElement = ('<div class="row">' +
+                '<div class="col-md-2 text-center slider-image"></div>' +
+                '<div class="col-md-2 sliderAnnotation">' + item.questionLikertMinimumDescription + '</div>' +
+                '<div class="col-md-4 slider-image"></div>' +
+                '<div class="col-md-2 sliderAnnotation">' + item.questionLikertMaximumDescription + '</div>' +
+                '<div class="col-md-2 text-center slider-image"></div>' +
+                '</div>');
+
+              questionElement.append(descriptionElement);
+            }
+        }
+
+        // Append question element to form
+        formElement.append(questionElement);
+
+        var spacerElement = angular.element('<div class="row"><div class="col-md-12 questionSpacer"></div></div>');
+        formElement.append(spacerElement);
+
+        $compile(questionElement)(scope);
       }
 
-      switch (attrs.imageType) {
-        case 'single':
-          htmlString = '<div class="row"><div class="col-md-12 slider-image text-center"><img src="' + attrs.singleImageSrc + '" /></div><div class="col-md-2 text-center slider-image"></div><!----><div class="col-md-8 slider-image"><slider ng-change="controllerValueChanged({path: \'' + attrs.controllerDataPath + '\', value: sliderModel, associated: ' + associated + '})" ng-model="sliderModel" floor="' + attrs.sliderFloor + '" ceiling="' + attrs.sliderCeiling + '" step="' + attrs.sliderStep + '" stretch="' + attrs.sliderStretch + '" ng-init="sliderModel=' + attrs.sliderInitialValue + '"></slider></div><!----><div class="col-md-2 text-center slider-image"></div></div>';
-          return htmlString;
-        case 'extremes':
-          htmlString = '<div class="row"><div class="col-md-2 text-center slider-image"></div><div class="col-md-2 slider-image text-center"><img src="' + attrs.leftImageSrc + '" /></div><!----><div class="col-md-4 slider-image"></div><!----><div class="col-md-2 slider-image text-center"><img src="' + attrs.rightImageSrc + '" /></div><!----><div class="col-md-2 text-center slider-image"></div><div class="clearBoth"></div><div class="col-md-2 text-center slider-image"></div><!----><div class="col-md-8 slider-image"><slider ng-change="controllerValueChanged({path: \'' + attrs.controllerDataPath + '\', value: sliderModel, associated: ' + associated + '})" ng-model="sliderModel" floor="' + attrs.sliderFloor + '" ceiling="' + attrs.sliderCeiling + '" step="' + attrs.sliderStep + '" stretch="' + attrs.sliderStretch + '" ng-init="sliderModel=' + attrs.sliderInitialValue + '"></slider></div><!----><div class="col-md-2 text-center slider-image"></div></div>';
-          return htmlString;
-        default:
-          htmlString = '<div class="row"><div class="col-md-2 text-center slider-image"></div><!----><div class="col-md-8 slider-image"><slider ng-change="controllerValueChanged({path: \'' + attrs.controllerDataPath + '\', value: sliderModel, associated: ' + associated + '})" ng-model="sliderModel" floor="' + attrs.sliderFloor + '" ceiling="' + attrs.sliderCeiling + '" step="' + attrs.sliderStep + '" stretch="' + attrs.sliderStretch + '" ng-init="sliderModel=' + attrs.sliderInitialValue + '"></slider></div><!----><div class="col-md-2 text-center slider-image"></div></div>';
-          return htmlString;
-      }
+      // Attach form after title
+      titleElement.after(formElement);
+      element.after(formElement);
     }
   };
-});
+}]);
