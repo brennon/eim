@@ -1,12 +1,17 @@
 'use strict';
 
 // Trial Data service used to persist data for individual trials
-angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
-  function (TrialData, $q, $http) {
+angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http', '$state',
+  function (TrialData, $q, $http, $state) {
 
     var experimentManager = {
 
-      masterReset: function() {
+      advanceSlide: function () {
+        TrialData.data.state.currentSlideIndex++;
+        $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name)
+      },
+
+      masterReset: function () {
         var deferred = $q.defer();
 
         // Reset TrialData
@@ -19,13 +24,14 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
 
         // Get a new experiment setup from the backend
         $http.get('/api/experiment-schemas/random')
-          .success(function(data) {
+          .success(function (data) {
 
             // Assign the media property from the ExperimentSchema we received as the media property on the TrialData
             TrialData.data.media = data.media;
+            TrialData.data.schema = data.structure;
             deferred.resolve();
           })
-          .error(function() {
+          .error(function () {
 
             deferred.reject('An experiment schema could not be fetched from the server');
           });
