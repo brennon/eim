@@ -7,25 +7,19 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     /* global io */
     var socket = io();
 
-    // Are all pieces of experiment ready to begin?
-    $scope.maxReady = false;
-    $scope.backendReady = false;
-    $scope.readyToAdvance = function () {
-      if ($scope.debugMode) {
-        return true;
-      } else {
-        return $scope.maxReady && $scope.backendReady;
-      }
-    };
+    // Bind $scope.advanceSlide to ExperimentManager functionality
+    $scope.advanceSlide = ExperimentManager.advanceSlide;
+
+    // Ready to advance?
+    $scope.readyToAdvance = false;
 
     // Configure handler for incoming OSC messages
     var oscMessageReceivedListener = function (data) {
-      console.log('start.client.controller.js: oscMessageReceived');
 
       // If we received the resetComplete message
       if (data.address === '/eim/status/experimentReady') {
         $scope.$apply(function () {
-          $scope.maxReady = true;
+          $scope.readyToAdvance = true;
         });
       }
     };
@@ -49,11 +43,13 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
         });
     };
 
+    sendExperimentStartMessage();
+
     // If we aren't ready to go after 10 seconds, throw an error
     $timeout(function () {
-      if (!$scope.readyToAdvance()) {
+      if (!$scope.readyToAdvance) {
         $scope.addGenericErrorAlert();
-        throw new Error('The experiment was not setup after 10 seconds');
+        throw new Error('Max had not responded to startExperiment message after 10 seconds');
       }
     }, 10000);
   }
