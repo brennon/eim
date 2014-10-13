@@ -4,13 +4,13 @@
  * Module dependencies.
  */
 
-var Promise = require('bluebird');
-Promise.longStackTraces();
+var BluebirdPromise = require('bluebird');
+BluebirdPromise.longStackTraces();
 
 var init = require('./config/init')();
 var config = require('./config/config');
-var mongoose = Promise.promisifyAll(require('mongoose'));
-var http = Promise.promisifyAll(require('http'));
+var mongoose = BluebirdPromise.promisifyAll(require('mongoose'));
+var http = BluebirdPromise.promisifyAll(require('http'));
 require('./config/logging');
 
 /**
