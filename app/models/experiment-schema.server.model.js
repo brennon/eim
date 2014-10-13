@@ -12,6 +12,8 @@ var mongoose = require('mongoose'),
  * ExperimentSchema Schema
  */
 var ExperimentSchemaSchema = new Schema({
+  structure: {},
+  sensors: [String],
 	trialCount: {
     type: Number,
     required: true
@@ -37,10 +39,17 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
 
   var selectedMedia = _.sample(this.mediaPool, this.trialCount);
 
+  var schemaSubset = {
+    _id: this._id,
+    structure: this.structure,
+    sensors: this.sensors,
+    media: selectedMedia,
+  };
+
   if (typeof callback === 'function') {
-    return callback(null, {media: selectedMedia});
+    return callback(null, schemaSubset);
   } else {
-    return {media: selectedMedia};
+    return schemaSubset;
   }
 };
 
