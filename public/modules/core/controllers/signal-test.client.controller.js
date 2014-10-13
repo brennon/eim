@@ -3,8 +3,11 @@
 // TODO: Watch for and log sensor issues
 // TODO: In the event of sensor issues, still allow user to advance after delay
 
-angular.module('core').controller('SignalTestController', ['$scope', 'TrialData',
-  function($scope, TrialData) {
+angular.module('core').controller('SignalTestController', ['$scope', 'TrialData', 'ExperimentManager',
+  function($scope, TrialData, ExperimentManager) {
+
+    // Bind $scope.advanceSlide to ExperimentManager functionality
+    $scope.advanceSlide = ExperimentManager.advanceSlide;
 
     // Signal quality indicators
     $scope.edaQuality = 0;
