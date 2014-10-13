@@ -15,6 +15,34 @@ exports.outgoingPort = 7000;
 exports.incomingPort = 7001;
 exports.outgoingHost = 'localhost';
 
+function buildLogMessageFromMessage(msg) {
+
+  if (msg.constructor.name !== 'Array') {
+    return console.error('Malformed OSC error message received: ' + msg);
+  }
+
+  console.log(msg[0]);
+
+  var level = msg[0].value.toUpperCase();
+
+  var logMessageParts = msg.splice(1);
+
+  var logMessage = '';
+
+  for (var i = 0; i < logMessageParts.length; i++) {
+    logMessage += logMessageParts[i].value;
+    if (i !== logMessageParts.length - 1) {
+      logMessage += ' ';
+    }
+  }
+
+  if (level === 'INFO') {
+    console.info('MaxMSP: ' + logMessage);
+  } else if (level === 'ERROR') {
+    console.error('MaxMSP: ' + logMessage);
+  }
+}
+
 // Incoming message handler
 function incomingMessageHandler(msg, rinfo) {
   var oscFromBuffer = osc.fromBuffer(msg, false);
@@ -30,34 +58,6 @@ function incomingMessageHandler(msg, rinfo) {
     console.debug('Received OSC message: ' + util.inspect(oscFromBuffer));
 
     exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
-  }
-}
-
-function buildLogMessageFromMessage(msg) {
-
-  if (msg.constructor.name !== 'Array') {
-    return console.error('Malformed OSC error message received: ' + msg);
-  }
-
-  console.log(msg[0]);
-
-  var level = msg[0].value.toUpperCase();
-
-  var logMessageParts = msg.splice(1);
-
-  var logMessage = "";
-
-  for (var i = 0; i < logMessageParts.length; i++) {
-    logMessage += logMessageParts[i].value;
-    if (i !== logMessageParts.length - 1) {
-      logMessage += " ";
-    }
-  }
-
-  if (level === 'INFO') {
-    console.info('MaxMSP: ' + logMessage);
-  } else if (level === 'ERROR') {
-    console.error('MaxMSP: ' + logMessage);
   }
 }
 
