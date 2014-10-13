@@ -18,18 +18,6 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
       }
     };
 
-    // Reset experiment manager for new trial
-    ExperimentManager.masterReset().then(
-      function experimentResetSuccessHandler () {
-        $scope.backendReady = true;
-        sendExperimentStartMessage();
-      },
-      function experimentResetErrorHandler () {
-        $scope.addGenericErrorAlert();
-        throw new Error('An experiment schema could not be fetched from the server');
-      }
-    );
-
     // Configure handler for incoming OSC messages
     var oscMessageReceivedListener = function (data) {
       console.log('start.client.controller.js: oscMessageReceived');
