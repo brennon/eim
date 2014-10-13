@@ -37,8 +37,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
           {
             type: 'integer',
             value: 1
-          }
-          ,
+          },
           {
             type: 'string',
             value: '' + TrialData.data.metadata.session_number
@@ -56,8 +55,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
           {
             type: 'integer',
             value: 0
-          }
-          ,
+          },
           {
             type: 'string',
             value: '' + TrialData.data.metadata.session_number
