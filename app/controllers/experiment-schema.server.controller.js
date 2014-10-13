@@ -64,7 +64,7 @@ exports.random = function(req, res) {
     if (err) {
       return errorHandler(err);
     } else if (count < 1) {
-      return errorHandler('no experiment schemae found in database');
+      return errorHandler('no experiment schema found in database');
     } else {
 
       // Get a random number from [0, totalSchemae)
