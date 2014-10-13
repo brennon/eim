@@ -1,10 +1,13 @@
 'use strict';
 
-angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
-  function($scope, TrialData) {
+angular.module('core').controller('SoundTestController', ['$scope', 'TrialData', 'ExperimentManager',
+  function($scope, TrialData, ExperimentManager) {
 
     /* global io */
     var socket = io();
+
+    // Bind $scope.advanceSlide to ExperimentManager functionality
+    $scope.advanceSlide = ExperimentManager.advanceSlide;
 
     // Send a message to Max to start the sound test
     socket.emit('sendOSCMessage', {
