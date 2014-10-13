@@ -9,15 +9,15 @@ angular.module('core').controller('MusicalBackgroundController', ['$scope', 'Tri
     // Save data to Trial Data
 
     $scope.musicianChanged = function(isMusician) {
-      TrialData.data.answers.musical_background = isMusician.toLowerCase() === "true" ? true : false;
+      TrialData.data.answers.musical_background = isMusician.toLowerCase() === 'true' ? true : false;
     };
 
     $scope.hearingImpairmentsChanged = function(hasHearingImpairments) {
-      TrialData.data.answers.hearing_impairments = hasHearingImpairments.toLowerCase() === "true" ? true : false;
+      TrialData.data.answers.hearing_impairments = hasHearingImpairments.toLowerCase() === 'true' ? true : false;
     };
 
     $scope.visualImpairmentsChanged = function(hasVisualImpairments) {
-      TrialData.data.answers.visual_impairments = hasVisualImpairments.toLowerCase() === "true" ? true : false;
+      TrialData.data.answers.visual_impairments = hasVisualImpairments.toLowerCase() === 'true' ? true : false;
     };
 
     $scope.$watch('musicalExpertise', function musicalExpertiseChanged(musicalExpertise) {
