@@ -42,6 +42,7 @@ angular.module('core').factory('TrialData', [
           terminal: null
         },
         state: {
+          currentSlideIndex: -1,
           mediaPlayCount: 0
         }
       };
@@ -85,6 +86,7 @@ angular.module('core').factory('TrialData', [
           terminal: null
         },
         state: {
+          currentSlideIndex: -1,
           mediaPlayCount: 0
         }
       },
