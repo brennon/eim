@@ -11,7 +11,9 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     $scope.advanceSlide = ExperimentManager.advanceSlide;
 
     // Ready to advance?
-    $scope.readyToAdvance = false;
+    $scope.readyToAdvance = function () {
+      return false || $scope.debugMode;
+    };
 
     // Configure handler for incoming OSC messages
     var oscMessageReceivedListener = function (data) {
