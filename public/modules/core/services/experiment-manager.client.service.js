@@ -8,7 +8,7 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
 
       advanceSlide: function () {
         TrialData.data.state.currentSlideIndex++;
-        $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name)
+        $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name);
       },
 
       masterReset: function () {
