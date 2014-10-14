@@ -12,7 +12,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
 
     // Ready to advance?
     $scope.readyToAdvance = function () {
-      return false || $scope.debugMode;
+      return $scope.maxReady || $scope.debugMode;
     };
 
     // Configure handler for incoming OSC messages
@@ -21,7 +21,7 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
       // If we received the resetComplete message
       if (data.address === '/eim/status/experimentReady') {
         $scope.$apply(function () {
-          $scope.readyToAdvance = true;
+          $scope.maxReady = true;
         });
       }
     };
@@ -35,6 +35,8 @@ angular.module('core').controller('StartController', ['$scope', '$http', '$timeo
     });
 
     var sendExperimentStartMessage = function () {
+
+        $scope.maxReady = false;
         socket.emit('sendOSCMessage', {
           oscType: 'message',
           address: '/eim/control/startExperiment',
