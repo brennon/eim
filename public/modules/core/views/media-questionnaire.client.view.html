@@ -5,8 +5,8 @@
   <div class="row">
     <div class="col-md-12">
       <p>
-        <button ui-sref="media-playback" class="btn btn-primary btn-lg"
-                ng-disabled="!debugMode && musicalForm.$invalid">
+        <button class="btn btn-primary btn-lg"
+                ng-disabled="!debugMode && musicalForm.$invalid" data-ng-click="advanceSlide()">
           Continue
         </button>
       </p>
