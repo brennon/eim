@@ -48,10 +48,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
         url: '/media-questionnaire',
         templateUrl: 'modules/core/views/media-questionnaire.client.view.html'
       })
-      .state('final-questions', {
-        url: '/final-questions',
-        templateUrl: 'modules/core/views/final-questions.client.view.html'
-      })
       .state('thank-you', {
         url: '/thank-you',
         templateUrl: 'modules/core/views/thank-you.client.view.html'

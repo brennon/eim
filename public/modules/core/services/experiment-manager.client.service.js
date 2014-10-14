@@ -8,7 +8,17 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
 
       advanceSlide: function () {
         TrialData.data.state.currentSlideIndex++;
-        $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name);
+
+        console.log('current: ' + TrialData.data.state.currentSlideIndex);
+        console.log('length: ' + TrialData.data.schema.length);
+
+        if (TrialData.data.state.currentSlideIndex === TrialData.data.schema.length) {
+          console.log('going home');
+          $state.go('home');
+        } else {
+          console.log('going to ' + TrialData.data.schema[TrialData.data.state.currentSlideIndex].name);
+          $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name);
+        }
       },
 
       masterReset: function () {
