@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('core').controller('MusicalBackgroundController', ['$scope', 'TrialData',
-  function($scope, TrialData) {
+angular.module('core').controller('MusicalBackgroundController', ['$scope', 'TrialData', 'ExperimentManager',
+  function($scope, TrialData, ExperimentManager) {
+
+    // Bind $scope.advanceSlide to ExperimentManager functionality
+    $scope.advanceSlide = ExperimentManager.advanceSlide;
 
     // Expose TrialData on scope
     $scope.trialData = TrialData;
