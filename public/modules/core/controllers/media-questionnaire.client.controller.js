@@ -7,7 +7,7 @@ angular.module('core').controller('MediaQuestionnaireController', ['$scope', 'Tr
     $scope.trialData = TrialData;
 
     $scope.questionnaireData = {
-      'name' : 'questionnaire',
+      'name' : 'media-questionnaire',
       'title' : 'Media Questions',
       'structure' : [
         {

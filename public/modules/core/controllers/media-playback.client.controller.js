@@ -5,8 +5,11 @@
 // TODO: Use different button colors for Playback and Continue
 // TODO: Find a better way to listen for socket messages and clean up listeners
 
-angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', '$state',
-  function ($scope, TrialData, $state) {
+angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', '$state', 'ExperimentManager',
+  function ($scope, TrialData, $state, ExperimentManager) {
+
+    // Bind $scope.advanceSlide to ExperimentManager functionality
+    $scope.advanceSlide = ExperimentManager.advanceSlide;
 
     /* global io */
     var socket = io();
@@ -41,6 +44,7 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
       return TrialData.toJson();
     };
 
+    /*
     // Determine next state and send the user there
     $scope.gotoNextState = function () {
       if (!$scope.mediaHasPlayed) {
@@ -51,6 +55,7 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
         $state.go('media-playback', {}, {reload: true});
       }
     };
+    */
 
     // Setup listener for incoming OSC messages
     function oscMessageReceivedListener(data) {
