@@ -13,7 +13,7 @@
             $controllerConstructor = $controller;
             mockScope = $rootScope.$new();
             mockHotkeys = { add: function() {
-            } }
+            } };
         }));
 
         describe('initialization', function() {
