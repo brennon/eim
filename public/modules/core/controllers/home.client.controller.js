@@ -19,5 +19,6 @@ angular.module('core').controller('HomeController', ['ExperimentManager', '$scop
 
     // Ready to move to next slide?
     $scope.readyToAdvance = false;
+
 	}
 ]);

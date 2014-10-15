@@ -1,26 +1,130 @@
 'use strict';
 
 (function() {
-	describe('HomeController', function() {
-		//Initialize global variables
-		var scope,
-			HomeController;
+    describe('HomeController', function() {
 
-		// Load the main application module
-		beforeEach(module(ApplicationConfiguration.applicationModuleName));
+        //Initialize global variables
+        var mockScope, mockExperimentManager, $controller, $q;
 
-		beforeEach(inject(function($controller, $rootScope) {
-			scope = $rootScope.$new();
+        // Load the main application module
+        beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-			HomeController = $controller('HomeController', {
-				$scope: scope
-			});
-		}));
+        beforeEach(inject(function(_$controller_, $rootScope, _$q_) {
+            $controller = _$controller_;
+            mockScope = $rootScope.$new();
+            $q = _$q_;
+        }));
 
-//    it('should augment the scope with an experimentSchema property', function() {
-//      httpBackend.when('GET', '/api/experiment-schemas/random').respond({one:1});
-//      httpBackend.flush();
-//      expect(scope.experimentSchema).toBeTruthy();
-//    });
-	});
+        describe('initialization', function() {
+            it('should bind $scope.advanceSlide to ExperimentManager.advanceSlide', function() {
+                mockExperimentManager = {
+                    advanceSlide: function() {},
+                    masterReset: function() {
+                        var deferred = $q.defer();
+                        return deferred.promise;
+                    }
+                };
+
+                $controller('HomeController',
+                    { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
+
+                expect(mockScope.readyToAdvance).toBe(false);
+            });
+
+            it('should set readyToAdvance to false', function() {
+                mockExperimentManager = {
+                    advanceSlide: function() {},
+                    masterReset: function() {
+                        var deferred = $q.defer();
+                        return deferred.promise;
+                    }
+                };
+
+                $controller('HomeController',
+                    { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
+
+                expect(mockScope.advanceSlide).toBe(mockExperimentManager.advanceSlide);
+            });
+        });
+
+        describe('reset', function() {
+            it('should call ExperimentManager.masterReset()', function() {
+                mockExperimentManager = { masterReset: function() {
+                    var deferred = $q.defer();
+                    return deferred.promise;
+                }};
+
+                var resetSpy = sinon.spy(mockExperimentManager, 'masterReset');
+
+                $controller('HomeController',
+                    { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
+
+                expect(resetSpy.calledOnce).toBe(true);
+            });
+
+            it('should set readyToAdvance to true on a successful reset', function() {
+                var deferred = $q.defer();
+
+                mockExperimentManager = { masterReset: function() {
+                    return deferred.promise;
+                }};
+
+                $controller('HomeController',
+                    { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
+
+                mockScope.readyToAdvance = false;
+
+                deferred.resolve();
+                mockScope.$apply();
+
+                expect(mockScope.readyToAdvance).toBe(true);
+            });
+
+            it('should add an alert on a failed reset', function() {
+                    var deferred = $q.defer();
+
+                    mockExperimentManager = { masterReset: function() {
+                        return deferred.promise;
+                    }};
+
+                    $controller('HomeController',
+                        { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
+
+                    mockScope.addGenericErrorAlert = function() {
+                    };
+                    var addErrorSpy = sinon.spy(mockScope, 'addGenericErrorAlert');
+
+                    deferred.reject();
+
+                try {
+                    mockScope.$apply();
+                } catch (e) {
+                    expect(addErrorSpy.calledOnce).toBe(true);
+                }
+            });
+
+            it('should throw an error on a failed reset', function() {
+                var shouldThrow = function() {
+                    var deferred = $q.defer();
+
+                    mockExperimentManager = { masterReset: function() {
+                        return deferred.promise;
+                    }};
+
+                    $controller('HomeController',
+                        { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
+
+                    mockScope.addGenericErrorAlert = function() {
+                    };
+                    var addErrorSpy = sinon.spy(mockScope, 'addGenericErrorAlert');
+
+                    deferred.reject();
+
+                    mockScope.$apply();
+                };
+
+                expect(shouldThrow).toThrow();
+            });
+        });
+    });
 })();
