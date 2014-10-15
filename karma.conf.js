@@ -9,7 +9,7 @@ var applicationConfiguration = require('./config/config');
 module.exports = function(config) {
 	config.set({
 		// Frameworks to use
-		frameworks: ['jasmine'],
+		frameworks: ['jasmine','sinon'],
 
 		// List of files / patterns to load in the browser
 		files: applicationConfiguration.assets.lib.js.concat(applicationConfiguration.assets.js, applicationConfiguration.assets.tests),
@@ -30,7 +30,7 @@ module.exports = function(config) {
 		logLevel: config.LOG_INFO,
 
 		// Enable / disable watching file and executing tests whenever any file changes
-		autoWatch: false,
+		autoWatch: true,
 
 		// Start these browsers, currently available:
 		// - Chrome
@@ -47,6 +47,6 @@ module.exports = function(config) {
 
 		// Continuous Integration mode
 		// If true, it capture browsers, run tests and exit
-		singleRun: true
+		singleRun: false
 	});
 };

@@ -2,20 +2,20 @@
 
 angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys',
   function($scope, TrialData, hotkeys) {
+
+    /*
+     * Augmenting $scope
+     */
+
+    // TrialData JSON output
     $scope.trialDataJson = function() {
       return TrialData.toJson();
     };
 
     // Global debug mode flag
     $scope.debugMode = false;
-
-    // Setup hotkeys
-    hotkeys.add({
-      combo: 'd d',
-      description: 'Toggle debug mode',
-      callback: function() {
+    $scope.toggleDebugMode = function() {
         $scope.debugMode = !$scope.debugMode;
-
         var alertMessage = 'Debug mode has been ';
         if ($scope.debugMode) {
           alertMessage += 'enabled.';
@@ -24,9 +24,18 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
         }
 
         $scope.addAlert({type: 'info', msg: alertMessage});
-      }
+    };
+
+    // Setup hotkeys
+    hotkeys.add({
+      combo: 'd d',
+      description: 'Toggle debug mode',
+      callback: $scope.toggleDebugMode
     });
 
+    /*
+     * Alerts
+     */
     // Store/show alerts
     $scope.alerts = [];
 
@@ -59,11 +68,13 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
         $scope.blackoutClass = true;
       });
     };
+
     $scope.showBody = function() {
       $scope.$apply(function() {
         $scope.blackoutClass = false;
       });
     };
+
     $scope.toggleBodyVisibility = function() {
       $scope.$apply(function() {
         $scope.blackoutClass = !$scope.blackoutClass;
