@@ -1,60 +1,57 @@
 'use strict';
 
-angular.module('core').controller('StartController', ['$scope', '$http', '$timeout', 'TrialData', 'ExperimentManager',
-  function ($scope, $http, $timeout, TrialData, ExperimentManager) {
+angular.module('core').controller('StartController', ['$scope', '$timeout', 'TrialData', 'ExperimentManager', 'SocketIOService',
+    function($scope, $timeout, TrialData, ExperimentManager, SocketIOService) {
 
-    // Setup socket
-    /* global io */
-    var socket = io();
+        // Bind $scope.advanceSlide to ExperimentManager functionality
+        $scope.advanceSlide = ExperimentManager.advanceSlide;
 
-    // Bind $scope.advanceSlide to ExperimentManager functionality
-    $scope.advanceSlide = ExperimentManager.advanceSlide;
+        // Ready to advance?
+        $scope.readyToAdvance = function() {
+            return $scope.maxReady || $scope.debugMode;
+        };
 
-    // Ready to advance?
-    $scope.readyToAdvance = function () {
-      return $scope.maxReady || $scope.debugMode;
-    };
+        // Configure handler for incoming OSC messages
+        this.oscMessageReceivedListener = function(data) {
+            if (data.address === '/eim/status/startExperiment') {
+                $scope.$apply(function() {
+                    $scope.maxReady = true;
+                });
+            }
+        };
 
-    // Configure handler for incoming OSC messages
-    var oscMessageReceivedListener = function (data) {
+        // Attach handler for incoming OSC messages
+        SocketIOService.on('oscMessageReceived', this.oscMessageReceivedListener);
 
-      // If we received the resetComplete message
-      if (data.address === '/eim/status/experimentReady') {
-        $scope.$apply(function () {
-          $scope.maxReady = true;
+        // Destroy handler for incoming OSC messages when $scope is destroyed
+        // Also, remove error timeout
+        var thisController = this;
+        $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
+            SocketIOService.removeListener('oscMessageReceived', thisController.oscMessageReceivedListener);
+            $timeout.cancel(thisController.errorTimeout);
         });
-      }
-    };
 
-    // Attach handler for incoming OSC messages
-    socket.on('oscMessageReceived', oscMessageReceivedListener);
+        this.sendExperimentStartMessage = function() {
 
-    // Destroy handler for incoming OSC messages when $scope is destroyed
-    $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-      socket.removeListener('oscMessageReceived', oscMessageReceivedListener);
-    });
+            $scope.maxReady = false;
+            SocketIOService.emit('sendOSCMessage', {
+                oscType: 'message',
+                address: '/eim/control/startExperiment',
+                args: {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            });
+        };
 
-    var sendExperimentStartMessage = function () {
+        this.sendExperimentStartMessage();
 
-        $scope.maxReady = false;
-        socket.emit('sendOSCMessage', {
-          oscType: 'message',
-          address: '/eim/control/startExperiment',
-          args: {
-            type: 'string',
-            value: '' + TrialData.data.metadata.session_number
-          }
+        this.errorTimeout = $timeout(function() {}, 10000);
+        this.errorTimeout.then(function() {
+            if (!$scope.readyToAdvance) {
+                $scope.addGenericErrorAlert();
+                throw new Error('Max had not responded to startExperiment message after 10 seconds');
+            }
         });
-    };
-
-    sendExperimentStartMessage();
-
-    // If we aren't ready to go after 10 seconds, throw an error
-    $timeout(function () {
-      if (!$scope.readyToAdvance) {
-        $scope.addGenericErrorAlert();
-        throw new Error('Max had not responded to startExperiment message after 10 seconds');
-      }
-    }, 10000);
-  }
+    }
 ]);
