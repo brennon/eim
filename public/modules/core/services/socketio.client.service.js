@@ -26,8 +26,11 @@ angular.module('core').factory('SocketIOService', ['$rootScope',
                         callback.apply(socket, args);
                     });
                 });
-            }
+            },
 
+            removeListener: function(eventName, callback) {
+                socket.removeListener(eventName, callback);
+            }
         };
     }
 ]);
