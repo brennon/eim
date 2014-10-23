@@ -6,21 +6,17 @@
     describe('StartController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, mockSocketService, $timeout, $httpBackend;
+        var mockScope, $controller, mockSocketService, $timeout, $httpBackend, SocketIOService;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_) {
-            mockSocketService = {
-                emit: function() {},
-                on: function() {},
-                removeListener: function() {}
-            };
+        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_, _SocketIOService_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             $timeout = _$timeout_;
             $httpBackend = _$httpBackend_;
+            SocketIOService = _SocketIOService_;
         }));
 
         describe('advancing logic', function() {
@@ -64,21 +60,17 @@
                     }
                 };
 
-                var emitSpy = sinon.spy(mockSocketService, 'emit');
                 var controller = $controller('StartController', {
                     $scope: mockScope,
-                    SocketIOService: mockSocketService,
                     TrialData: mockTrialData
                 });
+
+                SocketIOService.emits = {};
+
                 controller.sendExperimentStartMessage();
 
-                // Spy will be called twice: once explicitly from the previous
-                // line, and once during controller init
-                expect(emitSpy.calledTwice).toBe(true);
-
-                var callArgs = emitSpy.firstCall.args;
-                expect(callArgs[0]).toBe('sendOSCMessage');
-                expect(callArgs[1]).toEqual({
+                var emittedEvent = SocketIOService.emits.sendOSCMessage[0][0];
+                expect(emittedEvent).toEqual({
                     oscType: 'message',
                     address: '/eim/control/startExperiment',
                     args: {
@@ -108,30 +100,29 @@
                 });
 
                 it('should be attached to oscMessageReceived event', function() {
-                    spyOn(mockSocketService, 'on');
+                    spyOn(SocketIOService, 'on');
 
                     var controller = $controller('StartController', {
-                        $scope: mockScope,
-                        SocketIOService: mockSocketService
+                        $scope: mockScope
                     });
 
-                    expect(mockSocketService.on.calls.argsFor(0)[0])
+                    expect(SocketIOService.on.calls.argsFor(0)[0])
                         .toBe('oscMessageReceived');
-                    expect(mockSocketService.on.calls.argsFor(0)[1])
+                    expect(SocketIOService.on.calls.argsFor(0)[1])
                         .toBe(controller.oscMessageReceivedListener);
                 });
 
                 it('should be removed when the controller is destroyed', function() {
-                    spyOn(mockSocketService, 'removeListener');
+                    spyOn(SocketIOService, 'removeListener');
 
                     var controller = $controller('StartController', {
                         $scope: mockScope,
-                        SocketIOService: mockSocketService
+                        SocketIOService: SocketIOService
                     });
                     mockScope.$destroy();
-                    expect(mockSocketService.removeListener.calls.argsFor(0)[0])
+                    expect(SocketIOService.removeListener.calls.argsFor(0)[0])
                         .toBe('oscMessageReceived');
-                    expect(mockSocketService.removeListener.calls.argsFor(0)[1])
+                    expect(SocketIOService.removeListener.calls.argsFor(0)[1])
                         .toBe(controller.oscMessageReceivedListener);
                 });
             });
