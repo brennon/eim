@@ -3,9 +3,6 @@
 angular.module('core').controller('HomeController', ['ExperimentManager', '$scope',
     function(ExperimentManager, $scope) {
 
-        // Bind $scope.advanceSlide to ExperimentManager functionality
-        $scope.advanceSlide = ExperimentManager.advanceSlide;
-
         // Reset ExperimentManager for new trial
         ExperimentManager.masterReset().then(
             function experimentResetSuccessHandler() {

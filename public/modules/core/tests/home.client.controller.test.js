@@ -16,9 +16,8 @@
         }));
 
         describe('initialization', function() {
-            it('should bind $scope.advanceSlide to ExperimentManager.advanceSlide', function() {
+            it('should set readyToAdvance to false', function() {
                 mockExperimentManager = {
-                    advanceSlide: function() {},
                     masterReset: function() {
                         var deferred = $q.defer();
                         return deferred.promise;
@@ -29,21 +28,6 @@
                     { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
 
                 expect(mockScope.readyToAdvance).toBe(false);
-            });
-
-            it('should set readyToAdvance to false', function() {
-                mockExperimentManager = {
-                    advanceSlide: function() {},
-                    masterReset: function() {
-                        var deferred = $q.defer();
-                        return deferred.promise;
-                    }
-                };
-
-                $controller('HomeController',
-                    { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
-
-                expect(mockScope.advanceSlide).toBe(mockExperimentManager.advanceSlide);
             });
         });
 
