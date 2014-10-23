@@ -1,5 +1,7 @@
 'use strict';
 
+// FIXME: Remove unnecessarily injected dependencies across all files
+
 // Trial Data service used to persist data for individual trials
 angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http', '$state',
   function (TrialData, $q, $http, $state) {
@@ -30,14 +32,12 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
         // Get a new experiment setup from the backend
         $http.get('/api/experiment-schemas/random')
           .success(function (data) {
-
             // Assign the media property from the ExperimentSchema we received as the media property on the TrialData
             TrialData.data.media = data.media;
             TrialData.data.schema = data.structure;
             deferred.resolve();
           })
           .error(function () {
-
             deferred.reject('An experiment schema could not be fetched from the server');
           });
 
