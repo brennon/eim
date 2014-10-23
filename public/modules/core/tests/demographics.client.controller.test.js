@@ -15,14 +15,6 @@
         }));
 
         describe('initialization', function() {
-            it('should bind $scope.advanceSlide to ExperimentManager.advanceSlide', function() {
-                mockExperimentManager = { advanceSlide: function() {} };
-                $controllerConstructor('DemographicsController',
-                    { $scope: mockScope, TrialData: {}, ExperimentManager: mockExperimentManager });
-
-                expect(mockScope.advanceSlide).toBe(mockExperimentManager.advanceSlide);
-            });
-
             it('should populate $scope.nationalities', function() {
                 $controllerConstructor('DemographicsController',
                     { $scope: mockScope, TrialData: {}, ExperimentManager: {} });
@@ -49,14 +41,6 @@
                     { $scope: mockScope, TrialData: {}, ExperimentManager: {} });
 
                 expect(mockScope.years[0]).toBe(new Date().getFullYear());
-            });
-
-            it('should make TrialData.toJson() available as trialDataJson', function() {
-                var toJson = function() {};
-                $controllerConstructor('DemographicsController',
-                    { $scope: mockScope, TrialData: { toJson: toJson }, ExperimentManager: {} });
-
-                expect(mockScope.trialDataJson).toBe(toJson);
             });
         });
 
