@@ -4,21 +4,22 @@
     describe('MasterController', function() {
 
         //Initialize global variables
-        var mockScope, mockHotkeys, $controllerConstructor;
+        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function($controller, $rootScope) {
+        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_) {
             $controllerConstructor = $controller;
             mockScope = $rootScope.$new();
-            mockHotkeys = { add: function() {
-            } };
+            mockHotkeys = { add: function() {} };
+            ExperimentManager = _ExperimentManager_;
+            $httpBackend = _$httpBackend_;
         }));
 
         describe('initialization', function() {
 
-            it('should initialize debugMode to false', function() {
+            it('should initialize $scope.debugMode to false', function() {
 
                 $controllerConstructor('MasterController',
                     { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
@@ -43,6 +44,13 @@
                     { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
 
                 expect(mockScope.blackoutClass).toBe(false);
+            });
+
+            it('should bind $scope.advanceSlide to the ExperimentManager', function() {
+                $controllerConstructor('MasterController',
+                    { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
+
+                expect(mockScope.advanceSlide).toBe(ExperimentManager.advanceSlide);
             });
         });
 
@@ -171,6 +179,9 @@
                    { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
 
                mockScope.blackoutClass = false;
+
+               $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
+
                mockScope.hideBody();
                expect(mockScope.blackoutClass).toBe(true);
            });
@@ -181,6 +192,9 @@
                     { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
 
                 mockScope.blackoutClass = true;
+
+                $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
+
                 mockScope.showBody();
                 expect(mockScope.blackoutClass).toBe(false);
             });
@@ -191,6 +205,9 @@
                     { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
 
                 mockScope.blackoutClass = true;
+
+                $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
+
                 mockScope.toggleBodyVisibility();
                 expect(mockScope.blackoutClass).toBe(false);
                 mockScope.toggleBodyVisibility();

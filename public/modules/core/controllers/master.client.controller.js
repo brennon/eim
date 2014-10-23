@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys',
-  function($scope, TrialData, hotkeys) {
+angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys', 'ExperimentManager',
+  function($scope, TrialData, hotkeys, ExperimentManager) {
 
     /*
      * Augmenting $scope
@@ -11,6 +11,9 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
     $scope.trialDataJson = function() {
       return TrialData.toJson();
     };
+
+    // Bind 'global' advanceSlide to ExperimentManager#advanceSlide
+    $scope.advanceSlide = ExperimentManager.advanceSlide;
 
     // Global debug mode flag
     $scope.debugMode = false;
