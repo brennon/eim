@@ -1,27 +1,30 @@
-<div data-ng-controller="EDAInstructionsController">
-  <div class="row">
+<div class="row">
     <div class="col-md-12">
 
-      <h1>Skin Sensors</h1>
+        <h1>Skin Sensors</h1>
 
-      <p>
-        Please place the sensors on the fingers of your <span class="text-danger">left</span> hand as indicated in the photos below. During the listening part of the experiment please keep this hand as still as possible. Wrap the velcro straps around the tips your 2 middle fingers, making sure that the small metal plate is against the skin of the inside of your finger. The straps should be tight but not so tight that it is uncomfortable.
-      </p>
+        <p>
+            Please place the sensors on the fingers of your <span class="text-danger">left</span> hand as indicated in
+            the photos below. During the listening part of the experiment please keep this hand as still as possible.
+            Wrap the velcro straps around the tips your 2 middle fingers, making sure that the small metal plate is
+            against the skin of the inside of your finger. The straps should be tight but not so tight that it is
+            uncomfortable.
+        </p>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 text-center">
-      <h2>Step One</h2>
-      <img src="/modules/core/img/hand-eda-before.png">
-    </div>
-    <div class="col-md-6 text-center">
-      <h2>Step Two</h2>
-      <img src="/modules/core/img/hand-eda-after.png">
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <p><a class="btn btn-primary btn-lg" ng-click="advanceSlide()">Continue</a></p>
-    </div>
-  </div>
 </div>
+<div class="row">
+    <div class="col-md-6 text-center">
+        <h2>Step One</h2>
+        <img src="/modules/core/img/hand-eda-before.png">
+    </div>
+    <div class="col-md-6 text-center">
+        <h2>Step Two</h2>
+        <img src="/modules/core/img/hand-eda-after.png">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p><a class="btn btn-primary btn-lg" ng-click="advanceSlide()">Continue</a></p>
+    </div>
+</div>
+<display-trial-data></display-trial-data>
