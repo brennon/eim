@@ -24,19 +24,6 @@
         }));
 
         describe('advancing logic', function() {
-            it('should bind $scope.advanceSlide to ExperimentManager.advanceSlide', function() {
-
-                var mockExperimentManager = { advanceSlide: function() {
-                } };
-                var advanceSlideSpy = sinon.spy(mockExperimentManager, 'advanceSlide');
-
-                $controller('StartController',
-                    { $scope: mockScope, ExperimentManager: mockExperimentManager });
-
-                mockScope.advanceSlide();
-                expect(advanceSlideSpy.calledOnce).toBe(true);
-            });
-
             describe('#$scope.readyToAdvance', function() {
                 it('should return true if only Max is ready', function() {
                     $controller('StartController',

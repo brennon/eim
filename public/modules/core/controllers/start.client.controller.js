@@ -3,9 +3,6 @@
 angular.module('core').controller('StartController', ['$scope', '$timeout', 'TrialData', 'ExperimentManager', 'SocketIOService',
     function($scope, $timeout, TrialData, ExperimentManager, SocketIOService) {
 
-        // Bind $scope.advanceSlide to ExperimentManager functionality
-        $scope.advanceSlide = ExperimentManager.advanceSlide;
-
         // Ready to advance?
         $scope.readyToAdvance = function() {
             return $scope.maxReady || $scope.debugMode;
