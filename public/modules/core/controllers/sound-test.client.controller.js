@@ -1,16 +1,10 @@
 'use strict';
 
-angular.module('core').controller('SoundTestController', ['$scope', 'TrialData', 'ExperimentManager',
-  function($scope, TrialData, ExperimentManager) {
-
-    /* global io */
-    var socket = io();
-
-    // Bind $scope.advanceSlide to ExperimentManager functionality
-    $scope.advanceSlide = ExperimentManager.advanceSlide;
+angular.module('core').controller('SoundTestController', ['$scope', 'SocketIOService', 'TrialData',
+  function($scope, SocketIOService, TrialData) {
 
     // Send a message to Max to start the sound test
-    socket.emit('sendOSCMessage', {
+    SocketIOService.emit('sendOSCMessage', {
       oscType: 'message',
       address: '/eim/control/soundTest',
       args: [
@@ -27,7 +21,7 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
 
     // Function to send a message to Max to stop the sound test
     $scope.stopSoundTest = function() {
-      socket.emit('sendOSCMessage', {
+      SocketIOService.emit('sendOSCMessage', {
         oscType: 'message',
         address: '/eim/control/soundTest',
         args: [
@@ -43,11 +37,11 @@ angular.module('core').controller('SoundTestController', ['$scope', 'TrialData',
       });
     };
 
-    // Send stop sound test message when controller is destroyed
-    $scope.$on('$destroy', $scope.stopSoundTest);
+    $scope.destroyed = false;
 
-    $scope.trialDataJson = function() {
-      return TrialData.toJson();
-    };
+    // Send stop sound test message when controller is destroyed
+    $scope.$on('$destroy', function() {
+      $scope.stopSoundTest();
+    });
   }
 ]);
