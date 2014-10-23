@@ -15,7 +15,7 @@
             $rootScope = _$rootScope_;
         }));
 
-        xdescribe('initialization', function() {
+        describe('initialization', function() {
             it('should be defined', function() {
                 expect(SocketIOService).toBeDefined();
             });
@@ -35,10 +35,6 @@
                 expect(socketSpy.firstCall.args[0]).toBe('anEvent');
                 expect(socketSpy.firstCall.args[1]).toBe(mockData);
             });
-
-            it('should apply changes using $rootScope.$apply');
-            it('should emit the same event using Socket.IO');
-            it('should register the callback handler if present');
         });
 
         describe('#on', function() {
@@ -52,9 +48,6 @@
                 SocketIOService.on('anEvent', mockCallback);
                 expect(socketSpy.calledOnce).toBe(true);
             });
-
-            it('should apply changes using $rootScope.$apply');
-            it('should register the callback handler as usual');
         });
 
         describe('#removeListener', function() {
