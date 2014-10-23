@@ -16,6 +16,6 @@
 		"angular-ui-router": "~0.2.10",
 		"angular-socket-io": "latest",
 		"socket.io-client": "latest",
-		"angular-socket.io-mock": "latest"
+		"angular-socket.io-mock": "brennon/angular-socket.io-mock"
 	}
 }
