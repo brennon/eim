@@ -232,14 +232,14 @@
                             session_number: 42
                         }
                     }
-                }
+                };
                 $controller('MediaPlaybackController',
                     {$scope: mockScope, TrialData: mockTrialData}
                 );
 
                 SocketIOService.emits = {};
                 mockScope.$destroy();
-                var emittedMessage = SocketIOService.emits.sendOSCMessage[0][0]
+                var emittedMessage = SocketIOService.emits.sendOSCMessage[0][0];
                 expect(emittedMessage).toEqual({
                     oscType: 'message',
                     address: '/eim/control/stopMedia',

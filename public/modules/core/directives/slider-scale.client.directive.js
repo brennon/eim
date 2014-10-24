@@ -8,6 +8,7 @@ angular.module('core').directive('sliderScale', ['$compile', 'TrialData', functi
 
     link: function(scope, element, attrs) {
 
+      //noinspection RedundantIfStatementJS
       if (attrs.associatedToMedia && attrs.associatedToMedia.toLowerCase() === 'true') {
         scope.associated = true;
       } else {

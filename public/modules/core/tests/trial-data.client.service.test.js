@@ -130,8 +130,7 @@
             });
 
             it('should return a blank data object', function() {
-                var mockData = {foo: 'bar'};
-                TrialData.data = mockData;
+                TrialData.data = {foo: 'bar'};
                 TrialData.reset();
                 expect(TrialData.data).toEqual(blankDataObject);
             });
