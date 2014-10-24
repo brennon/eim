@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/brennon/eim.svg?branch=adding-tests)](https://travis-ci.org/brennon/eim)
-
+[![Build Status](https://travis-ci.org/brennon/eim.svg?branch=adding-tests)](https://travis-ci.org/brennon/eim) [![Dependency Status](https://david-dm.org/brennon/eim.png)](https://david-dm.org/brennon/eim.png)
 
 # Emotion in Motion
 
