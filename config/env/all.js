@@ -18,6 +18,7 @@ module.exports = {
         'public/modules/angular-hotkeys/services/hotkeys.min.css'
 			],
 			js: [
+				'public/lib/jquery/dist/jquery.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 

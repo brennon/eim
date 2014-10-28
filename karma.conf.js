@@ -5,6 +5,9 @@
  */
 var applicationConfiguration = require('./config/config');
 
+var jQuerySource = ['public/lib/jquery/jquery.min.js'];
+
+
 // Karma configuration
 module.exports = function(config) {
 	config.set({
@@ -12,7 +15,7 @@ module.exports = function(config) {
 		frameworks: ['jasmine','sinon'],
 
 		// List of files / patterns to load in the browser
-		files: applicationConfiguration.assets.lib.js.concat(applicationConfiguration.assets.js, applicationConfiguration.assets.tests),
+		files: jQuerySource.concat(applicationConfiguration.assets.lib.js, applicationConfiguration.assets.js, applicationConfiguration.assets.tests),
 
 		// Test results reporter to use
 		// Possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
