@@ -8,7 +8,11 @@ var should = require('should');
 var request = require('supertest');
 var config = require('../../../config/config');
 var oscController = require('../../controllers/osc.server.controller.js');
+
+/* jshint ignore:start */
 var sinon = require('sinon');
+/* jshint ignore:end */
+
 var mongoose = require('mongoose');
 var util = require('util');
 

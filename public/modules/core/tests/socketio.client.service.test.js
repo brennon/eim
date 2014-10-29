@@ -11,6 +11,7 @@
 
         beforeEach(inject(function(_SocketIOService_, _$rootScope_) {
             SocketIOService = _SocketIOService_;
+            /* global io */
             socket = io();
             $rootScope = _$rootScope_;
         }));

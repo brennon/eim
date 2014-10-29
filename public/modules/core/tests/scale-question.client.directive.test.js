@@ -150,7 +150,7 @@
 
                 spyOn(TrialData, 'setValueForPath');
 
-                secondInput.scope()['powerRadioGroup'] = '1';
+                secondInput.scope().powerRadioGroup = '1';
                 secondInput.scope().$apply();
 
                 expect(TrialData.setValueForPath.calls.count()).toBe(1);
@@ -167,7 +167,7 @@
                 TrialData.data.state.mediaPlayCount = 2;
                 spyOn(TrialData, 'setValueForPathForCurrentMedia');
 
-                secondInput.scope()['powerRadioGroup'] = '1';
+                secondInput.scope().powerRadioGroup = '1';
                 secondInput.scope().$apply();
 
                 expect(TrialData.setValueForPathForCurrentMedia.calls.count()).toBe(1);

@@ -2,7 +2,11 @@
 
 var dgram = require('dgram');
 var osc = require('osc-min');
+
+/* jshint ignore:start */
 var sinon = require('sinon');
+/* jshint ignore:end */
+
 var should = require('should');
 var controller = require('../../controllers/osc.server.controller.js');
 var path = require('path');

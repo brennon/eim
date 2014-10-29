@@ -40,7 +40,7 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
       var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        '+innerRadioHTML+'<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
 
-      var descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left">'+attrs.minimumDescription+'</div><div class="col-md-4"></div><div class="col-md-2 small text-right">'+attrs.maximumDescription+'</div><div class="col-md-2"></div></div></div>')
+      var descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left">'+attrs.minimumDescription+'</div><div class="col-md-4"></div><div class="col-md-2 small text-right">'+attrs.maximumDescription+'</div><div class="col-md-2"></div></div></div>');
 
       element.append(questionHeader);
       element.append(image);

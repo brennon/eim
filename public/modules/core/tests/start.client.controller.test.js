@@ -134,7 +134,7 @@
                     $scope: mockScope
                 });
 
-                expect(controller.errorTimeout).toBeDefined()
+                expect(controller.errorTimeout).toBeDefined();
             });
 
             it('should be destroyed when the scope is destroyed', function() {

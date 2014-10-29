@@ -96,6 +96,7 @@
             });
 
             it('should generate a session ID', function() {
+                /* global UUID */
                 spyOn(UUID, 'generate');
                 ExperimentManager.masterReset();
                 expect(UUID.generate.calls.count()).toBe(1);

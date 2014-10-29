@@ -19,7 +19,7 @@
                         session_number: 42
                     }
                 }
-            }
+            };
         }));
 
         describe('OSC messages', function() {
