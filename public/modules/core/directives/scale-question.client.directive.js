@@ -19,7 +19,7 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
       scope[attrs.questionId+'RadioGroup'] = null;
 
-      scope.$watch(attrs.questionId+'RadioGroup', function(newValue, oldValue) {
+      scope.$watch(attrs.questionId+'RadioGroup', function(newValue) {
         scope.sendToTrialData(attrs.controllerDataPath, parseInt(newValue));
       });
 
