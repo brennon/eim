@@ -75,7 +75,7 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
                 formElement.append(questionElement);
             }
 
-            //  $compile(questionElement)(scope);
+              $compile(formElement)(scope);
         }
     };
 }]);
