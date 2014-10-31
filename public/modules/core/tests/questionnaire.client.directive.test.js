@@ -197,9 +197,8 @@
                 $compile(element)($scope);
 
                 var questionScaleElements = $(element).find('scale-question');
-                var children = $(questionScaleElements).children();
-                var lastChild = $(children[children.length-1]);
-                expect($(lastChild).find('div.questionSpacer').length).toBe(1);
+                var spacerDiv = $(questionScaleElements).next().children()[0];
+                expect($(spacerDiv).hasClass('questionSpacer')).toBe(true);
             });
         });
     });

@@ -70,12 +70,14 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
                 }
 
                 // Append a spacer row
-                questionElement.append(angular.element('<div class="row"><div class="col-md-12 questionSpacer"></div></div>'));
+                var spacerElement = angular.element('<div class="row"><div class="col-md-12 questionSpacer"></div></div>');
 
                 formElement.append(questionElement);
+
+                formElement.append(spacerElement);
             }
 
-              $compile(formElement)(scope);
+            $compile(formElement)(scope);
         }
     };
 }]);
