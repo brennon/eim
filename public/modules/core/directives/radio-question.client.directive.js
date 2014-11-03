@@ -43,11 +43,11 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
 
                     var thisOption = element.data('radioOptions')[i];
 
-                    innerRadioHTML += '<label><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true" />' + thisOption.label + '</label>';
+                    innerRadioHTML += '<label class="radio-inline"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true" />' + thisOption.label + '</label>';
                 }
             }
 
-            var radios = angular.element('<div class="row"><div class="col-md-12">' + innerRadioHTML + '</div></div>');
+            var radios = angular.element('<div class="row"><div class="col-md-12"><div class="radio-inline">' + innerRadioHTML + '</div></div></div>');
 
             element.append(questionHeader);
             element.append(radios);

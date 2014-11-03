@@ -102,6 +102,7 @@
                     var parent = $(obj).parent('label');
                     expect(parent.length).toBe(1);
                     expect(parent.text()).toBe(options[i].label);
+                    expect(parent.hasClass('radio-inline')).toBe(true);
                 }
             });
         });
