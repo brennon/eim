@@ -60,7 +60,8 @@ angular.module('core').factory('TrialData', [
             },
 
             setValueForPath: function(path, value, options) {
-                if (path && value) {
+
+                if (path && value !== undefined) {
                     var schema = this;  // a moving reference to internal objects within this (this TrialData)
                     var pList = path.split('.');
                     var len = pList.length;
@@ -71,6 +72,11 @@ angular.module('core').factory('TrialData', [
                     }
 
                     if (options && options.hasOwnProperty('array_index') && typeof options.array_index === 'number') {
+
+                        if (schema[pList[len - 1]] === undefined) {
+                            schema[pList[len - 1]] = [];
+                        }
+
                         schema[pList[len - 1]][options.array_index] = value;
                     } else {
                         schema[pList[len - 1]] = value;

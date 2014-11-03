@@ -187,6 +187,12 @@
                     TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', 'z');
                     expect(TrialData.data.answers.emotion_indices[1]).toBe('z');
                 });
+
+                it('should set a path\'s value when the array doesn\'t yet exist', function() {
+                    TrialData.data.state.mediaPlayCount = 0;
+                    TrialData.setValueForPathForCurrentMedia('data.answers.ratings.foo', false);
+                    expect(TrialData.data.answers.ratings.foo[0]).toBe(false);
+                });
             });
         });
     });
