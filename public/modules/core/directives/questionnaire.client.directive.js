@@ -5,6 +5,10 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
     var buildScaleQuestion = function(item) {
         var questionElement = angular.element('<scale-question></scale-question>');
 
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
         if (item.questionLabel) {
             questionElement.attr('question-label', item.questionLabel);
         }
@@ -40,6 +44,32 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
         return questionElement;
     };
 
+    var buildRadioQuestion = function(item) {
+        var questionElement = angular.element('<radio-question></radio-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr('controller-data-path', item.questionStoragePath);
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+        }
+
+        if (item.questionRadioOptions) {
+            questionElement.data('radioOptions', item.questionRadioOptions);
+        }
+
+        return questionElement;
+    };
+
     return {
         restrict: 'E',
         scope: {
@@ -67,6 +97,10 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
                 switch (item.questionType) {
                     case 'likert':
                         questionElement = buildScaleQuestion(item);
+                        break;
+                    case 'radio':
+                        questionElement = buildRadioQuestion(item);
+                        break;
                 }
 
                 // Append a spacer row
