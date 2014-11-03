@@ -145,8 +145,19 @@
                 $controllerConstructor('MasterController',
                     { $scope: {}, TrialData: {}, hotkeys: mockHotkeys });
 
-                expect(addSpy.calledOnce).toBe(true);
+                expect(addSpy.calledTwice).toBe(true);
                 expect(addSpy.args[0][0].combo).toBe('d d');
+            });
+
+            it('should add a hotkey for the right arrow key', function() {
+
+                var addSpy = sinon.spy(mockHotkeys, 'add');
+
+                $controllerConstructor('MasterController',
+                    { $scope: {}, TrialData: {}, hotkeys: mockHotkeys });
+
+                expect(addSpy.calledTwice).toBe(true);
+                expect(addSpy.args[1][0].combo).toBe('right');
             });
 
             it('should add a description for d-d', function() {
@@ -159,6 +170,16 @@
                 expect(addSpy.args[0][0].description).toBeDefined();
             });
 
+            it('should add a description for right', function() {
+
+                var addSpy = sinon.spy(mockHotkeys, 'add');
+
+                $controllerConstructor('MasterController',
+                    { $scope: {}, TrialData: {}, hotkeys: mockHotkeys });
+
+                expect(addSpy.args[1][0].description).toBeDefined();
+            });
+
             it('should toggle debugMode on d-d', function() {
 
                 var addSpy = sinon.spy(mockHotkeys, 'add');
@@ -169,6 +190,17 @@
                 mockScope.debugMode = true;
                 var ddCallback = addSpy.args[0][0].callback;
                 expect(ddCallback).toBe(mockScope.toggleDebugMode);
+            });
+
+            it('should advance slide on right', function() {
+
+                var addSpy = sinon.spy(mockHotkeys, 'add');
+
+                $controllerConstructor('MasterController',
+                    { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
+
+                var advanceCallback = addSpy.args[1][0].callback;
+                expect(advanceCallback).toBe(ExperimentManager.advanceSlide);
             });
         });
 

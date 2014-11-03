@@ -36,6 +36,12 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
       callback: $scope.toggleDebugMode
     });
 
+    hotkeys.add({
+      combo: 'right',
+      description: 'Advance slide',
+      callback: $scope.advanceSlide
+    });
+
     /*
      * Alerts
      */
