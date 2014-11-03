@@ -61,6 +61,17 @@ angular.module('core').factory('TrialData', [
 
             setValueForPath: function(path, value, options) {
 
+                if (value === 'true') {
+                    value = true;
+                } else if (value === 'false') {
+                    value = false;
+                }
+
+                var numericRegex = /\d+\.?\d?/;
+                if (typeof value === 'string' && value.match(numericRegex)) {
+                    value = parseFloat(value);
+                }
+
                 if (path && value !== undefined) {
                     var schema = this;  // a moving reference to internal objects within this (this TrialData)
                     var pList = path.split('.');

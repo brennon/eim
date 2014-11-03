@@ -165,6 +165,30 @@
                     TrialData.setValueForPath('data.answers.emotion_indices', 'z', {array_index:2});
                     expect(TrialData.data.answers.emotion_indices[2]).toBe('z');
                 });
+
+                it('should convert "true" to boolean true', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'true', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(true);
+                });
+
+                it('should convert "false" to boolean false', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'false', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(false);
+                });
+
+                it('should convert a integer string to a number', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', '42', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(42);
+                });
+
+                it('should convert a float string to a number', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', '42.24', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(42.24);
+                });
             });
 
             describe('#setValueForPathForCurrentMedia', function() {
