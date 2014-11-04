@@ -59,6 +59,7 @@ angular.module('core').factory('TrialData', [
                 this.data = new BlankDataObject();
             },
 
+            // TODO: Add formatting and type options
             setValueForPath: function(path, value, options) {
 
                 if (value === 'true') {
