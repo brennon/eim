@@ -32,9 +32,9 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
                 scope.sendToTrialData(attrs.controllerDataPath, newValue);
             });
 
-            var questionHeader = angular.element('<div class="row"><div class="col-md-12 text-center"><label for="' + attrs.questionId + 'Radio" class="radio control-label">' + attrs.questionLabel + '</label></div></div>');
+            var questionText = '<div class="row"><div class="col-md-12"><label for="' + attrs.questionId + 'Radio">' + attrs.questionLabel + '</label><div>';
 
-            var innerRadioHTML = '';
+            var innerQuestionText = '';
 
             if (element.data('radioOptions')) {
 
@@ -43,15 +43,34 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
 
                     var thisOption = element.data('radioOptions')[i];
 
-                    innerRadioHTML += '<label class="radio-inline"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true" />' + thisOption.label + '</label>';
+                    innerQuestionText += '<label class="radio-inline"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true" />' + thisOption.label + '</label>';
                 }
             }
 
-            var radios = angular.element('<div class="row"><div class="col-md-12"><div class="radio-inline">' + innerRadioHTML + '</div></div></div>');
+            questionText += innerQuestionText + '</div></div></div>';
 
-            element.append(questionHeader);
-            element.append(radios);
+            var questionElement = angular.element(questionText);
+
+            element.append(questionElement);
             $compile(element.contents())(scope);
+
+            //<radio-question question-id="gender" question-label="Gender" controller-data-path="data.answers.sex" class="ng-isolate-scope">
+            //<div class="row ng-scope">
+            //<div class="form-group col-md-12">
+            //<label for="genderRadio">Gender</label>
+            //<div>
+            //<label class="radio-inline">
+            //<input type="radio" value="male" class="ng-pristine ng-invalid ng-invalid-required" name="genderRadioGroup" id="genderRadioMale" ng-model="genderRadioGroup" required="true">
+            //Male
+            //</label>
+            //<label class="radio-inline">
+            //<input type="radio" class="ng-pristine ng-invalid ng-invalid-required" name="genderRadioGroup" id="genderRadioFemale" value="female" ng-model="genderRadioGroup" required="true">
+            //Female
+            //</label>
+            //</div>
+            //</div>
+            //</div>
+            //</radio-question>
         }
     };
 }]);

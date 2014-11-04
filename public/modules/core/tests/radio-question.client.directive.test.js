@@ -15,25 +15,48 @@
             TrialData = _TrialData_;
         }));
 
-        it('should add a label for the question text', function() {
+        it('should create a row for the element', function() {
             element = angular.element('<radio-question question-label="qText" question-id="gender"></radio-question>');
             $compile(element)($scope);
-            var labelElement = $(element).find('label');
+            var firstChild = $(element).children()[0];
+            firstChild = $(firstChild);
+            expect(firstChild.hasClass('row')).toBe(true);
+        });
 
-            expect(labelElement.text()).toBe('qText');
-            expect(labelElement.attr('for')).toBe('genderRadio');
-            expect(labelElement.hasClass('radio')).toBe(true);
-            expect(labelElement.hasClass('control-label')).toBe(true);
+        it('should create a column set / form group for the contents', function() {
+            element = angular.element('<radio-question question-label="qText" question-id="gender"></radio-question>');
+            $compile(element)($scope);
+            var grandchild = $($(element).children()[0]).children()[0];
+            grandchild = $(grandchild);
+            expect(grandchild.hasClass('col-md-12')).toBe(true);
+        });
+
+        it('should add a label for the question text as the first child of the column group', function() {
+            element = angular.element('<radio-question question-label="qText" question-id="gender"></radio-question>');
+            $compile(element)($scope);
+            var greatGrandchild = $($($(element).children()[0]).children()[0]).children()[0];
+            greatGrandchild = $(greatGrandchild);
+
+            expect(greatGrandchild.text()).toBe('qText');
+            expect(greatGrandchild.attr('for')).toBe('genderRadio');
+            expect(greatGrandchild.hasClass('control-label')).toBe(false);
         });
 
         describe('radio buttons', function() {
-            it('should add a button for each option', function() {
+            it('should add a button for each option and wrap each in a label', function() {
                 var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
-                element = angular.element('<radio-question></radio-question>');
+                element = angular.element('<radio-question question-label="Gender" question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
+
                 var radios = $(element).find('input[type="radio"]');
                 expect(radios.length).toBe(2);
+
+                for (var i = 0; i < radios.length; i++) {
+                    var radio = radios[i];
+                    var parent = $(radio).parent();
+                    expect(parent.hasClass('radio-inline')).toBe(true);
+                }
             });
 
             it('should set the correct name on each button', function() {
