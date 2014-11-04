@@ -18,7 +18,7 @@ angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', f
                 }
             };
 
-            scope[attrs.questionId + 'Select'] = 'bar';
+            scope[attrs.questionId + 'Select'] = null;
 
             scope.$watch(attrs.questionId + 'Select', function(newValue) {
                 scope.sendToTrialData(attrs.controllerDataPath, newValue);
