@@ -331,5 +331,276 @@
                 expect($(radioQuestionElements).data('radioOptions')).toEqual($scope.questionnaireData.structure[0].questionRadioOptions);
             });
         });
+
+        describe('scale-question directives', function() {
+            it('should add a scale-question directive for those entries with likert as questionType', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert'
+                        },
+                        {
+                            questionType: 'radio'
+                        },
+                        {
+                            questionType: 'likert'
+                        }
+                    ]
+                };
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect(scaleQuestionElements.length).toBe(2);
+            });
+
+            it('should add the question-id for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionId: 'aQuestionId'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements[0]).attr('question-id')).toBe('aQuestionId');
+            });
+
+            it('should add the title for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionLabel: 'Question Label'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('question-label')).toBe('Question Label');
+            });
+
+            it('should add the minimum description for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionLikertMinimumDescription: 'Minimum Description'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('minimum-description')).toBe('Minimum Description');
+            });
+
+            it('should add the maximum description for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionLikertMaximumDescription: 'Maximum Description'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('maximum-description')).toBe('Maximum Description');
+            });
+
+            it('should add the image source for a single image scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionLikertSingleImageSrc: '/img.png'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('single-img-src')).toBe('/img.png');
+            });
+
+            it('should add the left image source for an extremes images scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionLikertLeftImageSrc: '/left.png'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('left-img-src')).toBe('/left.png');
+            });
+
+            it('should add the right image source for an extremes images scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionLikertRightImageSrc: '/right.png'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('right-img-src')).toBe('/right.png');
+            });
+
+            it('should add the media association attribute for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionIsAssociatedToMedia: true
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('associated-to-media')).toBe('true');
+            });
+
+            it('should add the storage path attribute for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionStoragePath: 'a.b.c.d'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
+            });
+        });
+
+        describe('dropdown-question directives', function() {
+            it('should add a dropdown-question directive for those entries with radio as questionType', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'radio'
+                        },
+                        {
+                            questionType: 'dropdown'
+                        },
+                        {
+                            questionType: 'likert'
+                        },
+                        {
+                            questionType: 'dropdown'
+                        }
+                    ]
+                };
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('dropdown-question');
+                expect(radioQuestionElements.length).toBe(2);
+            });
+
+            it('should add the question-id for a radio-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionId: 'nationality'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('dropdown-question');
+                expect($(radioQuestionElements[0]).attr('question-id')).toBe('nationality');
+            });
+
+            it('should add the title for a dropdown-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionLabel: 'Question Label'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('dropdown-question');
+                expect($(radioQuestionElements).attr('question-label')).toBe('Question Label');
+            });
+
+            it('should add the media association attribute for a dropdown-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionIsAssociatedToMedia: true
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('dropdown-question');
+                expect($(radioQuestionElements).attr('associated-to-media')).toBe('true');
+            });
+
+            it('should add the storage path attribute for a dropdown-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionStoragePath: 'a.b.c.d'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('dropdown-question');
+                expect($(radioQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
+            });
+
+            it('should add the dropdown options on the data attribute of a dropdown-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionDropdownOptions: ['a','b','c','d']
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('dropdown-question');
+                expect($(radioQuestionElements).data('dropdownOptions')).toEqual($scope.questionnaireData.structure[0].questionDropdownOptions);
+            });
+        });
     });
 })();

@@ -1,7 +1,23 @@
-<section class="container" data-ng-controller="HomeController">
-  <div class="jumbotron">
-    <h1>Welcome</h1>
-    <p>to Emotion in Motion</p>
-    <p><a class="btn btn-primary btn-lg" ng-disabled="!readyToAdvance" ng-click="advanceSlide()">Start Experiment</a></p>
-  </div>
-</section>
+<div data-ng-controller="HomeController">
+    <div class="jumbotron">
+        <h1>Welcome</h1>
+
+        <p>to Emotion in Motion</p>
+
+        <p><a class="btn btn-primary btn-lg" ng-disabled="!readyToAdvance" ng-click="advanceSlide()">Start
+            Experiment</a></p>
+    </div>
+
+    <scale-question controller-data-path="data.answers.ratings.power" question-label="How in control did you feel?"
+                    single-img-src="modules/core/img/scale-above-power.png" question-id="power"
+                    minimum-description="Weak<br />(without control, submissive)"
+                    maximum-description="Empowered<br />(in control of everything, dominant)"
+                    associated-to-media="true">
+    </scale-question>
+
+    <radio-question controller-data-path="data.answers.musical_expertise" question-label="Are you a fucking awesome musician?"
+                    question-id="musical_expertise">
+    </radio-question>
+    <display-trial-data></display-trial-data>
+    <form><dropdown-question question-id="foo"></dropdown-question></form>
+</div>

@@ -70,6 +70,32 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
         return questionElement;
     };
 
+    var buildDropdownQuestion = function(item) {
+        var questionElement = angular.element('<dropdown-question></dropdown-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr('controller-data-path', item.questionStoragePath);
+        }
+
+        if (item.questionDropdownOptions) {
+            questionElement.data('dropdownOptions', item.questionDropdownOptions);
+        }
+
+        return questionElement;
+    };
+
     return {
         restrict: 'E',
         scope: {
@@ -101,6 +127,8 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
                     case 'radio':
                         questionElement = buildRadioQuestion(item);
                         break;
+                    case 'dropdown':
+                        questionElement = buildDropdownQuestion(item);
                 }
 
                 // Append a spacer row
