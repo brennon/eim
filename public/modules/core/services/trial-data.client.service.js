@@ -73,6 +73,11 @@ angular.module('core').factory('TrialData', [
                     value = parseFloat(value);
                 }
 
+                // Downcase simple strings
+                if (typeof value === 'string') {
+                    value = value.toLowerCase();
+                }
+
                 if (path && value !== undefined) {
                     var schema = this;  // a moving reference to internal objects within this (this TrialData)
                     var pList = path.split('.');

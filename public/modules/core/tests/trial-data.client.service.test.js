@@ -189,6 +189,12 @@
                     TrialData.setValueForPath('data.answers.emotion_indices', '42.24', {array_index:2});
                     expect(TrialData.data.answers.emotion_indices[2]).toBe(42.24);
                 });
+
+                it('should downcase simple strings', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'Brennon Bortz', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe('brennon bortz');
+                });
             });
 
             describe('#setValueForPathForCurrentMedia', function() {
