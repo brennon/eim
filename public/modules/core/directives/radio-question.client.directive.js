@@ -53,24 +53,6 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
 
             element.append(questionElement);
             $compile(element.contents())(scope);
-
-            //<radio-question question-id="gender" question-label="Gender" controller-data-path="data.answers.sex" class="ng-isolate-scope">
-            //<div class="row ng-scope">
-            //<div class="form-group col-md-12">
-            //<label for="genderRadio">Gender</label>
-            //<div>
-            //<label class="radio-inline">
-            //<input type="radio" value="male" class="ng-pristine ng-invalid ng-invalid-required" name="genderRadioGroup" id="genderRadioMale" ng-model="genderRadioGroup" required="true">
-            //Male
-            //</label>
-            //<label class="radio-inline">
-            //<input type="radio" class="ng-pristine ng-invalid ng-invalid-required" name="genderRadioGroup" id="genderRadioFemale" value="female" ng-model="genderRadioGroup" required="true">
-            //Female
-            //</label>
-            //</div>
-            //</div>
-            //</div>
-            //</radio-question>
         }
     };
 }]);
