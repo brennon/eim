@@ -82,6 +82,26 @@
 
                 expect($state.go.calls.argsFor(0)[0]).toBe('end');
             });
+
+            it('should reload when going to the first slide', function() {
+                spyOn($state, 'go');
+
+                mockTrialData.data.state.currentSlideIndex = 2;
+
+                ExperimentManager.advanceSlide();
+
+                expect($state.go.calls.argsFor(0)[2]).toEqual({reload: true});
+            });
+
+            it('should reload when going to something other than the first slide', function() {
+                spyOn($state, 'go');
+
+                mockTrialData.data.state.currentSlideIndex = 1;
+
+                ExperimentManager.advanceSlide();
+
+                expect($state.go.calls.argsFor(0)[2]).toEqual({reload: true});
+            });
         });
 
         describe('#masterReset', function() {

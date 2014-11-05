@@ -12,9 +12,9 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
         TrialData.data.state.currentSlideIndex++;
 
         if (TrialData.data.state.currentSlideIndex === TrialData.data.schema.length) {
-          $state.go('home');
+          $state.go('home', {}, {reload: true});
         } else {
-          $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name);
+          $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name, {}, {reload: true});
         }
       },
 
