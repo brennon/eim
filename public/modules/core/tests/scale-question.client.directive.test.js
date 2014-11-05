@@ -21,6 +21,13 @@
             expect(element.html()).toMatch(/<h3>qText<\/h3>/);
         });
 
+        it('should add a label if the labelType is set to labelLeft', function() {
+            element = angular.element('<scale-question question-label="qText" label-type="labelLeft" single-img-src="img/single.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
+            $compile(element)($scope);
+            expect(element.html()).not.toMatch(/<h3>qText<\/h3>/);
+            expect(element.html()).toMatch(/<label>qText<\/label>/);
+        });
+
         describe('single image', function() {
             it('should include the image', function() {
                 $compile(element)($scope);
@@ -47,6 +54,17 @@
                 var imgRow = $(element).find('div.row')[1];
                 expect($(imgRow).html()).toMatch(/(col-md-2.*){2}col-md-4.*(col-md-2.*){2}/);
             });
+        });
+
+        describe('no images', function() {
+           it('should not include any images', function() {
+               element = angular.element('<scale-question question-label="qText" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
+               $compile(element)($scope);
+
+               var images = $(element).find('img');
+
+               expect(images.length).toBe(0);
+           });
         });
 
         describe('radio buttons', function() {
@@ -139,6 +157,14 @@
                 var descriptionsBlock = $(element).children()[3];
                 var right = $(descriptionsBlock).children()[3];
                 expect($(right).hasClass('text-right')).toBe(true);
+            });
+
+            it('should not be included if they aren\'t defined', function() {
+                element = angular.element('<scale-question question-label="qText" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
+                $compile(element)($scope);
+
+                var children = element.children();
+                expect(children.length).toBe(2);
             });
         });
 
