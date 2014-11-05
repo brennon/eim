@@ -216,6 +216,23 @@
                 var scaleQuestionElements = $(element).find('scale-question');
                 expect($(scaleQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
+
+            it('should add the label type attribute for a scale-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionStoragePath: 'a.b.c.d',
+                            questionLabelType: 'labelLeft'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElements = $(element).find('scale-question');
+                expect($(scaleQuestionElements).attr('label-type')).toBe('labelLeft');
+            });
         });
 
         describe('radio-question directives', function() {

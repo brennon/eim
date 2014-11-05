@@ -13,6 +13,10 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             questionElement.attr('question-label', item.questionLabel);
         }
 
+        if (item.questionLabelType) {
+            questionElement.attr('label-type', item.questionLabelType);
+        }
+
         if (item.questionLikertMinimumDescription) {
             questionElement.attr('minimum-description', item.questionLikertMinimumDescription);
         }
