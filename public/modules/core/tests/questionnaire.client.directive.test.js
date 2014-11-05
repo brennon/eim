@@ -602,5 +602,110 @@
                 expect($(radioQuestionElements).data('dropdownOptions')).toEqual($scope.questionnaireData.structure[0].questionDropdownOptions);
             });
         });
+
+        describe('checkbox-question directives', function() {
+            it('should add a checkbox-question directive for those entries with checkbox as questionType', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'radio'
+                        },
+                        {
+                            questionType: 'checkbox'
+                        },
+                        {
+                            questionType: 'likert'
+                        },
+                        {
+                            questionType: 'checkbox'
+                        }
+                    ]
+                };
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect(checkboxQuestionElements.length).toBe(2);
+            });
+
+            it('should add the question-id for a checkbox-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionId: 'musicStyles'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements[0]).attr('question-id')).toBe('musicStyles');
+            });
+
+            it('should add the title for a checkbox-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionLabel: 'Question Label'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).attr('question-label')).toBe('Question Label');
+            });
+
+            it('should add the media association attribute for a checkbox-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionIsAssociatedToMedia: true
+                        }
+                    ]
+                };
+            
+                $compile(element)($scope);
+            
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).attr('associated-to-media')).toBe('true');
+            });
+            
+            it('should add the storage path attribute for a checkbox-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionStoragePath: 'a.b.c.d'
+                        }
+                    ]
+                };
+            
+                $compile(element)($scope);
+            
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
+            });
+            
+            it('should add the checkbox options on the data attribute of a checkbox-question directive', function() {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionCheckboxOptions: ['a','b','c','d']
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).data('checkboxOptions')).toEqual($scope.questionnaireData.structure[0].questionCheckboxOptions);
+            });
+        });
     });
 })();

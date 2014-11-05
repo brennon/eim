@@ -96,6 +96,32 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
         return questionElement;
     };
 
+    var buildCheckboxQuestion = function(item) {
+        var questionElement = angular.element('<checkbox-question></checkbox-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr('controller-data-path', item.questionStoragePath);
+        }
+
+        if (item.questionCheckboxOptions) {
+            questionElement.data('checkboxOptions', item.questionCheckboxOptions);
+        }
+
+        return questionElement;
+    };
+
     return {
         restrict: 'E',
         scope: {
@@ -129,6 +155,10 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
                         break;
                     case 'dropdown':
                         questionElement = buildDropdownQuestion(item);
+                        break;
+                    case 'checkbox':
+                        questionElement = buildCheckboxQuestion(item);
+                        break;
                 }
 
                 // Append a spacer row
