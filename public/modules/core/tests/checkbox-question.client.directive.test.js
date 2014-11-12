@@ -52,7 +52,6 @@
                     expect(checkbox.value).toBe(options[i]);
                     expect(checkbox.id).toBe('musicStylesCheckbox' + options[i]);
                     expect(checkbox.name).toBe('musicStylesCheckbox');
-                    expect($(checkbox).attr('required')).toBe('required');
                     expect($(checkbox).attr('checked')).toBeUndefined();
                 }
             });
@@ -99,6 +98,19 @@
                     expect(checkbox.attr('ng-change')).toBe('updateCheckboxes()');
                 }
             });
+
+            it('should bind ng-required to someSelected', function() {
+                var options = ['Rock', 'Pop', 'Folk'];
+                element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
+                element.data('checkboxOptions', options);
+                $compile(element)($scope);
+
+                var checkboxes = element.find('input[type="checkbox"]');
+                for (var i = 0; i < checkboxes.length; i++) {
+                    var checkbox = $(checkboxes[i]);
+                    expect(checkbox.attr('ng-required')).toBe('!someSelected');
+                }
+            });
         });
 
         describe('#updateCheckboxes', function() {
@@ -121,6 +133,44 @@
 
                 expect(calls.count()).toBe(1);
                 expect(calls.argsFor(0)[1]).toEqual(['folk', 'pop']);
+            });
+
+            it('should set someSelected to true if some boxes are checked', function() {
+                var options = ['Rock', 'Pop', 'Folk'];
+                element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
+                element.data('checkboxOptions', options);
+                $compile(element)($scope);
+
+                element.isolateScope().someSelected = false;
+
+                element.isolateScope().musicStylesCheckboxRock = true;
+                element.isolateScope().musicStylesCheckboxPop = true;
+                element.isolateScope().musicStylesCheckboxFolk = true;
+
+                element.isolateScope().$digest();
+
+                element.isolateScope().updateCheckboxes();
+
+                expect(element.isolateScope().someSelected).toBe(true);
+            });
+
+            it('should set someSelected to false if no boxes are checked', function() {
+                var options = ['Rock', 'Pop', 'Folk'];
+                element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
+                element.data('checkboxOptions', options);
+                $compile(element)($scope);
+
+                element.isolateScope().someSelected = true;
+
+                element.isolateScope().musicStylesCheckboxRock = false;
+                element.isolateScope().musicStylesCheckboxPop = false;
+                element.isolateScope().musicStylesCheckboxFolk = false;
+
+                element.isolateScope().$digest();
+
+                element.isolateScope().updateCheckboxes();
+
+                expect(element.isolateScope().someSelected).toBe(false);
             });
         });
 

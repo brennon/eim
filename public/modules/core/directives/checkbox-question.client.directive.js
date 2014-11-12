@@ -7,6 +7,7 @@ angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', f
         scope: {},
 
         link: function(scope, element, attrs) {
+            scope.someSelected = false;
 
             scope.sendToTrialData = function(path, value) {
                 if (!attrs.associatedToMedia) {
@@ -17,16 +18,21 @@ angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', f
             };
 
             scope.updateCheckboxes = function() {
+                var newSomeSelectedValue = false;
+
                 var checkedOptions = [];
                 var inputs = element.find('input');
                 for (var i = 0; i < inputs.length; i++) {
                     var input = angular.element(inputs[i]);
                     if (input.attr('name') === attrs.questionId + 'Checkbox') {
                         if (input.prop('checked') === true) {
+                            newSomeSelectedValue = true;
                             checkedOptions.push(input.attr('value').toLowerCase());
                         }
                     }
                 }
+
+                scope.someSelected = newSomeSelectedValue;
 
                 checkedOptions.sort();
                 scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
@@ -43,7 +49,7 @@ angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', f
 
                     var thisOption = element.data('checkboxOptions')[i];
 
-                    innerQuestionText += '<label class="checkbox-inline"><input type="checkbox" name="'+attrs.questionId+'Checkbox" id="'+attrs.questionId+'Checkbox'+thisOption+'" value="'+thisOption+'" ng-model="'+attrs.questionId+'Checkbox'+thisOption+'" ng-change="updateCheckboxes()" required>'+thisOption+'</label>';
+                    innerQuestionText += '<label class="checkbox-inline"><input type="checkbox" name="'+attrs.questionId+'Checkbox" id="'+attrs.questionId+'Checkbox'+thisOption+'" value="'+thisOption+'" ng-model="'+attrs.questionId+'Checkbox'+thisOption+'" ng-change="updateCheckboxes()" ng-required="!someSelected">'+thisOption+'</label>';
                 }
             }
 
