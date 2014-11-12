@@ -1,5 +1,8 @@
 'use strict';
 
+// FIXME: Address radio question formatting in the context of media questions
+// FIXME: Dump latest database
+
 angular.module('core').directive('questionnaire', ['$compile', function($compile) {
 
     var buildScaleQuestion = function(item) {
