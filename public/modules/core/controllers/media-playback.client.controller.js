@@ -5,8 +5,8 @@
 // TODO: Use different button colors for Playback and Continue
 // TODO: Find a better way to listen for socket messages and clean up listeners
 
-angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', /*'$state', 'ExperimentManager',*/
-    function($scope, TrialData, SocketIOService, $timeout/*, $state, ExperimentManager*/) {
+angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager',/*'$state', 'ExperimentManager',*/
+    function($scope, TrialData, SocketIOService, $timeout, ExperimentManager/*, $state, ExperimentManager*/) {
 
         // State to control button behavior
         $scope.currentButtonLabel = 'Begin Playback';
@@ -16,7 +16,7 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
         $scope.startMediaPlayback = function() {
 
             var mediaIndex = TrialData.data.state.mediaPlayCount;
-            var mediaLabel = TrialData.data.media[mediaIndex];
+            var mediaLabel = TrialData.data.media[mediaIndex].label;
 
             SocketIOService.emit('sendOSCMessage', {
                 oscType: 'message',
@@ -32,7 +32,12 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
                     }
                 ]
             });
+
+            $scope.buttonAction = ExperimentManager.advanceSlide;
         };
+
+        // Initially set button action to #startMediaPlayback
+        $scope.buttonAction = $scope.startMediaPlayback;
 
         // Setup listener for incoming OSC messages
         this.oscMessageReceivedListener = function(data) {
@@ -86,6 +91,8 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
             });
 
             SocketIOService.removeListener('oscMessageReceived', thisController.oscMessageReceivedListener);
+
+            $scope.showBody();
         });
     }
 ]);
