@@ -25,7 +25,7 @@
             expect(labelElement.hasClass('control-label')).toBe(true);
         });
 
-        describe('radio buttons', function() {
+        describe('dropdown options', function() {
             it('should add a select element with associated options', function() {
                 var options = ['a','b','c'];
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
@@ -84,6 +84,16 @@
                 $scope.$digest();
                 var selectParent = $(element).find('select').parent();
                 expect(selectParent.hasClass('form-group')).toBe(true);
+            });
+
+            it('should mark the element as required', function() {
+                var options = ['a','b','c'];
+                element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
+                element.data('dropdownOptions', options);
+                $compile(element)($scope);
+                $scope.$digest();
+                var select = $(element).find('select');
+                expect(select.prop('required')).toBe(true);
             });
         });
 
