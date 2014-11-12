@@ -7,12 +7,14 @@
 // TODO: Find a better way to listen for socket messages and clean up listeners
 // TODO: Request and save emotion indices
 
-angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager',/*'$state', 'ExperimentManager',*/
+angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager', /*'$state', 'ExperimentManager',*/
     function($scope, TrialData, SocketIOService, $timeout, ExperimentManager/*, $state, ExperimentManager*/) {
+        var thisController = this;
 
         // State to control button behavior
         $scope.currentButtonLabel = 'Begin Playback';
         $scope.mediaHasPlayed = false;
+        $scope.buttonDisabled = false;
 
         // Send media playback message to Max
         $scope.startMediaPlayback = function() {
@@ -41,6 +43,20 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
         // Initially set button action to #startMediaPlayback
         $scope.buttonAction = $scope.startMediaPlayback;
 
+        // Request emotion indices from server
+        this.requestEmotionIndex = function() {
+            SocketIOService.emit('sendOSCMessage', {
+                oscType: 'message',
+                address: '/eim/control/emotionIndex',
+                args: [
+                    {
+                        type: 'string',
+                        value: '' + TrialData.data.metadata.session_number
+                    }
+                ]
+            });
+        };
+
         // Setup listener for incoming OSC messages
         this.oscMessageReceivedListener = function(data) {
 
@@ -56,23 +72,34 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
                     // Otherwise, if it was a stop message
                 } else if (parseInt(data.args[0].value) === 0) {
 
+                    // Request emotion index from Max
+                    thisController.requestEmotionIndex();
+
                     // Fade in screen
                     $scope.showBody();
 
-                    if (!$scope.mediaHasPlayed) {
-
-                        // Increment media play count
-                        TrialData.data.state.mediaPlayCount++;
-
-                        // Update state
-                        $timeout(function() {
-                            $scope.$apply(function() {
-                                $scope.currentButtonLabel = 'Continue';
-                                $scope.mediaHasPlayed = true;
-                            });
+                    // Update state
+                    $timeout(function() {
+                        $scope.$apply(function() {
+                            $scope.currentButtonLabel = 'Continue';
+                            $scope.mediaHasPlayed = true;
+                            $scope.buttonDisabled = true;
                         });
-                    }
+                    });
                 }
+            } else if (data.address === '/eim/status/emotionIndex') {
+                var emotionIndex = parseInt(data.args[0].value);
+                TrialData.data.answers.emotion_indices[TrialData.data.state.mediaPlayCount] = emotionIndex;
+
+                // Increment media play count
+                TrialData.data.state.mediaPlayCount++;
+
+                // Update state
+                $timeout(function() {
+                    $scope.$apply(function() {
+                        $scope.buttonDisabled = false;
+                    });
+                });
             }
         };
 
@@ -81,7 +108,6 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
 
         // Send a message to stop media playback when this controller is destroyed
         // Also, remove OSC message event listeners
-        var thisController = this;
         $scope.$on('$destroy', function stopMediaPlayback() {
             SocketIOService.emit('sendOSCMessage', {
                 oscType: 'message',
