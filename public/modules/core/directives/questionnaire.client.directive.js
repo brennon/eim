@@ -129,7 +129,8 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
     return {
         restrict: 'E',
         scope: {
-            questionnaireData: '='
+            questionnaireData: '=',
+            questionnaireForm: '='
         },
 
         link: function(scope, element, attrs) {

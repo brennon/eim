@@ -52,6 +52,29 @@
             expect($(spacerDiv).hasClass('questionSpacer')).toBe(true);
         });
 
+        it('should bind the isolated questionnaireForm to the local questionnaireForm', function() {
+            element = angular.element('<questionnaire questionnaire-data="questionnaireData" questionnaire-form="theForm"></questionnaire>');
+            $scope.questionnaireData = {
+                structure: [
+                    {
+                        questionType: 'radio'
+                    },
+                    {
+                        questionType: 'dropdown'
+                    },
+                    {
+                        questionType: 'likert'
+                    },
+                    {
+                        questionType: 'dropdown'
+                    }
+                ]
+            };
+            $compile(element)($scope);
+            element.isolateScope().$digest();
+            expect(element.isolateScope().questionnaireForm).toBe($scope.theForm);
+        });
+
         describe('scale-question directives', function() {
             it('should add a scale-question directive for those entries with likert as questionType', function() {
                 $scope.questionnaireData = {

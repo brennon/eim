@@ -1,12 +1,12 @@
 <div data-ng-controller="QuestionnaireController">
 
-  <questionnaire questionnaire-data="questionnaireData""></questionnaire>
+  <questionnaire questionnaire-data="questionnaireData" questionnaire-form="questionnaireForm"></questionnaire>
 
   <div class="row">
     <div class="col-md-12">
       <p>
         <button class="btn btn-primary btn-lg"
-                ng-disabled="!debugMode && musicalForm.$invalid" data-ng-click="advanceSlide()">
+                ng-disabled="!debugMode && questionnaireForm.$invalid" data-ng-click="advanceSlide()">
           Continue
         </button>
       </p>
