@@ -1,5 +1,7 @@
 'use strict';
 
+// TODO: Push results to database
+
 // Trial Data service used to persist data for individual trials
 angular.module('core').factory('TrialData', [
     function() {
