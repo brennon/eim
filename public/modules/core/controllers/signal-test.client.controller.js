@@ -3,11 +3,8 @@
 // TODO: Watch for and log sensor issues
 // TODO: In the event of sensor issues, still allow user to advance after delay
 
-angular.module('core').controller('SignalTestController', ['$scope', 'TrialData', 'ExperimentManager',
-  function($scope, TrialData, ExperimentManager) {
-
-    // Bind $scope.advanceSlide to ExperimentManager functionality
-    $scope.advanceSlide = ExperimentManager.advanceSlide;
+angular.module('core').controller('SignalTestController', ['$scope', 'SocketIOService', 'TrialData',
+  function($scope, SocketIOService, TrialData) {
 
     // Signal quality indicators
     $scope.edaQuality = 0;
@@ -27,13 +24,9 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
       return $scope.edaQuality && $scope.poxQuality;
     };
 
-    // Setup socket
-    /* global io */
-    var socket = io();
-
     // Function to send start signal test message
-    var sendStartSignalTestMessage = function() {
-      socket.emit('sendOSCMessage', {
+    this.sendStartSignalTestMessage = function() {
+      SocketIOService.emit('sendOSCMessage', {
         oscType: 'message',
         address: '/eim/control/signalTest',
         args: [
@@ -50,8 +43,8 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     };
 
     // Function to send stop signal test message
-    var sendStopSignalTestMessage = function() {
-      socket.emit('sendOSCMessage', {
+    this.sendStopSignalTestMessage = function() {
+      SocketIOService.emit('sendOSCMessage', {
         oscType: 'message',
         address: '/eim/control/signalTest',
         args: [
@@ -68,7 +61,7 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
     };
 
     // Configure handler for incoming OSC messages
-    var oscMessageReceivedListener = function(data) {
+    this.oscMessageReceivedListener = function(data) {
 
       // If it was an EDA signal quality message
       if (data.address === '/eim/status/signalQuality/eda') {
@@ -94,20 +87,21 @@ angular.module('core').controller('SignalTestController', ['$scope', 'TrialData'
           $scope.testRecordingComplete = true;
         });
 
-        sendStopSignalTestMessage();
+        this.sendStopSignalTestMessage();
       }
     };
 
     // Attach handler for incoming OSC messages
-    socket.on('oscMessageReceived', oscMessageReceivedListener);
+    SocketIOService.on('oscMessageReceived', this.oscMessageReceivedListener);
 
     // Destroy handler for incoming OSC messages when $scope is destroyed,
     // and send stop signal test message
+    var controller = this;
     $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-      socket.removeListener('oscMessageReceived', oscMessageReceivedListener);
-      sendStopSignalTestMessage();
+      SocketIOService.removeListener('oscMessageReceived', controller.oscMessageReceivedListener);
+      controller.sendStopSignalTestMessage();
     });
 
-    sendStartSignalTestMessage();
+    this.sendStartSignalTestMessage();
   }
 ]);
