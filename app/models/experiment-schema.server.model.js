@@ -80,7 +80,6 @@ function updateSchemaForFixedMedia(schema, index, mediaId) {
             }
 
             if (media) {
-                console.log('resolving');
                 schema.media[index] = media;
                 resolve();
             }

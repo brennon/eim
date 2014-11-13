@@ -17,6 +17,7 @@
     "angular-socket-io": "latest",
     "socket.io-client": "latest",
     "angular-socket.io-mock": "brennon/angular-socket.io-mock",
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "angular-gettext": "~1.1.4"
   }
 }

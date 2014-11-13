@@ -4,17 +4,18 @@
     describe('MasterController', function() {
 
         //Initialize global variables
-        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend;
+        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend, gettextCatalog;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_) {
+        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_, _gettextCatalog_) {
             $controllerConstructor = $controller;
             mockScope = $rootScope.$new();
             mockHotkeys = { add: function() {} };
             ExperimentManager = _ExperimentManager_;
             $httpBackend = _$httpBackend_;
+            gettextCatalog = _gettextCatalog_;
         }));
 
         describe('initialization', function() {
@@ -64,6 +65,19 @@
                 { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
 
             expect(mockScope.trialDataJson()).toBe('trial-data');
+        });
+
+        describe('$scope#selectLanguage', function() {
+            it('should call gettext with the correct parameter', function() {
+                $controllerConstructor('MasterController',
+                    { $scope: mockScope });
+
+                spyOn(gettextCatalog, 'setCurrentLanguage');
+
+                mockScope.setLanguage('foo');
+
+                expect(gettextCatalog.setCurrentLanguage.calls.argsFor(0)[0]).toBe('foo');
+            });
         });
 
         describe('#$scope.toggleDebugMode()', function() {

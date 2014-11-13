@@ -10,6 +10,14 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 	}
 ]);
 
+// Configure gettext
+angular.module(ApplicationConfiguration.applicationModuleName).run(['gettextCatalog',
+	function(gettextCatalog) {
+		gettextCatalog.setCurrentLanguage('es');
+		gettextCatalog.debug = true;
+	}
+]);
+
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {
 	//Fixing facebook bug with redirect

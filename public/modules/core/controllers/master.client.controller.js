@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys', 'ExperimentManager',
-    function($scope, TrialData, hotkeys, ExperimentManager) {
+angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys', 'ExperimentManager', 'gettextCatalog',
+    function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog) {
 
         /*
          * Augmenting $scope
@@ -10,6 +10,10 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
         // TrialData JSON output
         $scope.trialDataJson = function() {
             return TrialData.toJson();
+        };
+
+        $scope.setLanguage = function(language) {
+            gettextCatalog.setCurrentLanguage(language);
         };
 
         // Bind 'global' advanceSlide to ExperimentManager#advanceSlide

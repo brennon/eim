@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'emotion-in-motion';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'vr.directives.slider', 'cfp.hotkeys', 'btford.socket-io'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'vr.directives.slider', 'cfp.hotkeys', 'btford.socket-io', 'gettext'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName) {
