@@ -73,8 +73,8 @@ msgstr ""
 "firmes, pero no tan apretado que es incómodo."
 
 #: public/modules/core/views/header.client.view.html
-msgid "Select Language<span class=\"caret\"></span>"
-msgstr "Seleccionar idioma<span class=\"caret\"></span>"
+msgid "Select Language"
+msgstr "Seleccionar idioma"
 
 #: public/modules/core/views/eda-instructions.client.view.html
 msgid "Skin Sensors"
@@ -117,6 +117,9 @@ msgstr "Bienvenido"
 #: public/modules/core/views/home.client.view.html
 msgid "to Emotion in Motion"
 msgstr "a Emotion in Motion"
+
+#~ msgid "Select Language<span class=\"caret\"></span>"
+#~ msgstr "Seleccionar idioma<span class=\"caret\"></span>"
 
 #~ msgid "Chinese"
 #~ msgstr "Chino\t"

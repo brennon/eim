@@ -34,7 +34,7 @@ msgid "Please place the sensors on the fingers of your <span class=\"text-danger
 msgstr ""
 
 #: public/modules/core/views/header.client.view.html
-msgid "Select Language<span class=\"caret\"></span>"
+msgid "Select Language"
 msgstr ""
 
 #: public/modules/core/views/eda-instructions.client.view.html

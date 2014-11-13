@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.6.10\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"Language: zh_TW\n"
 
 #: public/modules/core/views/eda-instructions.client.view.html
 #: public/modules/core/views/pox-instructions.client.view.html
@@ -63,7 +63,7 @@ msgstr ""
 "皮膚上。肩帶應該是緊張，但沒那麼緊了，這是不舒服的。"
 
 #: public/modules/core/views/header.client.view.html
-msgid "Select Language<span class=\"caret\"></span>"
+msgid "Select Language"
 msgstr "選擇語言"
 
 #: public/modules/core/views/eda-instructions.client.view.html
@@ -106,3 +106,6 @@ msgstr "歡迎"
 #: public/modules/core/views/home.client.view.html
 msgid "to Emotion in Motion"
 msgstr "Emotion in Motion"
+
+#~ msgid "Select Language<span class=\"caret\"></span>"
+#~ msgstr "選擇語言"
