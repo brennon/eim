@@ -25,9 +25,9 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
       var questionHeader;
       if (attrs.labelType === 'labelLeft') {
-        questionHeader = angular.element('<div class="row"><div class="col-md-12"><label>' + attrs.questionLabel + '</label></div></div>');
+        questionHeader = angular.element('<div class="row"><div class="col-md-12"><label translate>' + attrs.questionLabel + '</label></div></div>');
       } else {
-        questionHeader = angular.element('<div class="row"><div class="col-md-12 text-center"><h3>' + attrs.questionLabel + '</h3></div></div>');
+        questionHeader = angular.element('<div class="row"><div class="col-md-12 text-center"><h3 translate>' + attrs.questionLabel + '</h3></div></div>');
       }
 
       var image;
@@ -46,7 +46,7 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
       var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        '+innerRadioHTML+'<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
 
       if (attrs.minimumDescription && attrs.maximumDescription) {
-        var descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left">' + attrs.minimumDescription + '</div><div class="col-md-4"></div><div class="col-md-2 small text-right">' + attrs.maximumDescription + '</div><div class="col-md-2"></div></div></div>');
+        var descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left" translate>' + attrs.minimumDescription + '</div><div class="col-md-4"></div><div class="col-md-2 small text-right" translate>' + attrs.maximumDescription + '</div><div class="col-md-2"></div></div></div>');
       }
 
       element.append(questionHeader);

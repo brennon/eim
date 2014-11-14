@@ -28,7 +28,7 @@ angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', f
                 scope.dropdownOptions = element.data('dropdownOptions');
             }
 
-            var selectElement = angular.element('<div class="row"><div class="col-md-12 form-group"><label for="' + attrs.questionId + '" class="control-label">' + attrs.questionLabel + '</label><select id="'+attrs.questionId+'" name="'+attrs.questionId+'" class="form-control" ng-options="option for option in dropdownOptions" ng-model="'+attrs.questionId+'Select" required></select></div></div>');
+            var selectElement = angular.element('<div class="row"><div class="col-md-12 form-group"><label for="' + attrs.questionId + '" class="control-label" translate>' + attrs.questionLabel + '</label><select id="'+attrs.questionId+'" name="'+attrs.questionId+'" class="form-control" ng-model="'+attrs.questionId+'Select" required><option ng-repeat="option in dropdownOptions">{{option | translate}}</option> </select></div></div>');
 
             element.append(selectElement);
             $compile(element.contents())(scope);

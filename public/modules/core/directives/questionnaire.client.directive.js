@@ -2,6 +2,7 @@
 
 // FIXME: Address radio question formatting in the context of media questions
 // FIXME: Dump latest database
+// FIXME: Add tests for translation in individual question directives
 
 angular.module('core').directive('questionnaire', ['$compile', function($compile) {
 
@@ -141,7 +142,7 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             var data = scope.questionnaireData;
 
             // Create an element for the title
-            var title = angular.element('<h1>' + data.title + '</h1>');
+            var title = angular.element('<h1 translate>' + data.title + '</h1>');
             element.append(title);
 
             var formElement = angular.element('<form class="form" name="questionnaireForm" novalidate></form>');//('<form name="questionnaireForm" class="form" novalidate></form>');
@@ -177,7 +178,7 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
                 formElement.append(spacerElement);
             }
 
-            $compile(formElement)(scope);
+            $compile(element.contents())(scope);
         }
     };
 }]);

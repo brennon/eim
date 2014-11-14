@@ -14,11 +14,14 @@ msgstr ""
 
 #: public/modules/core/views/eda-instructions.client.view.html
 #: public/modules/core/views/pox-instructions.client.view.html
+#: public/modules/core/views/signal-test.client.view.html
+#: public/modules/core/views/sound-test.client.view.html
 #: public/modules/core/views/start.client.view.html
 msgid "Continue"
 msgstr "Continuar"
 
 #: public/modules/core/views/pox-instructions.client.view.html
+#: public/modules/core/views/signal-test.client.view.html
 msgid "Heart Sensor"
 msgstr "Sensor corazón"
 
@@ -26,9 +29,31 @@ msgstr "Sensor corazón"
 msgid "Hello, and welcome to the <em>Emotion in Motion</em> experiment!"
 msgstr "Hola, y bienvenido al experimento <em>Emotion in Motion</em>."
 
+#: public/modules/core/views/signal-test.client.view.html
+msgid ""
+"If either sensor does not display 'Signal OK', please contact a mediator for "
+"assistance. When both sensors display 'Signal OK', click 'Continue'."
+msgstr ""
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid ""
+"If you can hear sound through the headphones, please click 'Continue' to "
+"proceed."
+msgstr ""
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid ""
+"If you can’t hear any sound through the headphones, please ask a staff "
+"member for assistance."
+msgstr ""
+
 #: public/modules/core/views/start.client.view.html
 msgid "Instructions"
 msgstr "Instrucciones"
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "No Signal"
+msgstr ""
 
 #: public/modules/core/views/pox-instructions.client.view.html
 msgid ""
@@ -72,13 +97,36 @@ msgstr ""
 "contra de la piel de la parte interior de su dedo. Las correas deben ser "
 "firmes, pero no tan apretado que es incómodo."
 
+#: public/modules/core/views/sound-test.client.view.html
+msgid ""
+"Please put on the provided headphones. Left and right ears are indicated on "
+"the headset."
+msgstr ""
+
 #: public/modules/core/views/header.client.view.html
 msgid "Select Language"
 msgstr "Seleccionar idioma"
 
+#: public/modules/core/views/signal-test.client.view.html
+msgid "Sensor Tests"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Signal OK"
+msgstr ""
+
+#: public/modules/core/views/signal-test.client.view.html
+#, fuzzy
+msgid "Skin Sensor"
+msgstr "Los sensores de la piel"
+
 #: public/modules/core/views/eda-instructions.client.view.html
 msgid "Skin Sensors"
 msgstr "Los sensores de la piel"
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid "Sound Test"
+msgstr ""
 
 #: public/modules/core/views/home.client.view.html
 msgid "Start Experiment"
@@ -99,6 +147,13 @@ msgstr "El experimento tendrá una duración de aproximadamente 15 minutos."
 #: public/modules/core/views/start.client.view.html
 msgid "The songs that you will hear will be selected randomly."
 msgstr "Las canciones que va a escuchar serán seleccionados al azar."
+
+#: public/modules/core/views/signal-test.client.view.html
+msgid ""
+"We are now checking to make sure that we are reading your signals correctly. "
+"Please keep your hand still until the indicators show that both signals are "
+"good!"
+msgstr ""
 
 #: public/modules/core/views/start.client.view.html
 msgid ""

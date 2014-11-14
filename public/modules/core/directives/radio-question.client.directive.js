@@ -32,7 +32,7 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
                 scope.sendToTrialData(attrs.controllerDataPath, newValue);
             });
 
-            var questionText = '<div class="row"><div class="col-md-12"><label for="' + attrs.questionId + 'Radio">' + attrs.questionLabel + '</label><div>';
+            var questionText = '<div class="row"><div class="col-md-12"><label for="' + attrs.questionId + 'Radio" translate>' + attrs.questionLabel + '</label><div>';
 
             var innerQuestionText = '';
 
@@ -43,7 +43,7 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
 
                     var thisOption = element.data('radioOptions')[i];
 
-                    innerQuestionText += '<label class="radio-inline"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true" />' + thisOption.label + '</label>';
+                    innerQuestionText += '<label class="radio-inline"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true">{{\'' + thisOption.label + '\' | translate}}</input></label>';
                 }
             }
 

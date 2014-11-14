@@ -148,7 +148,7 @@ module.exports = function(grunt) {
         nggettext_extract: {
             pot: {
                 files: {
-                    'po/template.pot': ['public/modules/core/views/*.html']
+                    'po/template.pot': ['public/modules/core/views/*.html', 'public/modules/core/config/core.client.missing-keys.js']
                 }
 
             }
