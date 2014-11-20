@@ -2,7 +2,6 @@
 
 // TODO: Restructure module to return object
 // TODO: Max errors should be handled also in Angular in order to display error
-// TODO: Switch outgoingHost back to localhost
 
 var dgram = require('dgram');
 var osc = require('osc-min');

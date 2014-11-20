@@ -44,7 +44,7 @@
 
         describe('radio buttons', function() {
             it('should add a button for each option and wrap each in a label', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-label="Gender" question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -60,7 +60,7 @@
             });
 
             it('should set the correct name on each button', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -72,7 +72,7 @@
             });
 
             it('should set the correct id on each button', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -82,7 +82,7 @@
             });
 
             it('should set the correct value on each button', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -92,7 +92,7 @@
             });
 
             it('should set the required attribute on each button', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -104,7 +104,7 @@
             });
 
             it('should set the correct model on each radio button', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -115,7 +115,7 @@
             });
 
             it('should wrap each button with a label', function() {
-                var options = [{ label: "Yes", value: true }, { label: 'No', value: false }];
+                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -132,7 +132,7 @@
 
         describe('data binding', function() {
             it('should call TrialData with the correct data when an option is selected', function() {
-                var options = [{ label: "foo", value: "bar" }, { label: "bit", value: "baz" }];
+                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -150,7 +150,7 @@
             });
 
             it('should call TrialData with the correct data when an option is selected and the question is associated to media', function() {
-                var options = [{ label: "foo", value: "bar" }, { label: "bit", value: "baz" }];
+                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender" associated-to-media="true"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -169,7 +169,7 @@
             });
 
             it('should convert true strings to literals', function() {
-                var options = [{ label: "foo", value: "bar" }, { label: "bit", value: "baz" }];
+                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
@@ -187,7 +187,7 @@
             });
 
             it('should convert false strings to literals', function() {
-                var options = [{ label: "foo", value: "bar" }, { label: "bit", value: "baz" }];
+                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);

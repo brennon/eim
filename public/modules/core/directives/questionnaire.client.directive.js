@@ -1,8 +1,8 @@
 'use strict';
 
 // FIXME: Address radio question formatting in the context of media questions
-// FIXME: Dump latest database
 // FIXME: Add tests for translation in individual question directives
+// FIXME: Convert options to a single format instead of radioOptions, dropdownOptions, etc.
 
 angular.module('core').directive('questionnaire', ['$compile', function($compile) {
 

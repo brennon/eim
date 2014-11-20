@@ -44,7 +44,7 @@ ng.provider("socketFactory",function(){
 
              //additional API for forwarding events to the angular context
 
-      }
+      };
 
       obj.removeListener = function(){
 

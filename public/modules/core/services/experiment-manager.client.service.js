@@ -1,7 +1,5 @@
 'use strict';
 
-// FIXME: Remove unnecessarily injected dependencies across all files
-
 // Trial Data service used to persist data for individual trials
 angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http', '$state',
   function (TrialData, $q, $http, $state) {

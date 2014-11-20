@@ -111,10 +111,6 @@ div.cover.blackout {
     z-index: 1;
 }
 
-div.questionSpacer {
-    /*height: 120px;*/
-}
-
 label.questionLabel {
     width: 100%;
     text-align: center;

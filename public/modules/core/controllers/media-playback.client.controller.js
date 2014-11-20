@@ -1,14 +1,11 @@
 'use strict';
 
-// FIXME: Respect fixed media-playback type
 // FIXME: Address OSC error when message sent without session ID
-// TODO: Remove blackout when returning home
 // TODO: Use different button colors for Playback and Continue
-// TODO: Find a better way to listen for socket messages and clean up listeners
 // TODO: Request and save emotion indices
 
-angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager', /*'$state', 'ExperimentManager',*/
-    function($scope, TrialData, SocketIOService, $timeout, ExperimentManager/*, $state, ExperimentManager*/) {
+angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager',
+    function($scope, TrialData, SocketIOService, $timeout, ExperimentManager) {
         var thisController = this;
 
         // State to control button behavior

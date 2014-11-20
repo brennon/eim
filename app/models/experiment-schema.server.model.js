@@ -30,6 +30,23 @@ function requiredArrayValidator(value) {
     return Object.prototype.toString.call(value) === '[object Array]' && value.length > 0;
 }
 
+function updateSchemaForFixedMedia(schema, index, mediaId) {
+    return new BluebirdPromise(function(resolve, reject) {
+        // Get the media entry for the ObjectID in slide.media
+        var MediaModel = mongoose.model('Media');
+        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
+            if (err) {
+                reject();
+            }
+
+            if (media) {
+                schema.media[index] = media;
+                resolve();
+            }
+        });
+    });
+}
+
 // Use the above validator for `mediaPool`
 ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
 
@@ -69,23 +86,6 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
         }
     });
 };
-
-function updateSchemaForFixedMedia(schema, index, mediaId) {
-    return new BluebirdPromise(function(resolve, reject) {
-        // Get the media entry for the ObjectID in slide.media
-        var MediaModel = mongoose.model('Media');
-        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
-            if (err) {
-                reject();
-            }
-
-            if (media) {
-                schema.media[index] = media;
-                resolve();
-            }
-        });
-    });
-}
 
 // Register schema for `ExperimentSchema` model
 mongoose.model('ExperimentSchema', ExperimentSchemaSchema);

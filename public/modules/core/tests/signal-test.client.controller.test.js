@@ -263,7 +263,7 @@
 
                     mockScope.edaQuality = 1;
 
-                    controller.oscMessageReceivedListener(mockMessage)
+                    controller.oscMessageReceivedListener(mockMessage);
 
                     expect(mockScope.edaQuality).toBe(0);
                 });
@@ -284,7 +284,7 @@
 
                     mockScope.edaQuality = 0;
 
-                    controller.oscMessageReceivedListener(mockMessage)
+                    controller.oscMessageReceivedListener(mockMessage);
 
                     expect(mockScope.edaQuality).toBe(1);
                 });
@@ -305,7 +305,7 @@
 
                     mockScope.poxQuality = 1;
 
-                    controller.oscMessageReceivedListener(mockMessage)
+                    controller.oscMessageReceivedListener(mockMessage);
 
                     expect(mockScope.poxQuality).toBe(0);
                 });
@@ -326,7 +326,7 @@
 
                     mockScope.poxQuality = 0;
 
-                    controller.oscMessageReceivedListener(mockMessage)
+                    controller.oscMessageReceivedListener(mockMessage);
 
                     expect(mockScope.poxQuality).toBe(1);
                 });
@@ -342,7 +342,7 @@
 
                     mockScope.testRecordingComplete = false;
 
-                    controller.oscMessageReceivedListener(mockMessage)
+                    controller.oscMessageReceivedListener(mockMessage);
 
                     expect(mockScope.testRecordingComplete).toBe(true);
                 });
@@ -358,7 +358,7 @@
 
                     spyOn(controller, 'sendStopSignalTestMessage');
 
-                    controller.oscMessageReceivedListener(mockMessage)
+                    controller.oscMessageReceivedListener(mockMessage);
 
                     expect(controller.sendStopSignalTestMessage.calls.count()).toBe(1);
                 });

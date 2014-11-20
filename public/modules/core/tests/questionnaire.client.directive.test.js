@@ -353,12 +353,12 @@
                             questionType: 'radio',
                             questionRadioOptions: [
                                 {
-                                    "label" : "Yes",
-                                    "value" : true
+                                    'label' : 'Yes',
+                                    'value' : true
                                 },
                                 {
-                                    "label" : "No",
-                                    "value" : false
+                                    'label' : 'No',
+                                    'value' : false
                                 }
                             ]
                         }

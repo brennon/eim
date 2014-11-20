@@ -1,7 +1,5 @@
 'use strict';
 
-// FIXME: Binding radio options to element's data sucks
-
 angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
 
     return {
