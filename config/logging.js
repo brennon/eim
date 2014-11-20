@@ -21,6 +21,11 @@ module.exports = {
 switch((process.env.NODE_ENV || '').toLowerCase()){
   case 'production':
     production = true;
+    logger.add(winston.transports.Console, {
+      colorize: true,
+      timestamp: true,
+      level: 'debug'
+    });
     logger.add(winston.transports.File, {
       filename: require('path').join(__dirname, '..', 'application.log'),
       handleExceptions: true,
