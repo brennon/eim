@@ -19,6 +19,7 @@
             element = angular.element('<dropdown-question question-label="Nationality" question-id="nationality"></radio-question>');
             $compile(element)($scope);
             var labelElement = $(element).find('label');
+            $scope.$digest();
 
             expect(labelElement.text()).toBe('Nationality');
             expect(labelElement.attr('for')).toBe('nationality');

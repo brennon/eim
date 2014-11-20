@@ -145,7 +145,7 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             var title = angular.element('<h1 translate>' + data.title + '</h1>');
             element.append(title);
 
-            var formElement = angular.element('<form class="form" name="questionnaireForm" novalidate></form>');//('<form name="questionnaireForm" class="form" novalidate></form>');
+            var formElement = angular.element('<form class="form" name="questionnaireForm" novalidate></form>');
             element.append(formElement);
 
             // Iterate over structure

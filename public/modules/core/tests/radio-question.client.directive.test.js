@@ -36,6 +36,7 @@
             $compile(element)($scope);
             var greatGrandchild = $($($(element).children()[0]).children()[0]).children()[0];
             greatGrandchild = $(greatGrandchild);
+            $scope.$digest();
 
             expect(greatGrandchild.text()).toBe('qText');
             expect(greatGrandchild.attr('for')).toBe('genderRadio');
@@ -119,6 +120,8 @@
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
                 element.data('radioOptions', options);
                 $compile(element)($scope);
+                $scope.$digest();
+
                 var radios = $(element).find('input[type="radio"]');
                 for (var i = 0; i < radios.length; i++) {
                     var obj = radios[i];

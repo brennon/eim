@@ -32,7 +32,7 @@ module.exports = {
 				'public/lib/socket.io-client/socket.io.js',
 				'public/lib/angular-socket-io/socket.js',
 				'public/lib/UUID.js/dist/uuid.core.js',
-				'public/modules/angular-hotkeys/services/hotkeys.min.js',
+				'public/modules/angular-hotkeys/services/hotkeys.js',
 				'public/lib/angular-gettext/dist/angular-gettext.js',
 				'public/i18n/translations.js'
 			]

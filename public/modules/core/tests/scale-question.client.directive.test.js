@@ -18,14 +18,17 @@
         
         it('should add a header for the question text', function() {
             $compile(element)($scope);
-            expect(element.html()).toMatch(/<h3>qText<\/h3>/);
+            $scope.$digest();
+            expect(element.html()).toMatch(/<h3.*qText.*\/h3>/);
         });
 
         it('should add a label if the labelType is set to labelLeft', function() {
             element = angular.element('<scale-question question-label="qText" label-type="labelLeft" single-img-src="img/single.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
             $compile(element)($scope);
+            $scope.$digest();
+
             expect(element.html()).not.toMatch(/<h3>qText<\/h3>/);
-            expect(element.html()).toMatch(/<label>qText<\/label>/);
+            expect(element.html()).toMatch(/<label.*qText.*\/label>/);
         });
 
         describe('single image', function() {

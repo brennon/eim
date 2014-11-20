@@ -22,7 +22,6 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
         // Global debug mode flag
         $scope.debugMode = false;
         $scope.toggleDebugMode = function() {
-            console.log('toggling debug mode');
             $scope.debugMode = !$scope.debugMode;
             var alertMessage = 'Debug mode has been ';
             if ($scope.debugMode) {

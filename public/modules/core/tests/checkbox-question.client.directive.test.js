@@ -15,14 +15,14 @@
             TrialData = _TrialData_;
         }));
 
-        iit('should add a label for the question text', function() {
+        it('should add a label for the question text', function() {
             element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
-            var options = ['Rock', 'Pop', 'Folk'];
-            element.data('checkboxOptions', options);
+            //var options = ['Rock', 'Pop', 'Folk'];
+            //element.data('checkboxOptions', options);
             $compile(element)($scope);
             var labelElement = $(element).find('label');
+            $scope.$digest();
 
-            console.log(labelElement.html());
 
             expect(labelElement.text()).toBe('Music Styles');
             expect(labelElement.attr('for')).toBe('musicStylesCheckbox');
@@ -65,6 +65,7 @@
                 element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
                 element.data('checkboxOptions', options);
                 $compile(element)($scope);
+                $scope.$digest();
 
                 var checkboxes = element.find('input[type="checkbox"]');
                 for (var i = 0; i < checkboxes.length; i++) {

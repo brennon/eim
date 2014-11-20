@@ -1974,7 +1974,6 @@ angular.module('core').controller('MasterController', [
     // Global debug mode flag
     $scope.debugMode = false;
     $scope.toggleDebugMode = function () {
-      console.log('toggling debug mode');
       $scope.debugMode = !$scope.debugMode;
       var alertMessage = 'Debug mode has been ';
       if ($scope.debugMode) {
@@ -2559,7 +2558,6 @@ angular.module('core').directive('questionnaire', [
         var title = angular.element('<h1 translate>' + data.title + '</h1>');
         element.append(title);
         var formElement = angular.element('<form class="form" name="questionnaireForm" novalidate></form>');
-        //('<form name="questionnaireForm" class="form" novalidate></form>');
         element.append(formElement);
         // Iterate over structure
         for (var i = 0; i < data.structure.length; i++) {

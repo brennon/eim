@@ -5,7 +5,7 @@
  */
 var applicationConfiguration = require('./config/config');
 
-var jQuerySource = ['public/lib/jquery/jquery.min.js'];
+var jQuerySource = ['public/lib/jquery/dist/jquery.min.js'];
 
 
 // Karma configuration

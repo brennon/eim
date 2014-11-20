@@ -12,7 +12,7 @@
         beforeEach(inject(function(_$rootScope_, _$compile_) {
             $scope = _$rootScope_.$new();
             $compile = _$compile_;
-            element = angular.element('<questionnaire questionnaire-data="questionnaireData"></questionnaire>');
+            element = angular.element('<questionnaire questionnaire-data="questionnaireData" questionnaire-form="questionnaireForm"></questionnaire>');
         }));
         
         it('should add a header for the page title', function() {
@@ -21,8 +21,9 @@
                 structure: []
             };
             $compile(element)($scope);
+            $scope.$digest();
 
-            expect(element.html()).toMatch(/<h1>Media Questions<\/h1>/);
+            expect(element.html()).toMatch(/<h1.*Media Questions.*\/h1>/);
         });
 
         it('should add a form with name questionnaireForm to the page', function() {
