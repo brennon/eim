@@ -59,10 +59,4 @@ describe('start page', function() {
         selectEnglishLanguage();
         advanceToStartPage();
     });
-
-    it('should load with the continue button disabled', function() {
-        var continueButton = element(by.cssContainingText('a', 'Continue'));
-
-        expect(continueButton.getWebElement().getAttribute('disabled')).toBe('true');
-    });
 });
