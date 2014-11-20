@@ -198,5 +198,5 @@ module.exports = function(grunt) {
     // Just Node tests task
     grunt.registerTask('test:server', ['env:test', 'mochaTest']);
 
-    grunt.loadNpmTasks('grunt-angular-gettext')
+    grunt.loadNpmTasks('grunt-angular-gettext');
 };
