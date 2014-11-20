@@ -7,34 +7,6 @@ var mongoose = require('mongoose'),
     _ = require('lodash'),
     ExperimentSchema = mongoose.model('ExperimentSchema');
 
-///**
-// * Create a Experiment schema
-// */
-//exports.create = function(req, res) {
-//
-//};
-//
-///**
-// * Show the current Experiment schema
-// */
-//exports.read = function(req, res) {
-//
-//};
-//
-///**
-// * Update a Experiment schema
-// */
-//exports.update = function(req, res) {
-//
-//};
-//
-///**
-// * Delete an Experiment schema
-// */
-//exports.delete = function(req, res) {
-//
-//};
-
 /**
  * List of Experiment schemas
  */
@@ -54,7 +26,6 @@ exports.list = function(req, res) {
  * Build a random experiment from a random ExperimentSchema
  */
 exports.random = function(req, res) {
-  console.log('ahh!');
 
   function errorHandler(message) {
     res.json(500, { error: message });
@@ -73,11 +44,9 @@ exports.random = function(req, res) {
 
       // Get a random schema
       ExperimentSchema.find({}).skip(rand).limit(1).populate('mediaPool', 'artist title label').exec(function (err, schema) {
-        console.log('finding');
 
         // Using the controller, services an experiment from this schema
         schema[0].buildExperiment(function(err, builtExperiment) {
-          console.log('returning: ' + builtExperiment);
 
           // Send the response
           res.json(200, builtExperiment);
