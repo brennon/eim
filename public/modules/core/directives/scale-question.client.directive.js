@@ -37,10 +37,34 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
         image = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2"><img src="' + attrs.leftImgSrc + '"></div><div class="col-md-4"></div><div class="col-md-2"><img src="' + attrs.rightImgSrc + '"></div><div class="col-md-2"></div></div>');
       }
 
+      var optionLabels;
+      if (element.data('questionOptions') && element.data('questionOptions').choices) {
+        var choices = element.data('questionOptions').choices;
+
+        optionLabels = angular.element('<div class="row"></div>');
+
+        var leftSpacer = optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
+
+        var centerGroup = angular.element('<div class="col-md-8 option-label-container"></div>');
+
+        var innerRow = angular.element('<div class="row"></div>');
+
+        for (var i = 0; i < choices.length; i++) {
+          var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">'+choices[i].label+'</div>')
+          innerRow.append(choiceDiv);
+        }
+
+        centerGroup.append(innerRow);
+
+        optionLabels.append(centerGroup);
+
+        var rightSpacer = optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
+      }
+
       var innerRadioHTML = '';
 
       for (var i = 1; i <= 5; i++) {
-        innerRadioHTML += '<div class="col-md-5ths"><input type="radio" name="'+attrs.questionId+'RadioGroup" id="'+attrs.questionId+'RadioGroup'+i+'" value="'+i+'" required ng-model="'+attrs.questionId+'RadioGroup"></div>';
+        innerRadioHTML += '<div class="col-md-5ths text-center"><input type="radio" name="'+attrs.questionId+'RadioGroup" id="'+attrs.questionId+'RadioGroup'+i+'" value="'+i+'" required ng-model="'+attrs.questionId+'RadioGroup"></div>';
       }
 
       var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        '+innerRadioHTML+'<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
@@ -52,6 +76,7 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
       element.append(questionHeader);
       element.append(image);
+      element.append(optionLabels);
       element.append(radios);
 
       if (descriptions) {

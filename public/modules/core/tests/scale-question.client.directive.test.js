@@ -59,6 +59,98 @@
             });
         });
 
+        ddescribe('option labels', function() {
+            it('should correctly layout the DOM for the labels', function() {
+                var mockOptions = {
+                    "choices" : [
+                        {
+                            label : 'Disagree strongly'
+                        },
+                        {
+                            label : 'Disagree a little'
+                        },
+                        {
+                            label : 'Neither agree nor disagree'
+                        },
+                        {
+                            label : 'Agree a little'
+                        },
+                        {
+                            label : 'Agree strongly'
+                        }
+                    ]
+                };
+                element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
+                element.data('questionOptions', mockOptions);
+                $compile(element)($scope);
+                var labelRow = $(element).find('div.row')[1];
+                var childrenDivs = $(labelRow).children();
+
+                // First and last children should be spacers and cols
+                expect($(childrenDivs[0]).hasClass('option-label-spacer')).toBe(true);
+                expect($(childrenDivs[0]).hasClass('col-md-2')).toBe(true);
+                expect($(childrenDivs[2]).hasClass('option-label-spacer')).toBe(true);
+                expect($(childrenDivs[2]).hasClass('col-md-2')).toBe(true);
+
+                // Middle child should be a col that contains a row
+                var middleChild = $(childrenDivs[1]);
+                expect(middleChild.hasClass('option-label-container')).toBe(true);
+                expect(middleChild.hasClass('col-md-8')).toBe(true);
+
+                // Middle child should hold a row
+                var innerRow = $(middleChild.children()[0]);
+                expect(innerRow.hasClass('row')).toBe(true);
+
+                // This row should be divided into fifths
+                var innerRowChildren = innerRow.children();
+                expect(innerRowChildren.length).toBe(5);
+                for (var i = 0; i < innerRowChildren.length; i++) {
+                    var thisChildDiv = $(innerRowChildren[i]);
+                    expect(thisChildDiv.hasClass("col-md-5ths")).toBe(true);
+                    expect(thisChildDiv.hasClass("option-label")).toBe(true);
+
+                    // Text should be centered
+                    expect(thisChildDiv.hasClass("text-center")).toBe(true);
+                }
+            });
+
+            it('should correctly layout the DOM for the labels', function() {
+                var mockOptions = {
+                    "choices" : [
+                        {
+                            label : 'Disagree strongly'
+                        },
+                        {
+                            label : 'Disagree a little'
+                        },
+                        {
+                            label : 'Neither agree nor disagree'
+                        },
+                        {
+                            label : 'Agree a little'
+                        },
+                        {
+                            label : 'Agree strongly'
+                        }
+                    ]
+                };
+                element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
+                element.data('questionOptions', mockOptions);
+                $compile(element)($scope);
+                var labelRow = $(element).find('div.row')[1];
+                var childrenDivs = $(labelRow).children();
+
+                var middleChild = $(childrenDivs[1]);
+
+                var innerRow = $(middleChild.children()[0]);
+
+                var innerRowChildren = innerRow.children();
+                for (var i = 0; i < innerRowChildren.length; i++) {
+                    expect($(innerRowChildren[i]).text()).toBe(mockOptions.choices[i].label);
+                }
+            });
+        });
+
         describe('no images', function() {
            it('should not include any images', function() {
                element = angular.element('<scale-question question-label="qText" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');

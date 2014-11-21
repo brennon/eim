@@ -49,6 +49,10 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
         }
 
+        if (item.questionOptions) {
+            questionElement.data('questionOptions', item.questionOptions);
+        }
+
         return questionElement;
     };
 

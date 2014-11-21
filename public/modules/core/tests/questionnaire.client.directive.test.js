@@ -1,7 +1,7 @@
 'use strict';
 
-(function() {
-    describe('questionnaire directive', function() {
+(function () {
+    describe('questionnaire directive', function () {
 
         //Initialize global variables
         var $scope, $compile, element;
@@ -9,13 +9,13 @@
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$rootScope_, _$compile_) {
+        beforeEach(inject(function (_$rootScope_, _$compile_) {
             $scope = _$rootScope_.$new();
             $compile = _$compile_;
             element = angular.element('<questionnaire questionnaire-data="questionnaireData" questionnaire-form="questionnaireForm"></questionnaire>');
         }));
-        
-        it('should add a header for the page title', function() {
+
+        it('should add a header for the page title', function () {
             $scope.questionnaireData = {
                 title: 'Media Questions',
                 structure: []
@@ -26,7 +26,7 @@
             expect(element.html()).toMatch(/<h1.*Media Questions.*\/h1>/);
         });
 
-        it('should add a form with name questionnaireForm to the page', function() {
+        it('should add a form with name questionnaireForm to the page', function () {
             $scope.questionnaireData = {
                 title: 'Media Questions',
                 structure: []
@@ -37,7 +37,7 @@
             expect(formElements.length).toBe(1);
         });
 
-        it('should add a spacer after each question', function() {
+        it('should add a spacer after each question', function () {
             $scope.questionnaireData = {
                 structure: [
                     {
@@ -53,7 +53,7 @@
             expect($(spacerDiv).hasClass('questionSpacer')).toBe(true);
         });
 
-        it('should bind the isolated questionnaireForm to the local questionnaireForm', function() {
+        it('should bind the isolated questionnaireForm to the local questionnaireForm', function () {
             element = angular.element('<questionnaire questionnaire-data="questionnaireData" questionnaire-form="theForm"></questionnaire>');
             $scope.questionnaireData = {
                 structure: [
@@ -76,8 +76,8 @@
             expect(element.isolateScope().questionnaireForm).toBe($scope.theForm);
         });
 
-        describe('scale-question directives', function() {
-            it('should add a scale-question directive for those entries with likert as questionType', function() {
+        describe('scale-question directives', function () {
+            it('should add a scale-question directive for those entries with likert as questionType', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -97,7 +97,7 @@
                 expect(scaleQuestionElements.length).toBe(2);
             });
 
-            it('should add the question-id for a scale-question directive', function() {
+            it('should add the question-id for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -113,7 +113,7 @@
                 expect($(scaleQuestionElements[0]).attr('question-id')).toBe('aQuestionId');
             });
 
-            it('should add the title for a scale-question directive', function() {
+            it('should add the title for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -129,7 +129,7 @@
                 expect($(scaleQuestionElements).attr('question-label')).toBe('Question Label');
             });
 
-            it('should add the minimum description for a scale-question directive', function() {
+            it('should add the minimum description for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -145,7 +145,7 @@
                 expect($(scaleQuestionElements).attr('minimum-description')).toBe('Minimum Description');
             });
 
-            it('should add the maximum description for a scale-question directive', function() {
+            it('should add the maximum description for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -161,7 +161,7 @@
                 expect($(scaleQuestionElements).attr('maximum-description')).toBe('Maximum Description');
             });
 
-            it('should add the image source for a single image scale-question directive', function() {
+            it('should add the image source for a single image scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -177,7 +177,7 @@
                 expect($(scaleQuestionElements).attr('single-img-src')).toBe('/img.png');
             });
 
-            it('should add the left image source for an extremes images scale-question directive', function() {
+            it('should add the left image source for an extremes images scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -193,7 +193,7 @@
                 expect($(scaleQuestionElements).attr('left-img-src')).toBe('/left.png');
             });
 
-            it('should add the right image source for an extremes images scale-question directive', function() {
+            it('should add the right image source for an extremes images scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -209,7 +209,7 @@
                 expect($(scaleQuestionElements).attr('right-img-src')).toBe('/right.png');
             });
 
-            it('should add the media association attribute for a scale-question directive', function() {
+            it('should add the media association attribute for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -225,7 +225,7 @@
                 expect($(scaleQuestionElements).attr('associated-to-media')).toBe('true');
             });
 
-            it('should add the storage path attribute for a scale-question directive', function() {
+            it('should add the storage path attribute for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -241,7 +241,7 @@
                 expect($(scaleQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
 
-            it('should add the label type attribute for a scale-question directive', function() {
+            it('should add the label type attribute for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -259,8 +259,8 @@
             });
         });
 
-        describe('radio-question directives', function() {
-            it('should add a radio-question directive for those entries with radio as questionType', function() {
+        describe('radio-question directives', function () {
+            it('should add a radio-question directive for those entries with radio as questionType', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -283,7 +283,7 @@
                 expect(radioQuestionElements.length).toBe(2);
             });
 
-            it('should add the question-id for a radio-question directive', function() {
+            it('should add the question-id for a radio-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -299,7 +299,7 @@
                 expect($(radioQuestionElements[0]).attr('question-id')).toBe('aQuestionId');
             });
 
-            it('should add the title for a radio-question directive', function() {
+            it('should add the title for a radio-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -315,7 +315,7 @@
                 expect($(radioQuestionElements).attr('question-label')).toBe('Question Label');
             });
 
-            it('should add the media association attribute for a radio-question directive', function() {
+            it('should add the media association attribute for a radio-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -331,7 +331,7 @@
                 expect($(radioQuestionElements).attr('associated-to-media')).toBe('true');
             });
 
-            it('should add the storage path attribute for a radio-question directive', function() {
+            it('should add the storage path attribute for a radio-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -347,19 +347,19 @@
                 expect($(radioQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
 
-            it('should add the radio options on the data attribute of a radio-question directive', function() {
+            it('should add the radio options on the data attribute of a radio-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
                             questionType: 'radio',
                             questionRadioOptions: [
                                 {
-                                    'label' : 'Yes',
-                                    'value' : true
+                                    'label': 'Yes',
+                                    'value': true
                                 },
                                 {
-                                    'label' : 'No',
-                                    'value' : false
+                                    'label': 'No',
+                                    'value': false
                                 }
                             ]
                         }
@@ -373,8 +373,8 @@
             });
         });
 
-        describe('scale-question directives', function() {
-            it('should add a scale-question directive for those entries with likert as questionType', function() {
+        describe('scale-question directives', function () {
+            it('should add a scale-question directive for those entries with likert as questionType', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -394,7 +394,7 @@
                 expect(scaleQuestionElements.length).toBe(2);
             });
 
-            it('should add the question-id for a scale-question directive', function() {
+            it('should add the question-id for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -410,7 +410,7 @@
                 expect($(scaleQuestionElements[0]).attr('question-id')).toBe('aQuestionId');
             });
 
-            it('should add the title for a scale-question directive', function() {
+            it('should add the title for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -426,7 +426,7 @@
                 expect($(scaleQuestionElements).attr('question-label')).toBe('Question Label');
             });
 
-            it('should add the minimum description for a scale-question directive', function() {
+            it('should add the minimum description for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -442,7 +442,7 @@
                 expect($(scaleQuestionElements).attr('minimum-description')).toBe('Minimum Description');
             });
 
-            it('should add the maximum description for a scale-question directive', function() {
+            it('should add the maximum description for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -458,7 +458,7 @@
                 expect($(scaleQuestionElements).attr('maximum-description')).toBe('Maximum Description');
             });
 
-            it('should add the image source for a single image scale-question directive', function() {
+            it('should add the image source for a single image scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -474,7 +474,7 @@
                 expect($(scaleQuestionElements).attr('single-img-src')).toBe('/img.png');
             });
 
-            it('should add the left image source for an extremes images scale-question directive', function() {
+            it('should add the left image source for an extremes images scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -490,7 +490,7 @@
                 expect($(scaleQuestionElements).attr('left-img-src')).toBe('/left.png');
             });
 
-            it('should add the right image source for an extremes images scale-question directive', function() {
+            it('should add the right image source for an extremes images scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -506,7 +506,7 @@
                 expect($(scaleQuestionElements).attr('right-img-src')).toBe('/right.png');
             });
 
-            it('should add the media association attribute for a scale-question directive', function() {
+            it('should add the media association attribute for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -522,7 +522,7 @@
                 expect($(scaleQuestionElements).attr('associated-to-media')).toBe('true');
             });
 
-            it('should add the storage path attribute for a scale-question directive', function() {
+            it('should add the storage path attribute for a scale-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -537,10 +537,44 @@
                 var scaleQuestionElements = $(element).find('scale-question');
                 expect($(scaleQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
+
+            it('should add question options on the data attribute of a scale-question directive', function () {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionOptions: {
+                                "choices": [
+                                    {
+                                        "label": "Disagree strongly"
+                                    },
+                                    {
+                                        "label": "Disagree a little"
+                                    },
+                                    {
+                                        "label": "Neither agree nor disagree"
+                                    },
+                                    {
+                                        "label": "Agree a little"
+                                    },
+                                    {
+                                        "label": "Agree strongly"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElement= $(element).find('scale-question');
+                expect($(scaleQuestionElement).data('questionOptions')).toEqual($scope.questionnaireData.structure[0].questionOptions);
+            });
         });
 
-        describe('dropdown-question directives', function() {
-            it('should add a dropdown-question directive for those entries with radio as questionType', function() {
+        describe('dropdown-question directives', function () {
+            it('should add a dropdown-question directive for those entries with radio as questionType', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -563,7 +597,7 @@
                 expect(radioQuestionElements.length).toBe(2);
             });
 
-            it('should add the question-id for a radio-question directive', function() {
+            it('should add the question-id for a radio-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -579,7 +613,7 @@
                 expect($(radioQuestionElements[0]).attr('question-id')).toBe('nationality');
             });
 
-            it('should add the title for a dropdown-question directive', function() {
+            it('should add the title for a dropdown-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -595,7 +629,7 @@
                 expect($(radioQuestionElements).attr('question-label')).toBe('Question Label');
             });
 
-            it('should add the media association attribute for a dropdown-question directive', function() {
+            it('should add the media association attribute for a dropdown-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -611,7 +645,7 @@
                 expect($(radioQuestionElements).attr('associated-to-media')).toBe('true');
             });
 
-            it('should add the storage path attribute for a dropdown-question directive', function() {
+            it('should add the storage path attribute for a dropdown-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -627,12 +661,12 @@
                 expect($(radioQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
 
-            it('should add the dropdown options on the data attribute of a dropdown-question directive', function() {
+            it('should add the dropdown options on the data attribute of a dropdown-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
                             questionType: 'dropdown',
-                            questionDropdownOptions: ['a','b','c','d']
+                            questionDropdownOptions: ['a', 'b', 'c', 'd']
                         }
                     ]
                 };
@@ -644,8 +678,8 @@
             });
         });
 
-        describe('checkbox-question directives', function() {
-            it('should add a checkbox-question directive for those entries with checkbox as questionType', function() {
+        describe('checkbox-question directives', function () {
+            it('should add a checkbox-question directive for those entries with checkbox as questionType', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -668,7 +702,7 @@
                 expect(checkboxQuestionElements.length).toBe(2);
             });
 
-            it('should add the question-id for a checkbox-question directive', function() {
+            it('should add the question-id for a checkbox-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -684,7 +718,7 @@
                 expect($(checkboxQuestionElements[0]).attr('question-id')).toBe('musicStyles');
             });
 
-            it('should add the title for a checkbox-question directive', function() {
+            it('should add the title for a checkbox-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -700,7 +734,7 @@
                 expect($(checkboxQuestionElements).attr('question-label')).toBe('Question Label');
             });
 
-            it('should add the media association attribute for a checkbox-question directive', function() {
+            it('should add the media association attribute for a checkbox-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -709,14 +743,14 @@
                         }
                     ]
                 };
-            
+
                 $compile(element)($scope);
-            
+
                 var checkboxQuestionElements = $(element).find('checkbox-question');
                 expect($(checkboxQuestionElements).attr('associated-to-media')).toBe('true');
             });
-            
-            it('should add the storage path attribute for a checkbox-question directive', function() {
+
+            it('should add the storage path attribute for a checkbox-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -725,19 +759,19 @@
                         }
                     ]
                 };
-            
+
                 $compile(element)($scope);
-            
+
                 var checkboxQuestionElements = $(element).find('checkbox-question');
                 expect($(checkboxQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
-            
-            it('should add the checkbox options on the data attribute of a checkbox-question directive', function() {
+
+            it('should add the checkbox options on the data attribute of a checkbox-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
                             questionType: 'checkbox',
-                            questionCheckboxOptions: ['a','b','c','d']
+                            questionCheckboxOptions: ['a', 'b', 'c', 'd']
                         }
                     ]
                 };

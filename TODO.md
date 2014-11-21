@@ -3,10 +3,10 @@
 ## Application Design
 
 - FIXME: Adjust experiment to work correctly on narrower screens
-- TODO: Add personality questions screen
 - TODO: Add emotion index screen
 - FIXME: Address layout issues
 - TODO: Add timeout that returns to the home screen after n minutes
+- TODO: Add personality questionnaire introductory text
 
 ## Utilities
 
@@ -27,6 +27,7 @@
 - FIXME: Consider how to handle different questions for different songs (e.g., asking about familiarity for control sound)
 - TODO: Convert options to a single format instead of radioOptions, dropdownOptions, etc.
 - FIXME: Fix media questionnaire responses that don't make it into Trial Data
+- TODO: Allow for introductory text
 
 ## Media Playback screens
 
