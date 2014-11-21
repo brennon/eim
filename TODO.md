@@ -28,6 +28,7 @@
 - TODO: Convert options to a single format instead of radioOptions, dropdownOptions, etc.
 - FIXME: Fix media questionnaire responses that don't make it into Trial Data
 - TODO: Allow for introductory text
+- TODO: Add numbers to other Likert scales
 
 ## Media Playback screens
 
