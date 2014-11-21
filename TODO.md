@@ -3,7 +3,6 @@
 ## Application Design
 
 - FIXME: Adjust experiment to work correctly on narrower screens
-- TODO: Add consent form screen
 - FIXME: Move Taiwanese to top of nationalities selection list
 - TODO: Add personality questions screen
 - TODO: Add emotion index screen
