@@ -16,6 +16,7 @@
 
 - TODO: Follow-up with Vilvite on TeamViewer installation
 - FIXME: Update text throughout experiment
+- TODO: Harvest latest strings
 
 ## Instructions screen
 
@@ -29,6 +30,10 @@
 - FIXME: Fix media questionnaire responses that don't make it into Trial Data
 - TODO: Allow for introductory text
 - TODO: Add numbers to other Likert scales
+
+## Emotion index screen
+
+- FIXME: Be smarter about what indices to show (fixed vs. random, etc.)
 
 ## Media Playback screens
 
@@ -61,3 +66,11 @@
 
 - FIXME: Restructure module to return object
 - FIXME: Handle Max errors in Angular in order to display something meaningful to the user
+
+## Personality questions screen
+
+- FIXME: Add translation
+
+## Final questions screen
+
+- TODO: Add final questions screen
