@@ -26,6 +26,17 @@
             expect(element.html()).toMatch(/<h1.*Media Questions.*\/h1>/);
         });
 
+
+        it('should not show the page title if a title isn\'t specified', function() {
+            $scope.questionnaireData = {
+                structure: []
+            };
+            $compile(element)($scope);
+            $scope.$digest();
+
+            expect(element.html()).not.toMatch(/h1/);
+        });
+
         it('should add a form with name questionnaireForm to the page', function () {
             $scope.questionnaireData = {
                 title: 'Media Questions',
