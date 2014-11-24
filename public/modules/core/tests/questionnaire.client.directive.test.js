@@ -566,21 +566,21 @@
                         {
                             questionType: 'likert',
                             questionOptions: {
-                                "choices": [
+                                choices: [
                                     {
-                                        "label": "Disagree strongly"
+                                        label: 'Disagree strongly'
                                     },
                                     {
-                                        "label": "Disagree a little"
+                                        label: 'Disagree a little'
                                     },
                                     {
-                                        "label": "Neither agree nor disagree"
+                                        label: 'Neither agree nor disagree'
                                     },
                                     {
-                                        "label": "Agree a little"
+                                        label: 'Agree a little'
                                     },
                                     {
-                                        "label": "Agree strongly"
+                                        label: 'Agree strongly'
                                     }
                                 ]
                             }
