@@ -62,7 +62,7 @@
         describe('option labels', function() {
             it('should correctly layout the DOM for the labels', function() {
                 var mockOptions = {
-                    "choices" : [
+                    choices : [
                         {
                             label : 'Disagree strongly'
                         },
@@ -106,17 +106,17 @@
                 expect(innerRowChildren.length).toBe(5);
                 for (var i = 0; i < innerRowChildren.length; i++) {
                     var thisChildDiv = $(innerRowChildren[i]);
-                    expect(thisChildDiv.hasClass("col-md-5ths")).toBe(true);
-                    expect(thisChildDiv.hasClass("option-label")).toBe(true);
+                    expect(thisChildDiv.hasClass('col-md-5ths')).toBe(true);
+                    expect(thisChildDiv.hasClass('option-label')).toBe(true);
 
                     // Text should be centered
-                    expect(thisChildDiv.hasClass("text-center")).toBe(true);
+                    expect(thisChildDiv.hasClass('text-center')).toBe(true);
                 }
             });
 
             it('should correctly layout the DOM for the labels', function() {
                 var mockOptions = {
-                    "choices" : [
+                    choices : [
                         {
                             label : 'Disagree strongly'
                         },
