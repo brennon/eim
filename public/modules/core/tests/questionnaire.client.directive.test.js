@@ -37,6 +37,17 @@
             expect(element.html()).not.toMatch(/h1/);
         });
 
+        it('should add the introductory text if it is defined', function() {
+            $scope.questionnaireData = {
+                structure: [],
+                introductoryText: 'This is my introductory text, chief.'
+            };
+            $compile(element)($scope);
+            $scope.$digest();
+
+            expect(element.html()).toMatch($scope.questionnaireData.introductoryText);
+        });
+
         it('should add a form with name questionnaireForm to the page', function () {
             $scope.questionnaireData = {
                 title: 'Media Questions',

@@ -141,7 +141,7 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             questionnaireForm: '='
         },
 
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
 
             var data = scope.questionnaireData;
 
@@ -149,6 +149,12 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             if (data.title) {
                 var title = angular.element('<h1 translate>' + data.title + '</h1>');
                 element.append(title);
+            }
+
+            // Create an element for the introductory text
+            if (data.introductoryText) {
+                var introductoryText = angular.element('<div class="row"><div class="col-md-12 introductory-text"><h2>' + data.introductoryText + '</h2></div></div>');
+                element.append(introductoryText);
             }
 
             var formElement = angular.element('<form class="form" name="questionnaireForm" novalidate></form>');
