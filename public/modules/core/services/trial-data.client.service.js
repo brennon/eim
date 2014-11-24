@@ -65,7 +65,7 @@ angular.module('core').factory('TrialData', [
             // TODO: Add formatting and type options
             setValueForPath: function(path, value, options) {
 
-                if (value === 'true') {
+                    if (value === 'true') {
                     value = true;
                 } else if (value === 'false') {
                     value = false;
@@ -95,6 +95,14 @@ angular.module('core').factory('TrialData', [
 
                         if (schema[pList[len - 1]] === undefined) {
                             schema[pList[len - 1]] = [];
+                        }
+
+                        // Iterate over array up to one less than options.array_index
+                        // If each index isn't set up to this point, set it to null
+                        for (var j = 0; j < options.array_index; j++) {
+                            if (schema[pList[len - 1]][j] === undefined) {
+                                schema[pList[len - 1]][j] = null;
+                            }
                         }
 
                         schema[pList[len - 1]][options.array_index] = value;

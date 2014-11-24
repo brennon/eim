@@ -223,6 +223,13 @@
                     TrialData.setValueForPathForCurrentMedia('data.answers.ratings.foo', false);
                     expect(TrialData.data.answers.ratings.foo[0]).toBe(false);
                 });
+
+                it('should expand an array to include a new value', function() {
+                    TrialData.data.answers.emotion_indices = [];
+                    TrialData.data.state.mediaPlayCount = 2;
+                    TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', '42');
+                    expect(TrialData.data.answers.emotion_indices).toEqual([null, 42]);
+                });
             });
         });
     });
