@@ -12,15 +12,15 @@ angular.module('core').controller('MusicalBackgroundController', ['$scope', 'Tri
     // Save data to Trial Data
 
     $scope.musicianChanged = function(isMusician) {
-      TrialData.data.answers.musical_background = isMusician.toLowerCase() === 'true' ? true : false;
+      TrialData.data.answers.musical_background = isMusician.toLowerCase() === 'true';
     };
 
     $scope.hearingImpairmentsChanged = function(hasHearingImpairments) {
-      TrialData.data.answers.hearing_impairments = hasHearingImpairments.toLowerCase() === 'true' ? true : false;
+      TrialData.data.answers.hearing_impairments = hasHearingImpairments.toLowerCase() === 'true';
     };
 
     $scope.visualImpairmentsChanged = function(hasVisualImpairments) {
-      TrialData.data.answers.visual_impairments = hasVisualImpairments.toLowerCase() === 'true' ? true : false;
+      TrialData.data.answers.visual_impairments = hasVisualImpairments.toLowerCase() === 'true';
     };
 
     $scope.$watch('musicalExpertise', function musicalExpertiseChanged(musicalExpertise) {
@@ -30,9 +30,11 @@ angular.module('core').controller('MusicalBackgroundController', ['$scope', 'Tri
     $scope.stylesChanged = function() {
       var newStyles = [];
       for (var prop in $scope.subject.styles) {
-        var style = prop.toString();
-        if ($scope.subject.styles[style]) {
-          newStyles.push(style);
+        if ($scope.subject.styles.hasOwnProperty(prop)) {
+          var style = prop.toString();
+          if ($scope.subject.styles[style]) {
+            newStyles.push(style);
+          }
         }
       }
       TrialData.data.answers.music_styles = newStyles.sort();
