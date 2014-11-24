@@ -4,7 +4,7 @@
 angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http', '$state',
   function (TrialData, $q, $http, $state) {
 
-    var experimentManager = {
+    return {
 
       advanceSlide: function () {
         TrialData.data.state.currentSlideIndex++;
@@ -24,8 +24,7 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
 
         // Generate new session identifier and store it in TrialData
         /* global UUID */
-        var sessionID = UUID.generate();
-        TrialData.data.metadata.session_number = sessionID;
+        TrialData.data.metadata.session_number = UUID.generate();
 
         // Get a new experiment setup from the backend
         $http.get('/api/experiment-schemas/random')
@@ -42,7 +41,5 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
         return deferred.promise;
       }
     };
-
-    return experimentManager;
   }
 ]);
