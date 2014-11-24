@@ -43,14 +43,14 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
         optionLabels = angular.element('<div class="row"></div>');
 
-        var leftSpacer = optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
+        optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
 
         var centerGroup = angular.element('<div class="col-md-8 option-label-container"></div>');
 
         var innerRow = angular.element('<div class="row"></div>');
 
         for (var i = 0; i < choices.length; i++) {
-          var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">'+choices[i].label+'</div>')
+          var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">'+choices[i].label+'</div>');
           innerRow.append(choiceDiv);
         }
 
@@ -58,13 +58,13 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
         optionLabels.append(centerGroup);
 
-        var rightSpacer = optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
+        optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
       }
 
       var innerRadioHTML = '';
 
-      for (var i = 1; i <= 5; i++) {
-        innerRadioHTML += '<div class="col-md-5ths text-center"><input type="radio" name="'+attrs.questionId+'RadioGroup" id="'+attrs.questionId+'RadioGroup'+i+'" value="'+i+'" required ng-model="'+attrs.questionId+'RadioGroup"></div>';
+      for (var j = 1; j <= 5; j++) {
+        innerRadioHTML += '<div class="col-md-5ths text-center"><input type="radio" name="'+attrs.questionId+'RadioGroup" id="'+attrs.questionId+'RadioGroup'+j+'" value="'+j+'" required ng-model="'+attrs.questionId+'RadioGroup"></div>';
       }
 
       var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        '+innerRadioHTML+'<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
