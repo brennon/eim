@@ -59,7 +59,7 @@
             });
         });
 
-        ddescribe('option labels', function() {
+        describe('option labels', function() {
             it('should correctly layout the DOM for the labels', function() {
                 var mockOptions = {
                     "choices" : [
