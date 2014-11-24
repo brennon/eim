@@ -1,0 +1,19 @@
+<div data-ng-controller="EmotionIndexController">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 translate>Results</h1>
+
+      <p translate>Here, we are displaying the ‘Emotion Index’ we calculated from your physiological signals while you were listening to the media excerpt, on a scale from 1 to 100. A higher index indicates that you were more emotionally responsive to the excerpt you heard as compared to a lower index.</p>
+
+      <h2 class="text-center" translate>Your emotion index:</h2>
+
+      <h1 class="text-center">{{ emotionIndices[1] }} / 100</h1>
+
+      <p translate>We hope you enjoyed the experiment!</p>
+
+      <p><a class="btn btn-primary btn-lg" ng-click="advanceSlide()" translate>Continue</a></p>
+    </div>
+  </div>
+
+  <display-trial-data></display-trial-data>
+</div>
