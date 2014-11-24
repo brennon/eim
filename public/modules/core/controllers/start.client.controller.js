@@ -8,6 +8,10 @@ angular.module('core').controller('StartController', ['$scope', '$timeout', 'Tri
             return $scope.maxReady || $scope.debugMode;
         };
 
+        // Set the date on the TrialData service to now
+        var now = new Date();
+        TrialData.data.date = now.toISOString();
+
         // Configure handler for incoming OSC messages
         this.oscMessageReceivedListener = function(data) {
             if (data.address === '/eim/status/startExperiment') {

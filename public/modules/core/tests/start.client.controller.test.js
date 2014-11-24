@@ -6,18 +6,29 @@
     describe('StartController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, mockSocketService, $timeout, $httpBackend, SocketIOService;
+        var mockScope, $controller, $timeout, $httpBackend, SocketIOService, TrialData;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_, _SocketIOService_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_, _SocketIOService_, _TrialData_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             $timeout = _$timeout_;
             $httpBackend = _$httpBackend_;
             SocketIOService = _SocketIOService_;
+            TrialData = _TrialData_;
         }));
+
+        it('should set the date on the TrialData object', function() {
+            $controller('StartController',
+                { $scope: mockScope });
+
+            var now = new Date();
+            var trialDataDate = Date.parse(TrialData.data.date);
+
+            expect(now - trialDataDate).toBeLessThan(5);
+        });
 
         describe('advancing logic', function() {
             describe('#$scope.readyToAdvance', function() {
