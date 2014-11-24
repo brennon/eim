@@ -50,7 +50,7 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
         var innerRow = angular.element('<div class="row"></div>');
 
         for (var i = 0; i < choices.length; i++) {
-          var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">'+choices[i].label+'</div>');
+          var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">{{ \'' + choices[i].label + '\' | translate }}</div>');
           innerRow.append(choiceDiv);
         }
 

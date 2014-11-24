@@ -153,7 +153,7 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
 
             // Create an element for the introductory text
             if (data.introductoryText) {
-                var introductoryText = angular.element('<div class="row"><div class="col-md-12 introductory-text"><h2>' + data.introductoryText + '</h2></div></div>');
+                var introductoryText = angular.element('<div class="row"><div class="col-md-12 introductory-text"><h2 translate>' + data.introductoryText + '</h2></div></div>');
                 element.append(introductoryText);
             }
 
