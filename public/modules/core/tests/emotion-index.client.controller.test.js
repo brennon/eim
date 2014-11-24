@@ -14,7 +14,7 @@
             mockScope = $rootScope.$new();
         }));
 
-        iit('should exist', function() {
+        it('should exist', function() {
             var createController = function() {
                 $controller('EmotionIndexController', {
                     $scope: mockScope,
@@ -25,7 +25,7 @@
             expect(createController).not.toThrow();
         });
 
-        iit('should max the emotion index available on the $scope', function() {
+        it('should max the emotion index available on the $scope', function() {
             var mockTrialData = {
                 data: {
                     answers: {
