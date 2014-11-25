@@ -8,9 +8,6 @@ if (process.env.TRAVIS) {
 	mongoDBPort = 28017;
 }
 
-// Set the path to the PhantomJS binary (needs to be installed locally)
-process.env.PHANTOMJS_BIN = 'node_modules/phantomjs/bin/phantomjs';
-
 module.exports = {
 	db: 'mongodb://localhost:' + mongoDBPort + '/emotion-in-motion-test',
 	port: 3001,
