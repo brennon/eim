@@ -37,9 +37,13 @@
                 expect(element.html()).toMatch(/<img.*src="img\/single.png".*>/);
             });
 
-            it('should add space to either side of the image and center it', function() {
+            iit('should add space to either side of the image and center it', function() {
                 $compile(element)($scope);
-                expect(element.html()).toMatch('<div class="row ng-scope"><div class="col-md-2"></div><div class="col-md-8 text-center"><img src="img/single.png"></div><div class="col-md-2"></div></div>');
+
+                var wrapperRow = $(element.children()[0]);
+                var labelRow = $(wrapperRow.children()[1]);
+
+                expect(labelRow.getOuterHTML()).toMatch('<div class="row ng-scope"><div class="col-md-2"></div><div class="col-md-8 text-center"><img src="img/single.png"></div><div class="col-md-2"></div></div>');
             });
         });
 
@@ -54,7 +58,7 @@
             it('should properly space both images', function() {
                 element = angular.element('<scale-question question-label="qText" left-img-src="img/left.png" right-img-src="img/right.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
                 $compile(element)($scope);
-                var imgRow = $(element).find('div.row')[1];
+                var imgRow = $(element).find('div.row')[2];
                 expect($(imgRow).html()).toMatch(/(col-md-2.*){2}col-md-4.*(col-md-2.*){2}/);
             });
         });
@@ -80,12 +84,15 @@
                         }
                     ]
                 };
+
+                // Main element
                 element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
                 element.data('questionOptions', mockOptions);
                 $compile(element)($scope);
                 $scope.$digest();
 
-                var labelRow = $(element).find('div.row')[1];
+                var wrapperRow = $($(element).children()[0]);
+                var labelRow = $(wrapperRow).children()[1];
                 var childrenDivs = $(labelRow).children();
 
                 // First and last children should be spacers and cols
