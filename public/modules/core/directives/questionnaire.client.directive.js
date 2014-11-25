@@ -131,6 +131,11 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
             questionElement.data('checkboxOptions', item.questionCheckboxOptions);
         }
 
+        // If questionRequired isn't defined or is explicitly set to true
+        if (!item.hasOwnProperty('questionRequired') || item.questionRequired === true) {
+            questionElement.attr('question-required', 'true');
+        }
+
         return questionElement;
     };
 

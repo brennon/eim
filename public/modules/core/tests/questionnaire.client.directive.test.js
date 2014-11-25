@@ -803,6 +803,53 @@
                 var checkboxQuestionElements = $(element).find('checkbox-question');
                 expect($(checkboxQuestionElements).data('checkboxOptions')).toEqual($scope.questionnaireData.structure[0].questionCheckboxOptions);
             });
+
+            it('should add the question-required attribute for a checkbox-question directive if it is required', function () {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionRequired: true
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).attr('question-required')).toBe('true');
+            });
+
+            it('should not add the question-required attribute for a checkbox-question directive if it is not required', function () {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                            questionRequired: false
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).attr('question-required')).toBe(undefined);
+            });
+
+            it('should default to setting the question-required attribute for a checkbox-question directive if it is not defined', function () {
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'checkbox',
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var checkboxQuestionElements = $(element).find('checkbox-question');
+                expect($(checkboxQuestionElements).attr('question-required')).toBe('true');
+            });
         });
     });
 })();
