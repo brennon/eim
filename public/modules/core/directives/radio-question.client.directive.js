@@ -49,6 +49,9 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
 
             var questionElement = angular.element(questionText);
 
+            // Add well class
+            questionElement.addClass('well');
+
             element.append(questionElement);
             $compile(element.contents())(scope);
         }

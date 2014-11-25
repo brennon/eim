@@ -74,14 +74,20 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
         descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left" translate>' + attrs.minimumDescription + '</div><div class="col-md-4"></div><div class="col-md-2 small text-right" translate>' + attrs.maximumDescription + '</div><div class="col-md-2"></div></div></div>');
       }
 
-      element.append(questionHeader);
-      element.append(image);
-      element.append(optionLabels);
-      element.append(radios);
+      // Wrap everything in a row div with well class
+      var wrapperDiv = angular.element('<div class="row well"></div>');
+
+      wrapperDiv.append(questionHeader);
+      wrapperDiv.append(image);
+      wrapperDiv.append(optionLabels);
+      wrapperDiv.append(radios);
 
       if (descriptions) {
-        element.append(descriptions);
+        wrapperDiv.append(descriptions);
       }
+
+      // Add wrapper div to element
+      element.append(wrapperDiv);
 
       $compile(element.contents())(scope);
     }

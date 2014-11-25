@@ -38,7 +38,7 @@ angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', f
                 scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
             };
 
-            var questionText = '<div class="row"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
+            var questionText = '<div class="row well"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
 
             var innerQuestionText = '';
 
@@ -49,7 +49,17 @@ angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', f
 
                     var thisOption = element.data('checkboxOptions')[i];
 
-                    innerQuestionText += '<label class="checkbox-inline"><input type="checkbox" name="'+attrs.questionId+'Checkbox" id="'+attrs.questionId+'Checkbox'+thisOption+'" value="'+thisOption+'" ng-model="'+attrs.questionId+'Checkbox'+thisOption+'" ng-change="updateCheckboxes()" ng-required="!someSelected">{{\''+thisOption+'\' | translate}}</input></label>';
+                    innerQuestionText += '<label class="checkbox-inline">';
+
+                    innerQuestionText += '<input type="checkbox" name="'+attrs.questionId+'Checkbox" id="'+attrs.questionId+'Checkbox'+thisOption+'" value="'+thisOption+'" ng-model="'+attrs.questionId+'Checkbox'+thisOption+'" ng-change="updateCheckboxes()"';
+
+                    if (attrs.questionRequired) {
+                        innerQuestionText += 'ng-required="!someSelected"';
+                    }
+
+                    innerQuestionText += '>{{\''+thisOption+'\' | translate}}</input>';
+
+                    innerQuestionText += '</label>';
                 }
             }
 

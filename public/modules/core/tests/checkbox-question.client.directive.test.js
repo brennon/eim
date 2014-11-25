@@ -17,8 +17,6 @@
 
         it('should add a label for the question text', function() {
             element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
-            //var options = ['Rock', 'Pop', 'Folk'];
-            //element.data('checkboxOptions', options);
             $compile(element)($scope);
             var labelElement = $(element).find('label');
             $scope.$digest();
@@ -104,7 +102,20 @@
                 }
             });
 
-            it('should bind ng-required to someSelected', function() {
+            it('should bind ng-required to someSelected if question is required', function() {
+                var options = ['Rock', 'Pop', 'Folk'];
+                element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles" question-required="true"></checkbox-question>');
+                element.data('checkboxOptions', options);
+                $compile(element)($scope);
+
+                var checkboxes = element.find('input[type="checkbox"]');
+                for (var i = 0; i < checkboxes.length; i++) {
+                    var checkbox = $(checkboxes[i]);
+                    expect(checkbox.attr('ng-required')).toBe('!someSelected');
+                }
+            });
+
+            it('should only bind ng-required to someSelected question-required is present', function() {
                 var options = ['Rock', 'Pop', 'Folk'];
                 element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
                 element.data('checkboxOptions', options);
@@ -113,7 +124,7 @@
                 var checkboxes = element.find('input[type="checkbox"]');
                 for (var i = 0; i < checkboxes.length; i++) {
                     var checkbox = $(checkboxes[i]);
-                    expect(checkbox.attr('ng-required')).toBe('!someSelected');
+                    expect(checkbox.attr('ng-required')).toBe(undefined);
                 }
             });
         });
