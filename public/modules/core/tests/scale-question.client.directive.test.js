@@ -83,6 +83,8 @@
                 element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
                 element.data('questionOptions', mockOptions);
                 $compile(element)($scope);
+                $scope.$digest();
+
                 var labelRow = $(element).find('div.row')[1];
                 var childrenDivs = $(labelRow).children();
 
@@ -137,6 +139,8 @@
                 element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
                 element.data('questionOptions', mockOptions);
                 $compile(element)($scope);
+                $scope.$digest();
+
                 var labelRow = $(element).find('div.row')[1];
                 var childrenDivs = $(labelRow).children();
 
