@@ -10,4 +10,4 @@ daemon/
 application.log
 config/terminal.js
 .foreverignore
-trials/
+trials/**
