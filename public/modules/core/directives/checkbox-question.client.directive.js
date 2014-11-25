@@ -38,7 +38,7 @@ angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', f
                 scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
             };
 
-            var questionText = '<div class="row"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
+            var questionText = '<div class="row well"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
 
             var innerQuestionText = '';
 
