@@ -2,6 +2,7 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "1"
@@ -648,7 +649,7 @@ msgid "Burundian"
 msgstr ""
 
 #: public/modules/core/views/consent-form.client.view.html
-msgid "By clicking 'Continue' button below you agree to participate in this experiment, that this agreement is of your own free will and that you have had the opportunity to ask any questions you may have about this study."
+msgid "By clicking the 'Continue' button below you agree to participate in this experiment, that this agreement is of your own free will and that you have had the opportunity to ask any questions you may have about this study."
 msgstr ""
 
 #: public/modules/core/config/core.client.missing-keys.js
@@ -1056,7 +1057,7 @@ msgid "If you consent to the above terms, click 'Continue'. Otherwise, click 'Ca
 msgstr ""
 
 #: public/modules/core/views/media-playback.client.view.html
-msgid "In a moment, a media excerpt will be played. Please make sure you are comfortable, and when you are ready click the Begin Playback button."
+msgid "In a moment, a media excerpt will be played. Please make sure you are comfortable, and try to keep your left hand still during listening. When you are ready click the Begin Playback button."
 msgstr ""
 
 #: public/modules/core/config/core.client.missing-keys.js
@@ -1368,7 +1369,7 @@ msgid "Peruvian"
 msgstr ""
 
 #: public/modules/core/views/eda-instructions.client.view.html
-msgid "Please place the sensors on the fingers of your <span class=\"text-danger\">left</span> hand as indicated in the photos below. During the listening part of the experiment please keep this hand as still as possible. Wrap the velcro straps around the tips your 2 middle fingers, making sure that the small metal plate is against the skin of the inside of your finger. The straps should be tight but not so tight that it is uncomfortable."
+msgid "Please place the sensors on the fingers of your <span class=\"text-danger\">left</span> hand as indicated in the photos below. During the listening part of the experiment please keep this hand as still as possible. Wrap the velcro straps around the tips of your 2 middle fingers, making sure that the small metal plate is against the skin of the inside of your finger. The straps should be tight but not so tight that it is uncomfortable."
 msgstr ""
 
 #: public/modules/core/views/sound-test.client.view.html
@@ -1580,11 +1581,7 @@ msgid "Thank You"
 msgstr ""
 
 #: public/modules/core/views/start.client.view.html
-msgid "The experiment will last approximately 15 minutes."
-msgstr ""
-
-#: public/modules/core/views/start.client.view.html
-msgid "The songs that you will hear will be selected randomly."
+msgid "The experiment will last approximately 12 minutes."
 msgstr ""
 
 #: public/modules/core/views/consent-form.client.view.html
@@ -1684,7 +1681,7 @@ msgid "We hope you enjoyed the experiment!"
 msgstr ""
 
 #: public/modules/core/views/start.client.view.html
-msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to three short pieces of music. After each piece, you will be asked some questions about how the music made you feel."
+msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel."
 msgstr ""
 
 #: public/modules/core/config/core.client.missing-keys.js
