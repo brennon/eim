@@ -11,3 +11,5 @@ application.log
 config/terminal.js
 .foreverignore
 trials/**
+EiMpatch/media/**
+EiMpatch/data/**
