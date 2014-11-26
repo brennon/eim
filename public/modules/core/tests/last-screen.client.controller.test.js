@@ -31,7 +31,7 @@
                 var mockTrialData = {
                     data: {
                         metadata: {
-                            session_number: "abc-123"
+                            session_number: 'abc-123'
                         }
                     }
                 };
