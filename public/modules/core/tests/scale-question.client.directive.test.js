@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-    describe('scale-question directive', function() {
+    ddescribe('scale-question directive', function() {
 
         //Initialize global variables
         var $scope, $compile, element, TrialData;
@@ -32,22 +32,34 @@
         });
 
         describe('single image', function() {
-            it('should include the image', function() {
+
+            var imageRow;
+
+            beforeEach(function() {
+
                 $compile(element)($scope);
+                var wrapperRow = $(element.children()[0]);
+                imageRow = $(wrapperRow.children()[1]);
+            });
+
+            // include a row for the whole bit
+            // include the right class on the row (row and custom)
+            // include spacers with the right classes (col and custom)
+            // include the image div with the right classes (col and custom)
+            // include an image tag with the correct image
+
+            it('should include the image', function() {
+                console.log(element);
                 expect(element.html()).toMatch(/<img.*src="img\/single.png".*>/);
             });
 
             it('should add space to either side of the image and center it', function() {
-                $compile(element)($scope);
-
-                var wrapperRow = $(element.children()[0]);
-                var labelRow = $(wrapperRow.children()[1]);
 
                 // Should be spacer div, then image div, then spacer div
-                var labelRowChildren = labelRow.children();
+                var labelRowChildren = imageRow.children();
 
-                // labelRow should have class 'row'
-                expect($(labelRow[0]).hasClass('row')).toBe(true);
+                // imageRow should have class 'row'
+                expect($(imageRow[0]).hasClass('row')).toBe(true);
 
                 // The outer divs should be two columns wide
                 expect($(labelRowChildren[0]).hasClass('col-md-2')).toBe(true);
