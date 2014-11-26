@@ -2,6 +2,61 @@
 
 angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
 
+  var buildDescriptionsRow = function(scope, element, attrs) {
+    var descriptions;
+    if (attrs.minimumDescription && attrs.maximumDescription) {
+
+      // Main row div
+      descriptions = angular.element('<div></div>');
+      descriptions.addClass('row');
+      descriptions.addClass('scale-descriptions');
+
+      // Side and center spacers
+      var sideSpacer = angular.element('<div></div>');
+      sideSpacer.addClass('col-md-2');
+
+      var centerSpacer = angular.element('<div></div>');
+      centerSpacer.addClass('col-md-4');
+
+      var descriptionsInnerRow = angular.element('<div></div>');
+      descriptionsInnerRow.addClass('col-md-8');
+      descriptionsInnerRow.addClass('scale-descriptions-inner-row');
+
+      var fifthsColumnSpacer = angular.element('<div></div>');
+      fifthsColumnSpacer.addClass('col-md-5ths');
+
+      // Left and right text blocks
+      var leftTextBlock = angular.element('<div translate></div>');
+      leftTextBlock.addClass('col-md-5ths');
+      leftTextBlock.addClass('small');
+      leftTextBlock.addClass('text-center');
+      leftTextBlock.addClass('scale-minimum-description');
+      leftTextBlock.html(attrs.minimumDescription);
+
+      var rightTextBlock = leftTextBlock.clone();
+      rightTextBlock.removeClass('scale-minimum-description');
+      rightTextBlock.addClass('scale-maximum-description');
+      rightTextBlock.html(attrs.maximumDescription);
+
+      // Append text blocks and spacers to inner row
+      descriptionsInnerRow.append(leftTextBlock);
+      descriptionsInnerRow.append(
+          fifthsColumnSpacer.clone(),
+          fifthsColumnSpacer.clone(),
+          fifthsColumnSpacer.clone()
+      );
+      descriptionsInnerRow.append(rightTextBlock);
+
+      // Append children to main row
+      descriptions.append(
+          sideSpacer.clone(),
+          descriptionsInnerRow,
+          sideSpacer.clone()
+      );
+    }
+
+    return descriptions;
+  };
 
   return {
     restrict: 'E',
@@ -69,26 +124,22 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
       var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        '+innerRadioHTML+'<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
 
-      var descriptions;
-      if (attrs.minimumDescription && attrs.maximumDescription) {
-        descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left" translate>' + attrs.minimumDescription + '</div><div class="col-md-4"></div><div class="col-md-2 small text-right" translate>' + attrs.maximumDescription + '</div><div class="col-md-2"></div></div></div>');
-      }
+      // Build descriptions row
+      var descriptions = buildDescriptionsRow(scope, element, attrs);
 
       // Wrap everything in a row div with well class
       var wrapperDiv = angular.element('<div class="row well"></div>');
 
-      wrapperDiv.append(questionHeader);
-      wrapperDiv.append(image);
-      wrapperDiv.append(optionLabels);
-      wrapperDiv.append(radios);
+      wrapperDiv.append(
+          questionHeader,
+          image,
+          optionLabels,
+          radios,
+          descriptions
+      );
 
-      if (descriptions) {
-        wrapperDiv.append(descriptions);
-      }
-
-      // Add wrapper div to element
+      // Add wrapper div to element and compile the element
       element.append(wrapperDiv);
-
       $compile(element.contents())(scope);
     }
   };

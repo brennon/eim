@@ -37,13 +37,27 @@
                 expect(element.html()).toMatch(/<img.*src="img\/single.png".*>/);
             });
 
-            iit('should add space to either side of the image and center it', function() {
+            it('should add space to either side of the image and center it', function() {
                 $compile(element)($scope);
 
                 var wrapperRow = $(element.children()[0]);
                 var labelRow = $(wrapperRow.children()[1]);
 
-                expect(labelRow.getOuterHTML()).toMatch('<div class="row ng-scope"><div class="col-md-2"></div><div class="col-md-8 text-center"><img src="img/single.png"></div><div class="col-md-2"></div></div>');
+                // Should be spacer div, then image div, then spacer div
+                var labelRowChildren = labelRow.children();
+
+                // labelRow should have class 'row'
+                expect($(labelRow[0]).hasClass('row')).toBe(true);
+
+                // The outer divs should be two columns wide
+                expect($(labelRowChildren[0]).hasClass('col-md-2')).toBe(true);
+                expect($(labelRowChildren[2]).hasClass('col-md-2')).toBe(true);
+
+                // The center div should be eight columns wide, centered, and hold the image
+                var centerDiv = $(labelRowChildren[1]);
+                expect(centerDiv.hasClass('col-md-8')).toBe(true);
+                expect(centerDiv.hasClass('text-center')).toBe(true);
+                expect(centerDiv.children()[0].outerHTML).toMatch(/img\/single.png/);
             });
         });
 
@@ -223,54 +237,100 @@
         });
         
         describe('textual descriptions', function() {
-            it('should include the minimum description', function() {
+            var wrapperRow,
+                descriptionsBlock,
+                descriptionsBlockClass,
+                leftDescriptionDiv,
+                rightDescriptionDiv,
+                leftSpacer,
+                rightSpacer,
+                innerRow,
+                innerRowChildren;
+
+            beforeEach(function() {
                 $compile(element)($scope);
-                var descriptionsBlock = $(element).children()[3];
-                var left = $(descriptionsBlock).children()[1];
-                expect($(left).html()).toMatch(/Lower description/);
+                element = $(element);
+                wrapperRow = $(element.children()[0]);
+                descriptionsBlock = $(wrapperRow).children()[3];
+                descriptionsBlockClass = 'scale-descriptions';
+                leftSpacer = $(descriptionsBlock).children()[0];
+                rightSpacer = $(descriptionsBlock).children()[2];
+                innerRow = $(descriptionsBlock).children()[1];
+                innerRowChildren = $(innerRow).children();
+                leftDescriptionDiv = $(innerRowChildren[0]);
+                rightDescriptionDiv = $(innerRowChildren[4]);
+            });
+
+            it('should make the inner row a row div', function() {
+                expect($(innerRow).hasClass('col-md-8')).toBe(true);
+            });
+
+            it('should split the inner row into five 5ths', function() {
+                expect(innerRowChildren.length).toBe(5);
+
+                for (var i = 0; i < innerRowChildren.length; i++) {
+                    var thisSpacer = $(innerRowChildren[i]);
+                    expect(thisSpacer.hasClass('col-md-5ths'));
+                }
+            });
+
+            it('should give the inner row the scale-descriptions-inner-row class', function() {
+                expect($(innerRow).hasClass('scale-descriptions-inner-row')).toBe(true);
+            });
+
+            it('should make the side spacers two columns wide', function() {
+                expect($(leftSpacer).hasClass('col-md-2')).toBe(true);
+                expect($(rightSpacer).hasClass('col-md-2')).toBe(true);
+            });
+
+            it('should give the descriptions div class scale-descriptions', function() {
+                expect($(descriptionsBlock).hasClass(descriptionsBlockClass)).toBe(true);
+            });
+
+            it('should include the minimum description', function() {
+                expect($(leftDescriptionDiv).html()).toMatch(/Lower description/);
             });
             
             it('should include the maximum description', function() {
-                $compile(element)($scope);
-                var descriptionsBlock = $(element).children()[3];
-                var right = $(descriptionsBlock).children()[3];
-                expect($(right).html()).toMatch(/Upper description/);
+                expect($(rightDescriptionDiv).html()).toMatch(/Upper description/);
             });
 
             it('should include the small class on the minimum description', function() {
-                $compile(element)($scope);
-                var descriptionsBlock = $(element).children()[3];
-                var left = $(descriptionsBlock).children()[1];
-                expect($(left).hasClass('small')).toBe(true);
+                expect($(leftDescriptionDiv).hasClass('small')).toBe(true);
             });
 
             it('should include the small class on the maximum description', function() {
-                $compile(element)($scope);
-                var descriptionsBlock = $(element).children()[3];
-                var right = $(descriptionsBlock).children()[3];
-                expect($(right).hasClass('small')).toBe(true);
+                expect($(rightDescriptionDiv).hasClass('small')).toBe(true);
             });
 
-            it('should include the text-left class on the minimum description', function() {
-                $compile(element)($scope);
-                var descriptionsBlock = $(element).children()[3];
-                var left = $(descriptionsBlock).children()[1];
-                expect($(left).hasClass('text-left')).toBe(true);
+            it('should include the text-center class on the minimum description', function() {
+                expect($(leftDescriptionDiv).hasClass('text-center')).toBe(true);
             });
 
             it('should include the text-right class on the maximum description', function() {
-                $compile(element)($scope);
-                var descriptionsBlock = $(element).children()[3];
-                var right = $(descriptionsBlock).children()[3];
-                expect($(right).hasClass('text-right')).toBe(true);
+                expect($(rightDescriptionDiv).hasClass('text-center')).toBe(true);
+            });
+
+            it('should include the col-md-5ths class on the minimum description', function() {
+                expect($(leftDescriptionDiv).hasClass('col-md-5ths')).toBe(true);
+            });
+
+            it('should include the col-md-5ths class on the maximum description', function() {
+                expect($(rightDescriptionDiv).hasClass('col-md-5ths')).toBe(true);
+            });
+
+            it('should include the scale-minimum-description class on the minimum description', function() {
+                expect($(leftDescriptionDiv).hasClass('scale-minimum-description')).toBe(true);
+            });
+
+            it('should include the scale-maximum-description class on the maximum description', function() {
+                expect($(rightDescriptionDiv).hasClass('scale-maximum-description')).toBe(true);
             });
 
             it('should not be included if they aren\'t defined', function() {
                 element = angular.element('<scale-question question-label="qText" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
                 $compile(element)($scope);
-
-                var children = element.children();
-                expect(children.length).toBe(2);
+                expect(element.find('.' + descriptionsBlockClass).length).toBe(0);
             });
         });
 
