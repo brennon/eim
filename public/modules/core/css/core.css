@@ -154,12 +154,7 @@ div.sliderAnnotation {
     }
 }
 
-/*.questionSpacer {*/
-    /*height: 30px;*/
-/*}*/
-
-/*scale-question,*/
-/*checkbox-question,*/
-/*dropdown-question,*/
-/*radio-question {*/
-/*}*/
+.welcome-logo {
+    width: 200px;
+    height: auto;
+}
