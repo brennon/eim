@@ -394,5 +394,6 @@ angular.module('core').controller(['gettext',
         gettext('119');
         gettext('120');
         gettext('121');
+        gettext('Begin Playback');
     }
 ]);
