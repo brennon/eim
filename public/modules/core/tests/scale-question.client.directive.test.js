@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-    ddescribe('scale-question directive', function() {
+    describe('scale-question directive', function() {
 
         //Initialize global variables
         var $scope, $compile, element, TrialData;
