@@ -4,18 +4,19 @@
     describe('MasterController', function() {
 
         //Initialize global variables
-        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend, gettextCatalog;
+        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend, gettextCatalog, $timeout;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_, _gettextCatalog_) {
+        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_, _gettextCatalog_, _$timeout_) {
             $controllerConstructor = $controller;
             mockScope = $rootScope.$new();
             mockHotkeys = { add: function() {} };
             ExperimentManager = _ExperimentManager_;
             $httpBackend = _$httpBackend_;
             gettextCatalog = _gettextCatalog_;
+            $timeout = _$timeout_;
         }));
 
         describe('initialization', function() {
@@ -47,11 +48,25 @@
                 expect(mockScope.blackoutClass).toBe(false);
             });
 
-            it('should bind $scope.advanceSlide to the ExperimentManager', function() {
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
+            it('should call ExperimentManager#advanceSlide through $scope#advanceSlide', function() {
+                var mockExperimentManager = {
+                    advanceSlide: function() {}
+                };
 
-                expect(mockScope.advanceSlide).toBe(ExperimentManager.advanceSlide);
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: {},
+                    hotkeys: mockHotkeys,
+                    ExperimentManager: mockExperimentManager
+                });
+
+                // Spy on ExperimentManager#advanceSlide and call
+                // our own #advanceSlide
+                spyOn(mockExperimentManager, 'advanceSlide');
+                mockScope.advanceSlide();
+
+                // Ensure that EM's was called
+                expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
             });
         });
 
@@ -209,12 +224,111 @@
             it('should advance slide on right', function() {
 
                 var addSpy = sinon.spy(mockHotkeys, 'add');
+                var mockTrialData = { data: { schema: [] }};
+                var mockExperimentManager = {
+                    advanceSlide: function() {}
+                };
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: {}, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys,
+                    ExperimentManager: mockExperimentManager
+                });
 
                 var advanceCallback = addSpy.args[1][0].callback;
-                expect(advanceCallback).toBe(ExperimentManager.advanceSlide);
+
+                spyOn(mockExperimentManager, 'advanceSlide');
+                advanceCallback();
+                expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
+            });
+        });
+
+        describe('inactivity timeout', function() {
+            describe('#startOver', function () {
+                it('should return to the main screen', function () {
+                    var mockState = {
+                        go: function () {}
+                    };
+
+                    var ctrl = $controllerConstructor('MasterController', {
+                        $scope: mockScope,
+                        TrialData: {},
+                        hotkeys: mockHotkeys,
+                        $state: mockState
+                    });
+
+                    spyOn(mockState, 'go');
+                    ctrl.startOver();
+                    expect(mockState.go.calls.count()).toBe(1);
+                });
+
+                it('should force a reload', function () {
+                    var mockState = {
+                        go: function () {}
+                    };
+
+                    var ctrl = $controllerConstructor('MasterController', {
+                        $scope: mockScope,
+                        TrialData: {},
+                        hotkeys: mockHotkeys,
+                        $state: mockState
+                    });
+
+                    spyOn(mockState, 'go');
+                    ctrl.startOver();
+                    expect(mockState.go.calls.argsFor(0)[2]).toEqual({reload: true});
+                });
+            });
+
+            it('#resetInactivityTimeout should cancel the existing timeout', function () {
+                var mockState = {};
+
+                var ctrl = $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: {},
+                    hotkeys: mockHotkeys,
+                    $state: mockState
+                });
+
+                spyOn($timeout, 'cancel');
+
+                ctrl.resetInactivityTimeout();
+
+                expect($timeout.cancel.calls.count()).toBe(1);
+                expect($timeout.cancel.calls.argsFor(0)[0].$$timeoutId).toBe(1);
+            });
+
+            it('should exist', function () {
+                var mockState = {
+                    go: function () {}
+                };
+
+                var ctrl = $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: {},
+                    hotkeys: mockHotkeys,
+                    $state: mockState
+                });
+
+                expect(ctrl.inactivityTimeout).toBeDefined();
+            });
+
+            it('should be a promise', function () {
+                var mockState = {
+                    go: function () {}
+                };
+
+                var ctrl = $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: {},
+                    hotkeys: mockHotkeys,
+                    $state: mockState
+                });
+
+                expect(ctrl.inactivityTimeout.then).toBeDefined();
+                expect(ctrl.inactivityTimeout.catch).toBeDefined();
+                expect(ctrl.inactivityTimeout.finally).toBeDefined();
             });
         });
 

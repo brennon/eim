@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys', 'ExperimentManager', 'gettextCatalog',
-    function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog) {
+angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'hotkeys', 'ExperimentManager', 'gettextCatalog', '$state', '$timeout',
+    function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog, $state, $timeout) {
 
+        var thisController = this;
         /*
          * Augmenting $scope
          */
@@ -16,8 +17,27 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
             gettextCatalog.setCurrentLanguage(language);
         };
 
-        // Bind 'global' advanceSlide to ExperimentManager#advanceSlide
-        $scope.advanceSlide = ExperimentManager.advanceSlide;
+        this.startOver = function() {
+            $state.go('home', {}, {reload: true});
+        };
+
+        // Reset inactivity timeout with a new five-minute timer
+        this.resetInactivityTimeout = function () {
+            $timeout.cancel(thisController.inactivityTimeout);
+            thisController.inactivityTimeout = $timeout(
+                thisController.startOver,
+                5 * 60 * 1000
+            );
+        };
+        this.resetInactivityTimeout();
+
+        $scope.advanceSlide = function() {
+            // Reset the inactivity timeout
+            thisController.resetInactivityTimeout();
+
+            // Wrap ExperimentManager's advance slide
+            ExperimentManager.advanceSlide();
+        };
 
         // Global debug mode flag
         $scope.debugMode = false;
