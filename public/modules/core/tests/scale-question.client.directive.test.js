@@ -49,7 +49,6 @@
             // include an image tag with the correct image
 
             it('should include the image', function() {
-                console.log(element);
                 expect(element.html()).toMatch(/<img.*src="img\/single.png".*>/);
             });
 
