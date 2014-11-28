@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for public/modules/core/tests/trial-data.client.service.test.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../../../prettify.css">
+
+    <style>
+        body, html {
+            margin:0; padding: 0;
+        }
+        body {
+            font-family: Helvetica Neue, Helvetica,Arial;
+            font-size: 10pt;
+        }
+        div.header, div.footer {
+            background: #eee;
+            padding: 1em;
+        }
+        div.header {
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            border-bottom: 1px solid #666;
+            width: 100%;
+        }
+        div.footer {
+            border-top: 1px solid #666;
+        }
+        div.body {
+            margin-top: 10em;
+        }
+        div.meta {
+            font-size: 90%;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            font-weight: normal;
+        }
+        h1 {
+            font-size: 12pt;
+        }
+        h2 {
+            font-size: 10pt;
+        }
+        pre {
+            font-family: Consolas, Menlo, Monaco, monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 14px;
+            font-size: 14px;
+            -moz-tab-size: 2;
+            -o-tab-size:  2;
+            tab-size: 2;
+        }
+
+        div.path { font-size: 110%; }
+        div.path a:link, div.path a:visited { color: #000; }
+        table.coverage { border-collapse: collapse; margin:0; padding: 0 }
+
+        table.coverage td {
+            margin: 0;
+            padding: 0;
+            color: #111;
+            vertical-align: top;
+        }
+        table.coverage td.line-count {
+            width: 50px;
+            text-align: right;
+            padding-right: 5px;
+        }
+        table.coverage td.line-coverage {
+            color: #777 !important;
+            text-align: right;
+            border-left: 1px solid #666;
+            border-right: 1px solid #666;
+        }
+
+        table.coverage td.text {
+        }
+
+        table.coverage td span.cline-any {
+            display: inline-block;
+            padding: 0 5px;
+            width: 40px;
+        }
+        table.coverage td span.cline-neutral {
+            background: #eee;
+        }
+        table.coverage td span.cline-yes {
+            background: #b5d592;
+            color: #999;
+        }
+        table.coverage td span.cline-no {
+            background: #fc8c84;
+        }
+
+        .cstat-yes { color: #111; }
+        .cstat-no { background: #fc8c84; color: #111; }
+        .fstat-no { background: #ffc520; color: #111 !important; }
+        .cbranch-no { background:  yellow !important; color: #111; }
+
+        .cstat-skip { background: #ddd; color: #111; }
+        .fstat-skip { background: #ddd; color: #111 !important; }
+        .cbranch-skip { background: #ddd !important; color: #111; }
+
+        .missing-if-branch {
+            display: inline-block;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: black;
+            color: yellow;
+        }
+
+        .skip-if-branch {
+            display: none;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: #ccc;
+            color: white;
+        }
+
+        .missing-if-branch .typ, .skip-if-branch .typ {
+            color: inherit !important;
+        }
+
+        .entity, .metric { font-weight: bold; }
+        .metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }
+        .metric small { font-size: 80%; font-weight: normal; color: #666; }
+
+        div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }
+        div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }
+        div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }
+        div.coverage-summary th.file { border-right: none !important; }
+        div.coverage-summary th.pic { border-left: none !important; text-align: right; }
+        div.coverage-summary th.pct { border-right: none !important; }
+        div.coverage-summary th.abs { border-left: none !important; text-align: right; }
+        div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }
+        div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }
+        div.coverage-summary td.file { text-align: right; border-left: 1px solid #666; white-space: nowrap;  }
+        div.coverage-summary td.pic { min-width: 120px !important;  }
+        div.coverage-summary a:link { text-decoration: none; color: #000; }
+        div.coverage-summary a:visited { text-decoration: none; color: #333; }
+        div.coverage-summary a:hover { text-decoration: underline; }
+        div.coverage-summary tfoot td { border-top: 1px solid #666; }
+
+        div.coverage-summary .yui3-datatable-sort-indicator, div.coverage-summary .dummy-sort-indicator {
+            height: 10px;
+            width: 7px;
+            display: inline-block;
+            margin-left: 0.5em;
+        }
+        div.coverage-summary .yui3-datatable-sort-indicator {
+            background: url("https://yui-s.yahooapis.com/3.6.0/build/datatable-sort/assets/skins/sam/sort-arrow-sprite.png") no-repeat scroll 0 0 transparent;
+        }
+        div.coverage-summary .yui3-datatable-sorted .yui3-datatable-sort-indicator {
+            background-position: 0 -20px;
+        }
+        div.coverage-summary .yui3-datatable-sorted-desc .yui3-datatable-sort-indicator {
+            background-position: 0 -10px;
+        }
+
+        .high { background: #b5d592 !important; }
+        .medium { background: #ffe87c !important; }
+        .low { background: #fc8c84 !important; }
+
+        span.cover-fill, span.cover-empty {
+            display:inline-block;
+            border:1px solid #444;
+            background: white;
+            height: 12px;
+        }
+        span.cover-fill {
+            background: #ccc;
+            border-right: 1px solid #444;
+        }
+        span.cover-empty {
+            background: white;
+            border-left: none;
+        }
+        span.cover-full {
+            border-right: none !important;
+        }
+        pre.prettyprint {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .com { color: #999 !important; }
+        .ignore-none { color: #999; font-weight: normal; }
+
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">public/modules/core/tests/trial-data.client.service.test.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">100% <small>(137 / 137)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">100% <small>(30 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">100% <small>(137 / 137)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../../index.html">All files</a> &#187; <a href="index.html">public/modules/core/tests/</a> &#187; trial-data.client.service.test.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">21</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+(function() {
+    describe('TrialData', function() {
+&nbsp;
+        //Initialize global variables
+        var TrialData;
+        var blankDataObject = {
+            answers: {
+                musical_expertise: null,
+                musical_background: null,
+                most_engaged: null,
+                hearing_impairments: null,
+                visual_impairments: null,
+                nationality: null,
+                dob: null,
+                sex: null,
+                music_styles: [],
+                most_enjoyed: null,
+                emotion_indices: [],
+                ratings: {
+                    positivity: [],
+                    like_dislike: [],
+                    familiarity: [],
+                    engagement: [],
+                    activity: [],
+                    chills: [],
+                    power: []
+                }
+            },
+&nbsp;
+            date: null,
+            media: [],
+            timestamps: {
+                start: null,
+                test: null,
+                media: [],
+                end: null
+            },
+            metadata: {
+                session_number: null,
+                location: 'taipei_city',
+                terminal: null
+            },
+            state: {
+                currentSlideIndex: -1,
+                mediaPlayCount: 0
+            }
+        };
+&nbsp;
+        // Load the main application module
+        beforeEach(module(ApplicationConfiguration.applicationModuleName));
+&nbsp;
+        beforeEach(inject(function(_TrialData_) {
+            TrialData = _TrialData_;
+        }));
+&nbsp;
+        describe('initialization', function() {
+            it('should be defined', function() {
+                expect(TrialData).toBeDefined();
+            });
+&nbsp;
+            it('should return an object with a properly formatted data member', function() {
+                expect(TrialData.data).toBeDefined();
+                expect(TrialData.data.metadata).toBeDefined();
+                expect(TrialData.data.state).toBeDefined();
+                expect(TrialData.data.answers).toBeDefined();
+                expect(TrialData.data.answers.musical_expertise).toBeNull();
+                expect(TrialData.data.answers.musical_background).toBeNull();
+                expect(TrialData.data.answers.most_engaged).toBeNull();
+                expect(TrialData.data.answers.hearing_impairments).toBeNull();
+                expect(TrialData.data.answers.visual_impairments).toBeNull();
+                expect(TrialData.data.answers.nationality).toBeNull();
+                expect(TrialData.data.answers.dob).toBeNull();
+                expect(TrialData.data.answers.sex).toBeNull();
+                expect(TrialData.data.answers.music_styles).toBeDefined();
+                expect(TrialData.data.answers.music_styles.length).toBe(0);
+                expect(TrialData.data.answers.most_enjoyed).toBeNull();
+                expect(TrialData.data.answers.emotion_indices).toBeDefined();
+                expect(TrialData.data.answers.emotion_indices.length).toBe(0);
+                expect(TrialData.data.answers.ratings).toBeDefined();
+                expect(TrialData.data.answers.ratings.positivity).toBeDefined();
+                expect(TrialData.data.answers.ratings.positivity.length).toBe(0);
+                expect(TrialData.data.answers.ratings.like_dislike).toBeDefined();
+                expect(TrialData.data.answers.ratings.like_dislike.length).toBe(0);
+                expect(TrialData.data.answers.ratings.familiarity).toBeDefined();
+                expect(TrialData.data.answers.ratings.familiarity.length).toBe(0);
+                expect(TrialData.data.answers.ratings.engagement).toBeDefined();
+                expect(TrialData.data.answers.ratings.engagement.length).toBe(0);
+                expect(TrialData.data.answers.ratings.activity).toBeDefined();
+                expect(TrialData.data.answers.ratings.activity.length).toBe(0);
+                expect(TrialData.data.answers.ratings.chills).toBeDefined();
+                expect(TrialData.data.answers.ratings.chills.length).toBe(0);
+                expect(TrialData.data.answers.ratings.power).toBeDefined();
+                expect(TrialData.data.answers.ratings.power.length).toBe(0);
+                expect(TrialData.data.date).toBeNull();
+                expect(TrialData.data.media).toBeDefined();
+                expect(TrialData.data.media.length).toBe(0);
+                expect(TrialData.data.timestamps).toBeDefined();
+                expect(TrialData.data.timestamps.start).toBeNull();
+                expect(TrialData.data.timestamps.test).toBeNull();
+                expect(TrialData.data.timestamps.end).toBeNull();
+                expect(TrialData.data.timestamps.media).toBeDefined();
+                expect(TrialData.data.timestamps.media.length).toBe(0);
+                expect(TrialData.data.metadata.session_number).toBeNull();
+                expect(TrialData.data.metadata.location).toBe('taipei_city');
+                expect(TrialData.data.metadata.terminal).toBeNull();
+                expect(TrialData.data.state.currentSlideIndex).toBe(-1);
+                expect(TrialData.data.state.mediaPlayCount).toBe(0);
+            });
+        });
+&nbsp;
+        describe('#toJson', function() {
+            it('should be defined', function() {
+                expect(TrialData.toJson).toBeDefined();
+                expect(typeof TrialData.toJson).toBe('function');
+            });
+&nbsp;
+            it('should return a JSON representation of the data property', function() {
+                var mockData = {foo: 'bar'};
+                TrialData.data = mockData;
+                expect(TrialData.toJson()).toEqual(angular.toJson(mockData, true));
+            });
+        });
+&nbsp;
+        describe('#reset', function() {
+            it('should be defined', function() {
+                expect(TrialData.reset).toBeDefined();
+                expect(typeof TrialData.reset).toBe('function');
+            });
+&nbsp;
+            it('should return a blank data object', function() {
+                TrialData.data = {foo: 'bar'};
+                TrialData.reset();
+                expect(TrialData.data).toEqual(blankDataObject);
+            });
+        });
+&nbsp;
+        describe('data persistence', function() {
+            it('should persist changes to the data property', function() {
+                TrialData.data.answers.musical_expertise = 'damn good';
+                expect(TrialData.data.answers.musical_expertise).toBe('damn good');
+            });
+&nbsp;
+            describe('#setValueForPath', function() {
+                it('should set a simple path\'s value', function() {
+                    TrialData.data.answers.hearing_impairments = false;
+                    TrialData.setValueForPath('data.answers.hearing_impairments', true);
+                    expect(TrialData.data.answers.hearing_impairments).toBe(true);
+                });
+&nbsp;
+                it('shouldn\'t do anything if a value is not supplied', function() {
+                    TrialData.data.answers.hearing_impairments = false;
+                    TrialData.setValueForPath('data.answers.hearing_impairments');
+                    expect(TrialData.data.answers.hearing_impairments).toBe(false);
+                });
+&nbsp;
+                it('should correctly set a value for deep path that doesn\'t yet exist', function() {
+                    TrialData.setValueForPath('foo.bar.baz', 42);
+                    expect(TrialData.foo.bar.baz).toBe(42);
+                });
+&nbsp;
+                it('should set a simple path\'s value and respect the array_index option', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'z', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe('z');
+                });
+&nbsp;
+                it('should convert "true" to boolean true', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'true', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(true);
+                });
+&nbsp;
+                it('should convert "false" to boolean false', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'false', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(false);
+                });
+&nbsp;
+                it('should convert a integer string to a number', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', '42', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(42);
+                });
+&nbsp;
+                it('should convert a float string to a number', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', '42.24', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe(42.24);
+                });
+&nbsp;
+                it('should downcase simple strings', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPath('data.answers.emotion_indices', 'Brennon Bortz', {array_index:2});
+                    expect(TrialData.data.answers.emotion_indices[2]).toBe('brennon bortz');
+                });
+            });
+&nbsp;
+            describe('#setValueForPathForCurrentMedia', function() {
+                it('should set a simple path\'s value when no media have played', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.data.state.mediaPlayCount = 0;
+                    TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', 'z');
+                    expect(TrialData.data.answers.emotion_indices[0]).toBe('z');
+                });
+&nbsp;
+                it('should set a simple path\'s value for the first index with a blank data object', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', 'z');
+                    expect(TrialData.data.answers.emotion_indices[0]).toBe('z');
+                });
+&nbsp;
+                it('should set a simple path\'s value when some media have played', function() {
+                    TrialData.data.answers.emotion_indices = ['a','b','c'];
+                    TrialData.data.state.mediaPlayCount = 2;
+                    TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', 'z');
+                    expect(TrialData.data.answers.emotion_indices[1]).toBe('z');
+                });
+&nbsp;
+                it('should set a path\'s value when the array doesn\'t yet exist', function() {
+                    TrialData.data.state.mediaPlayCount = 0;
+                    TrialData.setValueForPathForCurrentMedia('data.answers.ratings.foo', false);
+                    expect(TrialData.data.answers.ratings.foo[0]).toBe(false);
+                });
+&nbsp;
+                it('should expand an array to include a new value', function() {
+                    TrialData.data.answers.emotion_indices = [];
+                    TrialData.data.state.mediaPlayCount = 2;
+                    TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', '42');
+                    expect(TrialData.data.answers.emotion_indices).toEqual([null, 42]);
+                });
+            });
+        });
+    });
+})();</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 28 2014 14:45:13 GMT-0500 (EST)</div>
+</div>
+
+<script src="../../../../prettify.js"></script>
+
+<script src="https://yui-s.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
+<script>
+
+    YUI().use('datatable', function (Y) {
+
+        var formatters = {
+          pct: function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              try {
+                  return o.value.toFixed(2) + '%';
+              } catch (ex) { return o.value + '%'; }
+          },
+          html: function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              return o.record.get(o.column.key + '_html');
+          }
+        },
+          defaultFormatter = function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              return o.value;
+          };
+
+        function getColumns(theadNode) {
+            var colNodes = theadNode.all('tr th'),
+                cols = [],
+                col;
+            colNodes.each(function (colNode) {
+                col = {
+                    key: colNode.getAttribute('data-col'),
+                    label: colNode.get('innerHTML') || ' ',
+                    sortable: !colNode.getAttribute('data-nosort'),
+                    className: colNode.getAttribute('class'),
+                    type: colNode.getAttribute('data-type'),
+                    allowHTML: colNode.getAttribute('data-html') === 'true' || colNode.getAttribute('data-fmt') === 'html'
+                };
+                col.formatter = formatters[colNode.getAttribute('data-fmt')] || defaultFormatter;
+                cols.push(col);
+            });
+            return cols;
+        }
+
+        function getRowData(trNode, cols) {
+            var tdNodes = trNode.all('td'),
+                    i,
+                    row = { classes: {} },
+                    node,
+                    name;
+            for (i = 0; i < cols.length; i += 1) {
+                name = cols[i].key;
+                node = tdNodes.item(i);
+                row[name] = node.getAttribute('data-value') || node.get('innerHTML');
+                row[name + '_html'] = node.get('innerHTML');
+                row.classes[name] = node.getAttribute('class');
+                //Y.log('Name: ' + name + '; Value: ' + row[name]);
+                if (cols[i].type === 'number') { row[name] = row[name] * 1; }
+            }
+            //Y.log(row);
+            return row;
+        }
+
+        function getData(tbodyNode, cols) {
+            var data = [];
+            tbodyNode.all('tr').each(function (trNode) {
+                data.push(getRowData(trNode, cols));
+            });
+            return data;
+        }
+
+        function replaceTable(node) {
+            if (!node) { return; }
+            var cols = getColumns(node.one('thead')),
+                data = getData(node.one('tbody'), cols),
+                table,
+                parent = node.get('parentNode');
+
+            table = new Y.DataTable({
+                columns: cols,
+                data: data,
+                sortBy: 'file'
+            });
+            parent.set('innerHTML', '');
+            table.render(parent);
+        }
+
+        Y.on('domready', function () {
+            replaceTable(Y.one('div.coverage-summary table'));
+            if (typeof prettyPrint === 'function') {
+                prettyPrint();
+            }
+        });
+    });
+</script>
+</body>
+</html>

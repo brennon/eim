@@ -1,0 +1,1519 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for core/config/core.client.missing-keys.js</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../../prettify.css">
+
+    <style>
+        body, html {
+            margin:0; padding: 0;
+        }
+        body {
+            font-family: Helvetica Neue, Helvetica,Arial;
+            font-size: 10pt;
+        }
+        div.header, div.footer {
+            background: #eee;
+            padding: 1em;
+        }
+        div.header {
+            z-index: 100;
+            position: fixed;
+            top: 0;
+            border-bottom: 1px solid #666;
+            width: 100%;
+        }
+        div.footer {
+            border-top: 1px solid #666;
+        }
+        div.body {
+            margin-top: 10em;
+        }
+        div.meta {
+            font-size: 90%;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            font-weight: normal;
+        }
+        h1 {
+            font-size: 12pt;
+        }
+        h2 {
+            font-size: 10pt;
+        }
+        pre {
+            font-family: Consolas, Menlo, Monaco, monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 14px;
+            font-size: 14px;
+            -moz-tab-size: 2;
+            -o-tab-size:  2;
+            tab-size: 2;
+        }
+
+        div.path { font-size: 110%; }
+        div.path a:link, div.path a:visited { color: #000; }
+        table.coverage { border-collapse: collapse; margin:0; padding: 0 }
+
+        table.coverage td {
+            margin: 0;
+            padding: 0;
+            color: #111;
+            vertical-align: top;
+        }
+        table.coverage td.line-count {
+            width: 50px;
+            text-align: right;
+            padding-right: 5px;
+        }
+        table.coverage td.line-coverage {
+            color: #777 !important;
+            text-align: right;
+            border-left: 1px solid #666;
+            border-right: 1px solid #666;
+        }
+
+        table.coverage td.text {
+        }
+
+        table.coverage td span.cline-any {
+            display: inline-block;
+            padding: 0 5px;
+            width: 40px;
+        }
+        table.coverage td span.cline-neutral {
+            background: #eee;
+        }
+        table.coverage td span.cline-yes {
+            background: #b5d592;
+            color: #999;
+        }
+        table.coverage td span.cline-no {
+            background: #fc8c84;
+        }
+
+        .cstat-yes { color: #111; }
+        .cstat-no { background: #fc8c84; color: #111; }
+        .fstat-no { background: #ffc520; color: #111 !important; }
+        .cbranch-no { background:  yellow !important; color: #111; }
+
+        .cstat-skip { background: #ddd; color: #111; }
+        .fstat-skip { background: #ddd; color: #111 !important; }
+        .cbranch-skip { background: #ddd !important; color: #111; }
+
+        .missing-if-branch {
+            display: inline-block;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: black;
+            color: yellow;
+        }
+
+        .skip-if-branch {
+            display: none;
+            margin-right: 10px;
+            position: relative;
+            padding: 0 4px;
+            background: #ccc;
+            color: white;
+        }
+
+        .missing-if-branch .typ, .skip-if-branch .typ {
+            color: inherit !important;
+        }
+
+        .entity, .metric { font-weight: bold; }
+        .metric { display: inline-block; border: 1px solid #333; padding: 0.3em; background: white; }
+        .metric small { font-size: 80%; font-weight: normal; color: #666; }
+
+        div.coverage-summary table { border-collapse: collapse; margin: 3em; font-size: 110%; }
+        div.coverage-summary td, div.coverage-summary table  th { margin: 0; padding: 0.25em 1em; border-top: 1px solid #666; border-bottom: 1px solid #666; }
+        div.coverage-summary th { text-align: left; border: 1px solid #666; background: #eee; font-weight: normal; }
+        div.coverage-summary th.file { border-right: none !important; }
+        div.coverage-summary th.pic { border-left: none !important; text-align: right; }
+        div.coverage-summary th.pct { border-right: none !important; }
+        div.coverage-summary th.abs { border-left: none !important; text-align: right; }
+        div.coverage-summary td.pct { text-align: right; border-left: 1px solid #666; }
+        div.coverage-summary td.abs { text-align: right; font-size: 90%; color: #444; border-right: 1px solid #666; }
+        div.coverage-summary td.file { text-align: right; border-left: 1px solid #666; white-space: nowrap;  }
+        div.coverage-summary td.pic { min-width: 120px !important;  }
+        div.coverage-summary a:link { text-decoration: none; color: #000; }
+        div.coverage-summary a:visited { text-decoration: none; color: #333; }
+        div.coverage-summary a:hover { text-decoration: underline; }
+        div.coverage-summary tfoot td { border-top: 1px solid #666; }
+
+        div.coverage-summary .yui3-datatable-sort-indicator, div.coverage-summary .dummy-sort-indicator {
+            height: 10px;
+            width: 7px;
+            display: inline-block;
+            margin-left: 0.5em;
+        }
+        div.coverage-summary .yui3-datatable-sort-indicator {
+            background: url("https://yui-s.yahooapis.com/3.6.0/build/datatable-sort/assets/skins/sam/sort-arrow-sprite.png") no-repeat scroll 0 0 transparent;
+        }
+        div.coverage-summary .yui3-datatable-sorted .yui3-datatable-sort-indicator {
+            background-position: 0 -20px;
+        }
+        div.coverage-summary .yui3-datatable-sorted-desc .yui3-datatable-sort-indicator {
+            background-position: 0 -10px;
+        }
+
+        .high { background: #b5d592 !important; }
+        .medium { background: #ffe87c !important; }
+        .low { background: #fc8c84 !important; }
+
+        span.cover-fill, span.cover-empty {
+            display:inline-block;
+            border:1px solid #444;
+            background: white;
+            height: 12px;
+        }
+        span.cover-fill {
+            background: #ccc;
+            border-right: 1px solid #444;
+        }
+        span.cover-empty {
+            background: white;
+            border-left: none;
+        }
+        span.cover-full {
+            border-right: none !important;
+        }
+        pre.prettyprint {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        .com { color: #999 !important; }
+        .ignore-none { color: #999; font-weight: normal; }
+
+    </style>
+</head>
+<body>
+<div class="header low">
+    <h1>Code coverage report for <span class="entity">core/config/core.client.missing-keys.js</span></h1>
+    <h2>
+        
+        Statements: <span class="metric">0.25% <small>(1 / 394)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Functions: <span class="metric">0% <small>(0 / 1)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        
+        Lines: <span class="metric">0.25% <small>(1 / 394)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">core/config/</a> &#187; core.client.missing-keys.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+angular.module('core').controller(['gettext',
+<span class="fstat-no" title="function not covered" >    function (gettext) {</span>
+<span class="cstat-no" title="statement not covered" >        gettext('No Signal');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Signal OK');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Personal Details');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Gender');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Male');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Female');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Nationality');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Afghan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Albanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Algerian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('American');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Andorran');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Angolan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Antiguans');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Argentinean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Armenian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Australian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Austrian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Azerbaijani');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bahamian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bahraini');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bangladeshi');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Barbadian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Barbudans');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Batswana');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Belarusian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Belgian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Belizean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Beninese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bhutanese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bolivian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bosnian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Brazilian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('British');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bruneian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Bulgarian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Burkinabe');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Burmese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Burundian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Cambodian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Cameroonian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Canadian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Cape Verdean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Central African');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Chadian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Chilean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Chinese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Colombian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Comoran');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Congolese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Costa Rican');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Croatian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Cuban');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Cypriot');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Czech');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Danish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Djibouti');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Dominican');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Dutch');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('East Timorese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Ecuadorean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Egyptian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Emirian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Equatorial Guinean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Eritrean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Estonian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Ethiopian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Fijian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Filipino');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Finnish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('French');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Gabonese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Gambian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Georgian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('German');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Ghanaian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Greek');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Grenadian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Guatemalan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Guinea-Bissauan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Guinean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Guyanese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Haitian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Herzegovinian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Honduran');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Hungarian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I-Kiribati');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Icelander');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Indian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Indonesian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Iranian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Iraqi');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Irish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Israeli');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Italian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Ivorian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Jamaican');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Japanese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Jordanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Kazakhstani');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Kenyan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Kittian and Nevisian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Kuwaiti');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Kyrgyz');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Laotian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Latvian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Lebanese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Liberian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Libyan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Liechtensteiner');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Lithuanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Luxembourger');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Macedonian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Malagasy');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Malawian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Malaysian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Maldivan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Malian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Maltese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Marshallese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Mauritanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Mauritian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Mexican');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Micronesian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Moldovan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Monacan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Mongolian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Moroccan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Mosotho');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Motswana');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Mozambican');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Namibian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Nauruan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Nepalese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('New Zealander');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Nicaraguan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Nigerian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Nigerien');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('North Korean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Northern Irish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Norwegian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Omani');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Pakistani');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Palauan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Panamanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Papua New Guinean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Paraguayan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Peruvian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Polish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Portuguese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Qatari');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Romanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Russian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Rwandan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Saint Lucian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Salvadoran');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Samoan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('San Marinese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Sao Tomean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Saudi');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Scottish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Senegalese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Serbian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Seychellois');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Sierra Leonean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Singaporean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Slovakian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Slovenian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Solomon Islander');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Somali');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('South African');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('South Korean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Spanish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Sri Lankan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Sudanese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Surinamer');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Swazi');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Swedish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Swiss');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Syrian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Taiwanese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Tajik');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Tanzanian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Thai');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Togolese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Tongan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Trinidadian or Tobagonian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Tunisian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Turkish');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Tuvaluan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Ugandan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Ukrainian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Uruguayan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Uzbekistani');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Venezuelan');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Vietnamese');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Welsh');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Yemenite');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Zambian');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Zimbabwean');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Birth Year');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Musical Background');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Do you consider yourself a musician or to have specialist musical knowledge?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Yes');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('No');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('No expertise whatsoever');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('An expert');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Do you have any visual impairments? (If so, you may still participate in the experiment!)');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Select all of the following styles to which you regularly listen:');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Rock');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Pop');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Classical');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Jazz');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Dance');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('HipHop');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Folk');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('World');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('None');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Media Questions');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I was engaged with it and responding to it emotionally');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How involved and engaged were you with what you have just heard?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very negative');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very positive');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How positive or negative did what you have just heard make you feel?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very drowsy');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very lively');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How active or passive did what you have just heard make you feel?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Weak&lt;br /&gt;(without control, submissive)');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Empowered&lt;br /&gt;(in control of everything, dominant)');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How in control did you feel?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Not at all engaged, my mind was elsewhere');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very drowsy');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very lively');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Weak&lt;br /&gt;(without control, submissive)');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Empowered&lt;br /&gt;(in control of everything, dominant)');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How in control did you feel?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Not at all');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very tense');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very relaxed');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How tense or relaxed did you feel while you were listening?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I hated it');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I loved it');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How much did you like/dislike what you have just heard?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I had never heard it before');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I listen to it regularly');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How familiar are you with what you have just heard?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Age');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How would you rate your musical expertise?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Do you have any hearing impairments? (If so, you may still participate in the experiment!)');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Additional Questions');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How well do the following statements describe your personality?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who is reserved.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Disagree strongly');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Disagree a little');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Neither agree nor disagree');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Agree a little');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Agree strongly');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who is generally trusting.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who tends to be lazy.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who is relaxed, handles stress well.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who has few artistic interests.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who is outgoing, sociable.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who tends to find fault with others.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who does a thorough job.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who gets nervous easily.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('I see myself as someone who has an active imagination.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('This questionnaire uses some simple scales to find out how you responded to the media excerpt. We will compare your responses to the biosignals that we measured as you were listening.');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Final Questions');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('How concentrated were you during this experiment?');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very distracted');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Very concentrated');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('1');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('2');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('3');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('4');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('5');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('6');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('7');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('8');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('9');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('10');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('11');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('12');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('13');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('14');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('15');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('16');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('17');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('18');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('19');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('20');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('21');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('22');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('23');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('24');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('25');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('26');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('27');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('28');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('29');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('30');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('31');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('32');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('33');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('34');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('35');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('36');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('37');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('38');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('39');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('40');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('41');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('42');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('43');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('44');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('45');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('46');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('47');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('48');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('49');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('50');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('51');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('52');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('53');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('54');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('55');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('56');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('57');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('58');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('59');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('60');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('61');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('62');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('63');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('64');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('65');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('66');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('67');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('68');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('69');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('70');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('71');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('72');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('73');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('74');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('75');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('76');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('77');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('78');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('79');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('80');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('81');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('82');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('83');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('84');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('85');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('86');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('87');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('88');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('89');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('90');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('91');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('92');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('93');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('94');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('95');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('96');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('97');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('98');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('99');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('100');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('101');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('102');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('103');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('104');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('105');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('106');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('107');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('108');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('109');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('110');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('111');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('112');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('113');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('114');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('115');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('116');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('117');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('118');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('119');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('120');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('121');</span>
+<span class="cstat-no" title="statement not covered" >        gettext('Begin Playback');</span>
+    }
+]);
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 28 2014 14:45:55 GMT-0500 (EST)</div>
+</div>
+
+<script src="../../prettify.js"></script>
+
+<script src="https://yui-s.yahooapis.com/3.6.0/build/yui/yui-min.js"></script>
+<script>
+
+    YUI().use('datatable', function (Y) {
+
+        var formatters = {
+          pct: function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              try {
+                  return o.value.toFixed(2) + '%';
+              } catch (ex) { return o.value + '%'; }
+          },
+          html: function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              return o.record.get(o.column.key + '_html');
+          }
+        },
+          defaultFormatter = function (o) {
+              o.className += o.record.get('classes')[o.column.key];
+              return o.value;
+          };
+
+        function getColumns(theadNode) {
+            var colNodes = theadNode.all('tr th'),
+                cols = [],
+                col;
+            colNodes.each(function (colNode) {
+                col = {
+                    key: colNode.getAttribute('data-col'),
+                    label: colNode.get('innerHTML') || ' ',
+                    sortable: !colNode.getAttribute('data-nosort'),
+                    className: colNode.getAttribute('class'),
+                    type: colNode.getAttribute('data-type'),
+                    allowHTML: colNode.getAttribute('data-html') === 'true' || colNode.getAttribute('data-fmt') === 'html'
+                };
+                col.formatter = formatters[colNode.getAttribute('data-fmt')] || defaultFormatter;
+                cols.push(col);
+            });
+            return cols;
+        }
+
+        function getRowData(trNode, cols) {
+            var tdNodes = trNode.all('td'),
+                    i,
+                    row = { classes: {} },
+                    node,
+                    name;
+            for (i = 0; i < cols.length; i += 1) {
+                name = cols[i].key;
+                node = tdNodes.item(i);
+                row[name] = node.getAttribute('data-value') || node.get('innerHTML');
+                row[name + '_html'] = node.get('innerHTML');
+                row.classes[name] = node.getAttribute('class');
+                //Y.log('Name: ' + name + '; Value: ' + row[name]);
+                if (cols[i].type === 'number') { row[name] = row[name] * 1; }
+            }
+            //Y.log(row);
+            return row;
+        }
+
+        function getData(tbodyNode, cols) {
+            var data = [];
+            tbodyNode.all('tr').each(function (trNode) {
+                data.push(getRowData(trNode, cols));
+            });
+            return data;
+        }
+
+        function replaceTable(node) {
+            if (!node) { return; }
+            var cols = getColumns(node.one('thead')),
+                data = getData(node.one('tbody'), cols),
+                table,
+                parent = node.get('parentNode');
+
+            table = new Y.DataTable({
+                columns: cols,
+                data: data,
+                sortBy: 'file'
+            });
+            parent.set('innerHTML', '');
+            table.render(parent);
+        }
+
+        Y.on('domready', function () {
+            replaceTable(Y.one('div.coverage-summary table'));
+            if (typeof prettyPrint === 'function') {
+                prettyPrint();
+            }
+        });
+    });
+</script>
+</body>
+</html>

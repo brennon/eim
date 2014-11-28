@@ -159,6 +159,18 @@ module.exports = function(grunt) {
                     'public/i18n/translations.js': ['po/*.po']
                 }
             }
+        },
+        coveralls: {
+            options: {
+                // When true, grunt-coveralls will only print a warning rather than
+                // an error, to prevent CI builds from failing unnecessarily (e.g. if
+                // coveralls.io is down). Optional, defaults to false.
+                force: true
+            },
+            client_tests: {
+                // Target-specific LCOV coverage file
+                src: 'coverage/PhantomJS 1.9.7 (Mac OS X)/lcov.info'
+            }
         }
     });
 
@@ -198,5 +210,9 @@ module.exports = function(grunt) {
     // Just Node tests task
     grunt.registerTask('test:server', ['env:test', 'mochaTest']);
 
+    // Translation tasks
     grunt.loadNpmTasks('grunt-angular-gettext');
+
+    // Code coverage tasks
+    grunt.loadNpmTasks('grunt-coveralls');
 };
