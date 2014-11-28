@@ -1,16 +1,18 @@
 msgid ""
 msgstr ""
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: Emotion in Motion v1.0.0\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Emotion in Motion <emotion.in.motion@musicsensorsemotion."
+"com>\n"
+"MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Project-Id-Version: emotion-in-motion\n"
-"\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: crowdin.com\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Last-Translator: brennon <brennon@vt.edu>\n"
-"Language-Team: Spanish\n"
 "Language: es_ES\n"
-"PO-Revision-Date: 2014-11-27 08:42-0500\n"
+"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "1"
@@ -597,6 +599,10 @@ msgid "Batswana"
 msgstr "Botsuano"
 
 #: public/modules/core/config/core.client.missing-keys.js
+msgid "Begin Playback"
+msgstr "Iniciar la Reproducción"
+
+#: public/modules/core/config/core.client.missing-keys.js
 msgid "Belarusian"
 msgstr "Bielorruso"
 
@@ -808,8 +814,8 @@ msgid "Emirian"
 msgstr "Emiratí"
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Empowered<br />(in control of everything, dominant)"
-msgstr "Empoderado< br />(en control de todo, dominante)"
+msgid "Empowered (in control of everything, dominant)"
+msgstr "Empoderado (en control de todo, dominante)"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Equatorial Guinean"
@@ -970,7 +976,7 @@ msgstr "¿Cuán tenso o relajado se sintió mientras estaba escuchando?"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "How well do the following statements describe your personality?"
-msgstr "¿Cómo describen las siguientes afirmaciones su personalidad?"
+msgstr "Que tan bien describen mi personalidad las siguientes afirmaciones:"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "How would you rate your musical expertise?"
@@ -1014,7 +1020,7 @@ msgstr "Me veo como alguien que tiene pocos intereses artísticos."
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "I see myself as someone who is generally trusting."
-msgstr "Me veo como alguien que generalmente confía."
+msgstr "Me veo como alguien generalmente confiado."
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "I see myself as someone who is outgoing, sociable."
@@ -1378,7 +1384,7 @@ msgstr "Peruano"
 
 #: public/modules/core/views/eda-instructions.client.view.html
 msgid "Please place the sensors on the fingers of your <span class=\"text-danger\">left</span> hand as indicated in the photos below. During the listening part of the experiment please keep this hand as still as possible. Wrap the velcro straps around the tips of your 2 middle fingers, making sure that the small metal plate is against the skin of the inside of your finger. The straps should be tight but not so tight that it is uncomfortable."
-msgstr "Por favor colocar los sensores en los dedos de su mano <span class=\"text-danger\">izquierda</span> como se indica en las fotos de abajo. Durante la parte del experimento con audio, por favor mantenga esta mano lo más quieta posible. Envuelva las correas de velcro alrededor de las puntas de los dos dedos del medio, asegurándose de que la pequeña placa de metal esté contra la piel de la parte interior del dedo. Las correas deben apretadas pero no tan apretado que sea incómodo."
+msgstr "Por favor colocar los sensores en los dedos de su mano <span class=\"text-danger\">izquierda</span> como se indica en las fotos de abajo. Durante la parte del experimento con audio, por favor mantenga esta mano lo más quieta posible. Envuelva las correas de velcro alrededor de las puntas de los dos dedos del medio, asegurándose de que la pequeña placa de metal esté contra la piel de la parte interior del dedo. Las correas deben estar apretadas pero no tan apretado que sea incómodo."
 
 #: public/modules/core/views/sound-test.client.view.html
 msgid "Please put on the provided headphones. Left and right ears are indicated on the headset."
@@ -1693,8 +1699,8 @@ msgid "We would like you to wear some sensors that will monitor your heart and s
 msgstr "Nos gustaría usar algunos sensores para medir su corazón y su piel mientras escucha a dos breves extractos de audio. Después de cada extracto, se le pedirá contestar algunas preguntas acerca de cómo lo que ha oído le hizo sentir."
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Weak<br />(without control, submissive)"
-msgstr "Débil<br />(without control, submissive)"
+msgid "Weak (without control, submissive)"
+msgstr "Débil (sin control, sumiso)"
 
 #: public/modules/core/views/home.client.view.html
 msgid "Welcome"
