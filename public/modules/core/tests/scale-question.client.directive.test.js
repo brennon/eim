@@ -131,12 +131,8 @@
                 expect(middleChild.hasClass('option-label-container')).toBe(true);
                 expect(middleChild.hasClass('col-md-8')).toBe(true);
 
-                // Middle child should hold a row
-                var innerRow = $(middleChild.children()[0]);
-                expect(innerRow.hasClass('row')).toBe(true);
-
-                // This row should be divided into fifths
-                var innerRowChildren = innerRow.children();
+                // Middle child should be divided into fifths
+                var innerRowChildren = middleChild.children();
                 expect(innerRowChildren.length).toBe(5);
                 for (var i = 0; i < innerRowChildren.length; i++) {
                     var thisChildDiv = $(innerRowChildren[i]);

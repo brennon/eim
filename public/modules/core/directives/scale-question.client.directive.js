@@ -100,16 +100,12 @@ angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', func
 
         optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
 
-        var centerGroup = angular.element('<div class="col-md-8 option-label-container"></div>');
-
-        var innerRow = angular.element('<div class="row"></div>');
+        var centerGroup = angular.element('<div class="col-md-8 option-label-container text-center"></div>');
 
         for (var i = 0; i < choices.length; i++) {
           var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">{{ \'' + choices[i].label + '\' | translate }}</div>');
-          innerRow.append(choiceDiv);
+          centerGroup.append(choiceDiv);
         }
-
-        centerGroup.append(innerRow);
 
         optionLabels.append(centerGroup);
 
