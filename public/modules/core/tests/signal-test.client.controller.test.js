@@ -4,12 +4,12 @@
     describe('SignalTestController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService, mockTrialData;
+        var mockScope, $controller, SocketIOService, mockTrialData, $timeout;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             SocketIOService = _SocketIOService_;
@@ -20,6 +20,7 @@
                     }
                 }
             };
+            $timeout = _$timeout_;
         }));
 
         it('should be defined', function() {
@@ -92,6 +93,56 @@
                     mockScope.debugMode = false;
 
                     expect(mockScope.readyToAdvance()).toBe(true);
+                });
+
+                describe('timeout', function () {
+                    it('should send the stop signal test message', function () {
+
+                        $controller('SignalTestController', {
+                            $scope: mockScope,
+                            TrialData: mockTrialData,
+                            $timeout: $timeout
+                        });
+
+                        SocketIOService.emits = {};
+
+                        $timeout.flush();
+
+                        var emittedData = SocketIOService.emits.sendOSCMessage[0][0];
+
+                        expect(emittedData).toEqual({
+                            oscType: 'message',
+                            address: '/eim/control/signalTest',
+                            args: [
+                                {
+                                    type: 'integer',
+                                    value: 0
+                                },
+                                {
+                                    type: 'string',
+                                    value: '' + mockTrialData.data.metadata.session_number
+                                }
+                            ]
+                        });
+                    });
+
+                    it('should set EDA and POX quality to 1', function () {
+
+                        $controller('SignalTestController', {
+                            $scope: mockScope,
+                            TrialData: mockTrialData,
+                            $timeout: $timeout
+                        });
+
+                        SocketIOService.emits = {};
+
+                        $timeout.flush();
+
+                        var emittedData = SocketIOService.emits.sendOSCMessage[0][0];
+
+                        expect(mockScope.edaQuality).toBeTruthy();
+                        expect(mockScope.poxQuality).toBeTruthy();
+                    });
                 });
             });
 
