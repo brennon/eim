@@ -7,6 +7,7 @@ angular.module('core').factory('ExperimentManager', ['TrialData', '$q', '$http',
     return {
 
       advanceSlide: function () {
+
         TrialData.data.state.currentSlideIndex++;
 
         if (TrialData.data.state.currentSlideIndex === TrialData.data.schema.length) {

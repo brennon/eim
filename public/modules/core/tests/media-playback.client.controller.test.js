@@ -4,18 +4,19 @@
     describe('MediaPlaybackController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService, $timeout, ExperimentManager, $httpBackend;
+        var mockScope, $controller, SocketIOService, $timeout, ExperimentManager, $httpBackend, TrialData;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _ExperimentManager_, _$httpBackend_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _ExperimentManager_, _$httpBackend_, _TrialData_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             SocketIOService = _SocketIOService_;
             $timeout = _$timeout_;
             ExperimentManager = _ExperimentManager_;
             $httpBackend = _$httpBackend_;
+            TrialData = _TrialData_;
         }));
 
         describe('initialization', function() {
@@ -217,9 +218,16 @@
                     $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
                     mockScope.showBody = function() {
                     };
-                    $controller('MediaPlaybackController',
-                        {$scope: mockScope}
-                    );
+
+                    var mockExperimentManager = {
+                        advanceSlide: function() {}
+                    };
+
+                    $controller('MediaPlaybackController', {
+                        $scope: mockScope,
+                        ExperimentManager: mockExperimentManager
+                    });
+
                     SocketIOService.receive('oscMessageReceived',
                         {
                             address: '/eim/status/emotionIndex',
@@ -303,8 +311,11 @@
                             }
                         }
                     };
+                    var mockExperimentManager = {
+                        advanceSlide: function() {}
+                    }
                     $controller('MediaPlaybackController',
-                        {$scope: mockScope, TrialData: mockTrialData}
+                        {$scope: mockScope, TrialData: mockTrialData, ExperimentManager: mockExperimentManager}
                     );
 
                     SocketIOService.receive('oscMessageReceived',
@@ -337,8 +348,11 @@
                             }
                         }
                     };
+                    var mockExperimentManager = {
+                        advanceSlide: function() {}
+                    }
                     $controller('MediaPlaybackController',
-                        {$scope: mockScope, TrialData: mockTrialData}
+                        {$scope: mockScope, TrialData: mockTrialData, ExperimentManager: mockExperimentManager}
                     );
 
                     SocketIOService.receive('oscMessageReceived',

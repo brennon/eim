@@ -95,6 +95,7 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
                 $timeout(function() {
                     $scope.$apply(function() {
                         $scope.buttonDisabled = false;
+                        ExperimentManager.advanceSlide();
                     });
                 });
             }
