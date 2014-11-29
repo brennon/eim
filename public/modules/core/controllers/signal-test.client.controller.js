@@ -30,10 +30,15 @@ angular.module('core').controller('SignalTestController', ['$scope', 'SocketIOSe
         $timeout(
             function() {
                 thisController.sendStopSignalTestMessage();
-                $scope.edaQuality = 1;
-                $scope.poxQuality = 1;
+                $timeout(
+                    function() {
+                        $scope.edaQuality = 1;
+                        $scope.poxQuality = 1;
+                    },
+                    2.5 * 1000
+                );
             },
-            15 * 1000
+            12.5 * 1000
         );
 
         // Function to send start signal test message

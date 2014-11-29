@@ -137,6 +137,7 @@
                         SocketIOService.emits = {};
 
                         $timeout.flush();
+                        $timeout.flush();
 
                         var emittedData = SocketIOService.emits.sendOSCMessage[0][0];
 
