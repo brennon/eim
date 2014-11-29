@@ -18,17 +18,47 @@ angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', f
 
             scope[attrs.questionId + 'Select'] = null;
 
+            scope.validSelection = function () {
+
+                console.log(scope[attrs.questionId + 'Select']);
+
+            };
+
             scope.$watch(attrs.questionId + 'Select', function(newValue) {
                 scope.sendToTrialData(attrs.controllerDataPath, newValue);
             });
 
+            var rowDiv = angular.element('<div class="row well"></div>');
+
+            var formDiv = angular.element('<div class="col-md-12 form-group"></div>');
+
+            rowDiv.append(formDiv);
+
+            var label = angular.element('<label class="control-label" translate>'+attrs.questionLabel+'</label>');
+            label.prop('for', attrs.questionId);
+
+            formDiv.append(label);
+
+            var select = angular.element('<select class="form-control" ng-valid="validSelection" required></select>');
+            select.attr('id', attrs.questionId);
+            select.attr('name', attrs.questionId);
+            select.attr('ng-model', attrs.questionId + 'Select');
+
             if (element.data('dropdownOptions')) {
+
                 scope.dropdownOptions = element.data('dropdownOptions');
+
+                for (var i in element.data('dropdownOptions')) {
+                    var optionText = element.data('dropdownOptions')[i];
+                    var option = angular.element('<option>{{ "'+ optionText +'" | translate }}</option>');
+                    option.attr('value', optionText);
+                    select.append(option);
+                }
             }
 
-            var selectElement = angular.element('<div class="row well"><div class="col-md-12 form-group"><label for="' + attrs.questionId + '" class="control-label" translate>' + attrs.questionLabel + '</label><select id="'+attrs.questionId+'" name="'+attrs.questionId+'" class="form-control" ng-model="'+attrs.questionId+'Select" required><option ng-repeat="option in dropdownOptions" value="{{option}}">{{option | translate}}</option> </select></div></div>');
+            formDiv.append(select);
 
-            element.append(selectElement);
+            element.append(rowDiv);
             $compile(element.contents())(scope);
         }
     };
