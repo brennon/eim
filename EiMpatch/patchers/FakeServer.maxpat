@@ -4,11 +4,11 @@
 		"appversion" : 		{
 			"major" : 6,
 			"minor" : 1,
-			"revision" : 8,
-			"architecture" : "x86"
+			"revision" : 7,
+			"architecture" : "x64"
 		}
 ,
-		"rect" : [ 0.0, 726.0, 640.0, 443.0 ],
+		"rect" : [ -773.0, -198.0, 640.0, 443.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -54,7 +54,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 349.0, 241.5, 120.0, 52.0 ],
+					"patching_rect" : [ 349.0, 241.5, 120.0, 53.0 ],
 					"text" : "order of messages from bottom to top"
 				}
 
@@ -135,7 +135,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 168.0, 251.0, 20.0, 20.0 ]
+					"patching_rect" : [ 168.0, 258.0, 20.0, 20.0 ]
 				}
 
 			}
@@ -148,8 +148,8 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 168.0, 281.0, 147.0, 18.0 ],
-					"text" : "/eim/control/soundTest $1"
+					"patching_rect" : [ 168.0, 283.5, 189.0, 18.0 ],
+					"text" : "/eim/control/soundTest $1 zh_TW"
 				}
 
 			}
@@ -162,7 +162,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 16.0, 9.266666, 266.0, 35.0 ],
+					"patching_rect" : [ 16.0, 9.266666, 266.0, 36.0 ],
 					"text" : "Fake SERVER"
 				}
 

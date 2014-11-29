@@ -1,9 +1,9 @@
 {
 	"name" : "EmotionInMotion",
 	"version" : 1,
-	"creationdate" : -804209135,
-	"modificationdate" : -795099811,
-	"viewrect" : [ 27.0, 119.0, 306.0, 1097.0 ],
+	"creationdate" : -804209256,
+	"modificationdate" : 3500105604,
+	"viewrect" : [ 69.0, 96.0, 306.0, 871.0 ],
 	"autoorganize" : 1,
 	"hideprojectwindow" : 0,
 	"showdependencies" : 1,
@@ -45,6 +45,16 @@
 ,
 		"media" : 		{
 			"AudioCheckLeftRightEN.wav" : 			{
+				"kind" : "audiofile",
+				"local" : 1
+			}
+,
+			"AudioCheckLeftRightTW.wav" : 			{
+				"kind" : "audiofile",
+				"local" : 1
+			}
+,
+			"AudioCheckLeftRightES.wav" : 			{
 				"kind" : "audiofile",
 				"local" : 1
 			}
