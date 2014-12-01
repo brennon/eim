@@ -4,8 +4,8 @@
 		"appversion" : 		{
 			"major" : 6,
 			"minor" : 1,
-			"revision" : 7,
-			"architecture" : "x64"
+			"revision" : 9,
+			"architecture" : "x86"
 		}
 ,
 		"rect" : [ 417.0, 109.0, 1190.0, 724.0 ],
@@ -50,7 +50,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 19.5, 147.0, 101.0, 38.0 ],
+					"patching_rect" : [ 19.5, 147.0, 101.0, 37.0 ],
 					"text" : "connect for final version!"
 				}
 
@@ -83,8 +83,8 @@
 						"appversion" : 						{
 							"major" : 6,
 							"minor" : 1,
-							"revision" : 7,
-							"architecture" : "x64"
+							"revision" : 9,
+							"architecture" : "x86"
 						}
 ,
 						"rect" : [ 995.0, 305.0, 924.0, 575.0 ],
@@ -135,8 +135,8 @@
 										"appversion" : 										{
 											"major" : 6,
 											"minor" : 1,
-											"revision" : 7,
-											"architecture" : "x64"
+											"revision" : 9,
+											"architecture" : "x86"
 										}
 ,
 										"rect" : [ 779.0, 511.0, 808.0, 790.0 ],
@@ -419,8 +419,8 @@
 														"appversion" : 														{
 															"major" : 6,
 															"minor" : 1,
-															"revision" : 7,
-															"architecture" : "x64"
+															"revision" : 9,
+															"architecture" : "x86"
 														}
 ,
 														"rect" : [ 25.0, 69.0, 640.0, 480.0 ],
@@ -841,8 +841,8 @@
 														"appversion" : 														{
 															"major" : 6,
 															"minor" : 1,
-															"revision" : 7,
-															"architecture" : "x64"
+															"revision" : 9,
+															"architecture" : "x86"
 														}
 ,
 														"rect" : [ 25.0, 69.0, 605.0, 644.0 ],
@@ -1357,8 +1357,8 @@
 														"appversion" : 														{
 															"major" : 6,
 															"minor" : 1,
-															"revision" : 7,
-															"architecture" : "x64"
+															"revision" : 9,
+															"architecture" : "x86"
 														}
 ,
 														"rect" : [ 25.0, 69.0, 370.0, 415.0 ],
@@ -1490,8 +1490,8 @@
 																		"appversion" : 																		{
 																			"major" : 6,
 																			"minor" : 1,
-																			"revision" : 7,
-																			"architecture" : "x64"
+																			"revision" : 9,
+																			"architecture" : "x86"
 																		}
 ,
 																		"rect" : [ 25.0, 69.0, 640.0, 480.0 ],
@@ -1858,8 +1858,8 @@
 																		"appversion" : 																		{
 																			"major" : 6,
 																			"minor" : 1,
-																			"revision" : 7,
-																			"architecture" : "x64"
+																			"revision" : 9,
+																			"architecture" : "x86"
 																		}
 ,
 																		"rect" : [ 25.0, 69.0, 640.0, 480.0 ],
@@ -3372,7 +3372,7 @@
 									"destination" : [ "obj-48", 1 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 44.214287, 155.0, 70.357143, 155.0 ],
+									"midpoints" : [ 44.214287, 155.0, 70.35714, 155.0 ],
 									"source" : [ "obj-143", 0 ]
 								}
 
@@ -3482,7 +3482,7 @@
 									"destination" : [ "obj-27", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 217.785716, 132.0, 666.0, 132.0 ],
+									"midpoints" : [ 217.785721, 132.0, 666.0, 132.0 ],
 									"source" : [ "obj-32", 1 ]
 								}
 
@@ -3542,7 +3542,7 @@
 									"destination" : [ "obj-5", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 254.642858, 144.0, 333.5, 144.0 ],
+									"midpoints" : [ 254.642853, 144.0, 333.5, 144.0 ],
 									"source" : [ "obj-32", 2 ]
 								}
 
@@ -3553,7 +3553,7 @@
 									"destination" : [ "obj-5", 1 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 217.785716, 144.0, 347.5, 144.0 ],
+									"midpoints" : [ 217.785721, 144.0, 347.5, 144.0 ],
 									"source" : [ "obj-32", 1 ]
 								}
 
@@ -3740,8 +3740,8 @@
 						"appversion" : 						{
 							"major" : 6,
 							"minor" : 1,
-							"revision" : 7,
-							"architecture" : "x64"
+							"revision" : 9,
+							"architecture" : "x86"
 						}
 ,
 						"rect" : [ 874.0, 300.0, 640.0, 480.0 ],
@@ -4300,8 +4300,8 @@
 						"appversion" : 						{
 							"major" : 6,
 							"minor" : 1,
-							"revision" : 7,
-							"architecture" : "x64"
+							"revision" : 9,
+							"architecture" : "x86"
 						}
 ,
 						"rect" : [ 647.0, 151.0, 1049.0, 633.0 ],
@@ -4323,7 +4323,6 @@
 						"description" : "",
 						"digest" : "",
 						"tags" : "",
-						"visible" : 1,
 						"boxes" : [ 							{
 								"box" : 								{
 									"fontname" : "Arial",
@@ -4352,8 +4351,8 @@
 										"appversion" : 										{
 											"major" : 6,
 											"minor" : 1,
-											"revision" : 7,
-											"architecture" : "x64"
+											"revision" : 9,
+											"architecture" : "x86"
 										}
 ,
 										"rect" : [ 117.0, 164.0, 640.0, 480.0 ],
@@ -4382,8 +4381,7 @@
 													"numinlets" : 1,
 													"numoutlets" : 1,
 													"outlettype" : [ "bang" ],
-													"patching_rect" : [ 154.0, 164.0, 20.0, 20.0 ],
-													"presentation_rect" : [ 155.0, 164.0, 0.0, 0.0 ]
+													"patching_rect" : [ 154.0, 164.0, 20.0, 20.0 ]
 												}
 
 											}
@@ -4455,7 +4453,6 @@
 													"numoutlets" : 1,
 													"outlettype" : [ "" ],
 													"patching_rect" : [ 173.0, 254.0, 164.0, 18.0 ],
-													"presentation_rect" : [ 160.666656, 256.0, 0.0, 0.0 ],
 													"text" : "AudioCheckLeftRightES.wav"
 												}
 
@@ -4470,7 +4467,6 @@
 													"numoutlets" : 1,
 													"outlettype" : [ "" ],
 													"patching_rect" : [ 215.333328, 219.0, 166.0, 18.0 ],
-													"presentation_rect" : [ 207.666656, 219.0, 0.0, 0.0 ],
 													"text" : "AudioCheckLeftRightTW.wav"
 												}
 
@@ -4753,7 +4749,7 @@
 									"maxclass" : "comment",
 									"numinlets" : 1,
 									"numoutlets" : 0,
-									"patching_rect" : [ 658.0, 281.0, 139.0, 52.0 ],
+									"patching_rect" : [ 658.0, 281.0, 139.0, 51.0 ],
 									"text" : "sends DAC status when running audio test"
 								}
 
@@ -5389,7 +5385,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 101.5, 396.0, 58.0, 34.0 ],
+					"patching_rect" : [ 101.5, 396.0, 58.0, 33.0 ],
 					"text" : "receive~ audioR"
 				}
 
@@ -5404,7 +5400,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "signal" ],
-					"patching_rect" : [ 39.5, 396.0, 58.0, 34.0 ],
+					"patching_rect" : [ 39.5, 396.0, 58.0, 33.0 ],
 					"text" : "receive~ audioL"
 				}
 
@@ -5458,8 +5454,8 @@
 						"appversion" : 						{
 							"major" : 6,
 							"minor" : 1,
-							"revision" : 7,
-							"architecture" : "x64"
+							"revision" : 9,
+							"architecture" : "x86"
 						}
 ,
 						"rect" : [ 651.0, 417.0, 1132.0, 738.0 ],
@@ -6768,8 +6764,8 @@
 						"appversion" : 						{
 							"major" : 6,
 							"minor" : 1,
-							"revision" : 7,
-							"architecture" : "x64"
+							"revision" : 9,
+							"architecture" : "x86"
 						}
 ,
 						"rect" : [ 87.0, 87.0, 1824.0, 699.0 ],
@@ -7402,14 +7398,13 @@
 									"fontsize" : 12.0,
 									"frgb" : 0.0,
 									"id" : "obj-25",
-									"linecount" : 2,
 									"maxclass" : "textedit",
 									"numinlets" : 1,
 									"numoutlets" : 4,
 									"outlettype" : [ "", "int", "", "" ],
 									"parameter_enable" : 0,
 									"patching_rect" : [ 1141.5, 225.0, 577.0, 46.0 ],
-									"text" : "\"C:/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/media/\""
+									"text" : "\"Macintosh HD:/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/media/\""
 								}
 
 							}
@@ -7516,14 +7511,13 @@
 									"fontsize" : 12.0,
 									"frgb" : 0.0,
 									"id" : "obj-7",
-									"linecount" : 2,
 									"maxclass" : "textedit",
 									"numinlets" : 1,
 									"numoutlets" : 4,
 									"outlettype" : [ "", "int", "", "" ],
 									"parameter_enable" : 0,
 									"patching_rect" : [ 1141.5, 87.0, 577.0, 46.0 ],
-									"text" : "\"C:/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/data/\""
+									"text" : "\"Macintosh HD:/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/data/\""
 								}
 
 							}
@@ -7715,7 +7709,7 @@
 									"destination" : [ "obj-13", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 425.300019, 423.0, 752.5, 423.0 ],
+									"midpoints" : [ 425.300018, 423.0, 752.5, 423.0 ],
 									"source" : [ "obj-2", 3 ]
 								}
 
@@ -7762,7 +7756,7 @@
 									"destination" : [ "obj-79", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 516.900025, 411.5, 955.5, 411.5 ],
+									"midpoints" : [ 516.900024, 411.5, 955.5, 411.5 ],
 									"source" : [ "obj-2", 4 ]
 								}
 
@@ -7772,7 +7766,7 @@
 									"destination" : [ "obj-82", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 425.300019, 423.0, 817.5, 423.0 ],
+									"midpoints" : [ 425.300018, 423.0, 817.5, 423.0 ],
 									"source" : [ "obj-2", 3 ]
 								}
 
@@ -8499,28 +8493,28 @@
 ,
 		"dependency_cache" : [ 			{
 				"name" : "ArduinoEiM_POX.maxpat",
-				"bootpath" : "/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/patchers",
+				"bootpath" : "/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "ArduinoEiM_EDA.maxpat",
-				"bootpath" : "/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/patchers",
+				"bootpath" : "/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "HRfromPOX.maxpat",
-				"bootpath" : "/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/patchers",
+				"bootpath" : "/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
 			}
 , 			{
 				"name" : "EDAtool.maxpat",
-				"bootpath" : "/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/patchers",
+				"bootpath" : "/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/patchers",
 				"patcherrelativepath" : ".",
 				"type" : "JSON",
 				"implicit" : 1
