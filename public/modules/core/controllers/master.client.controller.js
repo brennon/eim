@@ -15,6 +15,7 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
 
         $scope.setLanguage = function(language) {
             gettextCatalog.setCurrentLanguage(language);
+            TrialData.setValueForPath('data.metadata.language', language);
         };
 
         this.startOver = function() {

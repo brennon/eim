@@ -10,26 +10,26 @@ angular.module('core').factory('TrialData', [
         function BlankDataObject() {
             return {
                 answers: {
-                    musical_expertise: null,
-                    musical_background: null,
-                    most_engaged: null,
-                    hearing_impairments: null,
-                    visual_impairments: null,
-                    nationality: null,
-                    dob: null,
-                    sex: null,
-                    music_styles: [],
-                    most_enjoyed: null,
-                    emotion_indices: [],
-                    ratings: {
-                        positivity: [],
-                        like_dislike: [],
-                        familiarity: [],
-                        engagement: [],
-                        activity: [],
-                        chills: [],
-                        power: []
-                    }
+                    //musical_expertise: null,
+                    //musical_background: null,
+                    //most_engaged: null,
+                    //hearing_impairments: null,
+                    //visual_impairments: null,
+                    //nationality: null,
+                    //dob: null,
+                    //sex: null,
+                    //music_styles: [],
+                    //most_enjoyed: null,
+                    //emotion_indices: [],
+                    //ratings: {
+                    //    positivity: [],
+                    //    like_dislike: [],
+                    //    familiarity: [],
+                    //    engagement: [],
+                    //    activity: [],
+                    //    chills: [],
+                    //    power: []
+                    //}
                 },
                 date: null,
                 media: [],
@@ -40,6 +40,7 @@ angular.module('core').factory('TrialData', [
                     end: null
                 },
                 metadata: {
+                    language: 'en_US',
                     session_number: null,
                     location: 'taipei_city',
                     terminal: null
@@ -65,7 +66,7 @@ angular.module('core').factory('TrialData', [
             // TODO: Add formatting and type options
             setValueForPath: function(path, value, options) {
 
-                    if (value === 'true') {
+                if (value === 'true') {
                     value = true;
                 } else if (value === 'false') {
                     value = false;

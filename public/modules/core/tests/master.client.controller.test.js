@@ -4,12 +4,12 @@
     describe('MasterController', function() {
 
         //Initialize global variables
-        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend, gettextCatalog, $timeout;
+        var mockScope, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend, gettextCatalog, $timeout, TrialData;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_, _gettextCatalog_, _$timeout_) {
+        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_, _gettextCatalog_, _$timeout_, _TrialData_) {
             $controllerConstructor = $controller;
             mockScope = $rootScope.$new();
             mockHotkeys = { add: function() {} };
@@ -17,6 +17,7 @@
             $httpBackend = _$httpBackend_;
             gettextCatalog = _gettextCatalog_;
             $timeout = _$timeout_;
+            TrialData = _TrialData_;
         }));
 
         describe('initialization', function() {
@@ -92,6 +93,14 @@
                 mockScope.setLanguage('foo');
 
                 expect(gettextCatalog.setCurrentLanguage.calls.argsFor(0)[0]).toBe('foo');
+            });
+
+            it('should set the new language on TrialData', function() {
+                $controllerConstructor('MasterController', { $scope: mockScope });
+
+                mockScope.setLanguage('foo');
+
+                expect(TrialData.data.metadata.language).toBe('foo');
             });
         });
 

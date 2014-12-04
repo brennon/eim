@@ -216,7 +216,19 @@
 
                 it('should set buttonDisabled to true on an emotion index message', function() {
                     $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
+
                     mockScope.showBody = function() {
+                    };
+
+                    var mockTrialData = {
+                        data: {
+                            answers: {
+                                emotion_indices: []
+                            },
+                            state: {
+                                mediaPlayCount: 0
+                            }
+                        }
                     };
 
                     var mockExperimentManager = {
@@ -225,7 +237,8 @@
 
                     $controller('MediaPlaybackController', {
                         $scope: mockScope,
-                        ExperimentManager: mockExperimentManager
+                        ExperimentManager: mockExperimentManager,
+                        TrialData: mockTrialData
                     });
 
                     SocketIOService.receive('oscMessageReceived',
@@ -311,9 +324,11 @@
                             }
                         }
                     };
+
                     var mockExperimentManager = {
                         advanceSlide: function() {}
-                    }
+                    };
+
                     $controller('MediaPlaybackController',
                         {$scope: mockScope, TrialData: mockTrialData, ExperimentManager: mockExperimentManager}
                     );
@@ -348,9 +363,11 @@
                             }
                         }
                     };
+
                     var mockExperimentManager = {
                         advanceSlide: function() {}
-                    }
+                    };
+
                     $controller('MediaPlaybackController',
                         {$scope: mockScope, TrialData: mockTrialData, ExperimentManager: mockExperimentManager}
                     );
