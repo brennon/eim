@@ -40,7 +40,7 @@ angular.module('core').factory('TrialData', [
                     end: null
                 },
                 metadata: {
-                    language: 'en_US',
+                    language: 'en',
                     session_number: null,
                     location: 'taipei_city',
                     terminal: null
@@ -126,6 +126,16 @@ angular.module('core').factory('TrialData', [
                 }
 
                 this.setValueForPath(path, value, {array_index: index});
+            },
+
+            language: function(newLanguage) {
+
+                if (typeof newLanguage === 'string') {
+
+                    this.data.metadata.language = newLanguage;
+                }
+
+                return this.data.metadata.language;
             }
         };
 

@@ -26,6 +26,8 @@
             it('should emit the correct OSC message on init', function() {
                 SocketIOService.emits = {};
 
+                mockTrialData.data.metadata.language = 'en';
+
                 $controller('SoundTestController',
                     { $scope: mockScope, TrialData: mockTrialData }
                 );
@@ -39,6 +41,10 @@
                         {
                             type: 'integer',
                             value: 1
+                        },
+                        {
+                            type: 'string',
+                            value: '' + mockTrialData.data.metadata.language
                         },
                         {
                             type: 'string',

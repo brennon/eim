@@ -4,9 +4,6 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
     function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog, $state, $timeout) {
 
         var thisController = this;
-        /*
-         * Augmenting $scope
-         */
 
         // TrialData JSON output
         $scope.trialDataJson = function() {
@@ -14,8 +11,9 @@ angular.module('core').controller('MasterController', ['$scope', 'TrialData', 'h
         };
 
         $scope.setLanguage = function(language) {
+
             gettextCatalog.setCurrentLanguage(language);
-            TrialData.setValueForPath('data.metadata.language', language);
+            TrialData.language(language);
         };
 
         this.startOver = function() {

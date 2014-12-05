@@ -1,7 +1,10 @@
 'use strict';
 
-angular.module('core').controller('SoundTestController', ['$scope', 'SocketIOService', 'TrialData',
-  function($scope, SocketIOService, TrialData) {
+angular.module('core').controller('SoundTestController', ['$scope', 'SocketIOService', 'TrialData', 'gettextCatalog',
+  function($scope, SocketIOService, TrialData, gettextCatalog) {
+
+    // Get current language
+    var currentLanguage = gettextCatalog.currentLanguage;
 
     // Send a message to Max to start the sound test
     SocketIOService.emit('sendOSCMessage', {
@@ -11,6 +14,10 @@ angular.module('core').controller('SoundTestController', ['$scope', 'SocketIOSer
         {
           type: 'integer',
           value: 1
+        },
+        {
+          type: 'string',
+          value: currentLanguage
         },
         {
           type: 'string',

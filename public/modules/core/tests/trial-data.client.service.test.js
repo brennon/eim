@@ -38,7 +38,7 @@
                 end: null
             },
             metadata: {
-                language: 'en_US',
+                language: 'en',
                 session_number: null,
                 location: 'taipei_city',
                 terminal: null
@@ -64,7 +64,7 @@
             it('should return an object with a properly formatted data member', function() {
                 expect(TrialData.data).toBeDefined();
                 expect(TrialData.data.metadata).toBeDefined();
-                expect(TrialData.data.metadata.language).toBe('en_US');
+                expect(TrialData.data.metadata.language).toBeDefined();
                 expect(TrialData.data.state).toBeDefined();
                 expect(TrialData.data.answers).toBeDefined();
                 //expect(TrialData.data.answers.musical_expertise).toBeNull();
@@ -109,6 +109,25 @@
                 expect(TrialData.data.metadata.terminal).toBeNull();
                 expect(TrialData.data.state.currentSlideIndex).toBe(-1);
                 expect(TrialData.data.state.mediaPlayCount).toBe(0);
+            });
+        });
+        
+        describe('metadata', function() {
+            
+            describe('#language', function() {
+                
+                it('should set the language when a string argument is passed', function() {
+
+                    TrialData.data.metadata.language = '';
+                    TrialData.language('zh_TW');
+                    expect(TrialData.data.metadata.language).toBe('zh_TW');
+                });
+
+                it('should return the current language when no argument is passed', function() {
+
+                    TrialData.data.metadata.language = 'es_CL';
+                    expect(TrialData.language()).toBe('es_CL');
+                });
             });
         });
 
