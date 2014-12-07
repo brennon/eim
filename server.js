@@ -11,6 +11,8 @@ var init = require('./config/init')();
 var config = require('./config/config');
 var mongoose = BluebirdPromise.promisifyAll(require('mongoose'));
 var http = BluebirdPromise.promisifyAll(require('http'));
+var execFile = require('child_process').execFile;
+
 require('./config/logging');
 
 /**
@@ -49,6 +51,12 @@ mongoose.connectAsync(config.db)
 
     // Logging initialization
     console.log('EIM application successfully started on port ' + config.port);
+
+    // FIXME: This is hacky sh*t
+    // If we are in production mode, try and open Chrome
+    if (process.env.NODE_ENV === 'production') {
+        execFile('C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', ['--kiosk', 'http://localhost:3000']);
+    }
   })
   .catch(function(e) {
     console.error('Error starting EIM application: ', e);
