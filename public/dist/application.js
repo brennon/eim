@@ -2703,6 +2703,8 @@ angular.module('core').directive('questionnaire', [
           switch (item.questionType) {
           case 'likert':
             questionElement = buildScaleQuestion(item);
+            console.log('questionElement:');
+            console.log(questionElement);
             break;
           case 'radio':
             questionElement = buildRadioQuestion(item);
@@ -2813,6 +2815,9 @@ angular.module('core').directive('scaleQuestion', [
       restrict: 'E',
       scope: {},
       link: function (scope, element, attrs) {
+        console.log('building scale-question');
+        console.log('attrs:');
+        console.log(attrs);
         scope.sendToTrialData = function (path, value) {
           if (!attrs.associatedToMedia) {
             TrialData.setValueForPath(path, value);
@@ -2853,15 +2858,22 @@ angular.module('core').directive('scaleQuestion', [
         for (var j = 1; j <= 5; j++) {
           innerRadioHTML += '<div class="col-md-5ths text-center"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'RadioGroup' + j + '" value="' + j + '" required ng-model="' + attrs.questionId + 'RadioGroup"></div>';
         }
+        console.log('innerRadioHTML:');
+        console.log(innerRadioHTML);
         var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        ' + innerRadioHTML + '<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
+        console.log('radios:');
+        console.log(radios);
         // Build descriptions row
         var descriptions = buildDescriptionsRow(scope, element, attrs);
+        console.log('descriptions:');
+        console.log(descriptions);
         // Wrap everything in a row div with well class
         var wrapperDiv = angular.element('<div class="row well"></div>');
         wrapperDiv.append(questionHeader, image, optionLabels, radios, descriptions);
         // Add wrapper div to element and compile the element
         element.append(wrapperDiv);
         $compile(element.contents())(scope);
+        console.log(element);
       }
     };
   }
