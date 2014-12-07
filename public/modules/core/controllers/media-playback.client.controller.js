@@ -85,11 +85,14 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
                     });
                 }
             } else if (data.address === '/eim/status/emotionIndex') {
+				
                 var emotionIndex = parseInt(data.args[0].value);
-                TrialData.data.answers.emotion_indices[TrialData.data.state.mediaPlayCount] = emotionIndex;
-
+				
                 // Increment media play count
                 TrialData.data.state.mediaPlayCount++;
+				
+				// Set emotion index in TrialData
+				TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', emotionIndex);
 
                 // Update state
                 $timeout(function() {
