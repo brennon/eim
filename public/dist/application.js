@@ -1314,365 +1314,399 @@ ApplicationConfiguration.registerModule('core');/* jshint ignore:start */
 angular.module('core').controller([
   'gettext',
   function (gettext) {
-    var missingKeys = [
-        gettext('No Signal'),
-        gettext('Signal OK'),
-        gettext('Personal Details'),
-        gettext('Gender'),
-        gettext('Male'),
-        gettext('Female'),
-        gettext('Nationality'),
-        gettext('Afghan'),
-        gettext('Albanian'),
-        gettext('Algerian'),
-        gettext('American'),
-        gettext('Andorran'),
-        gettext('Angolan'),
-        gettext('Antiguans'),
-        gettext('Argentinean'),
-        gettext('Armenian'),
-        gettext('Australian'),
-        gettext('Austrian'),
-        gettext('Azerbaijani'),
-        gettext('Bahamian'),
-        gettext('Bahraini'),
-        gettext('Bangladeshi'),
-        gettext('Barbadian'),
-        gettext('Barbudans'),
-        gettext('Batswana'),
-        gettext('Belarusian'),
-        gettext('Belgian'),
-        gettext('Belizean'),
-        gettext('Beninese'),
-        gettext('Bhutanese'),
-        gettext('Bolivian'),
-        gettext('Bosnian'),
-        gettext('Brazilian'),
-        gettext('British'),
-        gettext('Bruneian'),
-        gettext('Bulgarian'),
-        gettext('Burkinabe'),
-        gettext('Burmese'),
-        gettext('Burundian'),
-        gettext('Cambodian'),
-        gettext('Cameroonian'),
-        gettext('Canadian'),
-        gettext('Cape Verdean'),
-        gettext('Central African'),
-        gettext('Chadian'),
-        gettext('Chilean'),
-        gettext('Chinese'),
-        gettext('Colombian'),
-        gettext('Comoran'),
-        gettext('Congolese'),
-        gettext('Costa Rican'),
-        gettext('Croatian'),
-        gettext('Cuban'),
-        gettext('Cypriot'),
-        gettext('Czech'),
-        gettext('Danish'),
-        gettext('Djibouti'),
-        gettext('Dominican'),
-        gettext('Dutch'),
-        gettext('East Timorese'),
-        gettext('Ecuadorean'),
-        gettext('Egyptian'),
-        gettext('Emirian'),
-        gettext('Equatorial Guinean'),
-        gettext('Eritrean'),
-        gettext('Estonian'),
-        gettext('Ethiopian'),
-        gettext('Fijian'),
-        gettext('Filipino'),
-        gettext('Finnish'),
-        gettext('French'),
-        gettext('Gabonese'),
-        gettext('Gambian'),
-        gettext('Georgian'),
-        gettext('German'),
-        gettext('Ghanaian'),
-        gettext('Greek'),
-        gettext('Grenadian'),
-        gettext('Guatemalan'),
-        gettext('Guinea-Bissauan'),
-        gettext('Guinean'),
-        gettext('Guyanese'),
-        gettext('Haitian'),
-        gettext('Herzegovinian'),
-        gettext('Honduran'),
-        gettext('Hungarian'),
-        gettext('I-Kiribati'),
-        gettext('Icelander'),
-        gettext('Indian'),
-        gettext('Indonesian'),
-        gettext('Iranian'),
-        gettext('Iraqi'),
-        gettext('Irish'),
-        gettext('Israeli'),
-        gettext('Italian'),
-        gettext('Ivorian'),
-        gettext('Jamaican'),
-        gettext('Japanese'),
-        gettext('Jordanian'),
-        gettext('Kazakhstani'),
-        gettext('Kenyan'),
-        gettext('Kittian and Nevisian'),
-        gettext('Kuwaiti'),
-        gettext('Kyrgyz'),
-        gettext('Laotian'),
-        gettext('Latvian'),
-        gettext('Lebanese'),
-        gettext('Liberian'),
-        gettext('Libyan'),
-        gettext('Liechtensteiner'),
-        gettext('Lithuanian'),
-        gettext('Luxembourger'),
-        gettext('Macedonian'),
-        gettext('Malagasy'),
-        gettext('Malawian'),
-        gettext('Malaysian'),
-        gettext('Maldivan'),
-        gettext('Malian'),
-        gettext('Maltese'),
-        gettext('Marshallese'),
-        gettext('Mauritanian'),
-        gettext('Mauritian'),
-        gettext('Mexican'),
-        gettext('Micronesian'),
-        gettext('Moldovan'),
-        gettext('Monacan'),
-        gettext('Mongolian'),
-        gettext('Moroccan'),
-        gettext('Mosotho'),
-        gettext('Motswana'),
-        gettext('Mozambican'),
-        gettext('Namibian'),
-        gettext('Nauruan'),
-        gettext('Nepalese'),
-        gettext('New Zealander'),
-        gettext('Nicaraguan'),
-        gettext('Nigerian'),
-        gettext('Nigerien'),
-        gettext('North Korean'),
-        gettext('Northern Irish'),
-        gettext('Norwegian'),
-        gettext('Omani'),
-        gettext('Pakistani'),
-        gettext('Palauan'),
-        gettext('Panamanian'),
-        gettext('Papua New Guinean'),
-        gettext('Paraguayan'),
-        gettext('Peruvian'),
-        gettext('Polish'),
-        gettext('Portuguese'),
-        gettext('Qatari'),
-        gettext('Romanian'),
-        gettext('Russian'),
-        gettext('Rwandan'),
-        gettext('Saint Lucian'),
-        gettext('Salvadoran'),
-        gettext('Samoan'),
-        gettext('San Marinese'),
-        gettext('Sao Tomean'),
-        gettext('Saudi'),
-        gettext('Scottish'),
-        gettext('Senegalese'),
-        gettext('Serbian'),
-        gettext('Seychellois'),
-        gettext('Sierra Leonean'),
-        gettext('Singaporean'),
-        gettext('Slovakian'),
-        gettext('Slovenian'),
-        gettext('Solomon Islander'),
-        gettext('Somali'),
-        gettext('South African'),
-        gettext('South Korean'),
-        gettext('Spanish'),
-        gettext('Sri Lankan'),
-        gettext('Sudanese'),
-        gettext('Surinamer'),
-        gettext('Swazi'),
-        gettext('Swedish'),
-        gettext('Swiss'),
-        gettext('Syrian'),
-        gettext('Taiwanese'),
-        gettext('Tajik'),
-        gettext('Tanzanian'),
-        gettext('Thai'),
-        gettext('Togolese'),
-        gettext('Tongan'),
-        gettext('Trinidadian or Tobagonian'),
-        gettext('Tunisian'),
-        gettext('Turkish'),
-        gettext('Tuvaluan'),
-        gettext('Ugandan'),
-        gettext('Ukrainian'),
-        gettext('Uruguayan'),
-        gettext('Uzbekistani'),
-        gettext('Venezuelan'),
-        gettext('Vietnamese'),
-        gettext('Welsh'),
-        gettext('Yemenite'),
-        gettext('Zambian'),
-        gettext('Zimbabwean'),
-        gettext('Birth Year'),
-        gettext('2015'),
-        gettext('2014'),
-        gettext('2013'),
-        gettext('2012'),
-        gettext('2011'),
-        gettext('2010'),
-        gettext('2009'),
-        gettext('2008'),
-        gettext('2007'),
-        gettext('2006'),
-        gettext('2005'),
-        gettext('2004'),
-        gettext('2003'),
-        gettext('2002'),
-        gettext('2001'),
-        gettext('2000'),
-        gettext('1999'),
-        gettext('1998'),
-        gettext('1997'),
-        gettext('1996'),
-        gettext('1995'),
-        gettext('1994'),
-        gettext('1993'),
-        gettext('1992'),
-        gettext('1991'),
-        gettext('1990'),
-        gettext('1989'),
-        gettext('1988'),
-        gettext('1987'),
-        gettext('1986'),
-        gettext('1985'),
-        gettext('1984'),
-        gettext('1983'),
-        gettext('1982'),
-        gettext('1981'),
-        gettext('1980'),
-        gettext('1979'),
-        gettext('1978'),
-        gettext('1977'),
-        gettext('1976'),
-        gettext('1975'),
-        gettext('1974'),
-        gettext('1973'),
-        gettext('1972'),
-        gettext('1971'),
-        gettext('1970'),
-        gettext('1969'),
-        gettext('1968'),
-        gettext('1967'),
-        gettext('1966'),
-        gettext('1965'),
-        gettext('1964'),
-        gettext('1963'),
-        gettext('1962'),
-        gettext('1961'),
-        gettext('1960'),
-        gettext('1959'),
-        gettext('1958'),
-        gettext('1957'),
-        gettext('1956'),
-        gettext('1955'),
-        gettext('1954'),
-        gettext('1953'),
-        gettext('1952'),
-        gettext('1951'),
-        gettext('1950'),
-        gettext('1949'),
-        gettext('1948'),
-        gettext('1947'),
-        gettext('1946'),
-        gettext('1945'),
-        gettext('1944'),
-        gettext('1943'),
-        gettext('1942'),
-        gettext('1941'),
-        gettext('1940'),
-        gettext('1939'),
-        gettext('1938'),
-        gettext('1937'),
-        gettext('1936'),
-        gettext('1935'),
-        gettext('1934'),
-        gettext('1933'),
-        gettext('1932'),
-        gettext('1931'),
-        gettext('1930'),
-        gettext('1929'),
-        gettext('1928'),
-        gettext('1927'),
-        gettext('1926'),
-        gettext('1925'),
-        gettext('1924'),
-        gettext('1923'),
-        gettext('1922'),
-        gettext('1921'),
-        gettext('1920'),
-        gettext('1919'),
-        gettext('1918'),
-        gettext('1917'),
-        gettext('1916'),
-        gettext('1915'),
-        gettext('1914'),
-        gettext('1913'),
-        gettext('1912'),
-        gettext('1911'),
-        gettext('1910'),
-        gettext('1909'),
-        gettext('1908'),
-        gettext('1907'),
-        gettext('1906'),
-        gettext('1905'),
-        gettext('Musical Background'),
-        gettext('Do you consider yourself a musician or to have specialist musical knowledge?'),
-        gettext('Yes'),
-        gettext('No'),
-        gettext('On a scale of 1 to 5, how would you rate your musical expertise, with 1 being no expertise whatsoever and 5 being an expert?'),
-        gettext('No expertise whatsoever'),
-        gettext('An expert'),
-        gettext('Do you have any hearing impairments? (If so, you may still participate in the experiment!)'),
-        gettext('Yes'),
-        gettext('No'),
-        gettext('Do you have any visual impairments? (If so, you may still participate in the experiment!)'),
-        gettext('Yes'),
-        gettext('No'),
-        gettext('Select all of the following styles to which you regularly listen:'),
-        gettext('Rock'),
-        gettext('Pop'),
-        gettext('Classical'),
-        gettext('Jazz'),
-        gettext('Dance'),
-        gettext('HipHop'),
-        gettext('Folk'),
-        gettext('World'),
-        gettext('None'),
-        gettext('Media Questions'),
-        gettext('Have you ever heard this song before?'),
-        gettext('Not at all engaged, my mind was elsewhere'),
-        gettext('I was engaged with the music and responding to it emotionally'),
-        gettext('How positive or negative did the music make you feel?'),
-        gettext('Very negative'),
-        gettext('Very positive'),
-        gettext('How involved and engaged were you with the music you have just heard?'),
-        gettext('Very drowsy'),
-        gettext('Very lively'),
-        gettext('How active or passive did the music make you feel?'),
-        gettext('Weak<br />(without control, submissive)'),
-        gettext('Empowered<br />(in control of everything, dominant)'),
-        gettext('How in control did you feel?'),
-        gettext('Not at all'),
-        gettext('How strongly did you experience any of these physical reactions while you were listening: chills, shivers, thrills, or goosebumps?'),
-        gettext('I hated it'),
-        gettext('I loved it'),
-        gettext('How much did you like/dislike the song?'),
-        gettext('I had never heard it before'),
-        gettext('I listen to it regularly'),
-        gettext('How familiar are you with this music?')
-      ];
+    gettext('No Signal');
+    gettext('Signal OK');
+    gettext('Personal Details');
+    gettext('Gender');
+    gettext('Male');
+    gettext('Female');
+    gettext('Nationality');
+    gettext('Afghan');
+    gettext('Albanian');
+    gettext('Algerian');
+    gettext('American');
+    gettext('Andorran');
+    gettext('Angolan');
+    gettext('Antiguans');
+    gettext('Argentinean');
+    gettext('Armenian');
+    gettext('Australian');
+    gettext('Austrian');
+    gettext('Azerbaijani');
+    gettext('Bahamian');
+    gettext('Bahraini');
+    gettext('Bangladeshi');
+    gettext('Barbadian');
+    gettext('Barbudans');
+    gettext('Batswana');
+    gettext('Belarusian');
+    gettext('Belgian');
+    gettext('Belizean');
+    gettext('Beninese');
+    gettext('Bhutanese');
+    gettext('Bolivian');
+    gettext('Bosnian');
+    gettext('Brazilian');
+    gettext('British');
+    gettext('Bruneian');
+    gettext('Bulgarian');
+    gettext('Burkinabe');
+    gettext('Burmese');
+    gettext('Burundian');
+    gettext('Cambodian');
+    gettext('Cameroonian');
+    gettext('Canadian');
+    gettext('Cape Verdean');
+    gettext('Central African');
+    gettext('Chadian');
+    gettext('Chilean');
+    gettext('Chinese');
+    gettext('Colombian');
+    gettext('Comoran');
+    gettext('Congolese');
+    gettext('Costa Rican');
+    gettext('Croatian');
+    gettext('Cuban');
+    gettext('Cypriot');
+    gettext('Czech');
+    gettext('Danish');
+    gettext('Djibouti');
+    gettext('Dominican');
+    gettext('Dutch');
+    gettext('East Timorese');
+    gettext('Ecuadorean');
+    gettext('Egyptian');
+    gettext('Emirian');
+    gettext('Equatorial Guinean');
+    gettext('Eritrean');
+    gettext('Estonian');
+    gettext('Ethiopian');
+    gettext('Fijian');
+    gettext('Filipino');
+    gettext('Finnish');
+    gettext('French');
+    gettext('Gabonese');
+    gettext('Gambian');
+    gettext('Georgian');
+    gettext('German');
+    gettext('Ghanaian');
+    gettext('Greek');
+    gettext('Grenadian');
+    gettext('Guatemalan');
+    gettext('Guinea-Bissauan');
+    gettext('Guinean');
+    gettext('Guyanese');
+    gettext('Haitian');
+    gettext('Herzegovinian');
+    gettext('Honduran');
+    gettext('Hungarian');
+    gettext('I-Kiribati');
+    gettext('Icelander');
+    gettext('Indian');
+    gettext('Indonesian');
+    gettext('Iranian');
+    gettext('Iraqi');
+    gettext('Irish');
+    gettext('Israeli');
+    gettext('Italian');
+    gettext('Ivorian');
+    gettext('Jamaican');
+    gettext('Japanese');
+    gettext('Jordanian');
+    gettext('Kazakhstani');
+    gettext('Kenyan');
+    gettext('Kittian and Nevisian');
+    gettext('Kuwaiti');
+    gettext('Kyrgyz');
+    gettext('Laotian');
+    gettext('Latvian');
+    gettext('Lebanese');
+    gettext('Liberian');
+    gettext('Libyan');
+    gettext('Liechtensteiner');
+    gettext('Lithuanian');
+    gettext('Luxembourger');
+    gettext('Macedonian');
+    gettext('Malagasy');
+    gettext('Malawian');
+    gettext('Malaysian');
+    gettext('Maldivan');
+    gettext('Malian');
+    gettext('Maltese');
+    gettext('Marshallese');
+    gettext('Mauritanian');
+    gettext('Mauritian');
+    gettext('Mexican');
+    gettext('Micronesian');
+    gettext('Moldovan');
+    gettext('Monacan');
+    gettext('Mongolian');
+    gettext('Moroccan');
+    gettext('Mosotho');
+    gettext('Motswana');
+    gettext('Mozambican');
+    gettext('Namibian');
+    gettext('Nauruan');
+    gettext('Nepalese');
+    gettext('New Zealander');
+    gettext('Nicaraguan');
+    gettext('Nigerian');
+    gettext('Nigerien');
+    gettext('North Korean');
+    gettext('Northern Irish');
+    gettext('Norwegian');
+    gettext('Omani');
+    gettext('Pakistani');
+    gettext('Palauan');
+    gettext('Panamanian');
+    gettext('Papua New Guinean');
+    gettext('Paraguayan');
+    gettext('Peruvian');
+    gettext('Polish');
+    gettext('Portuguese');
+    gettext('Qatari');
+    gettext('Romanian');
+    gettext('Russian');
+    gettext('Rwandan');
+    gettext('Saint Lucian');
+    gettext('Salvadoran');
+    gettext('Samoan');
+    gettext('San Marinese');
+    gettext('Sao Tomean');
+    gettext('Saudi');
+    gettext('Scottish');
+    gettext('Senegalese');
+    gettext('Serbian');
+    gettext('Seychellois');
+    gettext('Sierra Leonean');
+    gettext('Singaporean');
+    gettext('Slovakian');
+    gettext('Slovenian');
+    gettext('Solomon Islander');
+    gettext('Somali');
+    gettext('South African');
+    gettext('South Korean');
+    gettext('Spanish');
+    gettext('Sri Lankan');
+    gettext('Sudanese');
+    gettext('Surinamer');
+    gettext('Swazi');
+    gettext('Swedish');
+    gettext('Swiss');
+    gettext('Syrian');
+    gettext('Taiwanese');
+    gettext('Tajik');
+    gettext('Tanzanian');
+    gettext('Thai');
+    gettext('Togolese');
+    gettext('Tongan');
+    gettext('Trinidadian or Tobagonian');
+    gettext('Tunisian');
+    gettext('Turkish');
+    gettext('Tuvaluan');
+    gettext('Ugandan');
+    gettext('Ukrainian');
+    gettext('Uruguayan');
+    gettext('Uzbekistani');
+    gettext('Venezuelan');
+    gettext('Vietnamese');
+    gettext('Welsh');
+    gettext('Yemenite');
+    gettext('Zambian');
+    gettext('Zimbabwean');
+    gettext('Birth Year');
+    gettext('Musical Background');
+    gettext('Do you consider yourself a musician or to have specialist musical knowledge?');
+    gettext('Yes');
+    gettext('No');
+    gettext('No expertise whatsoever');
+    gettext('An expert');
+    gettext('Do you have any visual impairments? (If so, you may still participate in the experiment!)');
+    gettext('Select all of the following styles to which you regularly listen:');
+    gettext('Rock');
+    gettext('Pop');
+    gettext('Classical');
+    gettext('Jazz');
+    gettext('Dance');
+    gettext('HipHop');
+    gettext('Folk');
+    gettext('World');
+    gettext('None');
+    gettext('Media Questions');
+    gettext('I was engaged with it and responding to it emotionally');
+    gettext('How involved and engaged were you with what you have just heard?');
+    gettext('Very negative');
+    gettext('Very positive');
+    gettext('How positive or negative did what you have just heard make you feel?');
+    gettext('Very drowsy');
+    gettext('Very lively');
+    gettext('How active or passive did what you have just heard make you feel?');
+    gettext('Weak<br />(without control, submissive)');
+    gettext('Empowered<br />(in control of everything, dominant)');
+    gettext('How in control did you feel?');
+    gettext('Not at all engaged, my mind was elsewhere');
+    gettext('Very drowsy');
+    gettext('Very lively');
+    gettext('Weak<br />(without control, submissive)');
+    gettext('Empowered<br />(in control of everything, dominant)');
+    gettext('How in control did you feel?');
+    gettext('Not at all');
+    gettext('Very tense');
+    gettext('Very relaxed');
+    gettext('How tense or relaxed did you feel while you were listening?');
+    gettext('I hated it');
+    gettext('I loved it');
+    gettext('How much did you like/dislike what you have just heard?');
+    gettext('I had never heard it before');
+    gettext('I listen to it regularly');
+    gettext('How familiar are you with what you have just heard?');
+    gettext('Age');
+    gettext('How would you rate your musical expertise?');
+    gettext('Do you have any hearing impairments? (If so, you may still participate in the experiment!)');
+    gettext('Additional Questions');
+    gettext('How well do the following statements describe your personality?');
+    gettext('I see myself as someone who is reserved.');
+    gettext('Disagree strongly');
+    gettext('Disagree a little');
+    gettext('Neither agree nor disagree');
+    gettext('Agree a little');
+    gettext('Agree strongly');
+    gettext('I see myself as someone who is generally trusting.');
+    gettext('I see myself as someone who tends to be lazy.');
+    gettext('I see myself as someone who is relaxed, handles stress well.');
+    gettext('I see myself as someone who has few artistic interests.');
+    gettext('I see myself as someone who is outgoing, sociable.');
+    gettext('I see myself as someone who tends to find fault with others.');
+    gettext('I see myself as someone who does a thorough job.');
+    gettext('I see myself as someone who gets nervous easily.');
+    gettext('I see myself as someone who has an active imagination.');
+    gettext('This questionnaire uses some simple scales to find out how you responded to the media excerpt. We will compare your responses to the biosignals that we measured as you were listening.');
+    gettext('Final Questions');
+    gettext('How concentrated were you during this experiment?');
+    gettext('Very distracted');
+    gettext('Very concentrated');
+    gettext('1');
+    gettext('2');
+    gettext('3');
+    gettext('4');
+    gettext('5');
+    gettext('6');
+    gettext('7');
+    gettext('8');
+    gettext('9');
+    gettext('10');
+    gettext('11');
+    gettext('12');
+    gettext('13');
+    gettext('14');
+    gettext('15');
+    gettext('16');
+    gettext('17');
+    gettext('18');
+    gettext('19');
+    gettext('20');
+    gettext('21');
+    gettext('22');
+    gettext('23');
+    gettext('24');
+    gettext('25');
+    gettext('26');
+    gettext('27');
+    gettext('28');
+    gettext('29');
+    gettext('30');
+    gettext('31');
+    gettext('32');
+    gettext('33');
+    gettext('34');
+    gettext('35');
+    gettext('36');
+    gettext('37');
+    gettext('38');
+    gettext('39');
+    gettext('40');
+    gettext('41');
+    gettext('42');
+    gettext('43');
+    gettext('44');
+    gettext('45');
+    gettext('46');
+    gettext('47');
+    gettext('48');
+    gettext('49');
+    gettext('50');
+    gettext('51');
+    gettext('52');
+    gettext('53');
+    gettext('54');
+    gettext('55');
+    gettext('56');
+    gettext('57');
+    gettext('58');
+    gettext('59');
+    gettext('60');
+    gettext('61');
+    gettext('62');
+    gettext('63');
+    gettext('64');
+    gettext('65');
+    gettext('66');
+    gettext('67');
+    gettext('68');
+    gettext('69');
+    gettext('70');
+    gettext('71');
+    gettext('72');
+    gettext('73');
+    gettext('74');
+    gettext('75');
+    gettext('76');
+    gettext('77');
+    gettext('78');
+    gettext('79');
+    gettext('80');
+    gettext('81');
+    gettext('82');
+    gettext('83');
+    gettext('84');
+    gettext('85');
+    gettext('86');
+    gettext('87');
+    gettext('88');
+    gettext('89');
+    gettext('90');
+    gettext('91');
+    gettext('92');
+    gettext('93');
+    gettext('94');
+    gettext('95');
+    gettext('96');
+    gettext('97');
+    gettext('98');
+    gettext('99');
+    gettext('100');
+    gettext('101');
+    gettext('102');
+    gettext('103');
+    gettext('104');
+    gettext('105');
+    gettext('106');
+    gettext('107');
+    gettext('108');
+    gettext('109');
+    gettext('110');
+    gettext('111');
+    gettext('112');
+    gettext('113');
+    gettext('114');
+    gettext('115');
+    gettext('116');
+    gettext('117');
+    gettext('118');
+    gettext('119');
+    gettext('120');
+    gettext('121');
+    gettext('Begin Playback');
   }
 ]);'use strict';
 // Setting up route
@@ -1689,6 +1723,9 @@ angular.module('core').config([
     }).state('start', {
       url: '/start',
       templateUrl: 'modules/core/views/start.client.view.html'
+    }).state('consent-form', {
+      url: '/consent-form',
+      templateUrl: 'modules/core/views/consent-form.client.view.html'
     }).state('sound-test', {
       url: '/sound-test',
       templateUrl: 'modules/core/views/sound-test.client.view.html'
@@ -1713,6 +1750,9 @@ angular.module('core').config([
     }).state('questionnaire', {
       url: '/media-questionnaire',
       templateUrl: 'modules/core/views/media-questionnaire.client.view.html'
+    }).state('emotion-index', {
+      url: '/emotion-index',
+      templateUrl: 'modules/core/views/emotion-index.client.view.html'
     }).state('thank-you', {
       url: '/thank-you',
       templateUrl: 'modules/core/views/thank-you.client.view.html'
@@ -1937,6 +1977,14 @@ angular.module('core').controller('DemographicsController', [
     };
   }
 ]);'use strict';
+// FIXME: Be smarter about what indices to show (fixed vs. random, etc.)
+angular.module('core').controller('EmotionIndexController', [
+  '$scope',
+  'TrialData',
+  function ($scope, TrialData) {
+    $scope.emotionIndices = TrialData.data.answers.emotion_indices;
+  }
+]);'use strict';
 angular.module('core').controller('HomeController', [
   'ExperimentManager',
   '$scope',
@@ -1952,25 +2000,51 @@ angular.module('core').controller('HomeController', [
     $scope.readyToAdvance = false;
   }
 ]);'use strict';
+angular.module('core').controller('LastScreenController', [
+  '$scope',
+  'TrialData',
+  '$http',
+  function ($scope, TrialData, $http) {
+    $http.post('/api/trials', TrialData.data).success(function () {
+      console.log('success');
+    }).error(function () {
+      console.log('error');
+    });
+  }
+]);'use strict';
 angular.module('core').controller('MasterController', [
   '$scope',
   'TrialData',
   'hotkeys',
   'ExperimentManager',
   'gettextCatalog',
-  function ($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog) {
-    /*
-         * Augmenting $scope
-         */
+  '$state',
+  '$timeout',
+  function ($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog, $state, $timeout) {
+    var thisController = this;
     // TrialData JSON output
     $scope.trialDataJson = function () {
       return TrialData.toJson();
     };
     $scope.setLanguage = function (language) {
       gettextCatalog.setCurrentLanguage(language);
+      TrialData.language(language);
     };
-    // Bind 'global' advanceSlide to ExperimentManager#advanceSlide
-    $scope.advanceSlide = ExperimentManager.advanceSlide;
+    this.startOver = function () {
+      $state.go('home', {}, { reload: true });
+    };
+    // Reset inactivity timeout with a new five-minute timer
+    this.resetInactivityTimeout = function () {
+      $timeout.cancel(thisController.inactivityTimeout);
+      thisController.inactivityTimeout = $timeout(thisController.startOver, 5 * 60 * 1000);
+    };
+    this.resetInactivityTimeout();
+    $scope.advanceSlide = function () {
+      // Reset the inactivity timeout
+      thisController.resetInactivityTimeout();
+      // Wrap ExperimentManager's advance slide
+      ExperimentManager.advanceSlide();
+    };
     // Global debug mode flag
     $scope.debugMode = false;
     $scope.toggleDebugMode = function () {
@@ -2114,6 +2188,7 @@ angular.module('core').controller('MediaPlaybackController', [
         $timeout(function () {
           $scope.$apply(function () {
             $scope.buttonDisabled = false;
+            ExperimentManager.advanceSlide();
           });
         });
       }
@@ -2147,13 +2222,13 @@ angular.module('core').controller('MusicalBackgroundController', [
     $scope.trialData = TrialData;
     // Save data to Trial Data
     $scope.musicianChanged = function (isMusician) {
-      TrialData.data.answers.musical_background = isMusician.toLowerCase() === 'true' ? true : false;
+      TrialData.data.answers.musical_background = isMusician.toLowerCase() === 'true';
     };
     $scope.hearingImpairmentsChanged = function (hasHearingImpairments) {
-      TrialData.data.answers.hearing_impairments = hasHearingImpairments.toLowerCase() === 'true' ? true : false;
+      TrialData.data.answers.hearing_impairments = hasHearingImpairments.toLowerCase() === 'true';
     };
     $scope.visualImpairmentsChanged = function (hasVisualImpairments) {
-      TrialData.data.answers.visual_impairments = hasVisualImpairments.toLowerCase() === 'true' ? true : false;
+      TrialData.data.answers.visual_impairments = hasVisualImpairments.toLowerCase() === 'true';
     };
     $scope.$watch('musicalExpertise', function musicalExpertiseChanged(musicalExpertise) {
       TrialData.data.answers.musical_expertise = musicalExpertise;
@@ -2161,9 +2236,11 @@ angular.module('core').controller('MusicalBackgroundController', [
     $scope.stylesChanged = function () {
       var newStyles = [];
       for (var prop in $scope.subject.styles) {
-        var style = prop.toString();
-        if ($scope.subject.styles[style]) {
-          newStyles.push(style);
+        if ($scope.subject.styles.hasOwnProperty(prop)) {
+          var style = prop.toString();
+          if ($scope.subject.styles[style]) {
+            newStyles.push(style);
+          }
         }
       }
       TrialData.data.answers.music_styles = newStyles.sort();
@@ -2186,7 +2263,9 @@ angular.module('core').controller('SignalTestController', [
   '$scope',
   'SocketIOService',
   'TrialData',
-  function ($scope, SocketIOService, TrialData) {
+  '$timeout',
+  function ($scope, SocketIOService, TrialData, $timeout) {
+    var thisController = this;
     // Signal quality indicators
     $scope.edaQuality = 0;
     $scope.poxQuality = 0;
@@ -2202,6 +2281,14 @@ angular.module('core').controller('SignalTestController', [
     $scope.allSignalsGood = function () {
       return $scope.edaQuality && $scope.poxQuality;
     };
+    // Set a timeout to fire after 15 seconds
+    $timeout(function () {
+      thisController.sendStopSignalTestMessage();
+      $timeout(function () {
+        $scope.edaQuality = 1;
+        $scope.poxQuality = 1;
+      }, 2.5 * 1000);
+    }, 12.5 * 1000);
     // Function to send start signal test message
     this.sendStartSignalTestMessage = function () {
       SocketIOService.emit('sendOSCMessage', {
@@ -2273,7 +2360,10 @@ angular.module('core').controller('SoundTestController', [
   '$scope',
   'SocketIOService',
   'TrialData',
-  function ($scope, SocketIOService, TrialData) {
+  'gettextCatalog',
+  function ($scope, SocketIOService, TrialData, gettextCatalog) {
+    // Get current language
+    var currentLanguage = gettextCatalog.currentLanguage;
     // Send a message to Max to start the sound test
     SocketIOService.emit('sendOSCMessage', {
       oscType: 'message',
@@ -2282,6 +2372,10 @@ angular.module('core').controller('SoundTestController', [
         {
           type: 'integer',
           value: 1
+        },
+        {
+          type: 'string',
+          value: currentLanguage
         },
         {
           type: 'string',
@@ -2324,6 +2418,9 @@ angular.module('core').controller('StartController', [
     $scope.readyToAdvance = function () {
       return $scope.maxReady || $scope.debugMode;
     };
+    // Set the date on the TrialData service to now
+    var now = new Date();
+    TrialData.data.date = now.toISOString();
     // Configure handler for incoming OSC messages
     this.oscMessageReceivedListener = function (data) {
       if (data.address === '/eim/status/startExperiment') {
@@ -2396,13 +2493,19 @@ angular.module('core').directive('checkboxQuestion', [
           checkedOptions.sort();
           scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
         };
-        var questionText = '<div class="row"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
+        var questionText = '<div class="row well"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
         var innerQuestionText = '';
         if (element.data('checkboxOptions')) {
           // Iterate over checkbox options
           for (var i = 0; i < element.data('checkboxOptions').length; i++) {
             var thisOption = element.data('checkboxOptions')[i];
-            innerQuestionText += '<label class="checkbox-inline"><input type="checkbox" name="' + attrs.questionId + 'Checkbox" id="' + attrs.questionId + 'Checkbox' + thisOption + '" value="' + thisOption + '" ng-model="' + attrs.questionId + 'Checkbox' + thisOption + '" ng-change="updateCheckboxes()" ng-required="!someSelected">{{\'' + thisOption + '\' | translate}}</input></label>';
+            innerQuestionText += '<label class="checkbox-inline">';
+            innerQuestionText += '<input type="checkbox" name="' + attrs.questionId + 'Checkbox" id="' + attrs.questionId + 'Checkbox' + thisOption + '" value="' + thisOption + '" ng-model="' + attrs.questionId + 'Checkbox' + thisOption + '" ng-change="updateCheckboxes()"';
+            if (attrs.questionRequired) {
+              innerQuestionText += 'ng-required="!someSelected"';
+            }
+            innerQuestionText += '>{{\'' + thisOption + '\' | translate}}</input>';
+            innerQuestionText += '</label>';
           }
         }
         questionText += innerQuestionText + '</div></div></div>';
@@ -2436,14 +2539,33 @@ angular.module('core').directive('dropdownQuestion', [
           }
         };
         scope[attrs.questionId + 'Select'] = null;
+        scope.validSelection = function () {
+          console.log(scope[attrs.questionId + 'Select']);
+        };
         scope.$watch(attrs.questionId + 'Select', function (newValue) {
           scope.sendToTrialData(attrs.controllerDataPath, newValue);
         });
+        var rowDiv = angular.element('<div class="row well"></div>');
+        var formDiv = angular.element('<div class="col-md-12 form-group"></div>');
+        rowDiv.append(formDiv);
+        var label = angular.element('<label class="control-label" translate>' + attrs.questionLabel + '</label>');
+        label.prop('for', attrs.questionId);
+        formDiv.append(label);
+        var select = angular.element('<select class="form-control" ng-valid="validSelection" required></select>');
+        select.attr('id', attrs.questionId);
+        select.attr('name', attrs.questionId);
+        select.attr('ng-model', attrs.questionId + 'Select');
         if (element.data('dropdownOptions')) {
           scope.dropdownOptions = element.data('dropdownOptions');
+          for (var i in element.data('dropdownOptions')) {
+            var optionText = element.data('dropdownOptions')[i];
+            var option = angular.element('<option>{{ "' + optionText + '" | translate }}</option>');
+            option.attr('value', optionText);
+            select.append(option);
+          }
         }
-        var selectElement = angular.element('<div class="row"><div class="col-md-12 form-group"><label for="' + attrs.questionId + '" class="control-label" translate>' + attrs.questionLabel + '</label><select id="' + attrs.questionId + '" name="' + attrs.questionId + '" class="form-control" ng-model="' + attrs.questionId + 'Select" required><option ng-repeat="option in dropdownOptions">{{option | translate}}</option> </select></div></div>');
-        element.append(selectElement);
+        formDiv.append(select);
+        element.append(rowDiv);
         $compile(element.contents())(scope);
       }
     };
@@ -2486,6 +2608,9 @@ angular.module('core').directive('questionnaire', [
       }
       if (item.questionIsAssociatedToMedia) {
         questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+      }
+      if (item.questionOptions) {
+        questionElement.data('questionOptions', item.questionOptions);
       }
       return questionElement;
     };
@@ -2544,6 +2669,10 @@ angular.module('core').directive('questionnaire', [
       if (item.questionCheckboxOptions) {
         questionElement.data('checkboxOptions', item.questionCheckboxOptions);
       }
+      // If questionRequired isn't defined or is explicitly set to true
+      if (!item.hasOwnProperty('questionRequired') || item.questionRequired === true) {
+        questionElement.attr('question-required', 'true');
+      }
       return questionElement;
     };
     return {
@@ -2552,11 +2681,18 @@ angular.module('core').directive('questionnaire', [
         questionnaireData: '=',
         questionnaireForm: '='
       },
-      link: function (scope, element, attrs) {
+      link: function (scope, element) {
         var data = scope.questionnaireData;
         // Create an element for the title
-        var title = angular.element('<h1 translate>' + data.title + '</h1>');
-        element.append(title);
+        if (data.title) {
+          var title = angular.element('<h1 translate>' + data.title + '</h1>');
+          element.append(title);
+        }
+        // Create an element for the introductory text
+        if (data.introductoryText) {
+          var introductoryText = angular.element('<div class="row"><div class="col-md-12 introductory-text"><h2 translate>' + data.introductoryText + '</h2></div></div>');
+          element.append(introductoryText);
+        }
         var formElement = angular.element('<form class="form" name="questionnaireForm" novalidate></form>');
         element.append(formElement);
         // Iterate over structure
@@ -2624,6 +2760,8 @@ angular.module('core').directive('radioQuestion', [
         }
         questionText += innerQuestionText + '</div></div></div>';
         var questionElement = angular.element(questionText);
+        // Add well class
+        questionElement.addClass('well');
         element.append(questionElement);
         $compile(element.contents())(scope);
       }
@@ -2634,6 +2772,43 @@ angular.module('core').directive('scaleQuestion', [
   '$compile',
   'TrialData',
   function ($compile, TrialData) {
+    var buildDescriptionsRow = function (scope, element, attrs) {
+      var descriptions;
+      if (attrs.minimumDescription && attrs.maximumDescription) {
+        // Main row div
+        descriptions = angular.element('<div></div>');
+        descriptions.addClass('row');
+        descriptions.addClass('scale-descriptions');
+        // Side and center spacers
+        var sideSpacer = angular.element('<div></div>');
+        sideSpacer.addClass('col-md-2');
+        var centerSpacer = angular.element('<div></div>');
+        centerSpacer.addClass('col-md-4');
+        var descriptionsInnerRow = angular.element('<div></div>');
+        descriptionsInnerRow.addClass('col-md-8');
+        descriptionsInnerRow.addClass('scale-descriptions-inner-row');
+        var fifthsColumnSpacer = angular.element('<div></div>');
+        fifthsColumnSpacer.addClass('col-md-5ths');
+        // Left and right text blocks
+        var leftTextBlock = angular.element('<div translate></div>');
+        leftTextBlock.addClass('col-md-5ths');
+        leftTextBlock.addClass('small');
+        leftTextBlock.addClass('text-center');
+        leftTextBlock.addClass('scale-minimum-description');
+        leftTextBlock.html(attrs.minimumDescription);
+        var rightTextBlock = leftTextBlock.clone();
+        rightTextBlock.removeClass('scale-minimum-description');
+        rightTextBlock.addClass('scale-maximum-description');
+        rightTextBlock.html(attrs.maximumDescription);
+        // Append text blocks and spacers to inner row
+        descriptionsInnerRow.append(leftTextBlock);
+        descriptionsInnerRow.append(fifthsColumnSpacer.clone(), fifthsColumnSpacer.clone(), fifthsColumnSpacer.clone());
+        descriptionsInnerRow.append(rightTextBlock);
+        // Append children to main row
+        descriptions.append(sideSpacer.clone(), descriptionsInnerRow, sideSpacer.clone());
+      }
+      return descriptions;
+    };
     return {
       restrict: 'E',
       scope: {},
@@ -2661,21 +2836,31 @@ angular.module('core').directive('scaleQuestion', [
         } else if (attrs.leftImgSrc && attrs.rightImgSrc) {
           image = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2"><img src="' + attrs.leftImgSrc + '"></div><div class="col-md-4"></div><div class="col-md-2"><img src="' + attrs.rightImgSrc + '"></div><div class="col-md-2"></div></div>');
         }
+        var optionLabels;
+        if (element.data('questionOptions') && element.data('questionOptions').choices) {
+          var choices = element.data('questionOptions').choices;
+          optionLabels = angular.element('<div class="row"></div>');
+          optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
+          var centerGroup = angular.element('<div class="col-md-8 option-label-container text-center"></div>');
+          for (var i = 0; i < choices.length; i++) {
+            var choiceDiv = angular.element('<div class="col-md-5ths option-label text-center">{{ \'' + choices[i].label + '\' | translate }}</div>');
+            centerGroup.append(choiceDiv);
+          }
+          optionLabels.append(centerGroup);
+          optionLabels.append('<div class="col-md-2 option-label-spacer"></div>');
+        }
         var innerRadioHTML = '';
-        for (var i = 1; i <= 5; i++) {
-          innerRadioHTML += '<div class="col-md-5ths"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'RadioGroup' + i + '" value="' + i + '" required ng-model="' + attrs.questionId + 'RadioGroup"></div>';
+        for (var j = 1; j <= 5; j++) {
+          innerRadioHTML += '<div class="col-md-5ths text-center"><input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'RadioGroup' + j + '" value="' + j + '" required ng-model="' + attrs.questionId + 'RadioGroup"></div>';
         }
         var radios = angular.element('<div class="row">\n    <div class="col-md-2"></div>\n    <div class="col-md-8 text-center">\n        ' + innerRadioHTML + '<div class="row">\n        </div>\n    </div>\n    <div class="col-md-2"></div>\n</div>');
-        var descriptions;
-        if (attrs.minimumDescription && attrs.maximumDescription) {
-          descriptions = angular.element('<div class="row"><div class="col-md-2"></div><div class="col-md-2 small text-left" translate>' + attrs.minimumDescription + '</div><div class="col-md-4"></div><div class="col-md-2 small text-right" translate>' + attrs.maximumDescription + '</div><div class="col-md-2"></div></div></div>');
-        }
-        element.append(questionHeader);
-        element.append(image);
-        element.append(radios);
-        if (descriptions) {
-          element.append(descriptions);
-        }
+        // Build descriptions row
+        var descriptions = buildDescriptionsRow(scope, element, attrs);
+        // Wrap everything in a row div with well class
+        var wrapperDiv = angular.element('<div class="row well"></div>');
+        wrapperDiv.append(questionHeader, image, optionLabels, radios, descriptions);
+        // Add wrapper div to element and compile the element
+        element.append(wrapperDiv);
         $compile(element.contents())(scope);
       }
     };
@@ -2730,36 +2915,34 @@ angular.module('core').factory('ExperimentManager', [
   '$http',
   '$state',
   function (TrialData, $q, $http, $state) {
-    var experimentManager = {
-        advanceSlide: function () {
-          TrialData.data.state.currentSlideIndex++;
-          if (TrialData.data.state.currentSlideIndex === TrialData.data.schema.length) {
-            $state.go('home', {}, { reload: true });
-          } else {
-            $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name, {}, { reload: true });
-          }
-        },
-        masterReset: function () {
-          var deferred = $q.defer();
-          // Reset TrialData
-          TrialData.reset();
-          // Generate new session identifier and store it in TrialData
-          /* global UUID */
-          var sessionID = UUID.generate();
-          TrialData.data.metadata.session_number = sessionID;
-          // Get a new experiment setup from the backend
-          $http.get('/api/experiment-schemas/random').success(function (data) {
-            // Assign the media property from the ExperimentSchema we received as the media property on the TrialData
-            TrialData.data.media = data.media;
-            TrialData.data.schema = data.structure;
-            deferred.resolve();
-          }).error(function () {
-            deferred.reject('An experiment schema could not be fetched from the server');
-          });
-          return deferred.promise;
+    return {
+      advanceSlide: function () {
+        TrialData.data.state.currentSlideIndex++;
+        if (TrialData.data.state.currentSlideIndex === TrialData.data.schema.length) {
+          $state.go('home', {}, { reload: true });
+        } else {
+          $state.go(TrialData.data.schema[TrialData.data.state.currentSlideIndex].name, {}, { reload: true });
         }
-      };
-    return experimentManager;
+      },
+      masterReset: function () {
+        var deferred = $q.defer();
+        // Reset TrialData
+        TrialData.reset();
+        // Generate new session identifier and store it in TrialData
+        /* global UUID */
+        TrialData.data.metadata.session_number = UUID.generate();
+        // Get a new experiment setup from the backend
+        $http.get('/api/experiment-schemas/random').success(function (data) {
+          // Assign the media property from the ExperimentSchema we received as the media property on the TrialData
+          TrialData.data.media = data.media;
+          TrialData.data.schema = data.structure;
+          deferred.resolve();
+        }).error(function () {
+          deferred.reject('An experiment schema could not be fetched from the server');
+        });
+        return deferred.promise;
+      }
+    };
   }
 ]);'use strict';
 // Service to wrap Socket.IO
@@ -2775,28 +2958,7 @@ angular.module('core').factory('SocketIOService', [
 angular.module('core').factory('TrialData', [function () {
     function BlankDataObject() {
       return {
-        answers: {
-          musical_expertise: null,
-          musical_background: null,
-          most_engaged: null,
-          hearing_impairments: null,
-          visual_impairments: null,
-          nationality: null,
-          dob: null,
-          sex: null,
-          music_styles: [],
-          most_enjoyed: null,
-          emotion_indices: [],
-          ratings: {
-            positivity: [],
-            like_dislike: [],
-            familiarity: [],
-            engagement: [],
-            activity: [],
-            chills: [],
-            power: []
-          }
-        },
+        answers: {},
         date: null,
         media: [],
         timestamps: {
@@ -2806,6 +2968,7 @@ angular.module('core').factory('TrialData', [function () {
           end: null
         },
         metadata: {
+          language: 'en',
           session_number: null,
           location: 'taipei_city',
           terminal: null
@@ -2853,6 +3016,13 @@ angular.module('core').factory('TrialData', [function () {
               if (schema[pList[len - 1]] === undefined) {
                 schema[pList[len - 1]] = [];
               }
+              // Iterate over array up to one less than options.array_index
+              // If each index isn't set up to this point, set it to null
+              for (var j = 0; j < options.array_index; j++) {
+                if (schema[pList[len - 1]][j] === undefined) {
+                  schema[pList[len - 1]][j] = null;
+                }
+              }
               schema[pList[len - 1]][options.array_index] = value;
             } else {
               schema[pList[len - 1]] = value;
@@ -2868,6 +3038,12 @@ angular.module('core').factory('TrialData', [function () {
             index = this.data.state.mediaPlayCount - 1;
           }
           this.setValueForPath(path, value, { array_index: index });
+        },
+        language: function (newLanguage) {
+          if (typeof newLanguage === 'string') {
+            this.data.metadata.language = newLanguage;
+          }
+          return this.data.metadata.language;
         }
       };
     trialData.data = new BlankDataObject();

@@ -15,7 +15,7 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        		'public/modules/angular-hotkeys/services/hotkeys.min.css'
+        			'public/modules/angular-hotkeys/services/hotkeys.min.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.js',
