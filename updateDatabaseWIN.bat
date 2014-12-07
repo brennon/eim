@@ -5,7 +5,7 @@ mongorestore --port 28017 -d emotion-in-motion-dev --drop ./mongodb-dump/emotion
 mongorestore --port 28017 -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
 mongorestore --port 28017 -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production
 
-:: Start Node
-node server.js
+:: Start Node (not necessary in EiM terminals)
+:: node server.js
 
 pause
