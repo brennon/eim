@@ -485,7 +485,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "bang", "" ],
 					"patching_rect" : [ 211.0, 335.0, 49.0, 20.0 ],
-					"text" : "sel 255"
+					"text" : "sel 254"
 				}
 
 			}
