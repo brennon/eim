@@ -47,6 +47,14 @@ angular.module(ApplicationConfiguration.applicationModuleName).run([
     gettextCatalog.debug = true;
   }
 ]);
+angular.module(ApplicationConfiguration.applicationModuleName).run([
+  '$rootScope',
+  function ($rootScope) {
+    $rootScope.$on('$stateChangeSuccess', function () {
+      $('html, body').animate({ scrollTop: 0 }, 200);
+    });
+  }
+]);
 //Then define the init function for starting up the application
 angular.element(document).ready(function () {
   //Fixing facebook bug with redirect
