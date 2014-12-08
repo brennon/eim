@@ -162,3 +162,7 @@ img.welcome-logo {
 button {
     margin-top: 10px;
 }
+
+.trial-data-row {
+    visibility: hidden;
+}
