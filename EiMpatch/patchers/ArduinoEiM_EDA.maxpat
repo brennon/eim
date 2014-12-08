@@ -8,7 +8,7 @@
 			"architecture" : "x64"
 		}
 ,
-		"rect" : [ -1092.0, -253.0, 910.0, 639.0 ],
+		"rect" : [ 79.0, 261.0, 910.0, 639.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -294,7 +294,7 @@
 					"numoutlets" : 4,
 					"outlettype" : [ "int", "", "", "int" ],
 					"patching_rect" : [ 604.0, 274.0, 73.0, 20.0 ],
-					"text" : "counter 50"
+					"text" : "counter 20"
 				}
 
 			}
@@ -367,7 +367,7 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-86",
-					"items" : [ "Bluetooth-Incoming-Port", ",", "Bluetooth-Modem", ",", "usbmodem1421" ],
+					"items" : "<empty>",
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
@@ -632,7 +632,7 @@
 					"destination" : [ "obj-130", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"midpoints" : [ 613.5, 302.5, 670.5, 302.5 ],
+					"midpoints" : [ 613.5, 308.5, 670.5, 308.5 ],
 					"source" : [ "obj-119", 0 ]
 				}
 
@@ -643,6 +643,16 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-119", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-92", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 667.5, 303.0, 715.25, 303.0, 715.25, 137.0, 342.5, 137.0 ],
+					"source" : [ "obj-119", 3 ]
 				}
 
 			}

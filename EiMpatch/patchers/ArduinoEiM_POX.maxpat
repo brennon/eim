@@ -294,7 +294,7 @@
 					"numoutlets" : 4,
 					"outlettype" : [ "int", "", "", "int" ],
 					"patching_rect" : [ 609.0, 254.0, 73.0, 20.0 ],
-					"text" : "counter 50"
+					"text" : "counter 20"
 				}
 
 			}
@@ -652,6 +652,16 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-119", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-92", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"midpoints" : [ 672.5, 277.0, 719.0, 277.0, 719.0, 117.0, 347.5, 117.0 ],
+					"source" : [ "obj-119", 3 ]
 				}
 
 			}
