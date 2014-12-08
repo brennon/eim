@@ -2159,8 +2159,6 @@ angular.module('core').controller('MediaPlaybackController', [
     };
     // Setup listener for incoming OSC messages
     this.oscMessageReceivedListener = function (data) {
-      console.log('received OSC message:');
-      console.log(data);
       // If it was a media playback message
       if (data.address === '/eim/status/playback') {
         // If it was a start message
@@ -2182,16 +2180,11 @@ angular.module('core').controller('MediaPlaybackController', [
           });
         }
       } else if (data.address === '/eim/status/emotionIndex') {
-        console.log('emotion index message');
         var emotionIndex = parseInt(data.args[0].value);
-        //TrialData.data.answers.emotion_indices[TrialData.data.state.mediaPlayCount] = emotionIndex;
         // Increment media play count
-        console.log('current play count: ', TrialData.data.state.mediaPlayCount);
-        console.log('incrementing play count');
         TrialData.data.state.mediaPlayCount++;
         // Set emotion index in TrialData
         TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', emotionIndex);
-        console.log('new play count: ', TrialData.data.state.mediaPlayCount);
         // Update state
         $timeout(function () {
           $scope.$apply(function () {
@@ -2528,7 +2521,7 @@ angular.module('core').directive('checkboxQuestion', [
 angular.module('core').directive('displayTrialData', function () {
   return {
     restrict: 'AE',
-    template: '<div class="row"><div class="col-md-12"><h3>Trial Data</h3><pre>{{trialDataJson()}}</pre></div></div>'
+    template: '<div class="row trial-data-row"><div class="col-md-12"><h3>Trial Data</h3><pre>{{trialDataJson()}}</pre></div></div>'
   };
 });'use strict';
 angular.module('core').directive('dropdownQuestion', [
