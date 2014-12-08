@@ -814,8 +814,8 @@ msgid "Emirian"
 msgstr "Emiratí"
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Empowered (in control of everything, dominant)"
-msgstr "Empoderado (en control de todo, dominante)"
+msgid "Empowered<br />(in control of everything, dominant)"
+msgstr "Empowered<br />(in control of everything, dominant)"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Equatorial Guinean"
@@ -1695,12 +1695,12 @@ msgid "We hope you enjoyed the experiment!"
 msgstr "¡Esperamos que hayan disfrutado el experimento!"
 
 #: public/modules/core/views/start.client.view.html
-msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel."
-msgstr "Nos gustaría usar algunos sensores para medir su corazón y su piel mientras escucha a dos breves extractos de audio. Después de cada extracto, se le pedirá contestar algunas preguntas acerca de cómo lo que ha oído le hizo sentir."
+msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
+msgstr "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Weak (without control, submissive)"
-msgstr "Débil (sin control, sumiso)"
+msgid "Weak<br />(without control, submissive)"
+msgstr "Weak<br />(without control, submissive)"
 
 #: public/modules/core/views/home.client.view.html
 msgid "Welcome"

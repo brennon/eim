@@ -13,7 +13,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 // Configure gettext
 angular.module(ApplicationConfiguration.applicationModuleName).run(['gettextCatalog',
 	function(gettextCatalog) {
-		gettextCatalog.setCurrentLanguage('en');
+		gettextCatalog.setCurrentLanguage('zh_TW');
 		gettextCatalog.debug = true;
 	}
 ]);
