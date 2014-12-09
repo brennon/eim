@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 466.0, 285.0, 605.0, 573.0 ],
+		"rect" : [ 824.0, 399.0, 579.0, 596.0 ],
 		"bgcolor" : [ 0.780392, 0.815686, 0.831373, 1.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 1,
@@ -563,7 +563,7 @@
 													"numoutlets" : 1,
 													"outlettype" : [ "" ],
 													"patching_rect" : [ 118.666656, 633.0, 50.0, 18.0 ],
-													"text" : "10"
+													"text" : "3"
 												}
 
 											}
@@ -4825,7 +4825,7 @@
 													"numoutlets" : 1,
 													"outlettype" : [ "" ],
 													"patching_rect" : [ 290.333313, 106.0, 273.0, 18.0 ],
-													"text" : "es_ES"
+													"text" : "4b474c99-ca80-44cb-adc4-4ca3ee260720"
 												}
 
 											}
@@ -5861,7 +5861,7 @@
 							"architecture" : "x86"
 						}
 ,
-						"rect" : [ 651.0, 417.0, 1132.0, 738.0 ],
+						"rect" : [ 250.0, 474.0, 1132.0, 738.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -6155,8 +6155,8 @@
 									"numinlets" : 2,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 31.0, 131.0, 218.085266, 58.0 ],
-									"text" : "open \"C:/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/media/.wav\""
+									"patching_rect" : [ 31.0, 131.0, 208.085266, 58.0 ],
+									"text" : "open \"Macintosh HD:/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/media/S018.wav\""
 								}
 
 							}
@@ -6405,11 +6405,11 @@
 									"fontsize" : 12.0,
 									"id" : "obj-26",
 									"maxclass" : "newobj",
-									"numinlets" : 3,
+									"numinlets" : 9,
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
-									"patching_rect" : [ 216.085266, 452.0, 55.0, 20.0 ],
-									"text" : "pack f i i"
+									"patching_rect" : [ 145.0, 452.0, 127.0, 20.0 ],
+									"text" : "pack f i f i i f f f i"
 								}
 
 							}
@@ -6437,7 +6437,7 @@
 									"numoutlets" : 1,
 									"outlettype" : [ "" ],
 									"patching_rect" : [ 496.0, 557.60675, 413.0, 45.0 ],
-									"text" : "write \"C:/Users/Javier/Documents/U. DE CHILE/PROYECTOS/2014 - 2016 PAI/EiM-2014/EiMserver/EiMpatch/data/7a75fbf3-e8ae-4801-802e-f126c00ca788_.txt\""
+									"text" : "write \"Macintosh HD:/Users/javierjaimovich/Documents/EiM/eim/EiMpatch/data/4b474c99-ca80-44cb-adc4-4ca3ee260720_S018.txt\""
 								}
 
 							}
@@ -6712,7 +6712,7 @@
 									"destination" : [ "obj-11", 1 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 225.585266, 531.303345, 376.585266, 531.303345 ],
+									"midpoints" : [ 154.5, 505.303345, 376.585266, 505.303345 ],
 									"source" : [ "obj-26", 0 ]
 								}
 
@@ -6808,7 +6808,7 @@
 									"destination" : [ "obj-26", 0 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 154.5, 433.0, 225.585266, 433.0 ],
+									"midpoints" : [ 154.5, 433.0, 154.5, 433.0 ],
 									"source" : [ "obj-35", 0 ]
 								}
 
@@ -7057,7 +7057,7 @@
 									"destination" : [ "obj-26", 1 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 424.085266, 299.5, 243.585266, 299.5 ],
+									"midpoints" : [ 424.085266, 403.5, 168.0, 403.5 ],
 									"source" : [ "obj-68", 0 ]
 								}
 
@@ -7106,7 +7106,7 @@
 									"destination" : [ "obj-13", 1 ],
 									"disabled" : 0,
 									"hidden" : 0,
-									"midpoints" : [ 40.5, 124.088867, 239.585266, 124.088867 ],
+									"midpoints" : [ 40.5, 124.088867, 229.585266, 124.088867 ],
 									"source" : [ "obj-8", 0 ]
 								}
 

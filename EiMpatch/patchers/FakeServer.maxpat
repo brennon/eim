@@ -4,11 +4,11 @@
 		"appversion" : 		{
 			"major" : 6,
 			"minor" : 1,
-			"revision" : 7,
-			"architecture" : "x64"
+			"revision" : 9,
+			"architecture" : "x86"
 		}
 ,
-		"rect" : [ -773.0, -198.0, 640.0, 443.0 ],
+		"rect" : [ 1333.0, 142.0, 640.0, 443.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -32,13 +32,13 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-13",
-					"items" : [ "H001", ",", "H006", ",", "H015", ",", "R004" ],
+					"items" : [ "C002", ",", "H024", ",", "S018", ",", "T019" ],
 					"maxclass" : "umenu",
 					"numinlets" : 1,
 					"numoutlets" : 3,
 					"outlettype" : [ "int", "", "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 82.0, 139.0, 100.0, 20.0 ]
+					"patching_rect" : [ 82.0, 140.0, 100.0, 20.0 ]
 				}
 
 			}
@@ -54,7 +54,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 349.0, 241.5, 120.0, 53.0 ],
+					"patching_rect" : [ 349.0, 241.5, 120.0, 52.0 ],
 					"text" : "order of messages from bottom to top"
 				}
 
@@ -162,7 +162,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 16.0, 9.266666, 266.0, 36.0 ],
+					"patching_rect" : [ 16.0, 9.266666, 266.0, 35.0 ],
 					"text" : "Fake SERVER"
 				}
 
