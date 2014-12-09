@@ -814,8 +814,8 @@ msgid "Emirian"
 msgstr "阿拉伯聯合大公國人"
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Empowered<br />(in control of everything, dominant)"
-msgstr "握有權力<br />（有主控、主導權）"
+msgid "Empowered (in control of everything, dominant)"
+msgstr "握有權力（有主控、主導權）"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Equatorial Guinean"
@@ -1699,8 +1699,8 @@ msgid "We would like you to wear some sensors that will monitor your heart and s
 msgstr "請您穿戴感測器，以在您聆聽兩小段聲音時監控您的心跳和皮膚。每段播放結束後，您將回答幾個問題，以了解聽到的聲音如何影響您的感受。第一段為非音樂的聲音片段，第二段則是隨機挑選的音樂片段。"
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Weak<br />(without control, submissive)"
-msgstr "弱<br />（沒有加以控制、順從的）"
+msgid "Weak (without control, submissive)"
+msgstr "弱（沒有加以控制、順從的）"
 
 #: public/modules/core/views/home.client.view.html
 msgid "Welcome"

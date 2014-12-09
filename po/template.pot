@@ -803,7 +803,7 @@ msgid "Emirian"
 msgstr ""
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Empowered<br />(in control of everything, dominant)"
+msgid "Empowered (in control of everything, dominant)"
 msgstr ""
 
 #: public/modules/core/config/core.client.missing-keys.js
@@ -1688,7 +1688,7 @@ msgid "We would like you to wear some sensors that will monitor your heart and s
 msgstr ""
 
 #: public/modules/core/config/core.client.missing-keys.js
-msgid "Weak<br />(without control, submissive)"
+msgid "Weak (without control, submissive)"
 msgstr ""
 
 #: public/modules/core/views/home.client.view.html
