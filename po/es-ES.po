@@ -815,7 +815,7 @@ msgstr "Emiratí"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Empowered<br />(in control of everything, dominant)"
-msgstr "Empowered<br />(in control of everything, dominant)"
+msgstr "Empoderado< br />(en control de todo, dominante)"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Equatorial Guinean"
@@ -1696,11 +1696,11 @@ msgstr "¡Esperamos que hayan disfrutado el experimento!"
 
 #: public/modules/core/views/start.client.view.html
 msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
-msgstr "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
+msgstr "Queremos que utilices unos sensores que van a monitorear tu corazón y piel mientras escuchas a dos breves extractos de audio. Después de cada extracto, vas a ser consultado sobre cómo te hizo sentir lo que escuchaste. El primer extracto será un sonido no musical. El segundo extracto será un extracto de música seleccionado aleatoriamente."
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Weak<br />(without control, submissive)"
-msgstr "Weak<br />(without control, submissive)"
+msgstr "Débil<br />(sin control, sumiso)"
 
 #: public/modules/core/views/home.client.view.html
 msgid "Welcome"

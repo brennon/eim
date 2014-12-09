@@ -815,7 +815,7 @@ msgstr "阿拉伯聯合大公國人"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Empowered<br />(in control of everything, dominant)"
-msgstr "Empowered<br />(in control of everything, dominant)"
+msgstr "握有權力<br />（有主控、主導權）"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Equatorial Guinean"
@@ -928,7 +928,7 @@ msgstr "您好，歡迎參加<em>Emotion in Motion</em>實驗！"
 
 #: public/modules/core/views/emotion-index.client.view.html
 msgid "Here, we are displaying the ‘Emotion Index’ we calculated from your physiological signals while you were listening to the media excerpt, on a scale from 1 to 100. A higher index indicates that you were more emotionally responsive to the excerpt you heard as compared to a lower index."
-msgstr "此處顯示您剛剛聆聽音樂時，根據您的生理訊號所計算出的「情緒指標」，量尺由1到100，數字愈大代表您聆聽該段音樂時愈有情緒反應。"
+msgstr "此處顯示您剛剛聆聽聲音及樂曲時，根據您的生理訊號所計算出的「情緒指標」，量尺由1到100，數字愈大代表您聆聽該段音樂時愈有情緒反應。"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Herzegovinian"
@@ -1696,11 +1696,11 @@ msgstr "希望您喜歡本實驗！"
 
 #: public/modules/core/views/start.client.view.html
 msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
-msgstr "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
+msgstr "請您穿戴感測器，以在您聆聽兩小段聲音時監控您的心跳和皮膚。每段播放結束後，您將回答幾個問題，以了解聽到的聲音如何影響您的感受。第一段為非音樂的聲音片段，第二段則是隨機挑選的音樂片段。"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Weak<br />(without control, submissive)"
-msgstr "Weak<br />(without control, submissive)"
+msgstr "弱<br />（沒有加以控制、順從的）"
 
 #: public/modules/core/views/home.client.view.html
 msgid "Welcome"
