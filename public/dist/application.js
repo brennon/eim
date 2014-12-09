@@ -1549,14 +1549,14 @@ angular.module('core').controller([
     gettext('Very drowsy');
     gettext('Very lively');
     gettext('How active or passive did what you have just heard make you feel?');
-    gettext('Weak<br />(without control, submissive)');
-    gettext('Empowered<br />(in control of everything, dominant)');
+    gettext('Weak (without control, submissive)');
+    gettext('Empowered (in control of everything, dominant)');
     gettext('How in control did you feel?');
     gettext('Not at all engaged, my mind was elsewhere');
     gettext('Very drowsy');
     gettext('Very lively');
-    gettext('Weak<br />(without control, submissive)');
-    gettext('Empowered<br />(in control of everything, dominant)');
+    gettext('Weak (without control, submissive)');
+    gettext('Empowered (in control of everything, dominant)');
     gettext('How in control did you feel?');
     gettext('Not at all');
     gettext('Very tense');
