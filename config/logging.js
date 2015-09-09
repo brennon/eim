@@ -4,7 +4,7 @@ var util = require('util'),
   winston = require('winston'),
   logger = new winston.Logger(),
   production = (process.env.NODE_ENV || '').toLowerCase() === 'production',
-  metadata = require('./terminal');
+  metadata = require('./custom');
 
 // Add winston-loggly
 require('winston-loggly');
