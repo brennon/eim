@@ -2,14 +2,14 @@
 
 var mongoDBPort;
 
-if (process.env.TRAVIS) {
-	mongoDBPort = 27017;
-} else {
-	mongoDBPort = 28017;
-}
+// if (process.env.TRAVIS) {
+// 	mongoDBPort = 27017;
+// } else {
+// 	mongoDBPort = 28017;
+// }
 
 module.exports = {
-	db: 'mongodb://localhost:' + mongoDBPort + '/emotion-in-motion-test',
+	db: 'mongodb://localhost:27017/emotion-in-motion-test',
 	port: 3001,
 	app: {
 		title: 'Emotion in Motion - Test Environment'

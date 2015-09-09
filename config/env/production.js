@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost:28017/emotion-in-motion-production',
+	db: 'mongodb://localhost:27017/emotion-in-motion-production',
 	assets: {
 		lib: {
 			css: [

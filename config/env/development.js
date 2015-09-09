@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost:28017/emotion-in-motion-dev',
+	db: 'mongodb://localhost:27017/emotion-in-motion-dev',
 	app: {
 		title: 'Emotion in Motion - Development Environment'
 	},
