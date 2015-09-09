@@ -8,7 +8,7 @@ app/tests/coverage/
 .idea/
 daemon/
 application.log
-# config/custom.js
+config/custom.js
 .foreverignore
 trials/**
 EiMpatch/media/**
