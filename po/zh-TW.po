@@ -1604,7 +1604,7 @@ msgstr "本實驗透過您穿戴的感測器及您所填寫的問卷，了解音
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "This questionnaire uses some simple scales to find out how you responded to the media excerpt. We will compare your responses to the biosignals that we measured as you were listening."
-msgstr "本問卷使用簡單量尺，了解您對音樂片段的反應。我們將比較你的填答與聆聽音樂時測量到的生物訊號。"
+msgstr "本問卷使用簡單量尺，了解您對音樂片段的反應。我們將比較你的填答與聆聽音樂時測量到的生理訊號。"
 
 #: public/modules/core/config/core.client.missing-keys.js
 msgid "Togolese"
