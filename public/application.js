@@ -10,14 +10,19 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 	}
 ]);
 
-// Configure gettext
+/** BEGIN Emotion in Motion Customizations **/
+
+// Configure nggettext
 angular.module(ApplicationConfiguration.applicationModuleName).run(['gettextCatalog',
 	function(gettextCatalog) {
+
+		// Set nggettext to use Taiwanese by default
 		gettextCatalog.setCurrentLanguage('zh_TW');
 		gettextCatalog.debug = true;
 	}
 ]);
 
+// Configure scroll-in of slides as participant advances
 angular.module(ApplicationConfiguration.applicationModuleName).run(['$rootScope',
 	function($rootScope) {
 		$rootScope.$on('$stateChangeSuccess',function(){
@@ -25,6 +30,8 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(['$rootScope'
 		});
 	}
 ]);
+
+/** END Emotion in Motion Customizations **/
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function() {
