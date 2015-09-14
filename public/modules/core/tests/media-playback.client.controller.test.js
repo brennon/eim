@@ -228,7 +228,8 @@
                             state: {
                                 mediaPlayCount: 0
                             }
-                        }
+                        },
+                        setValueForPathForCurrentMedia: function() {}
                     };
 
                     var mockExperimentManager = {
@@ -322,8 +323,10 @@
                             state: {
                                 mediaPlayCount: 0
                             }
-                        }
+                        },
+                        setValueForPathForCurrentMedia: function() {}
                     };
+                    spyOn(mockTrialData, 'setValueForPathForCurrentMedia');
 
                     var mockExperimentManager = {
                         advanceSlide: function() {}
@@ -346,7 +349,8 @@
 
                     $timeout.flush();
 
-                    expect(mockTrialData.data.answers.emotion_indices[0]).toBe(92);
+                    //expect(mockTrialData.data.answers.emotion_indices[0]).toBe(92);
+                    expect(mockTrialData.setValueForPathForCurrentMedia).toHaveBeenCalledWith('data.answers.emotion_indices', 92);
                 });
 
                 it('should increment mediaPlayCount on an emotion index message', function() {
@@ -361,7 +365,8 @@
                             state: {
                                 mediaPlayCount: 0
                             }
-                        }
+                        },
+                        setValueForPathForCurrentMedia: function() {}
                     };
 
                     var mockExperimentManager = {
