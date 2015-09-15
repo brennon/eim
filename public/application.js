@@ -16,8 +16,8 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 angular.module(ApplicationConfiguration.applicationModuleName).run(['gettextCatalog',
 	function(gettextCatalog) {
 
-		// Set nggettext to use Taiwanese by default
-		gettextCatalog.setCurrentLanguage('zh_TW');
+		// Set nggettext to use English by default
+		gettextCatalog.setCurrentLanguage('en');
 		gettextCatalog.debug = true;
 	}
 ]);
