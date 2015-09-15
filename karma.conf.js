@@ -54,7 +54,10 @@ module.exports = function(config) {
 
 		// Instrument files for coverage
 		preprocessors: {
-			'public/modules/**/*.js': 'coverage'
+			//'public/modules/**/*.js': 'coverage'
+			'public/modules/core/controllers/*.js': 'coverage',
+			'public/modules/core/directives/*.js': 'coverage',
+			'public/modules/core/services/*.js': 'coverage'
 		},
 
 		// Configure coverage reporter
