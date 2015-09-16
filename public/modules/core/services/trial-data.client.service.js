@@ -1,7 +1,6 @@
 'use strict';
 
 // TODO: Push results to database
-// TODO: Remove most engaged and most enjoyed
 
 // Trial Data service used to persist data for individual trials
 angular.module('core').factory('TrialData', [

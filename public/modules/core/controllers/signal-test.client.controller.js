@@ -1,7 +1,6 @@
 'use strict';
 
 // TODO: Watch for and log sensor issues
-// TODO: In the event of sensor issues, still allow user to advance after delay
 
 angular.module('core').controller('SignalTestController', ['$scope', 'SocketIOService', 'TrialData', '$timeout',
     function($scope, SocketIOService, TrialData, $timeout) {

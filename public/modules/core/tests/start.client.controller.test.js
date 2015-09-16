@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO: Update tests that hit socket to use mock socket (see https://github.com/nullivex/angular-socket.io-mock)
-
 (function() {
     describe('StartController', function() {
 
