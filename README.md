@@ -400,14 +400,97 @@ These are example slide objects for fixed and random media excerpts, respectivel
 }
 ```
 
-# To write:
+# Content and Design
 
-- Editing the Welcome Screen
+## Editing the Welcome Screen
+
+The first screen shown during the study is easy to customize. Simply edit the file at `public/modules/core/views/home.client.view.html` to suit your needs.
+
+## Changing the Visual Design
+
+The simplest means of changing the visual design of a study is by editing the CSS files that govern the visual styling of the website. The main CSS file is located at `public/modules/core/css/core.css`. You may also provide your own CSS file. All CSS files (that end with the `.css` extension) placed in the `public/modules/**/css/` folders will be included.
+
+## Adding Custom Slides
+
+Adding your own slides is straightforward, and involves three separate steps:
+
+1. Construct the HTML file for your slide.
+2. Add an entry to the routing file.
+3. Include your slide's name in the structure design document for your study in the MongoDB database.
+
+### Constructing the HTML File for Your Slide
+
+The easiest way to go about doing this is by following the example of one of the existing HTML files in the `public/modules/core/views/` directory. There are a few important points to note about these files.
+
+First, the Emotion in Motion framework uses the [Bootstrap](http://getbootstrap.com/) front-end framework for its visual styling. Most of the outer structure of each page is defined for you. Therefore, the HTML file for an individual slide needs to only contain what is to be presented as the actual slide content (there's no need to worry about the header, menus, etc.) For instance, this is (most of) the content of the file at `public/modules/core/views/pox-instructions.client.view.html`:
+
+```
+<div class="row">
+    <div class="col-md-12">
+
+        <h1 translate>Heart Sensor</h1>
+
+        <p translate>Now, insert your index finger into the grey plastic clip. Your finger should touch the rubber stopper at the end.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-center">
+        <img src="/modules/core/img/hand-pox.png">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <p><button class="btn btn-primary btn-lg" data-ng-click="advanceSlide()" translate>Continue</button></p>
+    </div>
+</div>
+```
+
+Of note, each 'section' of the slide is surrounded with a `div` styled with the `row` class provided by Bootstrap. This particular slide is made of three rows. The first row gives the header title of the slide and a paragraph with instructions. The second row contains a centered image. The final row presents the button that allows the user to advance to the next slide. All styling (and layout) is accomplished through classes provided by Bootstrap; get to know its simple collection of classes--they are your friends for easily accomplishing even the most complex of layouts. Of course, nothing is stopping you from simply entering text here--you're free to include whatever you'd like.
+
+Take particular note of two things in this HTML. First, the tags that surround all text provided on this slide use the `translate` [AngularJS](https://angularjs.org/) directive (e.g., `<h1 translate>Heart Sensor</h1>`). Any tags that include this directive will be automatically translated to the selected language of the user, provided that you have [provided the necessary translations](#internationalization). Second, the `button` in the bottom row of the slide includes the `data-ng-click="advanceSlide()"` attribute. Including this attribute on any clickable element on your page will advance the user to the next slide as you have specified in the [study specification structure](#study-specification-structure). Without this attribute, there will be no way for participants to advance through your study.
+
+### Adding Your Slide to the Routing File
+
+With your HTML slide complete, add it to the routing file at `public/modules/core/config/core.client.routes.js`. Here's the end of that file that ships with the framework:
+
+```
+            .state('thank-you', {
+                url: '/thank-you',
+                templateUrl: 'modules/core/views/thank-you.client.view.html'
+            });
+    }
+]);
+```
+
+To add an HTML file that you've created in the `public/modules/core/views/` directory called `credits.client.view.html`, and for this file to be accessible at the `/credits` URL, we'd simply add an entry to the end of the file as follows:
+
+```
+            .state('thank-you', {
+                url: '/thank-you',
+                templateUrl: 'modules/core/views/thank-you.client.view.html'
+            })
+            .state('credits', {
+                url: '/credits',
+                templateUrl: 'modules/core/views/credits.client.view.html'
+            });
+    }
+]);
+```
+
+The very first argument to this call to the `state` function (here, `'credits'`) is the name by which you will refer to this slide in your [study specification structure](#study-specification-structure).
+
+Finally, note that *adding new questionnaires to your study does not mean that you must create a new questionnaire HTML file*. Simply use the `"questionnaire"` name for your slide object in your [study specification structure](#study-specification-structure) and use the `data` property of the slide object to [describe the questionnaire](#questionnaire-slides). Everything else will be handled by the framework.
+
+### Adding Your Slide to Your Study Specification Structure Document
+
+By whichever means is easiest for you (either through a [GUI](http://docs.mongodb.org/ecosystem/tools/administration-interfaces/) or the [command line](https://docs.mongodb.org/manual/reference/)), edit your [study specification structure](#study-specification-structure) to include your new slide. As noted above, use the name you provided in the routing file to refer to your new slide in the structure document.
+
+# To Write
+
 - Recorded Data
 - Media Location
-- Adding Slides
 - Adding Custom Directives
 - Compiling
 - Contributing Changes
 - trialData Objects
-- Changing the Visual Design
+- Internationalization
