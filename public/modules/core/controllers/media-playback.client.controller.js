@@ -3,6 +3,7 @@
 // FIXME: Address OSC error when message sent without session ID
 // TODO: Use different button colors for Playback and Continue
 // TODO: Request and save emotion indices
+// TODO: Log unhandled received OSC messages here and elsewhere
 
 angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager',
     function($scope, TrialData, SocketIOService, $timeout, ExperimentManager) {
@@ -60,31 +61,39 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
             // If it was a media playback message
             if (data.address === '/eim/status/playback') {
 
-                // If it was a start message
-                if (parseInt(data.args[0].value) === 1) {
+                // Check for start or stop message
+                switch (parseInt(data.args[0].value)) {
 
-                    // Fade out screen
-                    $scope.hideBody();
+                    // If it was a stop message
+                    case 0:
 
-                    // Otherwise, if it was a stop message
-                } else if (parseInt(data.args[0].value) === 0) {
+                        // Request emotion index from Max
+                        thisController.requestEmotionIndex();
 
-                    // Request emotion index from Max
-                    thisController.requestEmotionIndex();
+                        // Fade in screen
+                        $scope.showBody();
 
-                    // Fade in screen
-                    $scope.showBody();
-
-                    // Update state
-                    $timeout(function() {
-                        $scope.$apply(function() {
-                            $scope.currentButtonLabel = 'Continue';
-                            $scope.mediaHasPlayed = true;
-                            $scope.buttonDisabled = true;
+                        // Update state
+                        $timeout(function() {
+                            $scope.$apply(function() {
+                                $scope.currentButtonLabel = 'Continue';
+                                $scope.mediaHasPlayed = true;
+                                $scope.buttonDisabled = true;
+                            });
                         });
-                    });
+                        break;
+
+                    // If it was a start message
+                    case 1:
+
+                        // Fade out screen
+                        $scope.hideBody();
+                        break;
                 }
-            } else if (data.address === '/eim/status/emotionIndex') {
+            }
+
+            // If it was an emotion index message
+            if (data.address === '/eim/status/emotionIndex') {
 				
                 var emotionIndex = parseInt(data.args[0].value);
 				
