@@ -2,8 +2,8 @@
 
 angular.module('core').controller('LastScreenController', ['$scope', 'TrialData', '$http',
     function($scope, TrialData, $http) {
-        $http.post('/api/trials', TrialData.data).success(function() {
-        }).error(function() {
-        });
+
+        // Should chain success() and error() to post() call to log success/error
+        $http.post('/api/trials', TrialData.data);
     }
 ]);
