@@ -15,7 +15,6 @@ var execFile = require('child_process').execFile;
 
 // Import custom settings
 var customSettings = require('./config/custom');
-console.log(customSettings);
 
 require('./config/logging');
 
