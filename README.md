@@ -45,18 +45,22 @@ This is the Emotion in Motion experiment framework from the Music, Sensors and E
     mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
     mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production
     ```
-    
-5. Start the server. In the root directory of the repository:
+
+5. Start the Max helper project located at `EiMpatch/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
+
+6. Start the server. In the root directory of the repository:
 
     ```
     node_modules/grunt-cli/bin/grunt
     ```
 
-6. Start the Max helper project located at `EiMpatch/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
+7. Browse to [http://localhost:3000/](http://localhost:3000/).
  
 # Study Specification Structure
  
-A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) for a gentle introduction. The default configuration presents a study with the following structure:
+A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) for a gentle introduction.
+
+By default, the application looks in the `experimentschemas` collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:
 
 1. Welcome screen
 2. Consent form
@@ -485,12 +489,188 @@ Finally, note that *adding new questionnaires to your study does not mean that y
 
 By whichever means is easiest for you (either through a [GUI](http://docs.mongodb.org/ecosystem/tools/administration-interfaces/) or the [command line](https://docs.mongodb.org/manual/reference/)), edit your [study specification structure](#study-specification-structure) to include your new slide. As noted above, use the name you provided in the routing file to refer to your new slide in the structure document.
 
-# To Write
+# Media Files
 
-- Recorded Data
-- Media Location
-- Adding Custom Directives
-- Compiling
-- Contributing Changes
-- trialData Objects
-- Internationalization
+We are currently developing a means of video playback, but for now, only audio media excerpts are supported. The [Max helper application](#the-max-patches) controls the playback of these media files. In order to add new audio files for use in your study, you must:
+
+1. Add information about the file to the MongoDB database.
+2. Place the file in the location in which the Max application looks for media files.
+
+## Adding a Media File to the MongoDB Database
+
+Information about media files are stored in the MongoDB database just like study specification documents. Each media file has its own document in the `media` collection in the database. A typical file looks like this:
+
+```
+{ 
+    "_id" : ObjectId("538b777e2212e1eda2ff48ab"), 
+    "artist" : "Minnie Riperton", 
+    "bpm" : null, 
+    "comments" : null, 
+    "emotion_tags" : [
+        ObjectId("538bd9002212e1eda2ff5299")
+    ], 
+    "excerpt_end_time" : 205.54, 
+    "excerpt_start_time" : 125.53, 
+    "genres" : [
+        ObjectId("538bd1e52212e1eda2ff5297")
+    ], 
+    "has_lyrics" : true, 
+    "key" : null, 
+    "label" : "H005", 
+    "source" : null, 
+    "title" : "Reasons", 
+    "type" : "audio", 
+    "year" : ISODate("1974-01-01T00:00:00.000+0000"), 
+    "file" : ObjectId("538b8ae7352f20fbd59e20d2")
+}
+```
+
+The only *required* properties that a media document in the database must have are `artist`, `title`, and `label`. `artist` and `title` are straightforward. The `label` is the a string that the Max application will use for finding and playing back the media excerpt. Here, then, Max will look for a `H005.wav` file if this media excerpt is selected for use in a session. In order to add your own media files, simply add a document to the `media` collection in the database (either through a [GUI](http://docs.mongodb.org/ecosystem/tools/administration-interfaces/) or the [command line](https://docs.mongodb.org/manual/reference/)), with at least the following information:
+
+```
+{
+    artist: "Artist Name Here",
+    title: "Media Title Here",
+    label: "First Part of Excerpt Filename Here (without extension)"
+}
+```
+
+## Max Application Media File Location
+
+The Max application looks for files in the `EiMpatch/media/` directory. If you add an excerpt to the database with the label `"Bananarama"`, then, Max will expect to find the file `EiMpatch/media/Bananarama.wav`.
+
+# Recorded Session Data
+
+In the demo applicaiton, two types of data are collected, recorded, and saved during a session: the data in the `trialData` document/object, and the data recorded from the sensors.  
+
+## `trialData` Data
+
+`trialData` objects contain metadata *about* the experiment session as well as responses given by the participant during the session. The metadata contain, for instance, the date and time of the session, as well as a copy of the study specification structure that was used to generate the session. Every `trialData` object is associated with a UUID (universally unique identifier) generated by the applicaiton. Upon completion of a session, a JSON file containing the `trialData` object for the session is stored in the `trials/` directory.
+
+## Sensor Data
+
+Sensor data is collected, recorded, and saved by the Max helper application. A sensor data file is generated for every media excerpt playback, and these files are stored in the `EiMpatch/data/` directory. As an example, if the UUID `92a7d913-63d7-4e37-af01-a6ca19ae2be3` was generated by the application for a specific participant, the following files would be generated from the session:
+
+```
+# The sensor data files for media excerpts labeled "C002" and "T018":
+.\EiMpatch\data\92a7d913-63d7-4e37-af01-a6ca19ae2be3_C002.txt
+.\EiMpatch\data\92a7d913-63d7-4e37-af01-a6ca19ae2be3_T018.txt
+
+# The trialData JSON file:
+.\trials\92a7d913-63d7-4e37-af01-a6ca19ae2be3.trial.json
+```
+
+### Sensor Data File Format
+
+In the demo app, sensor data is recorded into space-delimited CSV files with a single-line header giving the names of each column.
+
+# Helper Programs
+
+## The Max Patches
+
+## The Arduino Patches
+
+# Internationalization
+
+The use of the `translate` directive in any of your [HTML code](#constructing-the-html-file-for-your-slide) will automatically translate the enclosed text to the language that the participant has selected. For this to work correctly, several things must be in place. We'll discuss these in terms of adding new text and translations for which the target language is already available as an option in the header menu, and adding a new language option to the menu itself.
+
+## Adding New Translated Text
+
+If your target language is already available in the header menu, you'll need to generate a translation file for all strings in the application for your target language. We use the [angular-gettext](https://angular-gettext.rocketeer.be/) tool for integrating internationalization into the application. angular-gettext provides an extraction tool for extracting all strings in the application that require translation, and a compilation tool for including translations in the application once the strings have been translated.
+
+### Extracting Strings for Translation
+
+To extract strings for translation, simply run
+
+```
+node_modules\grunt-cli\bin\grunt nggettext_extract
+```
+
+This will produce the file `po\template.pot`. The `.pot` file contains entries for every string present in the application and can be used with a number of software tools or web services (we use [Crowdin](https://crowdin.com/)) to generate a `.po` file. a `.po` file contains the *translations* of all strings into a specific language.
+
+The `.pot` file will extract all strings from all HTML pages included in your application. If, however, you have included text that is not directly part of an HTML page, but is included in one *through your modifications of the study specification document* (e.g., checkbox labels, etc.), you'll need to make a couple of changes before running the command to extract strings. To include these strings, they must be present in the `public\modules\core\config\core.client.missing-keys.js` file. This is what the *bottom* of that file may look like
+ 
+```
+        gettext('119');
+        gettext('120');
+        gettext('121');
+        gettext('Begin Playback');
+    }
+]);
+```
+
+Here, `'119'`, `'120'`, `'121'`, and `'Begin Playback'` are all strings that are not directly written into an HTML file in the application. If we also need to include the string, `'Good Morning!'` for translation, we would simply add it to the bottom of the file as follows
+
+```
+        gettext('119');
+        gettext('120');
+        gettext('121');
+        gettext('Begin Playback');
+        gettext('Good Morning!');
+    }
+]);
+```
+
+This change will now include `'Good Morning!'` for translation when `node_modules\grunt-cli\bin\grunt nggettext_extract` is run.
+
+If you're wondering whether or not you've included all such strings in the `core.client.missing-keys.js` file, they are easy to find. By default, angular-gettext's debug mode is enabled. When this is the case, when a user has selected a particular language from the header menu and a string is used in the application for which there is not translation, the string will be prepended with `[MISSING]: `. This indicates that the string that follows `[MISSING]: ` should be included in the `core.client.missing-keys.js` file. To make sure you've included all 'missing' strings for translation, simply select the target language and go through the study, looking for any `[MISSING]: ` indicators.
+
+Once you've generated a `.pot` file and used software or a web service to translate all the strings it contains, you'll be able to export a `.po` file. To compile these translations into your application, simply put the `.po` file in to the `po/` directory, and run
+
+```
+node_modules\grunt-cli\bin\grunt nggettext_compile
+```
+
+If and when this command completes successfully, the translations you provided in your `.po` file will be available to the application.
+
+## Adding New Languages
+
+If your target language for translation is not available in the dropdown menu from the header, it is straightforward to edit the application to make it available for your participants. To do so, edit the `public\modules\core\views\header.client.view.html` file. The `<li>...</li>` sections represent the languages available in the dropdown menu. Here is the line that makes Taiwanese available as a selection
+
+```
+<li><a ng-click="setLanguage('zh_TW')">中文</a></li>
+```
+
+Here, the string inside the parentheses should match the name of the `.po` file (you'll see in the demo app that a translation file is available for Taiwanese at `po/zh_TW.po`.) The text inside of the `<a ...></a>` tag gives the textual label that the participant will see in the dropdown list itself (here, '中文'). To add a language option for Zulu, then, we would need to add the file `po/zu.po`, and the following line to `public\modules\core\views\header.client.view.html`
+
+```
+<li><a ng-click="setLanguage('zu')">Zulu</a></li>
+```
+
+## Setting the Default Language
+
+The default language for your application is set in `public/application.js`. The demo app ships with English as the default language, as set by this line
+
+```
+gettextCatalog.setCurrentLanguage('en');
+```
+
+To choose a new default language, change `'en'` to be the language you would like to be the default (starting) language. For instance, to change this to use our Taiwanese translation as the default language, we would change this line to
+
+```
+gettextCatalog.setCurrentLanguage('zh_TW');
+```
+
+The default language only governs the language used when the first screen is initially loaded. After this point, participants are free to change the language using the dropdown menu in the header.
+
+# Building a Production Version of Your Study Application
+
+Running the application with `node_modules/grunt-cli/bin/grunt` starts a Node.js web server. By default, this runs in *development* mode, which can be considerably slower than running in *production* mode. Running in production mode requires that you have built a production-ready version of your application. To do so, run the following command from the root directory of the repository:
+
+```
+node_modules/grunt-cli/bin/grunt build
+```
+
+Once this successfully completes, use the following modification of the server startup command to run in production mode:
+
+```
+NODE_ENV=production node_modules/grunt-cli/bin/grunt
+```
+
+# Adding Custom Directives
+
+AngularJS directives provide much of the *special sauce* in the Emotion in Motion framework; they are, for instance, how questionnaires are automatically built based on the information you provide in the study specification structure document. There's plenty more that one can accomplish with additional custom directives, and we encourage you to write your own (and [submit them](#contributing-changes) for the rest of us to use!). To do so, you'll need to get your feet wet with [AngularJS](https://angularjs.org), but feel free to look through what we've already written in `public/modules/core/directives/` to get started.
+
+# Contributing Changes
+
+The development of the Emotion in Motion framework is still in its early stages. If you would like to contribute to this ongoing work, please [submit a pull request](https://github.com/brennon/eim/pulls)!
