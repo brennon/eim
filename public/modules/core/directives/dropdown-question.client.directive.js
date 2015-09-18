@@ -18,12 +18,6 @@ angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', f
 
             scope[attrs.questionId + 'Select'] = null;
 
-            scope.validSelection = function () {
-
-                console.log(scope[attrs.questionId + 'Select']);
-
-            };
-
             scope.$watch(attrs.questionId + 'Select', function(newValue) {
                 scope.sendToTrialData(attrs.controllerDataPath, newValue);
             });
@@ -39,7 +33,7 @@ angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', f
 
             formDiv.append(label);
 
-            var select = angular.element('<select class="form-control" ng-valid="validSelection" required></select>');
+            var select = angular.element('<select class="form-control" required></select>');
             select.attr('id', attrs.questionId);
             select.attr('name', attrs.questionId);
             select.attr('ng-model', attrs.questionId + 'Select');
