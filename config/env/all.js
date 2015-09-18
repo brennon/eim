@@ -15,7 +15,7 @@ module.exports = {
 			css: [
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        		'public/modules/angular-hotkeys/services/hotkeys.min.css'
+        		'public/lib/angular-hotkeys/build/hotkeys.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.js',
@@ -32,7 +32,7 @@ module.exports = {
 				'public/lib/socket.io-client/socket.io.js',
 				'public/lib/angular-socket-io/socket.js',
 				'public/lib/UUID.js/dist/uuid.core.js',
-				'public/modules/angular-hotkeys/services/hotkeys.js',
+				'public/lib/angular-hotkeys/build/hotkeys.js',
 				'public/lib/angular-gettext/dist/angular-gettext.js',
 				'public/i18n/translations.js'
 			]
