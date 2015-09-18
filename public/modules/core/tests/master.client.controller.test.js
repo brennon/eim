@@ -214,40 +214,40 @@
             });
 
             // FIXME: Find a way to test this
-            xit('should toggle debugMode on d-d', function() {
-
-                mockScope.toggleDebugMode = function() {};
-
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
-
-                mockScope.debugMode = true;
-                var ddCallback = addSpy.args[0][0].callback;
-                expect(ddCallback).toBe(mockScope.toggleDebugMode);
-            });
+            //it('should toggle debugMode on d-d', function() {
+            //
+            //    mockScope.toggleDebugMode = function() {};
+            //
+            //    $controllerConstructor('MasterController',
+            //        { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+            //
+            //    mockScope.debugMode = true;
+            //    var ddCallback = addSpy.args[0][0].callback;
+            //    expect(ddCallback).toBe(mockScope.toggleDebugMode);
+            //});
 
             // FIXME: Find a way to test this--callback assignment isn't using mock
-            xit('should advance slide on right', function() {
-
-                var mockExperimentManager = {
-                    advanceSlide: function() { console.log('the stand-in'); },
-                };
-
-                mockTrialData.data = { schema: [] };
-
-                $controllerConstructor('MasterController', {
-                    $scope: mockScope,
-                    TrialData: mockTrialData,
-                    hotkeys: mockHotkeys,
-                    ExperimentManager: mockExperimentManager
-                });
-
-                var advanceCallback = addSpy.args[1][0].callback;
-
-                spyOn(mockExperimentManager, 'advanceSlide');
-                advanceCallback();
-                expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
-            });
+            //it('should advance slide on right', function() {
+            //
+            //    var mockExperimentManager = {
+            //        advanceSlide: function() { console.log('the stand-in'); },
+            //    };
+            //
+            //    mockTrialData.data = { schema: [] };
+            //
+            //    $controllerConstructor('MasterController', {
+            //        $scope: mockScope,
+            //        TrialData: mockTrialData,
+            //        hotkeys: mockHotkeys,
+            //        ExperimentManager: mockExperimentManager
+            //    });
+            //
+            //    var advanceCallback = addSpy.args[1][0].callback;
+            //
+            //    spyOn(mockExperimentManager, 'advanceSlide');
+            //    advanceCallback();
+            //    expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
+            //});
         });
 
         describe('inactivity timeout', function() {
