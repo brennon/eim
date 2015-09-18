@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/brennon/eim.svg?branch=adding-tests)](https://travis-ci.org/brennon/eim) [![Dependency Status](https://david-dm.org/brennon/eim.png)](https://david-dm.org/brennon/eim.png)
+[![Build Status](https://travis-ci.org/brennon/eim.svg?branch=adding-tests)](https://travis-ci.org/brennon/eim) [![Dependency Status](https://david-dm.org/brennon/eim.png)](https://david-dm.org/brennon/eim.png) [![Coverage Status](https://coveralls.io/repos/brennon/eim/badge.svg?branch=master&service=github)](https://coveralls.io/github/brennon/eim?branch=master)
 
 # Emotion in Motion
 
