@@ -26,11 +26,7 @@ This is the Emotion in Motion experiment framework from the Music, Sensors and E
     mongod --config /usr/local/etc/mongod.conf
     ```
 
-3. Install [Node.js](https://nodejs.org/). Again, with Homebrew use:
-
-    ```
-    brew install node
-    ```
+3. Install [Node.js](https://nodejs.org/). The framework currently runs best on Node.js [v0.12.7](https://nodejs.org/dist/v0.12.7/). We recommend downloading the Node.js installer from this link, instead of installing with Homebrew.
 
 4. Install app Node dependencies using `npm`:
 
