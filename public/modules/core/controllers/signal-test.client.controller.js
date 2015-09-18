@@ -86,17 +86,19 @@ angular.module('core').controller('SignalTestController', ['$scope', 'SocketIOSe
                 $scope.$apply(function updateEDAQuality() {
                     $scope.edaQuality = data.args[0].value;
                 });
+            }
 
-                // If it was a POX signal quality message
-            } else if (data.address === '/eim/status/signalQuality/pox') {
+            // If it was a POX signal quality message
+            if (data.address === '/eim/status/signalQuality/pox') {
 
                 // Update POX signal quality
                 $scope.$apply(function updatePOXQuality() {
                     $scope.poxQuality = data.args[0].value;
                 });
+            }
 
-                // If the test recording has complete
-            } else if (data.address === '/eim/status/testRecordingComplete') {
+            // If the test recording has complete
+            if (data.address === '/eim/status/testRecordingComplete') {
 
                 // Update continue button
                 $scope.$apply(function() {
