@@ -18,14 +18,25 @@
             TrialData = _TrialData_;
         }));
 
-        it('should set the date on the TrialData object', function() {
-            $controller('StartController',
-                { $scope: mockScope });
+        describe('initialization', function() {
+            it('should set the date on the TrialData object', function() {
+                $controller('StartController',
+                    { $scope: mockScope });
 
-            var now = new Date();
-            var trialDataDate = Date.parse(TrialData.data.date);
+                var now = new Date();
+                var trialDataDate = Date.parse(TrialData.data.date);
 
-            expect(now - trialDataDate).toBeLessThan(5);
+                expect(now - trialDataDate).toBeLessThan(5);
+            });
+
+            it('should set $scope.maxReady to false', function() {
+                var controller = $controller('StartController',
+                    { $scope: mockScope });
+
+                mockScope.maxReady = true;
+                controller.sendExperimentStartMessage();
+                expect(mockScope.maxReady).toBe(false);
+            });
         });
 
         describe('advancing logic', function() {
@@ -51,15 +62,6 @@
         });
 
         describe('#sendExperimentStartMessage', function() {
-            it('should set $scope.maxReady to false', function() {
-                var controller = $controller('StartController',
-                    { $scope: mockScope });
-
-                mockScope.maxReady = true;
-                controller.sendExperimentStartMessage();
-                expect(mockScope.maxReady).toBe(false);
-            });
-
             it('should send the correct start event to the socket', function() {
                 var mockTrialData = {
                     data: {
@@ -92,6 +94,9 @@
 
         describe('OSC message handling', function() {
             describe('message received listener', function() {
+
+                // TODO: Mock incoming OSC messages through SocketIOService
+
                 it('should set $scope.maxReady to true on the correct message', function() {
                     var controller = $controller('StartController', {
                         $scope: mockScope
@@ -178,6 +183,8 @@
                     $scope: mockScope,
                     $timeout: $timeout
                 });
+
+                mockScope.readyToAdvance = false;
 
                 $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
 

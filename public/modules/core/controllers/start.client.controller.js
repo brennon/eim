@@ -14,6 +14,9 @@ angular.module('core').controller('StartController', ['$scope', '$timeout', 'Tri
 
         // Configure handler for incoming OSC messages
         this.oscMessageReceivedListener = function(data) {
+
+            // TODO: Log incoming OSC messages that we don't handle and remove next Istanbul directive
+            /* istanbul ignore else */
             if (data.address === '/eim/status/startExperiment') {
                 $scope.$apply(function() {
                     $scope.maxReady = true;
@@ -24,8 +27,7 @@ angular.module('core').controller('StartController', ['$scope', '$timeout', 'Tri
         // Attach handler for incoming OSC messages
         SocketIOService.on('oscMessageReceived', this.oscMessageReceivedListener);
 
-        // Destroy handler for incoming OSC messages when $scope is destroyed
-        // Also, remove error timeout
+        // Destroy handler for incoming OSC messages and remove error timeout when $scope is destroyed
         var thisController = this;
         $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
             SocketIOService.removeListener('oscMessageReceived', thisController.oscMessageReceivedListener);
@@ -51,6 +53,9 @@ angular.module('core').controller('StartController', ['$scope', '$timeout', 'Tri
         this.errorTimeout.then(function() {
             if (!$scope.readyToAdvance) {
                 $scope.addGenericErrorAlert();
+
+                // TODO: Are we handling this error gracefully?
+
                 throw new Error('Max had not responded to startExperiment message after 10 seconds');
             }
         });
