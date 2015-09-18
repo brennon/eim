@@ -5,3 +5,4 @@ env:
   - NODE_ENV=travis
 services:
   - mongodb
+sudo: false
