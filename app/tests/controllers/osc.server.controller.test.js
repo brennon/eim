@@ -3,7 +3,10 @@
 // Testing tools
 var should = require('chai').should();
 var rewire = require('rewire');
+
+/* jshint ignore:start */
 var sinon = require('sinon');
+/* jshint ignore:end */
 
 // Helper modules
 var dgram = require('dgram');
@@ -123,12 +126,12 @@ describe('OSCController', function() {
 
             var buf;
             buf = osc.toBuffer({
-                address: "/heartbeat",
+                address: '/heartbeat',
                 args: [12]
             });
 
             var socket = dgram.createSocket('udp4');
-            socket.send(buf, 0, buf.length, controller.incomingPort, "localhost");
+            socket.send(buf, 0, buf.length, controller.incomingPort, 'localhost');
 
             setTimeout(function() {
                 incomingMessageHandlerSpy.calledOnce.should.equal(true);
@@ -153,7 +156,7 @@ describe('OSCController', function() {
             // Create an OSC buffer
             var buf;
             buf = osc.toBuffer({
-                address: "/eim/status/log",
+                address: '/eim/status/log',
                 args: [12]
             });
 
@@ -179,7 +182,7 @@ describe('OSCController', function() {
             // Create an OSC buffer
             var buf;
             buf = osc.toBuffer({
-                address: "/eim/status/starting",
+                address: '/eim/status/starting',
                 args: [12]
             });
 
