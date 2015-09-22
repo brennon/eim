@@ -6,6 +6,7 @@
 
 var request = require('supertest');
 var config = require('../../../config/config');
+var should = require('chai').should();
 
 /* jshint ignore:start */
 var sinon = require('sinon');

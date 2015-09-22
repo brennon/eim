@@ -47,6 +47,7 @@
     "winston-loggly": "^1.0.1"
   },
   "devDependencies": {
+    "chai": "^3.3.0",
     "grunt-angular-gettext": "^0.2.15",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-csslint": "^0.2.0",
@@ -69,9 +70,10 @@
     "karma-phantomjs-launcher": "~0.1.2",
     "karma-sinon": "^1.0.3",
     "load-grunt-tasks": "~0.4.0",
+    "mocha": "^2.3.3",
     "node-mocks-http": "^1.2.1",
     "phantomjs": "^1.9.12",
-    "should": "~3.3.1",
+    "rewire": "^2.3.4",
     "supertest": "~0.12.1"
   }
 }
