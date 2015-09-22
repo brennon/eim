@@ -10,7 +10,6 @@ var config = require('../../../config/config');
 // Testing tools
 var request = require('supertest');
 var should = require('chai').should();
-var sinon = require('sinon');
 
 describe('Core Controller Tests', function() {
 
