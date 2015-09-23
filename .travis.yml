@@ -9,4 +9,13 @@ sudo: required
 script:
   - npm install
   - grunt test
+  - rm -rf coverage/server
+  - rm -rf app-cov
+  - mkdir -p coverage/server
+  - node_modules/.bin/jscover app app-cov
+  - mv app app-orig
+  - mv app-cov app
+  - node_modules/.bin/mocha app/tests/**/* -R mocha-lcov-reporter > coverage/server/lcov.info
+  - rm -rf app
+  - mv app-orig app
   - grunt coveralls

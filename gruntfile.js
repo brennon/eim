@@ -137,9 +137,22 @@ module.exports = function(grunt) {
             src: watchFiles.serverTests,
             options: {
                 reporter: 'spec',
+                //require: ['coverage/blanket.js','server.js'],
                 require: 'server.js',
                 growl: true
             }
+            //},
+            //coverage: {
+            //    options: {
+            //        reporter: 'lcov',
+            //        // use the quiet flag to suppress the mocha console output
+            //        quiet: true,
+            //        // specify a destination file to capture the mocha
+            //        // output (the quiet option does not suppress this)
+            //        captureFile: 'coverage.html'
+            //    },
+            //    src: watchFiles.serverTests
+            //}
         },
         karma: {
             unit: {
@@ -175,11 +188,17 @@ module.exports = function(grunt) {
         },
         mocha_istanbul: {
             options: {
-                reportFormats: ['lcovonly'],
-                coverageFolder: 'coverage/server'
+                reportFormats: ['lcovonly','html'],
+                coverageFolder: 'coverage/server',
+                //quiet: true,
+                mochaOptions: {
+                    src: watchFiles.serverTests,
+                    //spawn: false
+                },
+                excludes: ['!app/**/*']
             },
             coverage: {
-                src: watchFiles.serverTests
+                src: ['app/tests/**/*.js']
             }
         }
     });
@@ -212,7 +231,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', ['lint', 'loadConfig', 'ngmin', 'uglify', 'cssmin']);
 
     // Test task.
-    grunt.registerTask('test', ['env:test', 'mochaTest', 'mocha_istanbul', 'karma:unit']);
+    grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
 
     // Just Angular tests task
     grunt.registerTask('test:client', ['env:test', 'karma:unit']);
