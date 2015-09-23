@@ -15,6 +15,7 @@ var osc = require('osc-min');
 // Module under test
 var controller;
 
+/* globals sinon */
 
 describe('OSCController', function() {
     beforeEach(function() {
@@ -166,6 +167,8 @@ describe('OSCController', function() {
 
             // Check expectations
             buildSpy.calledOnce.should.equal(true);
+
+            //noinspection JSUnresolvedVariable
             buildSpy.args[0][0][0].should.deep.equal({type: 'float', value: 12});
 
             // Revert controller
@@ -327,6 +330,8 @@ describe('OSCController', function() {
             spy.callCount.should.equal(1);
 
             var args = spy.args[0][0];
+
+            //noinspection JSUnresolvedVariable
             args.should.deep.equal({
                 oscType: 'message',
                 address: '/eim/control',
