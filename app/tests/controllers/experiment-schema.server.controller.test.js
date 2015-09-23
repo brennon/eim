@@ -3,7 +3,10 @@
 // Testing tools
 var should = require('chai').should();
 var rewire = require('rewire');
+
+/* jshint ignore:start */
 var sinon = require('sinon');
+/* jshint ignore:end */
 
 // Need to make sure the schema has been registered
 require('../../models/experiment-schema');

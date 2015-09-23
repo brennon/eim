@@ -28,7 +28,7 @@ describe('OSCController', function() {
             done();
         });
     });
-    
+
     beforeEach(function() {
         try {
             controller.closeSockets();
