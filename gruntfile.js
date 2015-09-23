@@ -170,7 +170,7 @@ module.exports = function(grunt) {
             },
             client_tests: {
                 // Target-specific LCOV coverage file
-                src: 'coverage/PhantomJS 1.9.7 (Mac OS X)/lcov.info'
+                src: ['coverage/**/lcov.info']
             }
         }
     });
