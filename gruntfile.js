@@ -137,7 +137,8 @@ module.exports = function(grunt) {
             src: watchFiles.serverTests,
             options: {
                 reporter: 'spec',
-                require: 'server.js'
+                require: 'server.js',
+                growl: true
             }
         },
         karma: {
