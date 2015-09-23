@@ -8,5 +8,5 @@ services:
 sudo: required
 script:
   - npm install
-  - npm test
+  - grunt test
   - grunt coveralls

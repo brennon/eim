@@ -172,6 +172,15 @@ module.exports = function(grunt) {
                 // Target-specific LCOV coverage file
                 src: ['coverage/**/lcov.info']
             }
+        },
+        mocha_istanbul: {
+            options: {
+                reportFormats: ['lcovonly'],
+                coverageFolder: 'coverage/server'
+            },
+            coverage: {
+                src: watchFiles.serverTests
+            }
         }
     });
 
@@ -203,7 +212,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', ['lint', 'loadConfig', 'ngmin', 'uglify', 'cssmin']);
 
     // Test task.
-    grunt.registerTask('test', ['env:test', 'mochaTest', 'karma:unit']);
+    grunt.registerTask('test', ['env:test', 'mochaTest', 'mocha_istanbul', 'karma:unit']);
 
     // Just Angular tests task
     grunt.registerTask('test:client', ['env:test', 'karma:unit']);
@@ -216,4 +225,5 @@ module.exports = function(grunt) {
 
     // Code coverage tasks
     grunt.loadNpmTasks('grunt-coveralls');
+    grunt.loadNpmTasks('grunt-mocha-istanbul')
 };

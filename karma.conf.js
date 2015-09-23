@@ -63,7 +63,7 @@ module.exports = function(config) {
 		// Configure coverage reporter
 		coverageReporter: {
 			type: 'lcov',
-			dir: 'coverage/'
+			dir: 'coverage/client'
 		}
 	});
 };
