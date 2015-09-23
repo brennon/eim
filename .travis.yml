@@ -1,8 +1,12 @@
 language: node_js
 node_js:
-  - "0.10"
+  - "0.12"
 env:
   - NODE_ENV=travis
 services:
   - mongodb
 sudo: required
+script:
+  - npm install
+  - npm test
+  - grunt coveralls
