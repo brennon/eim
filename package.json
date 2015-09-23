@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "chai": "^3.3.0",
+    "growl": "^1.8.1",
     "grunt-angular-gettext": "^0.2.15",
     "grunt-concurrent": "~0.5.0",
     "grunt-contrib-csslint": "^0.2.0",
