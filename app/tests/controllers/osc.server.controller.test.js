@@ -12,12 +12,23 @@ var sinon = require('sinon');
 var dgram = require('dgram');
 var osc = require('osc-min');
 
+// Server
+var server = require('../../../server');
+var app;
+
 // Module under test
 var controller;
 
 /* globals sinon */
 
 describe('OSCController', function() {
+    before(function(done) {
+        server.then(function(startedApp) {
+            app = startedApp;
+            done();
+        });
+    });
+    
     beforeEach(function() {
         try {
             controller.closeSockets();
