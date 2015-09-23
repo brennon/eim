@@ -20,7 +20,7 @@ This is the Emotion in Motion experiment framework from the Music, Sensors and E
     brew install mongodb
     ```
 
-4. Start `mongod` is started on the default port. If you installed with Homebrew:
+4. Start `mongod` on the default port. If you installed with Homebrew:
 
     ```
     mongod --config /usr/local/etc/mongod.conf
