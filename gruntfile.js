@@ -137,22 +137,9 @@ module.exports = function(grunt) {
             src: watchFiles.serverTests,
             options: {
                 reporter: 'spec',
-                //require: ['coverage/blanket.js','server.js'],
                 require: 'server.js',
                 growl: true
             }
-            //},
-            //coverage: {
-            //    options: {
-            //        reporter: 'lcov',
-            //        // use the quiet flag to suppress the mocha console output
-            //        quiet: true,
-            //        // specify a destination file to capture the mocha
-            //        // output (the quiet option does not suppress this)
-            //        captureFile: 'coverage.html'
-            //    },
-            //    src: watchFiles.serverTests
-            //}
         },
         karma: {
             unit: {
@@ -183,23 +170,14 @@ module.exports = function(grunt) {
             },
             client_tests: {
                 // Target-specific LCOV coverage file
-                src: ['coverage/**/lcov.info']
+                src: ['coverage/lcov-merge.info']
             }
         },
-        mocha_istanbul: {
+        lcovMerge: {
             options: {
-                reportFormats: ['lcovonly','html'],
-                coverageFolder: 'coverage/server',
-                //quiet: true,
-                mochaOptions: {
-                    src: watchFiles.serverTests,
-                    //spawn: false
-                },
-                excludes: ['!app/**/*']
+
             },
-            coverage: {
-                src: ['app/tests/**/*.js']
-            }
+            src: ['coverage/**/lcov.info']
         }
     });
 
@@ -244,5 +222,5 @@ module.exports = function(grunt) {
 
     // Code coverage tasks
     grunt.loadNpmTasks('grunt-coveralls');
-    grunt.loadNpmTasks('grunt-mocha-istanbul')
+    grunt.loadNpmTasks('grunt-lcov-merge');
 };

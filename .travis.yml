@@ -6,16 +6,23 @@ env:
 services:
   - mongodb
 sudo: required
+
+# Instructions at https://github.com/StevenLooman/mocha-lcov-reporter were very useful in writing coverage sections of scripts
 script:
-  - npm install
-  - grunt test
-  - rm -rf coverage/server
-  - rm -rf app-cov
-  - mkdir -p coverage/server
-  - node_modules/.bin/jscover app app-cov
-  - mv app app-orig
-  - mv app-cov app
-  - node_modules/.bin/mocha app/tests/**/* -R mocha-lcov-reporter > coverage/server/lcov.info
-  - rm -rf app
-  - mv app-orig app
-  - grunt coveralls
+ - npm install
+ - node_modules/.bin/grunt test
+ - rm -rf coverage/server
+ - rm -rf app-cov
+ - mkdir -p coverage/server
+ - node_modules/.bin/jscover app app-cov
+ - mv app app-orig
+ - mv app-cov app
+ - node_modules/.bin/mocha app/tests/**/* -R mocha-lcov-reporter >
+ coverage/server/lcov_temp.info
+ - sed 's,SF:,SF:./app/,' coverage/server/lcov_temp.info > coverage/server/lcov
+ .info -
+ - rm -f coverage/server/lcov_temp.info
+ - rm -rf app
+ - mv app-orig app
+ - node_modules/.bin/grunt lcovMerge
+ - node_modules/.bin/grunt coveralls
