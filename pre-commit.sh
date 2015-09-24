@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # pre-commit.sh
+# See http://codeinthehole.com/writing/tips-for-using-a-git-pre-commit-hook/
 
 echo
 echo "Stashing unstaged changes."
