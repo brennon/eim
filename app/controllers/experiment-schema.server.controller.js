@@ -15,7 +15,7 @@ exports.list = function(req, res) {
 
         // TODO: Test both branches as part of route testing
         if (err) {
-            res.json(500, {error: err});
+            res.json(500, {error: err.message});
         } else {
             res.json(200, schemae);
         }
@@ -45,7 +45,11 @@ exports.random = function(req, res) {
             var rand = Math.floor(Math.random() * count);
 
             // Get a random schema
-            ExperimentSchema.find({}).skip(rand).limit(1).populate('mediaPool', 'artist title label').exec(function(err, schema) {
+            ExperimentSchema.find({})
+                .skip(rand)
+                .limit(1)
+                .populate('mediaPool', 'artist title label')
+                .exec(function(err, schema) {
 
                 // TODO: Can't really test this as part of the controller
                 // Using the controller, build an experiment from this schema
