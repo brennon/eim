@@ -670,3 +670,13 @@ AngularJS directives provide much of the *special sauce* in the Emotion in Motio
 # Contributing Changes
 
 The development of the Emotion in Motion framework is still in its early stages. If you would like to contribute to this ongoing work, please [submit a pull request](https://github.com/brennon/eim/pulls)!
+
+If you do make changes, please ensure that you've added the appropriate tests
+. In addition, creating links to these pre- and post-commit git hooks will 
+ensure that all tests are still passing before committing any changes:
+
+```
+# From the root directory of the repository:
+ln -s ../../pre-commit.sh .git/hooks/pre-commit
+ln -s ../../post-commit.sh .git/hooks/post-commit
+```
