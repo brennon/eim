@@ -17,7 +17,10 @@ var execFile = require('child_process').execFile;
 // Import custom settings
 //var customSettings = require('./config/custom');
 
-require('./config/logging');
+if (process.env.NODE_ENV === 'development'
+    || process.env.NODE_ENV === 'production') {
+    require('./config/logging');
+}
 
 /**
  * Main application entry file.
