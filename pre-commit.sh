@@ -59,6 +59,7 @@ fi
 
 echo "Ready to commit--popping git stash."
 git stash pop -q
+echo "Creating commit!"
 echo
 
 exit 0
