@@ -56,76 +56,178 @@ describe('ExperimentSchema Controller Tests', function() {
             spy.args[0][0].should.deep.equal({});
         });
 
-        describe('when a schema is not available', function() {
-            // Mock ExperimentSchema model for controller
-            var errorMessage = 'No schema found';
-            var experimentSchemaMock = {
-                find: function(filter, callback) {
-                    callback(new Error(errorMessage));
-                }
-            };
+        describe('responses', function() {
 
-            var req, res;
+            describe('when a schema is not available', function() {
 
-            beforeEach(function() {
-                controller.__set__({
-                    ExperimentSchema: experimentSchemaMock
+                // Mock ExperimentSchema model for controller
+                var errorMessage = 'No schema found';
+                var experimentSchemaMock = {
+                    find: function(filter, callback) {
+                        callback(new Error(errorMessage));
+                    }
+                };
+
+                var req, res;
+
+                beforeEach(function() {
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.list(req, res);
                 });
 
-                // Mock request and response
-                req = httpMocks.createRequest();
-                res = httpMocks.createResponse();
-
-                // Call #list
-                controller.list(req, res);
-            });
-
-            it('should return status 500', function() {
-                res.statusCode.should.equal(500);
-            });
-
-            it('should return the error in JSON', function() {
-                var data = JSON.parse(res._getData());
-                data.error.should.equal(errorMessage);
-            });
-        });
-
-        describe('when a schema is available', function() {
-            // Mock ExperimentSchema model for controller
-            var mockSchema = { foo: 'bar' };
-            var experimentSchemaMock = {
-                find: function(filter, callback) {
-                    callback(null, mockSchema);
-                }
-            };
-
-            var req, res;
-
-            beforeEach(function() {
-                controller.__set__({
-                    ExperimentSchema: experimentSchemaMock
+                it('should return status 500', function() {
+                    res.statusCode.should.equal(500);
                 });
 
-                // Mock request and response
-                req = httpMocks.createRequest();
-                res = httpMocks.createResponse();
-
-                // Call #list
-                controller.list(req, res);
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.error.should.equal(errorMessage);
+                });
             });
 
-            it('should return status 200', function() {
-                res.statusCode.should.equal(200);
-            });
+            describe('when a schema is available', function() {
 
-            it('should return the error in JSON', function() {
-                var data = JSON.parse(res._getData());
-                data.should.deep.equal(mockSchema);
+                // Mock ExperimentSchema model for controller
+                var mockSchema = {foo: 'bar'};
+                var experimentSchemaMock = {
+                    find: function(filter, callback) {
+                        callback(null, mockSchema);
+                    }
+                };
+
+                var req, res;
+
+                beforeEach(function() {
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.list(req, res);
+                });
+
+                afterEach(function() {
+                    console.log(controller.list);
+                });
+
+                it('should return status 200', function() {
+                    res.statusCode.should.equal(200);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.should.deep.equal(mockSchema);
+                });
             });
         });
     });
 
     describe('#random', function() {
+
+        describe('responses', function() {
+
+            describe('when the count call fails', function() {
+
+                // Mock ExperimentSchema model for controller
+                var errorMessage = 'Count failed.';
+                var experimentSchemaMock = {
+                    count: function(filter, callback) {
+                        callback(new Error(errorMessage));
+                    }
+                };
+
+                var req, res;
+
+                beforeEach(function() {
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.random(req, res);
+                });
+
+                it('should return status 500', function() {
+                    res.statusCode.should.equal(500);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.error.should.equal(errorMessage);
+                });
+            });
+
+            describe('when the query fails', function() {
+
+                // Mock ExperimentSchema model for controller
+                var errorMessage = 'Query failed.';
+                var experimentSchemaMock;
+                var req, res;
+
+                beforeEach(function() {
+                    experimentSchemaMock = {
+                        count: function(filter, callback) {
+                            return callback(null, 10);
+                        },
+                        find: function() {
+                            return {
+                                skip: function() {
+                                    return {
+                                        limit: function() {
+                                            return {
+                                                populate: function() {
+                                                    return {
+                                                        exec: function(callback) {
+                                                            callback(new Error(errorMessage));
+                                                        }
+                                                    };
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.random(req, res);
+                });
+
+                it('should return status 500', function() {
+                    res.statusCode.should.equal(500);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.error.should.equal(errorMessage);
+                });
+            });
+        });
 
         it('should count the number of schemas in the database', function() {
 

@@ -11,13 +11,13 @@ var mongoose = require('mongoose'),
  */
 exports.list = function(req, res) {
 
-    ExperimentSchema.find({}, function(err, schemae) {
+    ExperimentSchema.find({}, function(err, schemas) {
 
         // TODO: Test both branches as part of route testing
         if (err) {
             res.json(500, {error: err.message});
         } else {
-            res.json(200, schemae);
+            res.json(200, schemas);
         }
     });
 };
@@ -28,17 +28,16 @@ exports.list = function(req, res) {
 // TODO: The actual pulling of a random schema should move into the model
 exports.random = function(req, res) {
 
-    function errorHandler(message) {
-        res.json(500, {error: message});
+    function errorHandler(err) {
+        res.json(500, {error: err.message});
     }
 
     ExperimentSchema.count({}, function(err, count) {
 
-        // TODO: Test as part of route testing
         if (err) {
             return errorHandler(err);
         } else if (count < 1) {
-            return errorHandler('no experiment schema found in database');
+            return errorHandler('No experiment schemas in database.');
         } else {
 
             // Get a random number from [0, number of schema)
@@ -51,14 +50,19 @@ exports.random = function(req, res) {
                 .populate('mediaPool', 'artist title label')
                 .exec(function(err, schema) {
 
-                // TODO: Can't really test this as part of the controller
-                // Using the controller, build an experiment from this schema
-                schema[0].buildExperiment(function(err, builtExperiment) {
+                    if (err) {
+                        return errorHandler(err);
+                    }
 
-                    // TODO: Test as part of route testing
-                    // Send the response
-                    res.json(200, builtExperiment);
-                });
+                    // TODO: Can't really test this as part of the controller
+                    // Using the controller, build an experiment from this
+                    // schema
+                    schema[0].buildExperiment(function(err, builtExperiment) {
+
+                        // TODO: Test as part of route testing
+                        // Send the response
+                        res.json(200, builtExperiment);
+                    });
             });
         }
     });
