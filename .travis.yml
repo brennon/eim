@@ -18,6 +18,8 @@ script:
  - node_modules/.bin/jscover app app-cov
  - mv app app-orig
  - mv app-cov app
+ - rm -rf app/tests
+ - cp -R app-orig/tests app/
  - node_modules/.bin/mocha app/tests/**/* -R mocha-lcov-reporter > coverage/server/lcov_temp.info
  - sed 's,SF:,SF:./app/,' coverage/server/lcov_temp.info > coverage/server/lcov.info
  - rm -f coverage/server/lcov_temp.info

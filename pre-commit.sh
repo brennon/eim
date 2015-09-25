@@ -23,6 +23,8 @@ mkdir -p coverage/server
 node_modules/.bin/jscover app app-cov
 mv app app-orig
 mv app-cov app
+rm -rf app/tests
+cp -R app-orig/tests app/
 NODE_ENV=test node_modules/.bin/mocha --require server.js app/tests/**/* -R mocha-lcov-reporter > coverage/server/lcov_temp.info
 MOCHARESULT=$?
 sed 's,SF:,SF:./app/,' coverage/server/lcov_temp.info > coverage/server/lcov.info
