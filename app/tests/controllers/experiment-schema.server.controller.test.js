@@ -169,6 +169,38 @@ describe('ExperimentSchema Controller Tests', function() {
                 });
             });
 
+            describe('when there aren\'t any schemas in the database', function() {
+                var experimentSchemaMock = {
+                    count: function(filter, callback) {
+                        callback(null, 0);
+                    }
+                };
+
+                var req, res;
+
+                beforeEach(function() {
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.random(req, res);
+                });
+
+                it('should return status 500', function() {
+                    res.statusCode.should.equal(500);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.error.should.not.equal(undefined);
+                });
+            });
+
             describe('when the query fails', function() {
 
                 // Mock ExperimentSchema model for controller
