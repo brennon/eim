@@ -18,7 +18,8 @@ exports.outgoingHost = 'localhost';
 
 function buildLogMessageFromMessage(msg) {
 
-    if (msg.constructor.name !== 'Array') {
+    // Bail and log an error message if we didn't get an array
+    if (!Array.isArray(msg)) {
         return console.error('Malformed OSC error message received: ' + msg);
     }
 

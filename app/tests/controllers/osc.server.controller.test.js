@@ -116,6 +116,15 @@ describe('OSCController', function() {
             errorSpy.calledOnce.should.equal(true);
             errorSpy.args[0][0].should.match(/MaxMSP: an error/);
         });
+
+        it('should concatenate multiple values', function() {
+            buildLogMessageFromMessage([
+                {value: 'error'},
+                {value: 'an error'},
+                {value: 'a second part'}
+            ]);
+            errorSpy.args[0][0].should.match(/MaxMSP: an error a second part/);
+        });
     });
 
     describe('#createOSCReceiver', function() {
