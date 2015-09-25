@@ -3,6 +3,12 @@
 # pre-commit.sh
 # See http://codeinthehole.com/writing/tips-for-using-a-git-pre-commit-hook/
 
+# We'll need this for NVM
+source ~/.bash_profile
+
+# Make sure Node is running
+nvm use 0.12
+
 echo
 echo "Stashing unstaged changes."
 git stash -q --keep-index
