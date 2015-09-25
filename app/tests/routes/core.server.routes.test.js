@@ -1,12 +1,42 @@
 'use strict';
 
-var assert = require('assert');
-var request = require('supertest');
+// Helper modules
 var config = require('../../../config/config');
 
-describe('GET /', function() {
-  //it('responds with success', function(done) {
-  //  request('localhost:' + config.port).get('/')
-  //    .expect(200, done);
-  //});
+// Test helpers
+var request = require('supertest');
+
+describe.only('Routes: Core', function() {
+    before(function() {
+       request = request('localhost:' + config.port);
+    });
+
+    describe('/', function() {
+        describe('GET', function() {
+            it('should respond with HTML', function(done) {
+                request
+                    .get('/')
+                    .expect('Content-Type', /text\/html/)
+                    .expect(200, done);
+            });
+        });
+    });
+
+    describe('/api/nodeenv', function() {
+        describe('GET', function() {
+            it('should respond with HTML', function(done) {
+                request
+                    .get('/api/nodeenv')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(200, done);
+            });
+
+            it('should give the Node environment', function(done) {
+                request
+                    .get('/api/nodeenv')
+                    .expect({ env: process.env.NODE_ENV })
+                    .expect(200, done);
+            });
+        });
+    });
 });

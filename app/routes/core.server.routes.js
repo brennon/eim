@@ -1,10 +1,14 @@
 'use strict';
 
+var controller = require('../../app/controllers/core');
+
 module.exports = function(app) {
-    // Root routing
-    var core = require('../../app/controllers/core');
-    app.route('/').get(core.index);
-    app.route('/api/nodeenv').get(function(req, res, next) {
-        return res.json({ env: app.get('env') });
+
+    // GET the index page
+    app.get('/', controller.index);
+
+    // GET the Node environment
+    app.get('/api/nodeenv', function(req, res) {
+        return res.json({ env: process.env.NODE_ENV });
     });
 };
