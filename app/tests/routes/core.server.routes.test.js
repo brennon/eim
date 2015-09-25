@@ -6,7 +6,7 @@ var config = require('../../../config/config');
 // Test helpers
 var request = require('supertest');
 
-describe.only('Routes: Core', function() {
+describe('Routes: Core', function() {
     before(function() {
        request = request('localhost:' + config.port);
     });
