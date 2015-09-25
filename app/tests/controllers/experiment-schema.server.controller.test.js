@@ -124,6 +124,8 @@ describe('ExperimentSchema Controller Tests', function() {
 
                 it('should return the error in JSON', function() {
                     var data = JSON.parse(res._getData());
+
+                    //noinspection JSUnresolvedVariable
                     data.should.deep.equal(mockSchema);
                 });
             });
@@ -255,6 +257,128 @@ describe('ExperimentSchema Controller Tests', function() {
                     data.error.should.equal(errorMessage);
                 });
             });
+
+            describe('when the query is unsuccessful', function() {
+
+                // Mock ExperimentSchema model for controller
+                var errorMessage = 'Query failed.';
+                var experimentSchemaMock;
+                var schemaQueryResultMock;
+                var req, res;
+
+                beforeEach(function() {
+                    schemaQueryResultMock = [{
+                        //build
+                    }];
+
+                    experimentSchemaMock = {
+                        count: function(filter, callback) {
+                            return callback(null, 10);
+                        },
+                        find: function() {
+                            return {
+                                skip: function() {
+                                    return {
+                                        limit: function() {
+                                            return {
+                                                populate: function() {
+                                                    return {
+                                                        exec: function(callback) {
+                                                            callback(new Error(errorMessage));
+                                                        }
+                                                    };
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.random(req, res);
+                });
+
+                it('should return status 500', function() {
+                    res.statusCode.should.equal(500);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.error.should.equal(errorMessage);
+                });
+            });
+
+            describe('when the query is successful', function() {
+
+                // Mock ExperimentSchema model for controller
+                var experimentSchemaMock;
+                var schemaQueryResultMock;
+                var builtExperimentMock = {foo: 'bar'};
+                var req, res;
+
+                beforeEach(function() {
+                    schemaQueryResultMock = [{
+                        buildExperiment: function(callback) {
+                            return callback(null, builtExperimentMock);
+                        }
+                    }];
+
+                    experimentSchemaMock = {
+                        count: function(filter, callback) {
+                            return callback(null, 10);
+                        },
+                        find: function() {
+                            return {
+                                skip: function() {
+                                    return {
+                                        limit: function() {
+                                            return {
+                                                populate: function() {
+                                                    return {
+                                                        exec: function(callback) {
+                                                            callback(null, schemaQueryResultMock);
+                                                        }
+                                                    };
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.random(req, res);
+                });
+
+                it('should return status 200', function() {
+                    res.statusCode.should.equal(200);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+                    data.should.deep.equal(builtExperimentMock);
+                });
+            });
         });
 
         it('should count the number of schemas in the database', function() {
@@ -316,6 +440,48 @@ describe('ExperimentSchema Controller Tests', function() {
 
             // Call the method
             controller.random();
+        });
+
+        it('should build an experiment', function() {
+
+            // Mock the first result in the array stored in schema
+            var spy = sinon.spy();
+            var mockSchemaArray = [{
+                buildExperiment: spy
+            }];
+
+            // Return this array when the query is executed
+            var mockCount = function(filter, callback) {
+                callback(null, 10);
+            };
+
+            controller.__set__({
+                ExperimentSchema: {
+                    count: mockCount,
+                    find: function() {
+                        return {
+                            skip: function() {
+                                return {
+                                    limit: function() {
+                                        return {
+                                            populate: function() {
+                                                return {
+                                                    exec: function(callback) {
+                                                        return callback(null, mockSchemaArray);
+                                                    }
+                                                };
+                                            }
+                                        };
+                                    }
+                                };
+                            }
+                        };
+                    }
+                }
+            });
+
+            controller.random();
+            spy.callCount.should.equal(1);
         });
     });
 });
