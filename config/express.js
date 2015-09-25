@@ -20,7 +20,7 @@ var express = require('express'),
 	path = require('path'),
   mongoose = require('mongoose');
 
-module.exports = function(db) {
+module.exports = function() {
 	// Initialize express app
 	var app = express();
 

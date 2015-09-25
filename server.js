@@ -36,7 +36,7 @@ exports = module.exports = mongoose.connectAsync(config.db)
         console.log('EIM application starting');
         console.log('Connected to database');
 
-        app = require('./config/express')(mongoose);
+        app = require('./config/express')();
         console.log('Started Express server');
     })
     .then(function() {
@@ -47,6 +47,7 @@ exports = module.exports = mongoose.connectAsync(config.db)
         return server.listenAsync(config.port);
     })
     .then(function() {
+
         // Require OSC
         require('./app/controllers/osc').init();
         console.log('Initialized OSC');
