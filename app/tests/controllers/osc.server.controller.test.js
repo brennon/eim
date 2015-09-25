@@ -3,6 +3,7 @@
 // Testing tools
 var should = require('chai').should();
 var rewire = require('rewire');
+var httpMocks = require('node-mocks-http');
 
 /* jshint ignore:start */
 var sinon = require('sinon');
@@ -19,10 +20,10 @@ var app;
 // Module under test
 var controller;
 
-/* globals sinon */
-
 describe('OSCController', function() {
     before(function(done) {
+
+        //noinspection JSUnresolvedFunction
         server.then(function(startedApp) {
             app = startedApp;
             done();
@@ -151,6 +152,7 @@ describe('OSCController', function() {
                 args: [12]
             });
 
+            //noinspection JSUnresolvedFunction
             var socket = dgram.createSocket('udp4');
             socket.send(buf, 0, buf.length, controller.incomingPort, 'localhost');
 
@@ -289,6 +291,33 @@ describe('OSCController', function() {
             }, 10);
         });
 
+        it('should just send the message if the socket is already open',
+            function(done) {
+
+            // Open just an outgoing socket on the controller
+            //noinspection JSUnresolvedFunction
+                var outgoingSocket = dgram.createSocket('udp4');
+            controller.__set__('oscSender', outgoingSocket);
+
+            // Setup a simple UDP listener
+            //noinspection JSUnresolvedFunction
+            var listener = dgram.createSocket('udp4');
+
+            // Bind to the message event and send a message
+            listener.bind(controller.outgoingPort, function afterBindCallback() {
+                listener.on('message', function onMessageCallback(msg) {
+                    listener.close();
+                    var receivedMessage = osc.fromBuffer(msg);
+
+                    // Make sure we received our message
+                    receivedMessage.should.eql(message);
+                    done();
+                });
+
+                controller.sendJSONMessage(message);
+            });
+        });
+
         it('should format the message using osc-min', function(done) {
             var oscMock = {
                 toBuffer: function() {
@@ -308,6 +337,7 @@ describe('OSCController', function() {
         it('should send the message via the outgoing port', function(done) {
 
             // Setup a simple UDP listener
+            //noinspection JSUnresolvedFunction
             var listener = dgram.createSocket('udp4');
 
             listener.bind(controller.outgoingPort, function afterBindCallback() {
@@ -336,30 +366,87 @@ describe('OSCController', function() {
             controller.incomingPort = 9999;
         });
 
-        it('should call sendJSONMessage with the message from the request parameters', function() {
-            var request = {
-                params: {
-                    message: 'Boy, howdy!'
-                }
+        it('should call sendJSONMessage with the message from the request' +
+            ' parameters', function(done) {
+
+            // Mock request
+            var request = httpMocks.createRequest();
+            request.params.message = 'Boy, howdy!';
+
+            // Mock #sendJSONMessage
+            controller.sendJSONMessage = function(message) {
+
+                // Check passed message
+                //noinspection JSUnresolvedVariable
+                message.should.deep.equal({
+                    oscType: 'message',
+                    address: '/eim/control',
+                    args: {
+                        type: 'string',
+                        value: 'Boy, howdy!'
+                    }
+                });
+                done();
             };
 
-            var spy = sinon.spy(controller, 'sendJSONMessage');
+            // Call #sendMessage with mock request
+            controller.sendMessage(request, null);
+        });
 
-            controller.sendMessage(request, {json: function() {}});
+        it('should respond with status 200', function(done) {
 
-            spy.callCount.should.equal(1);
+            // Mock HTTP request and response
+            var req = httpMocks.createRequest();
+            var res = httpMocks.createResponse();
 
-            var args = spy.args[0][0];
+            // Add message to request parameters
+            req.params.message = 'unreliability';
 
-            //noinspection JSUnresolvedVariable
-            args.should.deep.equal({
-                oscType: 'message',
-                address: '/eim/control',
-                args: {
-                    type: 'string',
-                    value: 'Boy, howdy!'
-                }
-            });
+            // Mock #sendJSONMessage
+            controller.sendJSONMessage = function(message, callback) {
+                callback();
+
+                // Check response
+                res.statusCode.should.equal(200);
+                done();
+            };
+
+            // Send the message
+            controller.sendMessage(req, res);
+        });
+
+        it('should respond with JSON containing the sent message',
+            function(done) {
+
+            // Mock HTTP request and response
+            var req = httpMocks.createRequest();
+            var res = httpMocks.createResponse();
+
+            // Add message to request parameters
+            var testMessage = 'unreliability';
+            req.params.message = testMessage;
+
+            // Mock #sendJSONMessage
+            controller.sendJSONMessage = function(message, callback) {
+                callback();
+
+                // Check body
+                var data = JSON.parse(res._getData());
+
+                //noinspection JSUnresolvedVariable
+                data.sentMessage.should.deep.equal({
+                    oscType: 'message',
+                    address: '/eim/control',
+                    args: {
+                        type: 'string',
+                        value: testMessage
+                    }
+                });
+                done();
+            };
+
+            // Send the message
+            controller.sendMessage(req, res);
         });
     });
 });

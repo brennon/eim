@@ -65,6 +65,7 @@ function createOSCReceiver(callback) {
     setTimeout(function() {
 
         // Create socket and bind to port
+        //noinspection JSUnresolvedFunction
         oscReceiver = udp.createSocket('udp4');
         oscReceiver.bind(exports.incomingPort, function() {
 
@@ -106,6 +107,7 @@ exports.init = function(callback) {
         }
 
         // Open outgoing socket
+        //noinspection JSUnresolvedFunction
         oscSender = udp.createSocket('udp4');
 
         // Open incoming socket
@@ -121,7 +123,10 @@ exports.eventEmitter = new EventEmitter();
 exports.sendJSONMessage = function(data, callback) {
 
     function sendMessage() {
+
         var buffer = osc.toBuffer(data);
+
+        console.log(oscSender);
 
         oscSender.send(buffer, 0, buffer.length, exports.outgoingPort, exports.outgoingHost, callback);
 
