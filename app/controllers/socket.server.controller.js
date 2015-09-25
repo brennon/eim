@@ -3,6 +3,8 @@
 /**
  * Module dependencies.
  */
+var osc = require('./osc.server.controller.js');
+var util = require('util');
 
 /**
  * OSC message flow:
@@ -21,43 +23,36 @@
  * 4. Socket module emits its own 'oscMessageReceived' event with the same data
  */
 
-var osc = require('./osc.server.controller.js');
-var util = require('util');
 var io;
 
 module.exports = function socketModule(http) {
 
-  // Require Socket.IO and start listening
-  io = require('socket.io')(http);
+    // Require Socket.IO and start listening
+    io = require('socket.io')(http);
 
-  // Logging function for incoming events
-  function logEventReceived(event, data) {
-    console.log(event + ' event received from client with data: ' + data);
-  }
+    // Logging function for incoming events
+    function logEventReceived(event, data) {
+        console.log(event + ' event received from client with data: ' + data);
+    }
 
-  // Logging function for emitted events
-  function logEventEmitted(event, data) {
-    console.log(event + ' event emitted with data: ' + data);
-  }
+    // Setup event handlers
+    io.on('connection', function(socket) {
 
-  // Setup event handlers
-  io.on('connection', function(socket) {
+        // Attach sendOSCMessage event handler
+        socket.on('sendOSCMessage', function(data) {
+            logEventReceived('sendOSCMessage', data);
 
-    // Attach sendOSCMessage event handler
-    socket.on('sendOSCMessage', function(data) {
-      logEventReceived('sendOSCMessage', data);
+            // Send OSC message
+            osc.sendJSONMessage(data, function() {
+                socket.emit('oscMessageSent', data);
+            });
+        });
 
-      // Send OSC message
-      osc.sendJSONMessage(data, function() {
-        socket.emit('oscMessageSent', data);
-      });
+        // Listen for OSC module's 'oscMessageReceived' events
+        osc.eventEmitter.on('oscMessageReceived', function(data) {
+
+            // Just pass the data on to the socket
+            socket.emit('oscMessageReceived', data);
+        });
     });
-
-    // Listen for OSC module's 'oscMessageReceived' events
-    osc.eventEmitter.on('oscMessageReceived', function(data) {
-
-      // Just pass the data on to the socket
-      socket.emit('oscMessageReceived', data);
-    });
-  });
 };
