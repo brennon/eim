@@ -53,7 +53,8 @@ exports = module.exports = mongoose.connectAsync(config.db)
         console.log('Initialized OSC');
 
         // Fire up SocketIO
-        require('./app/controllers/socket')(server);
+        var socket = require('./app/controllers/socket');
+        socket.init(server);
         console.log('Initialized Socket.IO');
 
         // Expose app--see above comment about exporting a promise instead

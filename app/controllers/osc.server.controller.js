@@ -126,8 +126,6 @@ exports.sendJSONMessage = function(data, callback) {
 
         var buffer = osc.toBuffer(data);
 
-        console.log(oscSender);
-
         oscSender.send(buffer, 0, buffer.length, exports.outgoingPort, exports.outgoingHost, callback);
 
         console.info('Sent OSC message: ' + util.inspect(data));

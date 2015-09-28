@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var osc = require('./osc.server.controller.js');
-var util = require('util');
+//var util = require('util');
 
 /**
  * OSC message flow:
@@ -25,21 +25,22 @@ var util = require('util');
 
 var io;
 
-module.exports = function socketModule(http) {
+// Logging function for incoming events
+function logEventReceived(event, data) {
+    console.log(event + ' event received from client with data: ' + data);
+}
+
+exports.init = function(httpServer) {
 
     // Require Socket.IO and start listening
-    io = require('socket.io')(http);
-
-    // Logging function for incoming events
-    function logEventReceived(event, data) {
-        console.log(event + ' event received from client with data: ' + data);
-    }
+    io = require('socket.io')(httpServer);
 
     // Setup event handlers
     io.on('connection', function(socket) {
 
         // Attach sendOSCMessage event handler
         socket.on('sendOSCMessage', function(data) {
+
             logEventReceived('sendOSCMessage', data);
 
             // Send OSC message
@@ -56,3 +57,4 @@ module.exports = function socketModule(http) {
         });
     });
 };
+
