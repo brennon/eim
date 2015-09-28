@@ -35,22 +35,26 @@ function requiredArrayValidator(value) {
     return Array.isArray(value) && value.length > 0;
 }
 
-//function updateSchemaForFixedMedia(schema, index, mediaId) {
-//    return new BluebirdPromise(function(resolve, reject) {
-//        // Get the media entry for the ObjectID in slide.media
-//        var MediaModel = mongoose.model('Media');
-//        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
-//            if (err) {
-//                reject(err);
-//            }
-//
-//            if (media) {
-//                schema.media[index] = media;
-//                resolve();
-//            }
-//        });
-//    });
-//}
+function updateSchemaForFixedMedia(schema, index, mediaId) {
+    return new BluebirdPromise(function(resolve, reject) {
+
+        // Get the media entry for the ObjectID in slide.media
+        var MediaModel = mongoose.model('Media');
+        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
+
+            if (err) {
+                return reject(err);
+            }
+
+            if (media) {
+                schema.media[index] = media;
+                return resolve();
+            } else {
+                return reject(new Error('Media not found in database for media ID ' + mediaId));
+            }
+        });
+    });
+}
 
 // Use the above validator for properties that should contain a non-empty array
 ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
@@ -84,11 +88,11 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
     //}
 
     //BluebirdPromise.all(promises).then(function() {
-    //    if (typeof callback === 'function') {
+        if (typeof callback === 'function') {
             return callback(null, schemaSubset);
-    //    } else {
-    //        return schemaSubset;
-    //    }
+        } else {
+            return schemaSubset;
+        }
     //});
 };
 
