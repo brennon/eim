@@ -2,9 +2,6 @@
 # Climate Platform. For an overview of the Code Climate Platform, see here:
 # http://docs.codeclimate.com/article/300-the-codeclimate-platform
 
-languages:
-  JavaScript: true
-
 # Under the engines key, you can configure which engines will analyze your repo.
 # Each key is an engine name. For each value, you need to specify enabled: true
 # to enable the engine as well as any other engines-specific configuration.
@@ -19,14 +16,24 @@ engines:
 # to turn on an engine, add it here and set enabled to `true`
 # to turn off an engine, set enabled to `false` or remove it
   rubocop:
-    enabled: true
+    enabled: false
   golint:
-    enabled: true
+    enabled: false
   gofmt:
-    enabled: true
+    enabled: false
   eslint:
     enabled: true
   csslint:
+    enabled: true
+  coffeelint:
+    enabled: false
+  bundler-audit:
+    enabled: false
+  phpcodesniffer:
+    enabled: false
+  phpmd:
+    enabled: false
+  fixme:
     enabled: true
 
 # Engines can analyze files and report issues on them, but you can separately
