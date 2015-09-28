@@ -185,7 +185,7 @@ describe('ExperimentSchema Model Unit Tests:', function() {
                 });
             });
 
-            describe.only('requiredArrayValidator()', function() {
+            describe('requiredArrayValidator()', function() {
 
                 var model, testFunction;
 
