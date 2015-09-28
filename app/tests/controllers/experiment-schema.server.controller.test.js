@@ -1,14 +1,9 @@
 'use strict';
 
-// Server
-//var server = require('../../../server');
-//var app;
-
 // Testing tools
 var should = require('chai').should();
 var rewire = require('rewire');
 var httpMocks = require('node-mocks-http');
-//var request = require('supertest');
 
 /* jshint ignore:start */
 var sinon = require('sinon');

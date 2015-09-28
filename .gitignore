@@ -16,3 +16,4 @@ EiMpatch/data/**
 EiMpatch/_DeletedItems
 .coveralls.yml
 coverage/
+server-coverage.sh

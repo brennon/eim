@@ -31,7 +31,6 @@ sed 's,SF:,SF:./app/,' coverage/server/lcov_temp.info > coverage/server/lcov.inf
 rm -f coverage/server/lcov_temp.info
 rm -rf app
 mv app-orig app
-node_modules/.bin/grunt lcovMerge > /dev/null
 
 # Check result of running server tests and bail if they failed
 
@@ -65,6 +64,9 @@ if [ $KARMARESULT -ne 0 ]
         echo "All client tests passed."
         echo
 fi
+
+# Merge lcov files
+node_modules/.bin/grunt lcovMerge > /dev/null
 
 echo "Ready to commit--popping git stash."
 git stash pop -q

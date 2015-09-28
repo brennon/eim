@@ -1,20 +1,25 @@
 'use strict';
 
+// TODO: There are lots of requirements for an ExperimentSchema that we're not enforcing here
+
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    MediaSchema = require('./media.server.model').schema,
-    _ = require('lodash'),
-    BluebirdPromise = require('bluebird');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+//var MediaSchema = require('./media.server.model').schema;
+var _ = require('lodash');
+var BluebirdPromise = require('bluebird');
 
 /**
  * ExperimentSchema Schema
  */
 var ExperimentSchemaSchema = new Schema({
-    structure: {},
     sensors: [String],
+    structure: {
+        type: Array,
+        required: true
+    },
     trialCount: {
         type: Number,
         required: true
@@ -27,27 +32,27 @@ var ExperimentSchemaSchema = new Schema({
 
 // Validator that requires the value is an array and contains at least one entry
 function requiredArrayValidator(value) {
-    return Object.prototype.toString.call(value) === '[object Array]' && value.length > 0;
+    return Array.isArray(value) && value.length > 0;
 }
 
-function updateSchemaForFixedMedia(schema, index, mediaId) {
-    return new BluebirdPromise(function(resolve, reject) {
-        // Get the media entry for the ObjectID in slide.media
-        var MediaModel = mongoose.model('Media');
-        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
-            if (err) {
-                reject();
-            }
+//function updateSchemaForFixedMedia(schema, index, mediaId) {
+//    return new BluebirdPromise(function(resolve, reject) {
+//        // Get the media entry for the ObjectID in slide.media
+//        var MediaModel = mongoose.model('Media');
+//        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
+//            if (err) {
+//                reject(err);
+//            }
+//
+//            if (media) {
+//                schema.media[index] = media;
+//                resolve();
+//            }
+//        });
+//    });
+//}
 
-            if (media) {
-                schema.media[index] = media;
-                resolve();
-            }
-        });
-    });
-}
-
-// Use the above validator for `mediaPool`
+// Use the above validator for properties that should contain a non-empty array
 ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
 
 ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
@@ -61,31 +66,31 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
         _id: this._id,
         structure: this.structure,
         sensors: this.sensors,
-        media: selectedMedia,
+        media: selectedMedia
     };
 
     // Iterate over structure to look for fixed media-playback slides
-    var indexInMedia = 0;
-    var promises = [];
-    for (var i = 0; i < schemaSubset.structure.length; i++) {
-        var slide = schemaSubset.structure[i];
+    //var indexInMedia = 0;
+    //var promises = [];
+    //for (var i = 0; i < schemaSubset.structure.length; i++) {
+    //    var slide = schemaSubset.structure[i];
+    //
+    //    if (slide.name === 'media-playback' && slide.mediaType === 'fixed') {
+    //        promises.push(updateSchemaForFixedMedia(schemaSubset, indexInMedia, slide.media));
+    //        indexInMedia++;
+    //    } else if (slide.name === 'media-playback' && slide.mediaType === 'random') {
+    //        indexInMedia++;
+    //    }
+    //}
 
-        if (slide.name === 'media-playback' && slide.mediaType === 'fixed') {
-            promises.push(updateSchemaForFixedMedia(schemaSubset, indexInMedia, slide.media));
-            indexInMedia++;
-        } else if (slide.name === 'media-playback' && slide.mediaType === 'random') {
-            indexInMedia++;
-        }
-    }
-
-    BluebirdPromise.all(promises).then(function() {
-        if (typeof callback === 'function') {
+    //BluebirdPromise.all(promises).then(function() {
+    //    if (typeof callback === 'function') {
             return callback(null, schemaSubset);
-        } else {
-            return schemaSubset;
-        }
-    });
+    //    } else {
+    //        return schemaSubset;
+    //    }
+    //});
 };
 
-// Register schema for `ExperimentSchema` model
+//// Register schema for `ExperimentSchema` model
 mongoose.model('ExperimentSchema', ExperimentSchemaSchema);
