@@ -29,7 +29,7 @@ var app;
 /**
  * Unit tests
  */
-describe.only('ExperimentSchema Model Unit Tests:', function() {
+describe('ExperimentSchema Model Unit Tests:', function() {
 
     // Make sure app is fully started
     before(function(done) {
