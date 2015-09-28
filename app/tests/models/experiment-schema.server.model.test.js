@@ -5,8 +5,6 @@
  */
 var should = require('chai').should();
 var mongoose = require('mongoose');
-//  util = require('util'),
-//  ExperimentSchema, Media;
 var Media,
     ExperimentSchema;
 
@@ -15,12 +13,6 @@ var Media,
  */
 var rewire = require('rewire');
 var sinon = require('sinon');
-
-/**
- * Globals
- */
-var experimentSchema,
-    mediaA;
 
 // Server
 var server = require('../../../server');
@@ -33,18 +25,23 @@ describe('ExperimentSchema Model Unit Tests:', function() {
 
     // Make sure app is fully started
     before(function(done) {
+
+        //noinspection JSUnresolvedFunction
         server.then(function(startedApp) {
             app = startedApp;
             done();
         });
     });
 
-    var firstMedia, secondMedia, thirdMedia, fullExperimentSchema;
+    var firstMedia, secondMedia, thirdMedia, fixedMedia,
+        fullExperimentSchema, fixedSchema;
 
     before(function(done) {
 
         ExperimentSchema = mongoose.model('ExperimentSchema');
         Media = mongoose.model('Media');
+        Media.remove().exec();
+        ExperimentSchema.remove().exec();
 
         firstMedia = new Media({
             type: 'audio',
@@ -67,6 +64,13 @@ describe('ExperimentSchema Model Unit Tests:', function() {
             label: 'R010'
         });
 
+        fixedMedia = new Media({
+            type: 'audio',
+            artist: 'No Artist',
+            title: 'No Title',
+            label: 'No Label'
+        });
+
         firstMedia.save(function(err) {
             if (err) {
                 done(err);
@@ -79,30 +83,70 @@ describe('ExperimentSchema Model Unit Tests:', function() {
                             if (err) {
                                 done(err);
                             } else {
-                                fullExperimentSchema = new ExperimentSchema({
-                                    mediaPool: [firstMedia._id, secondMedia._id, thirdMedia._id],
-                                    trialCount: 3,
-                                    structure: [
-                                        {
-                                            name: 'welcome'
-                                        },
-                                        {
-                                            name: 'media-playback',
-                                            mediaType: 'random'
-                                        }
-                                    ]
-                                });
-                                fullExperimentSchema.save(function(err) {
+                                fixedMedia.save(function(err) {
                                     if (err) {
                                         done(err);
                                     } else {
-                                        done();
+                                        fullExperimentSchema = new ExperimentSchema({
+                                            mediaPool: [firstMedia._id, secondMedia._id, thirdMedia._id],
+                                            trialCount: 3,
+                                            structure: [
+                                                {
+                                                    name: 'welcome'
+                                                },
+                                                {
+                                                    name: 'media-playback',
+                                                    mediaType: 'random'
+                                                }
+                                            ]
+                                        });
+                                        fullExperimentSchema.save(function(err) {
+                                            if (err) {
+                                                done(err);
+                                            } else {
+                                                done();
+                                            }
+                                        });
                                     }
                                 });
                             }
                         });
                     }
                 });
+            }
+        });
+    });
+
+    before(function(done) {
+        fixedSchema = new ExperimentSchema({
+            mediaPool: [firstMedia._id, secondMedia._id, thirdMedia._id],
+            trialCount: 3,
+            structure: [
+                {
+                    name: 'welcome'
+                },
+                {
+                    name: 'media-playback',
+                    mediaType: 'fixed',
+                    media: fixedMedia._id
+                },
+                {
+                    name: 'media-playback',
+                    mediaType: 'random'
+                },
+                {
+                    name: 'media-playback',
+                    mediaType: 'fixed',
+                    media: fixedMedia._id
+                }
+            ]
+        });
+
+        fixedSchema.save(function(err) {
+            if (err) {
+                done(err);
+            } else {
+                done();
             }
         });
     });
@@ -134,7 +178,7 @@ describe('ExperimentSchema Model Unit Tests:', function() {
                     mediaPool: [firstMedia.id],
                     structure: [
                         {
-                            name: 'welcome',
+                            name: 'welcome'
                         },
                         {
                             name: 'media-playback',
@@ -209,6 +253,8 @@ describe('ExperimentSchema Model Unit Tests:', function() {
                 before(function() {
                     delete mongoose.connection.models['ExperimentSchema'];
                     model = rewire('../../models/experiment-schema.server.model');
+
+                    //noinspection JSUnresolvedFunction
                     testFunction = model.__get__('requiredArrayValidator');
                 });
 
@@ -236,6 +282,8 @@ describe('ExperimentSchema Model Unit Tests:', function() {
         before(function() {
             delete mongoose.connection.models['ExperimentSchema'];
             model = rewire('../../models/experiment-schema.server.model');
+
+            //noinspection JSUnresolvedFunction
             testFunction = model.__get__('updateSchemaForFixedMedia');
         });
 
@@ -284,6 +332,7 @@ describe('ExperimentSchema Model Unit Tests:', function() {
     describe('buildExperiment()', function() {
 
         it('should build an experiment of the correct length', function(done) {
+
             // Get an experiment schema from database
             ExperimentSchema.findOne({_id: fullExperimentSchema._id}, function(err, findResult) {
                 if (err) {
@@ -326,6 +375,8 @@ describe('ExperimentSchema Model Unit Tests:', function() {
 
                             // Check the label of each media entry and make sure it exists in original schema's pool
                             build.media.forEach(function(media) {
+
+                                //noinspection JSUnresolvedFunction
                                 labels.should.contain(media.label);
                             });
 
@@ -336,28 +387,30 @@ describe('ExperimentSchema Model Unit Tests:', function() {
             });
         });
 
-        it('should return the built experiment when a callback is not provided', function(done) {
+        it('should replace fixed media placeholders with media references', function(done) {
 
-            ExperimentSchema.findOne({_id: fullExperimentSchema._id}).populate('mediaPool').exec(function(err, exp) {
+            ExperimentSchema.findOne({_id: fixedSchema._id}).populate('mediaPool').exec(function(err, exp) {
 
                 if (err) {
                     done(err);
                 } else {
 
-                    // Build a list of labels from original schema's pool
-                    var labels = [];
-                    exp.mediaPool.forEach(function(media) {
-                        labels.push(media.label);
+                    exp.buildExperiment(function(err, build) {
+                        if (err) {
+                            done(err);
+                        } else {
+                            build.media[0].artist.should.equal(fixedMedia.artist);
+                            build.media[0].title.should.equal(fixedMedia.title);
+                            build.media[0].label.should.equal(fixedMedia.label);
+                            build.media[1].artist.should.not.equal(fixedMedia.artist);
+                            build.media[1].title.should.not.equal(fixedMedia.title);
+                            build.media[1].label.should.not.equal(fixedMedia.label);
+                            build.media[2].artist.should.equal(fixedMedia.artist);
+                            build.media[2].title.should.equal(fixedMedia.title);
+                            build.media[2].label.should.equal(fixedMedia.label);
+                            done();
+                        }
                     });
-
-
-                    // Build an experiment based on this schema
-                    var built = exp.buildExperiment();
-                    built.media.forEach(function(media) {
-                        labels.should.contain(media.label);
-                    });
-
-                    done();
                 }
             });
         });

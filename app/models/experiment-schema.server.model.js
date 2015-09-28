@@ -59,6 +59,7 @@ function updateSchemaForFixedMedia(schema, index, mediaId) {
 // Use the above validator for properties that should contain a non-empty array
 ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
 
+// FIXME: This should return the promise instead of blocking
 ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
 
     // Populate mediaPool
@@ -74,26 +75,22 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
     };
 
     // Iterate over structure to look for fixed media-playback slides
-    //var indexInMedia = 0;
-    //var promises = [];
-    //for (var i = 0; i < schemaSubset.structure.length; i++) {
-    //    var slide = schemaSubset.structure[i];
-    //
-    //    if (slide.name === 'media-playback' && slide.mediaType === 'fixed') {
-    //        promises.push(updateSchemaForFixedMedia(schemaSubset, indexInMedia, slide.media));
-    //        indexInMedia++;
-    //    } else if (slide.name === 'media-playback' && slide.mediaType === 'random') {
-    //        indexInMedia++;
-    //    }
-    //}
+    var indexInMedia = 0;
+    var promises = [];
+    for (var i = 0; i < schemaSubset.structure.length; i++) {
+        var slide = schemaSubset.structure[i];
 
-    //BluebirdPromise.all(promises).then(function() {
-        if (typeof callback === 'function') {
-            return callback(null, schemaSubset);
-        } else {
-            return schemaSubset;
+        if (slide.name === 'media-playback' && slide.mediaType === 'fixed') {
+            promises.push(updateSchemaForFixedMedia(schemaSubset, indexInMedia, slide.media));
+            indexInMedia++;
+        } else if (slide.name === 'media-playback' && slide.mediaType === 'random') {
+            indexInMedia++;
         }
-    //});
+    }
+
+    BluebirdPromise.all(promises).then(function(data) {
+        return callback(null, schemaSubset);
+    });
 };
 
 //// Register schema for `ExperimentSchema` model
