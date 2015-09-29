@@ -29,9 +29,10 @@ exports.create = function (req, res) {
 
     //noinspection JSUnresolvedFunction
     fs.writeFile(outputFilename, JSON.stringify(req.body, null, 4), function (err) {
+
         if (err) {
             console.error('Could not write new trial JSON file.', err);
-            res.status(500).json({error: err.message});
+            return res.status(500).json({error: err.message});
         } else {
             console.log('Wrote new JSON file to ' + outputFilename);
             return res.json(200);

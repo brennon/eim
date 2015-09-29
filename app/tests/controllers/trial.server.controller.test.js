@@ -12,11 +12,17 @@ var rewire = require('rewire');
 var sinon = require('sinon');
 var httpMocks = require('node-mocks-http');
 var fs = require('fs');
+var request = require('supertest');
 
 /**
  * Module under test
  */
 var controller;
+
+/**
+ * Helper modules
+ */
+var config = require('../../../config/config');
 
 /**
  * Globals
@@ -27,6 +33,10 @@ var req, res;
  * Unit tests
  */
 describe('Trial Controller', function() {
+    before(function() {
+        request = request('localhost:' + config.port);
+    });
+
     beforeEach(function() {
         controller = rewire('../../controllers/trial.server.controller');
         req = httpMocks.createRequest();
@@ -65,19 +75,22 @@ describe('Trial Controller', function() {
 
         it('should write the stringified body to the correct location', function(done) {
 
-            req.body = { metadata: { session_number: 'B42' } };
             var filePath = './trials/B42.trial.json';
-
-            controller.create(req, res);
+            var reqJSON = { metadata: { session_number: 'B42' } };
 
             //noinspection JSUnresolvedFunction
-            fs.readFile(filePath, {encoding: 'utf8'}, function(err, contents) {
+            request.post('/api/trials')
+                .send(reqJSON)
+                .end(function() {
 
-                var contentsJSON = JSON.parse(contents.toString());
-                contentsJSON.should.eql(req.body);
+                    //noinspection JSUnresolvedFunction
+                    var contents = fs.readFileSync(filePath);
 
-                fs.unlink(filePath, done);
-            });
+                    var contentsJSON = JSON.parse(contents.toString());
+                    contentsJSON.should.eql(reqJSON);
+
+                    fs.unlink(filePath, done);
+                });
         });
 
         it('should return a JSON error if there was an error while writing' +
@@ -108,19 +121,17 @@ describe('Trial Controller', function() {
 
         it('should return JSON success if the write was successful', function(done) {
 
-            req.body = { metadata: { session_number: 'B42' } };
             var filePath = './trials/B42.trial.json';
-
-            controller.create(req, res);
+            var reqJSON = { metadata: { session_number: 'B42' } };
 
             //noinspection JSUnresolvedFunction
-            fs.readFile(filePath, {encoding: 'utf8'}, function() {
-
-                res.statusCode.should.equal(200);
-                res._isJSON().should.equal(true);
-
-                fs.unlink(filePath, done);
-            });
+            request.post('/api/trials')
+                .send(reqJSON)
+                .end(function(err, response) {
+                    response.headers['content-type'].should.match(/application\/json/);
+                    response.statusCode.should.equal(200);
+                    fs.unlink(filePath, done);
+                });
         });
     });
 });
