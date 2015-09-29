@@ -10,7 +10,6 @@ daemon/
 application.log
 config/custom.js
 .foreverignore
-EiMpatch/media/**
 EiMpatch/data/**
 EiMpatch/_DeletedItems
 .coveralls.yml
