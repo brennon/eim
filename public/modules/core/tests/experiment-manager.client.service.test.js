@@ -4,7 +4,8 @@
     describe('ExperimentManager', function() {
 
         //Initialize global variables
-        var ExperimentManager, mockTrialData, $state, $httpBackend, $rootScope;
+        var ExperimentManager, mockTrialData, $state, $httpBackend,
+            $rootScope;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
@@ -38,7 +39,7 @@
                 $provide.value('TrialData', mockTrialData);
             });
 
-            inject(function(_ExperimentManager_, _$state_, _$httpBackend_, _$rootScope_) {
+            inject(function(_ExperimentManager_, _$state_, _$httpBackend_, _$rootScope_, _$http_) {
                 ExperimentManager = _ExperimentManager_;
                 $state = _$state_;
                 $httpBackend = _$httpBackend_;
@@ -128,10 +129,27 @@
                 expect(mockTrialData.data.metadata.session_number).not.toBeNull();
             });
 
+            it('should get the terminal number from the backend', function(done) {
+
+                $httpBackend.whenGET('/api/experiment-schemas/random').respond(200, {media: 'foo', structure: []});
+                $httpBackend.whenGET('modules/core/views/home.client.view.html').respond();
+                $httpBackend.whenGET('/api/config').respond({metadata: {terminal: 42}});
+
+                ExperimentManager.masterReset()
+                    .then(function() {
+                        expect(mockTrialData.data.metadata.terminal).toEqual(42);
+                        done();
+                    })
+                    .catch(function() {
+                        done(err);
+                    });
+                $httpBackend.flush();
+            });
+
             describe('fetching experiment schemas', function() {
                 it('should fetch an experiment schema', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
-                    $httpBackend.verifyNoOutstandingExpectation();
+                    $httpBackend.whenGET('modules/core/views/home.client.view.html').respond();
+                    $httpBackend.whenGET('/api/config').respond({metadata: {terminal: 42}});
                     $httpBackend.expectGET('/api/experiment-schemas/random').respond();
                     ExperimentManager.masterReset();
                     $httpBackend.verifyNoOutstandingExpectation();
@@ -139,6 +157,7 @@
 
                 describe('on success', function() {
                     it('should assign the set of media from the experiment schema to TrialData', function() {
+                        $httpBackend.whenGET('/api/config').respond({metadata: {terminal: 42}});
                         $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
                         $httpBackend.flush();
                         mockTrialData.data.media = [];
@@ -152,6 +171,7 @@
                     });
 
                     it('should assign the schema from the experiment schema to TrialData', function() {
+                        $httpBackend.whenGET('/api/config').respond({metadata: {terminal: 42}});
                         $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
                         $httpBackend.flush();
                         mockTrialData.data.schema = [];
@@ -165,6 +185,7 @@
                     });
 
                     it('should resolve the promise', function(done) {
+                        $httpBackend.whenGET('/api/config').respond({metadata: {terminal: 42}});
                         $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
                         $httpBackend.flush();
                         $httpBackend.expectGET('/api/experiment-schemas/random').respond({

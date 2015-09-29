@@ -13,7 +13,8 @@
       "app/models/",
       "app/routes/",
       "app/views/",
-      "config/custom.js"
+      "config/custom.js",
+      "public/modules/"
     ],
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_"
@@ -26,5 +27,11 @@
   "plugins": ["plugins/markdown"],
   "markdown": {
     "excludeTags": ["author"]
+  },
+  "opts": {
+    "template": "templates/default",
+    "encoding": "utf8",
+    "destination": "./doc/",
+    "recurse": true
   }
 }
