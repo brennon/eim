@@ -21,7 +21,6 @@ describe('ExperimentSchema Controller Tests', function() {
         controller = rewire('../../controllers/experiment-schema');
     });
 
-    // TODO: Test routes separately
     describe('#list', function() {
 
         it('should use the mongoose model to find all schemas', function() {
@@ -159,7 +158,9 @@ describe('ExperimentSchema Controller Tests', function() {
                 });
             });
 
-            describe('when there aren\'t any schemas in the database', function() {
+            describe('when there aren\'t any schemas in the database',
+                function() {
+                
                 var experimentSchemaMock = {
                     count: function(filter, callback) {
                         callback(null, 0);
@@ -455,7 +456,10 @@ describe('ExperimentSchema Controller Tests', function() {
                                             populate: function() {
                                                 return {
                                                     exec: function(callback) {
-                                                        return callback(null, mockSchemaArray);
+                                                        return callback(
+                                                            null,
+                                                            mockSchemaArray
+                                                        );
                                                     }
                                                 };
                                             }

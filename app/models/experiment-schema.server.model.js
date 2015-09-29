@@ -1,13 +1,10 @@
 'use strict';
 
-// TODO: There are lots of requirements for an ExperimentSchema that we're not enforcing here
-
 /**
  * Module dependencies.
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-//var MediaSchema = require('./media.server.model').schema;
 var _ = require('lodash');
 var BluebirdPromise = require('bluebird');
 
@@ -40,7 +37,12 @@ function updateSchemaForFixedMedia(schema, index, mediaId) {
 
         // Get the media entry for the ObjectID in slide.media
         var MediaModel = mongoose.model('Media');
-        MediaModel.findOne({_id: mediaId}, {_id:1, artist:1, title: 1, label:1}, function(err, media) {
+        MediaModel.findOne({_id: mediaId}, {
+            _id: 1,
+            artist: 1,
+            title: 1,
+            label: 1
+        }, function(err, media) {
 
             if (err) {
                 return reject(err);
@@ -50,7 +52,8 @@ function updateSchemaForFixedMedia(schema, index, mediaId) {
                 schema.media[index] = media;
                 return resolve();
             } else {
-                return reject(new Error('Media not found in database for media ID ' + mediaId));
+                return reject(new Error('Media not found in database for' +
+                    ' media ID ' + mediaId));
             }
         });
     });
@@ -59,7 +62,6 @@ function updateSchemaForFixedMedia(schema, index, mediaId) {
 // Use the above validator for properties that should contain a non-empty array
 ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
 
-// FIXME: This should return the promise instead of blocking
 ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
 
     // Populate mediaPool
@@ -81,17 +83,24 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
         var slide = schemaSubset.structure[i];
 
         if (slide.name === 'media-playback' && slide.mediaType === 'fixed') {
-            promises.push(updateSchemaForFixedMedia(schemaSubset, indexInMedia, slide.media));
+            promises.push(
+                updateSchemaForFixedMedia(
+                    schemaSubset,
+                    indexInMedia,
+                    slide.media
+                )
+            );
             indexInMedia++;
-        } else if (slide.name === 'media-playback' && slide.mediaType === 'random') {
+        } else if (slide.name === 'media-playback'
+            && slide.mediaType === 'random') {
             indexInMedia++;
         }
     }
 
-    BluebirdPromise.all(promises).then(function(data) {
+    BluebirdPromise.all(promises).then(function() {
         return callback(null, schemaSubset);
     });
 };
 
-//// Register schema for `ExperimentSchema` model
+// Register schema for `ExperimentSchema` model
 mongoose.model('ExperimentSchema', ExperimentSchemaSchema);
