@@ -16,8 +16,8 @@ exports.create = function(req, res) {
         typeof req.body.metadata.session_number === 'string' &&
         req.body.metadata.session_number) {
 
-        outputFilename = trialFileDirectory + req.body.metadata.session_number
-            + '.trial.json';
+        outputFilename = trialFileDirectory +
+            req.body.metadata.session_number + '.trial.json';
 
     } else {
         console.log('Failed to create trial JSON file. Bad request received.');

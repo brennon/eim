@@ -91,8 +91,8 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
                 )
             );
             indexInMedia++;
-        } else if (slide.name === 'media-playback'
-            && slide.mediaType === 'random') {
+        } else if (slide.name === 'media-playback' &&
+            slide.mediaType === 'random') {
             indexInMedia++;
         }
     }
