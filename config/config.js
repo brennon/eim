@@ -7,11 +7,12 @@ var _ = require('lodash'),
 	glob = require('glob');
 
 /**
- * Load app configurations
+ * Load app configurations, including the user's custom configurations
  */
 module.exports = _.extend(
 	require('./env/all'),
-	require('./env/' + process.env.NODE_ENV) || {}
+	require('./env/' + process.env.NODE_ENV) || {},
+	require('./custom')
 );
 
 /**

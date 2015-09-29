@@ -13,12 +13,8 @@ var mongoose = BluebirdPromise.promisifyAll(require('mongoose'));
 var http = BluebirdPromise.promisifyAll(require('http'));
 var execFile = require('child_process').execFile;
 
-// TODO: Use custom settings!
-// Import custom settings
-//var customSettings = require('./config/custom');
-
-if (process.env.NODE_ENV === 'development' ||
-    process.env.NODE_ENV === 'production') {
+// Require the logging module in all environments but test
+if (process.env.NODE_ENV !== 'test') {
     require('./config/logging');
 }
 
