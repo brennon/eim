@@ -10,10 +10,10 @@ daemon/
 application.log
 config/custom.js
 .foreverignore
-trials/**
 EiMpatch/media/**
 EiMpatch/data/**
 EiMpatch/_DeletedItems
 .coveralls.yml
 coverage/
 server-coverage.sh
+trials/**

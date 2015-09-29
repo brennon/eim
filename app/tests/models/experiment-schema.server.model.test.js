@@ -21,7 +21,7 @@ var app;
 /**
  * Unit tests
  */
-describe('ExperimentSchema Model Unit Tests:', function() {
+describe('ExperimentSchema Model', function() {
 
     // Make sure app is fully started
     before(function(done) {

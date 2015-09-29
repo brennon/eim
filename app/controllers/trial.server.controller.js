@@ -6,6 +6,8 @@
 var fs = require('fs');
 var trialFileDirectory = './trials/';
 
+// FIXME: This should require a request body
+// FIXME: Errors from stringify() are not being caught
 exports.create = function (req, res) {
     console.log('Creating new trial JSON file.');
 
@@ -23,10 +25,13 @@ exports.create = function (req, res) {
         return res.status(500).json({error: 'No metadata.session_number property found.', request_body: req.body});
     }
 
+    console.log(JSON.stringify({foo:'bar'}, null, 4));
+
+    //noinspection JSUnresolvedFunction
     fs.writeFile(outputFilename, JSON.stringify(req.body, null, 4), function (err) {
         if (err) {
             console.error('Could not write new trial JSON file.', err);
-            res.status(500).json({error: err});
+            res.status(500).json({error: err.message});
         } else {
             console.log('Wrote new JSON file to ' + outputFilename);
             return res.json(200);
