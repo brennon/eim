@@ -13,7 +13,6 @@ exports.list = function(req, res) {
 
     ExperimentSchema.find({}, function(err, schemas) {
 
-        // TODO: Test both branches as part of route testing
         if (err) {
             res.json(500, {error: err.message});
         } else {
@@ -25,7 +24,6 @@ exports.list = function(req, res) {
 /**
  * Build a random experiment from a random ExperimentSchema
  */
-// TODO: The actual pulling of a random schema should move into the model
 exports.random = function(req, res) {
 
     function errorHandler(err) {
@@ -55,16 +53,14 @@ exports.random = function(req, res) {
                         return errorHandler(err);
                     }
 
-                    // TODO: Can't really test this as part of the controller
                     // Using the controller, build an experiment from this
                     // schema
                     schema[0].buildExperiment(function(err, builtExperiment) {
 
-                        // TODO: Test as part of route testing
                         // Send the response
                         res.json(200, builtExperiment);
                     });
-            });
+                });
         }
     });
 };

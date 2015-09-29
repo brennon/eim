@@ -1,10 +1,5 @@
 'use strict';
 
-// TODO: Restructure module to return object
-// TODO: Max errors should be handled also in Angular in order to display error
-// TODO: Logging of sent and received messages should be handled uniformly
-// TODO: Test routes
-
 var udp = require('dgram');
 var osc = require('osc-min');
 var EventEmitter = require('events').EventEmitter;
@@ -119,14 +114,22 @@ exports.init = function(callback) {
 // Consumers of this module can listen here for OSC-related events
 exports.eventEmitter = new EventEmitter();
 
-// Send an OSC message that meets osc-min's message definition over the outgoing socket
+// Send an OSC message that meets osc-min's message definition over the
+// outgoing socket
 exports.sendJSONMessage = function(data, callback) {
 
     function sendMessage() {
 
         var buffer = osc.toBuffer(data);
 
-        oscSender.send(buffer, 0, buffer.length, exports.outgoingPort, exports.outgoingHost, callback);
+        oscSender.send(
+            buffer,
+            0,
+            buffer.length,
+            exports.outgoingPort,
+            exports.outgoingHost,
+            callback
+        );
 
         console.info('Sent OSC message: ' + util.inspect(data));
     }

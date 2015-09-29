@@ -17,13 +17,6 @@ var controller;
 
 describe('ExperimentSchema Controller Tests', function() {
 
-    //before(function(done) {
-    //    server.then(function(startedApp) {
-    //        app = startedApp;
-    //        done();
-    //    });
-    //});
-
     beforeEach(function() {
         controller = rewire('../../controllers/experiment-schema');
     });
