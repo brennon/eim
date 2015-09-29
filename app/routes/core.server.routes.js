@@ -1,14 +1,49 @@
 'use strict';
 
+'use strict';
+
+/**
+ * `Core` routes. These are the 'core' routes made available by the webserver, and allow access to basic, 'core' functionality.
+ *
+ * @module {function} "core.server.routes"
+ */
+
+// Controller for these routes
 var controller = require('../../app/controllers/core');
+
+// Helper modules
+var config = require('../../config/config');
 
 module.exports = function(app) {
 
-    // GET the index page
+    /**
+     * Gets the index page
+     *
+     * @example http://<ADDRESS>:<PORT>/
+     *
+     * @name Index page
+     */
     app.get('/', controller.index);
 
-    // GET the Node environment
+    /**
+     * Get the current Node.js environment
+     *
+     * @example http://<ADDRESS>:<PORT>/api/nodeenv
+     *
+     * @name Node environment
+     */
     app.get('/api/nodeenv', function(req, res) {
-        return res.json({ env: process.env.NODE_ENV });
+        return res.status(200).json({ env: process.env.NODE_ENV });
+    });
+
+    /**
+     * Get the custom configuration for this machine
+     *
+     * @example http://<ADDRESS>:<PORT>/api/config
+     *
+     * @name Custom configuration information
+     */
+    app.get('/api/config', function(req, res) {
+        return res.status(200).json(config.customConfiguration);
     });
 };

@@ -39,4 +39,30 @@ describe('Routes: Core', function() {
             });
         });
     });
+
+    describe('/api/config', function() {
+        describe('GET', function() {
+            it('should respond with HTML', function(done) {
+                request
+                    .get('/api/config')
+                    .expect('Content-Type', /application\/json/)
+                    .expect(200, done);
+            });
+
+            it('should give the custom configuration', function(done) {
+                var customConfig = require('../../../config/config').customConfiguration;
+
+                request
+                    .get('/api/config')
+                    .end(function(err, res) {
+                        if (err) {
+                            return done(err);
+                        } else {
+                            res.body.should.eql(customConfig);
+                            done();
+                        }
+                    });
+            });
+        });
+    });
 });
