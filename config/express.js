@@ -21,6 +21,7 @@ var express = require('express'),
   mongoose = require('mongoose');
 
 module.exports = function() {
+
 	// Initialize express app
 	var app = express();
 
@@ -98,9 +99,9 @@ module.exports = function() {
 	app.use(flash());
 
 	// Use helmet to secure Express headers
-	app.use(helmet.xframe());
-	app.use(helmet.iexss());
-	app.use(helmet.contentTypeOptions());
+	app.use(helmet.frameguard());
+	app.use(helmet.xssFilter());
+	app.use(helmet.noSniff());
 	app.use(helmet.ienoopen());
 	app.disable('x-powered-by');
 

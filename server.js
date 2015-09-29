@@ -75,5 +75,5 @@ exports = module.exports = mongoose.connectAsync(config.db)
         return app;
     })
     .catch(function(e) {
-        console.error('Error starting EIM application: ', e);
+        console.error('Error starting EIM application: ' + e.message);
     });
