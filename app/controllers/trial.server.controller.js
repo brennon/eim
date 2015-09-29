@@ -25,8 +25,6 @@ exports.create = function (req, res) {
         return res.status(500).json({error: 'No metadata.session_number property found.', request_body: req.body});
     }
 
-    console.log(JSON.stringify({foo:'bar'}, null, 4));
-
     //noinspection JSUnresolvedFunction
     fs.writeFile(outputFilename, JSON.stringify(req.body, null, 4), function (err) {
 

@@ -15,4 +15,3 @@ EiMpatch/_DeletedItems
 .coveralls.yml
 coverage/
 server-coverage.sh
-trials/**
