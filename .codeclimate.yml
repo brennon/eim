@@ -55,11 +55,11 @@ ratings:
 
 exclude_paths:
 - app/test/**/*
-- node_modules
-- Arduino
-- coverage
-- EiMpatch
+- node_modules/
+- Arduino/
+- coverage/
+- EiMpatch/
 - mongodb-dump
-- public/dist
-- public/lib
+- public/dist/
+- public/lib/
 - public/modules/**/test
