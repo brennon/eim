@@ -146,6 +146,19 @@
                 $httpBackend.flush();
             });
 
+            it('should reject the promise if a terminal number was not returned', function(done) {
+
+                $httpBackend.whenGET('/api/experiment-schemas/random').respond(200, {media: 'foo', structure: []});
+                $httpBackend.whenGET('modules/core/views/home.client.view.html').respond();
+                $httpBackend.whenGET('/api/config').respond(500);
+
+                ExperimentManager.masterReset()
+                    .catch(function() {
+                        done();
+                    });
+                $httpBackend.flush();
+            });
+
             describe('fetching experiment schemas', function() {
                 it('should fetch an experiment schema', function() {
                     $httpBackend.whenGET('modules/core/views/home.client.view.html').respond();
