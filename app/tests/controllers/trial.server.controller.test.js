@@ -23,6 +23,7 @@ var controller;
  * Helper modules
  */
 var config = require('../../../config/config');
+var path = require('path');
 
 /**
  * Globals
@@ -75,7 +76,7 @@ describe('Trial Controller', function() {
 
         it('should write the stringified body to the correct location', function(done) {
 
-            var filePath = './trials/B42.trial.json';
+            var filePath = path.resolve(__dirname, '../../../trials', 'B42.trial.json');
             var reqJSON = { metadata: { session_number: 'B42' } };
 
             //noinspection JSUnresolvedFunction
@@ -121,7 +122,7 @@ describe('Trial Controller', function() {
 
         it('should return JSON success if the write was successful', function(done) {
 
-            var filePath = './trials/B42.trial.json';
+            var filePath = path.resolve(__dirname, '../../../trials', 'B42.trial.json');
             var reqJSON = { metadata: { session_number: 'B42' } };
 
             //noinspection JSUnresolvedFunction
