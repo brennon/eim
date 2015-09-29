@@ -103,52 +103,51 @@ describe('Trial Controller', function() {
             revert();
         });
 
-        // FIXME: Setup a Travis-specific configuration so that the next two tests don't run on Travis
-        //it('should return JSON success if the write was successful', function(done) {
-        //
-        //    // I don't think Travis allows us to write files
-        //    if (process.env.NODE_ENV === 'travis') {
-        //        return done();
-        //    } else {
-        //
-        //        var filePath = path.resolve(__dirname, '../../../trials', 'B42.trial.json');
-        //        var reqJSON = {metadata: {session_number: 'B42'}};
-        //
-        //        //noinspection JSUnresolvedFunction
-        //        request.post('/api/trials')
-        //            .send(reqJSON)
-        //            .end(function(err, response) {
-        //                response.headers['content-type'].should.match(/application\/json/);
-        //                response.statusCode.should.equal(200);
-        //                fs.unlink(filePath, done);
-        //            });
-        //    }
-        //});
-        //
-        //it('should write the stringified body to the correct location', function(done) {
-        //
-        //    // I don't think Travis allows us to write files
-        //    if (process.env.NODE_ENV === 'travis') {
-        //        return done();
-        //    } else {
-        //
-        //        var filePath = path.resolve(__dirname, '../../../trials', 'B42.trial.json');
-        //        var reqJSON = {metadata: {session_number: 'B42'}};
-        //
-        //        //noinspection JSUnresolvedFunction
-        //        request.post('/api/trials')
-        //            .send(reqJSON)
-        //            .end(function() {
-        //
-        //                //noinspection JSUnresolvedFunction
-        //                var contents = fs.readFileSync(filePath);
-        //
-        //                var contentsJSON = JSON.parse(contents.toString());
-        //                contentsJSON.should.eql(reqJSON);
-        //
-        //                fs.unlink(filePath, done);
-        //            });
-        //    }
-        //});
+        it('should return JSON success if the write was successful', function(done) {
+
+            // I don't think Travis allows us to write files
+            if (process.env.NODE_ENV === 'travis') {
+                return done();
+            } else {
+
+                var filePath = path.resolve(__dirname, '../../../trials', 'B42.trial.json');
+                var reqJSON = {metadata: {session_number: 'B42'}};
+
+                //noinspection JSUnresolvedFunction
+                request.post('/api/trials')
+                    .send(reqJSON)
+                    .end(function(err, response) {
+                        response.headers['content-type'].should.match(/application\/json/);
+                        response.statusCode.should.equal(200);
+                        fs.unlink(filePath, done);
+                    });
+            }
+        });
+
+        it('should write the stringified body to the correct location', function(done) {
+
+            // I don't think Travis allows us to write files
+            if (process.env.NODE_ENV === 'travis') {
+                return done();
+            } else {
+
+                var filePath = path.resolve(__dirname, '../../../trials', 'B42.trial.json');
+                var reqJSON = {metadata: {session_number: 'B42'}};
+
+                //noinspection JSUnresolvedFunction
+                request.post('/api/trials')
+                    .send(reqJSON)
+                    .end(function() {
+
+                        //noinspection JSUnresolvedFunction
+                        var contents = fs.readFileSync(filePath);
+
+                        var contentsJSON = JSON.parse(contents.toString());
+                        contentsJSON.should.eql(reqJSON);
+
+                        fs.unlink(filePath, done);
+                    });
+            }
+        });
     });
 });
