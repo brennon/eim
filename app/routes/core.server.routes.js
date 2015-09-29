@@ -1,7 +1,5 @@
 'use strict';
 
-'use strict';
-
 /**
  * `Core` routes. These are the 'core' routes made available by the webserver, and allow access to basic, 'core' functionality.
  *
