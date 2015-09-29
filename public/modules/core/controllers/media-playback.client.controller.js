@@ -1,11 +1,11 @@
 'use strict';
 
-// FIXME: Address OSC error when message sent without session ID
-// TODO: Use different button colors for Playback and Continue
-// TODO: Request and save emotion indices
-// TODO: Log unhandled received OSC messages here and elsewhere
-
-angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialData', 'SocketIOService', '$timeout', 'ExperimentManager',
+angular.module('core').controller('MediaPlaybackController', [
+    '$scope',
+    'TrialData',
+    'SocketIOService',
+    '$timeout',
+    'ExperimentManager',
     function($scope, TrialData, SocketIOService, $timeout, ExperimentManager) {
         var thisController = this;
 
@@ -101,7 +101,10 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
                 TrialData.data.state.mediaPlayCount++;
 				
 				// Set emotion index in TrialData
-				TrialData.setValueForPathForCurrentMedia('data.answers.emotion_indices', emotionIndex);
+				TrialData.setValueForPathForCurrentMedia(
+                    'data.answers.emotion_indices',
+                    emotionIndex
+                );
 
                 // Update state
                 $timeout(function() {
@@ -114,10 +117,13 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
         };
 
         // Attach OSC message received listener
-        SocketIOService.on('oscMessageReceived', this.oscMessageReceivedListener);
+        SocketIOService.on(
+            'oscMessageReceived',
+            this.oscMessageReceivedListener
+        );
 
-        // Send a message to stop media playback when this controller is destroyed
-        // Also, remove OSC message event listeners
+        // Send a message to stop media playback when this controller is
+        // destroyed. Also, remove OSC message event listeners.
         $scope.$on('$destroy', function stopMediaPlayback() {
             SocketIOService.emit('sendOSCMessage', {
                 oscType: 'message',
@@ -128,7 +134,10 @@ angular.module('core').controller('MediaPlaybackController', ['$scope', 'TrialDa
                 }
             });
 
-            SocketIOService.removeListener('oscMessageReceived', thisController.oscMessageReceivedListener);
+            SocketIOService.removeListener(
+                'oscMessageReceived',
+                thisController.oscMessageReceivedListener
+            );
 
             $scope.showBody();
         });

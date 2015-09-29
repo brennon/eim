@@ -1,78 +1,86 @@
 'use strict';
 
-angular.module('core').directive('checkboxQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
+angular.module('core').directive('checkboxQuestion', [
+    '$compile',
+    'TrialData',
+    function($compile, TrialData) {
 
-    return {
-        restrict: 'E',
-        scope: {},
+        return {
+            restrict: 'E',
+            scope: {},
 
-        link: function(scope, element, attrs) {
-            scope.someSelected = false;
+            link: function(scope, element, attrs) {
+                scope.someSelected = false;
 
-            scope.sendToTrialData = function(path, value) {
-                if (!attrs.associatedToMedia) {
-                    TrialData.setValueForPath(path, value);
-                } else {
-                    TrialData.setValueForPathForCurrentMedia(path, value);
-                }
-            };
+                scope.sendToTrialData = function(path, value) {
 
-            scope.updateCheckboxes = function() {
-                var newSomeSelectedValue = false;
+                    //noinspection JSUnresolvedVariable
+                    if (!attrs.associatedToMedia) {
+                        TrialData.setValueForPath(path, value);
+                    } else {
+                        TrialData.setValueForPathForCurrentMedia(path, value);
+                    }
+                };
 
-                var checkedOptions = [];
-                var inputs = element.find('input');
-                for (var i = 0; i < inputs.length; i++) {
-                    var input = angular.element(inputs[i]);
+                scope.updateCheckboxes = function() {
+                    var newSomeSelectedValue = false;
 
-                    // TODO: Handle the case here and generally when property names we expect aren't found, then remove this Istanbul directive
+                    var checkedOptions = [];
+                    var inputs = element.find('input');
+                    for (var i = 0; i < inputs.length; i++) {
+                        var input = angular.element(inputs[i]);
 
-                    /* istanbul ignore else */
-                    if (input.attr('name') === attrs.questionId + 'Checkbox') {
-                        if (input.prop('checked') === true) {
-                            newSomeSelectedValue = true;
-                            checkedOptions.push(input.attr('value').toLowerCase());
+
+                        /* istanbul ignore else */
+                        if (input.attr('name') === attrs.questionId + 'Checkbox') {
+                            if (input.prop('checked') === true) {
+                                newSomeSelectedValue = true;
+                                checkedOptions
+                                    .push(input.attr('value').toLowerCase());
+                            }
                         }
                     }
-                }
 
-                scope.someSelected = newSomeSelectedValue;
+                    scope.someSelected = newSomeSelectedValue;
 
-                checkedOptions.sort();
-                scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
-            };
+                    checkedOptions.sort();
 
-            var questionText = '<div class="row well"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
+                    //noinspection JSUnresolvedVariable
+                    scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
+                };
 
-            var innerQuestionText = '';
+                var questionText = '<div class="row well"><div class="col-md-12"><label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '</label><div>';
 
-            if (element.data('checkboxOptions')) {
+                var innerQuestionText = '';
 
-                // Iterate over checkbox options
-                for (var i = 0; i < element.data('checkboxOptions').length; i++) {
+                if (element.data('checkboxOptions')) {
 
-                    var thisOption = element.data('checkboxOptions')[i];
+                    // Iterate over checkbox options
+                    for (var i = 0; i < element.data('checkboxOptions').length; i++) {
 
-                    innerQuestionText += '<label class="checkbox-inline">';
+                        var thisOption = element.data('checkboxOptions')[i];
 
-                    innerQuestionText += '<input type="checkbox" name="'+attrs.questionId+'Checkbox" id="'+attrs.questionId+'Checkbox'+thisOption+'" value="'+thisOption+'" ng-model="'+attrs.questionId+'Checkbox'+thisOption+'" ng-change="updateCheckboxes()"';
+                        innerQuestionText += '<label class="checkbox-inline">';
 
-                    if (attrs.questionRequired) {
-                        innerQuestionText += 'ng-required="!someSelected"';
+                        innerQuestionText += '<input type="checkbox" name="' + attrs.questionId + 'Checkbox" id="' + attrs.questionId + 'Checkbox' + thisOption + '" value="' + thisOption + '" ng-model="' + attrs.questionId + 'Checkbox' + thisOption + '" ng-change="updateCheckboxes()"';
+
+                        if (attrs.questionRequired) {
+                            innerQuestionText += 'ng-required="!someSelected"';
+                        }
+
+                        innerQuestionText += '>{{\'' + thisOption + '\' | translate}}</input>';
+
+                        innerQuestionText += '</label>';
                     }
-
-                    innerQuestionText += '>{{\''+thisOption+'\' | translate}}</input>';
-
-                    innerQuestionText += '</label>';
                 }
+
+                questionText += innerQuestionText + '</div></div></div>';
+
+                var questionElement = angular.element(questionText);
+
+                element.append(questionElement);
+                $compile(element.contents())(scope);
             }
-
-            questionText += innerQuestionText + '</div></div></div>';
-
-            var questionElement = angular.element(questionText);
-
-            element.append(questionElement);
-            $compile(element.contents())(scope);
-        }
-    };
-}]);
+        };
+    }
+]);

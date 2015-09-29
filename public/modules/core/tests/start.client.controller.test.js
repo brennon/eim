@@ -21,7 +21,7 @@
         describe('initialization', function() {
             it('should set the date on the TrialData object', function() {
                 $controller('StartController',
-                    { $scope: mockScope });
+                    {$scope: mockScope});
 
                 var now = new Date();
                 var trialDataDate = Date.parse(TrialData.data.date);
@@ -31,7 +31,7 @@
 
             it('should set $scope.maxReady to false', function() {
                 var controller = $controller('StartController',
-                    { $scope: mockScope });
+                    {$scope: mockScope});
 
                 mockScope.maxReady = true;
                 controller.sendExperimentStartMessage();
@@ -43,7 +43,7 @@
             describe('#$scope.readyToAdvance', function() {
                 it('should return true if only Max is ready', function() {
                     $controller('StartController',
-                        { $scope: mockScope });
+                        {$scope: mockScope});
 
                     mockScope.maxReady = true;
                     mockScope.debugMode = false;
@@ -52,7 +52,7 @@
 
                 it('should return true if only debugMode is true', function() {
                     $controller('StartController',
-                        { $scope: mockScope });
+                        {$scope: mockScope});
 
                     mockScope.maxReady = false;
                     mockScope.debugMode = true;
@@ -94,8 +94,6 @@
 
         describe('OSC message handling', function() {
             describe('message received listener', function() {
-
-                // TODO: Mock incoming OSC messages through SocketIOService
 
                 it('should set $scope.maxReady to true on the correct message', function() {
                     var controller = $controller('StartController', {
@@ -177,7 +175,8 @@
             });
 
             it('should call $scope#addGenericErrorAlert', function() {
-                mockScope.addGenericErrorAlert = function() {};
+                mockScope.addGenericErrorAlert = function() {
+                };
                 spyOn(mockScope, 'addGenericErrorAlert');
                 $controller('StartController', {
                     $scope: mockScope,

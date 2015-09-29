@@ -1,8 +1,10 @@
 'use strict';
 
-// TODO: Watch for and log sensor issues
-
-angular.module('core').controller('SignalTestController', ['$scope', 'SocketIOService', 'TrialData', '$timeout',
+angular.module('core').controller('SignalTestController', [
+    '$scope',
+    'SocketIOService',
+    'TrialData',
+    '$timeout',
     function($scope, SocketIOService, TrialData, $timeout) {
 
         var thisController = this;
@@ -110,13 +112,19 @@ angular.module('core').controller('SignalTestController', ['$scope', 'SocketIOSe
         };
 
         // Attach handler for incoming OSC messages
-        SocketIOService.on('oscMessageReceived', this.oscMessageReceivedListener);
+        SocketIOService.on(
+            'oscMessageReceived',
+            this.oscMessageReceivedListener
+        );
 
         // Destroy handler for incoming OSC messages when $scope is destroyed,
         // and send stop signal test message
         var controller = this;
         $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-            SocketIOService.removeListener('oscMessageReceived', controller.oscMessageReceivedListener);
+            SocketIOService.removeListener(
+                'oscMessageReceived',
+                controller.oscMessageReceivedListener
+            );
             controller.sendStopSignalTestMessage();
         });
 

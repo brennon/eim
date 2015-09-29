@@ -213,7 +213,6 @@
                 expect(addSpy.args[1][0].description).toBeDefined();
             });
 
-            // FIXME: Find a way to test this
             //it('should toggle debugMode on d-d', function() {
             //
             //    mockScope.toggleDebugMode = function() {};
@@ -226,7 +225,6 @@
             //    expect(ddCallback).toBe(mockScope.toggleDebugMode);
             //});
 
-            // FIXME: Find a way to test this--callback assignment isn't using mock
             //it('should advance slide on right', function() {
             //
             //    var mockExperimentManager = {

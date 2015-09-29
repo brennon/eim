@@ -1,9 +1,5 @@
 'use strict';
 
-// FIXME: Address radio question formatting in the context of media questions
-// FIXME: Add tests for translation in individual question directives
-// FIXME: Convert options to a single format instead of radioOptions, dropdownOptions, etc.
-
 angular.module('core').directive('questionnaire', ['$compile', function($compile) {
 
     var buildScaleQuestion = function(item) {
@@ -22,31 +18,52 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
         }
 
         if (item.questionLikertMinimumDescription) {
-            questionElement.attr('minimum-description', item.questionLikertMinimumDescription);
+            questionElement.attr(
+                'minimum-description',
+                item.questionLikertMinimumDescription
+            );
         }
 
         if (item.questionLikertMaximumDescription) {
-            questionElement.attr('maximum-description', item.questionLikertMaximumDescription);
+            questionElement.attr(
+                'maximum-description',
+                item.questionLikertMaximumDescription
+            );
         }
 
         if (item.questionLikertSingleImageSrc) {
-            questionElement.attr('single-img-src', item.questionLikertSingleImageSrc);
+            questionElement.attr(
+                'single-img-src',
+                item.questionLikertSingleImageSrc
+            );
         }
 
         if (item.questionLikertLeftImageSrc) {
-            questionElement.attr('left-img-src', item.questionLikertLeftImageSrc);
+            questionElement.attr(
+                'left-img-src',
+                item.questionLikertLeftImageSrc
+            );
         }
 
         if (item.questionLikertRightImageSrc) {
-            questionElement.attr('right-img-src', item.questionLikertRightImageSrc);
+            questionElement.attr(
+                'right-img-src',
+                item.questionLikertRightImageSrc
+            );
         }
 
         if (item.questionStoragePath) {
-            questionElement.attr('controller-data-path', item.questionStoragePath);
+            questionElement.attr(
+                'controller-data-path',
+                item.questionStoragePath
+            );
         }
 
         if (item.questionIsAssociatedToMedia) {
-            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+            questionElement.attr(
+                'associated-to-media',
+                item.questionIsAssociatedToMedia
+            );
         }
 
         if (item.questionOptions) {
@@ -68,11 +85,17 @@ angular.module('core').directive('questionnaire', ['$compile', function($compile
         }
 
         if (item.questionStoragePath) {
-            questionElement.attr('controller-data-path', item.questionStoragePath);
+            questionElement.attr(
+                'controller-data-path',
+                item.questionStoragePath
+            );
         }
 
         if (item.questionIsAssociatedToMedia) {
-            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+            questionElement.attr(
+                'associated-to-media',
+                item.questionIsAssociatedToMedia
+            );
         }
 
         if (item.questionRadioOptions) {

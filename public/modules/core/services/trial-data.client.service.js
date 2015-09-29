@@ -1,6 +1,5 @@
 'use strict';
 
-// TODO: Push results to database
 
 // Trial Data service used to persist data for individual trials
 angular.module('core').factory('TrialData', [
@@ -8,28 +7,7 @@ angular.module('core').factory('TrialData', [
 
         function BlankDataObject() {
             return {
-                answers: {
-                    //musical_expertise: null,
-                    //musical_background: null,
-                    //most_engaged: null,
-                    //hearing_impairments: null,
-                    //visual_impairments: null,
-                    //nationality: null,
-                    //dob: null,
-                    //sex: null,
-                    //music_styles: [],
-                    //most_enjoyed: null,
-                    //emotion_indices: [],
-                    //ratings: {
-                    //    positivity: [],
-                    //    like_dislike: [],
-                    //    familiarity: [],
-                    //    engagement: [],
-                    //    activity: [],
-                    //    chills: [],
-                    //    power: []
-                    //}
-                },
+                answers: {},
                 date: null,
                 media: [],
                 timestamps: {
@@ -62,7 +40,6 @@ angular.module('core').factory('TrialData', [
                 this.data = new BlankDataObject();
             },
 
-            // TODO: Add formatting and type options
             setValueForPath: function(path, value, options) {
 
                 if (value === 'true') {
@@ -112,7 +89,6 @@ angular.module('core').factory('TrialData', [
                 }
             },
 
-            // FIXME: Need to gracefully handle bad array indices
             setValueForPathForCurrentMedia: function(path, value) {
 
                 var index;

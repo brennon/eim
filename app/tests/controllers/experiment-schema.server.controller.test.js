@@ -365,6 +365,8 @@ describe('ExperimentSchema Controller Tests', function() {
 
                 it('should return the error in JSON', function() {
                     var data = JSON.parse(res._getData());
+
+                    //noinspection JSUnresolvedVariable
                     data.should.deep.equal(builtExperimentMock);
                 });
             });
@@ -405,7 +407,7 @@ describe('ExperimentSchema Controller Tests', function() {
                         return {
                             skip: function(x) {
 
-                                //noinspection JSUnresolvedFunction
+                                //noinspection JSUnresolvedFunction,JSUnresolvedVariable
                                 x.should.be.below(10);
                                 return {
                                     limit: function(y) {
