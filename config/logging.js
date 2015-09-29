@@ -4,7 +4,7 @@ var util = require('util'),
   winston = require('winston'),
   logger = new winston.Logger(),
   production = (process.env.NODE_ENV || '').toLowerCase() === 'production',
-  metadata = require('./custom');
+  customConfig = require('./custom').customConfiguration;
 
 // Add winston-loggly
 require('winston-loggly');
@@ -60,21 +60,23 @@ switch((process.env.NODE_ENV || '').toLowerCase()){
 }
 
 function formatArgs(args){
-  return [util.format.apply(util.format, Array.prototype.slice.call(args))];
+  return util.format.apply(util.format, Array.prototype.slice.call(args));
 }
 
+var appendString = '(Terminal: ' + customConfig.metadata.terminal + ')';
+
 console.log = function(){
-  logger.info.apply(logger, [formatArgs(arguments), metadata]);
+  logger.info.apply(logger, [formatArgs(arguments), appendString]);
 };
 console.info = function(){
-  logger.info.apply(logger, [formatArgs(arguments), metadata]);
+  logger.info.apply(logger, [formatArgs(arguments), appendString]);
 };
 console.warn = function(){
-  logger.warn.apply(logger, [formatArgs(arguments), metadata]);
+  logger.warn.apply(logger, [formatArgs(arguments), appendString]);
 };
 console.error = function(){
-  logger.error.apply(logger, [formatArgs(arguments), metadata]);
+  logger.error.apply(logger, [formatArgs(arguments), appendString]);
 };
 console.debug = function(){
-  logger.debug.apply(logger, [formatArgs(arguments), metadata]);
+  logger.debug.apply(logger, [formatArgs(arguments), appendString]);
 };

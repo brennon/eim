@@ -2,6 +2,7 @@
 
 // Module dependencies
 var osc = require('./osc.server.controller.js');
+var util = require('util');
 
 // OSC message flow:
 //
@@ -22,7 +23,8 @@ var io;
 
 // Logging function for incoming events
 function logEventReceived(event, data) {
-    console.log(event + ' event received from client with data: ' + data);
+    console.log(event + ' event received from client with data:\n' +
+        util.inspect(data));
 }
 
 exports.init = function(httpServer) {

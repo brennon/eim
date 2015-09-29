@@ -15,7 +15,9 @@ function buildLogMessageFromMessage(msg) {
 
     // Bail and log an error message if we didn't get an array
     if (!Array.isArray(msg)) {
-        return console.error('Malformed OSC error message received: ' + msg);
+        console.error('Malformed OSC error message received:\n' +
+            util.inspect(msg));
+        return;
     }
 
     var level = msg[0].value.toUpperCase();
@@ -131,7 +133,7 @@ exports.sendJSONMessage = function(data, callback) {
             callback
         );
 
-        console.info('Sent OSC message: ' + util.inspect(data));
+        console.info('Sent OSC message:\n' + util.inspect(data));
     }
 
     // If outgoing port is not yet open, open it
