@@ -1,14 +1,10 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
+// Module dependencies
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-/**
- * Media Schema
- */
+// Media schema
 var MediaSchema = new Schema({
 	type: {
     type: String,

@@ -1,14 +1,10 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
+// Module dependencies
 var mongoose = require('mongoose'),
     ExperimentSchema = mongoose.model('ExperimentSchema');
 
-/**
- * List of Experiment schemas
- */
+// List of Experiment schemas
 exports.list = function(req, res) {
 
     ExperimentSchema.find({}, function(err, schemas) {
@@ -21,9 +17,7 @@ exports.list = function(req, res) {
     });
 };
 
-/**
- * Build a random experiment from a random ExperimentSchema
- */
+// Build a random experiment from a random ExperimentSchema
 exports.random = function(req, res) {
 
     function errorHandler(err) {

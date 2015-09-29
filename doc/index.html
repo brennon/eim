@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><p><a href="https://travis-ci.org/brennon/eim"><img src="https://travis-ci.org/brennon/eim.svg" alt="Build Status"></a> <a href="https://david-dm.org/brennon/eim.png"><img src="https://david-dm.org/brennon/eim.png" alt="Dependency Status"></a> <a href="https://coveralls.io/github/brennon/eim?branch=master"><img src="https://coveralls.io/repos/brennon/eim/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a><a href="https://codeclimate.com/github/brennon/eim"><img src="https://codeclimate.com/github/brennon/eim/badges/gpa.svg" alt="Code Climate"></a></p>
+<h1>Emotion in Motion</h1><p>This is the Emotion in Motion experiment framework from the Music, Sensors and Emotion research group. For more information, contact us at <a href="mailto:emotion.in.motion@musicsensorsemotion.com">emotion.in.motion@musicsensorsemotion.com</a>.</p>
+<h1>Installation</h1><ol>
+<li><p>Clone the EiM git repository:</p>
+<pre class="prettyprint source"><code> git clone https://github.com/brennon/eim.git</code></pre></li>
+<li><p>If you don't have git installed, and don't want to install it, you can download a <a href="https://github.com/brennon/eim/archive/master.zip">zipped archive</a> of the repository.</p>
+</li>
+<li><p>Install <a href="https://www.mongodb.org/">MongoDB</a>. If you're on a Mac and use <a href="http://brew.sh/">Homebrew</a>, use:</p>
+<pre class="prettyprint source"><code> brew install mongodb</code></pre></li>
+<li><p>Start <code>mongod</code> on the default port. If you installed with Homebrew:</p>
+<pre class="prettyprint source"><code> mongod --config /usr/local/etc/mongod.conf</code></pre></li>
+<li><p>Install <a href="https://nodejs.org/">Node.js</a>. The framework currently runs best on Node.js <a href="https://nodejs.org/dist/v0.12.7/">v0.12.7</a>. We recommend downloading the Node.js installer from this link, instead of installing with Homebrew.</p>
+</li>
+<li><p>Install app Node dependencies using <code>npm</code>:</p>
+<pre class="prettyprint source"><code> npm install</code></pre></li>
+<li><p>To get started using with the default Emotion in Motion MongoDB databases, import the data from the <code>mongodb-dump</code> directory. From the root directory of the repository:</p>
+<pre class="prettyprint source"><code> mongorestore -d emotion-in-motion-dev --drop ./mongodb-dump/emotion-in-motion-dev
+ mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
+ mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production</code></pre></li>
+<li><p>Start the Max helper project located at <code>EiMpatch/EmotionInMotion.maxproj</code>. You'll need <a href="https://cycling74.com/">Max 6</a> or later.</p>
+</li>
+<li><p>Start the server. In the root directory of the repository:</p>
+<pre class="prettyprint source"><code> node_modules/grunt-cli/bin/grunt</code></pre></li>
+<li><p>Browse to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
+</li>
+</ol>
+<h1>Study Specification Structure</h1><p>A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see <a href="http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/">this site</a> for a gentle introduction.</p>
+<p>By default, the application looks in the <code>experimentschemas</code> collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:</p>
+<ol>
+<li>Welcome screen</li>
+<li>Consent form</li>
+<li>Several instructions screens (including audio tests and sensor placement)</li>
+<li>Several preliminary questionnaires</li>
+<li>Playback of a 'control' sound</li>
+<li>Questionnaire about the control sound</li>
+<li>Playback of a randomly selected sound excerpt</li>
+<li>Questionnaire about the previous sound excerpt</li>
+<li>Final questionnaire</li>
+<li>Emotion indices</li>
+<li>Thank you screen</li>
+</ol>
+<p>This structure is <em>completely</em> customizable, which we describe below. This default study, like any other study, is described in a MongoDB document. This MongoDB document has the following basic structure:</p>
+<pre class="prettyprint source"><code>{  
+    &quot;trialCount&quot; : 2, 
+    &quot;mediaPool&quot; : [
+        ObjectId(&quot;547c92686577a50a2ebde518&quot;), 
+        ObjectId(&quot;547c92956577a50a2ebde519&quot;), 
+        ObjectId(&quot;547c92cb6577a50a2ebde51a&quot;), 
+        ...
+    ], 
+    &quot;sensors&quot; : [
+        &quot;eda&quot;, 
+        &quot;pox&quot;
+    ],
+    &quot;structure&quot; : [
+        {
+            &quot;name&quot; : &quot;consent-form&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;start&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;sound-test&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;eda-instructions&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;pox-instructions&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;signal-test&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;questionnaire&quot;, 
+            &quot;data&quot; : { ... }
+        }, 
+        {
+            &quot;name&quot; : &quot;questionnaire&quot;, 
+            &quot;data&quot; : { ... }
+        }, 
+        {
+            &quot;name&quot; : &quot;questionnaire&quot;, 
+            &quot;data&quot; : { ... }
+        }, 
+        {
+            &quot;name&quot; : &quot;media-playback&quot;, 
+            &quot;mediaType&quot; : &quot;fixed&quot;, 
+            &quot;media&quot; : ObjectId(&quot;547c92416577a50a2ebde517&quot;)
+        }, 
+        {
+            &quot;name&quot; : &quot;questionnaire&quot;, 
+            &quot;data&quot; : { ... }
+        }, 
+        {
+            &quot;name&quot; : &quot;media-playback&quot;, 
+            &quot;mediaType&quot; : &quot;random&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;questionnaire&quot;, 
+                        &quot;data&quot; : { ... }
+        }, 
+        {
+            &quot;name&quot; : &quot;questionnaire&quot;, 
+            &quot;data&quot; : { ... }
+        }, 
+        {
+            &quot;name&quot; : &quot;emotion-index&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;thank-you&quot;
+        }
+    ]
+}</code></pre><h2>Top Level Members</h2><p>At the top level of the JSON object, we have four properties: <code>trialCount</code>, <code>mediaPool</code>, <code>sensors</code>, and <code>structure</code>.</p>
+<h3><code>trialCount</code></h3><p>The <code>trialCount</code> property takes an integer for its value that specifies the number of media excerpts that will be presented over the course of the session. Here, we specify that two media excerpts will be played:</p>
+<pre class="prettyprint source"><code>{
+    &quot;trialCount&quot; : 2,
+    ...
+}</code></pre><h3><code>mediaPool</code></h3><p>The <code>mediaPool</code> property takes an array as its value. This array holds the <code>ObjectId</code>s of MongoDB documents stored in the MongoDB database that represent all media files that are available for presentation during a session. The framework will randomly draw as many media files for presentation from this array as are specified by the <code>trialCount</code> property. This property is <strong>required</strong>.</p>
+<h3><code>sensors</code></h3><p>The <code>sensors</code> property specifies those sensors that will be used during the study session. This property is currently not observed by the framework: the Max helper application records the sensor data directly to files that are stored on disk.</p>
+<h3><code>structure</code></h3><p>The <code>structure</code> property describes the structure of the study itself. It takes as its value an array of nested objects. Each of these nested objects describes a slide that will be presented as the participant advances through the session. The order of slides in the <code>structure</code> property matches the order of slides as they are presented to the participant. This property is <strong>required</strong>.</p>
+<h4><code>structure</code> 'Slides'</h4><p>The objects nested under the <code>structure</code> property each describe one slide in the study session. Objects that provide only a <code>name</code> property represent a slide that has been hard-coded into the Emotion in Motion framework. For instance, this example <code>structure</code> property presents only the consent form, EDA and POX sensor instructions, and thank you screens:</p>
+<pre class="prettyprint source"><code>{
+    &quot;structure&quot;: [
+        {
+            &quot;name&quot; : &quot;consent-form&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;eda-instructions&quot;
+        },
+        {
+            &quot;name&quot; : &quot;pox-instructions&quot;
+        }, 
+        {
+            &quot;name&quot; : &quot;thank-you&quot;
+        }
+    ]
+}</code></pre><p>It should be clear how the names of these slides correspond to the sections referenced at the beginning of <a href="#study-specification-structure">Study Specification Structure</a>. To change the text or design of any of the slides that <em>only include a <code>name</code> property</em>, edit their corresponding HTML files in <code>public/modules/core/views/</code>. For instance, to change the text of the consent form, simply edit <code>public/modules/core/views/consent-form.client.view.html</code>.</p>
+<p>Other slides in the <code>structure</code> property's array may also have a <code>data</code> property. Such slides represent slides that are dynamically constructed automatically based on the information you provide in the data array. These often represent slides that present questionnaires, etc., where you may want to ask different questions than those included in the base Emotion in Motion application. In fact, at present, the only type of slide object that supports a <code>data</code> property <em>is</em> the <code>questionnaire</code> slide.</p>
+<h5>Questionnaire Slides</h5><p>For now, we expect that most people's needs will be me with the ability to design experiments that involve presenting some static information to participants, presenting them with a number preselected or randomly selected media excerpts, and asking them questions at various times. We'll describe below how to configure <a href="#media-slides">media slides</a>, and we've already discussed how to edit 'static' slides (see <a href="#adding-slides">Adding Slides</a> for instructions on how to add your own custom, static slides.) Here, we describe the third big piece of the puzzle, how to design questionnaires using the questionnaire slide type.</p>
+<p>As noted previously, questionnaire slide objects support an additional <code>data</code> property:</p>
+<pre class="prettyprint source"><code>{
+    &quot;structure&quot;: [
+        {
+            &quot;name&quot;: &quot;questionnaire&quot;,
+            &quot;data&quot;: { ... }
+        }
+    ]
+}</code></pre><p>Much like the outer JSON object describes an overall study session, the <code>data</code> property of a <code>questionnaire</code>-<code>name</code>d slide describes a questionnaire-based slide itself. The <code>data</code> property takes an object as its value, and supports three properties on this object: <code>title</code>, <code>introductoryText</code>, and <code>structure</code>.</p>
+<h6>Questionnaire <code>title</code> Property</h6><p>The <code>title</code> property of a <code>questionnaire</code>'s <code>data</code> object takes a string that will be displayed as the title header of the screen. This property is <strong>required</strong>.</p>
+<h6>Questionnaire <code>introductoryText</code> Property</h6><p>The <code>introductoryText</code> property of a <code>questionnaire</code>'s <code>data</code> object takes a string that will be displayed below the title header. This property is optional.</p>
+<h6>Questionnaire <code>structure</code> Property</h6><p>The <code>structure</code> property of a <code>questionnaire</code>'s <code>data</code> object takes an array of objects that represent, in order, the individual questions presented on the questionnaire. This property is required. The allowed properties of the individual question objects are described here.</p>
+<p><strong><code>questionType</code></strong></p>
+<p>A question object can be of one of four types: a Likert-type scale question, a group of radio buttons (from which one choice is allowed), a group of checkboxes (from which zero, one, or more choices are allowed), or a dropdown selection list. To specify the type of question, supply one of the following strings as the value for the <code>questionType</code> property: <code>&quot;likert&quot;</code>, <code>&quot;radio&quot;</code>, <code>&quot;checkbox&quot;</code>, or <code>&quot;dropdown&quot;</code>. This property is <strong>required</strong>.</p>
+<p><strong><code>questionId</code></strong></p>
+<p>The <code>questionId</code> property is used to dynamically associate the various parts of the question together. This identifier must be a string and must be unique among all questions included in the questionnaire. This property is <strong>required</strong>.</p>
+<p><strong><code>questionLabel</code></strong></p>
+<p>The <code>questionLabel</code> property takes a string that is used as the question text itself. This property is <strong>required</strong>.</p>
+<p><strong><code>questionLabelType</code></strong></p>
+<p>The <code>questionLabelType</code> property is not currently used.</p>
+<p><strong><code>questionLikertMinimumDescription</code></strong></p>
+<p>The <code>questionLikertMinimumDescription</code> takes a string that is used as a description at the left-most end of the Likert-type scale. This property is optional.</p>
+<p><strong><code>questionLikertMaximumDescription</code></strong></p>
+<p>The <code>questionLikertMaximumDescription</code> takes a string that is used as a description at the right-most end of the Likert-type scale. This property is optional.</p>
+<p><strong><code>questionStoragePath</code></strong></p>
+<p>The <code>questionStoragePath</code> property represents a dot-delimited path into the <a href="#trialData-objects"><code>trialData</code> object</a> that is generated as the participant completes the session. This <code>trialData</code> object holds all information about the participant's session. Typically, all input received from the participant is stored in a top-level property of this object named &quot;data&quot;. So, to store the participant's response to a question about their musical experience, we might specify the <code>questionStoragePath</code> property for this question as <code>data.questionnaire_two.musical_expertise</code>. This would result in a <code>trialData</code> object that looks something like the following (with other distracting information removed):</p>
+<pre class="prettyprint source"><code>{
+    \\ Other properties here
+    data: {
+        questionnaire_two: {
+            musical_expertise: \\ Participant's response for this question as this value
+            \\ Perhaps other responses here
+        }
+    }
+}</code></pre><p>The <code>questionStoragePath</code> property is <strong>required</strong>.</p>
+<p><strong><code>questionRadioOptions</code></strong></p>
+<p>When <code>&quot;radio&quot;</code> is specified as the value for the <code>questionType</code> property, the application expects a <code>questionRadioOptions</code> property to be provided, as well. The <code>questionRadioOptions</code> property contains the information to be used for the individual radio buttons. This is an ordered array of objects: each object represents one radio button. Each object should have a <code>label</code> property that is used as the label for the radio button, and a <code>value</code> property that is used for the value stored in the <code>trialData</code> object when the participant selects this particular radio button:</p>
+<pre class="prettyprint source"><code>[ {&quot;label&quot;: &quot;Yes&quot;, &quot;value&quot;: true}, {&quot;label&quot;: &quot;No&quot;, &quot;value&quot;: false} ]
+
+\\ Providing this value for `questionRadioOptions` would result in two radio buttons. The first would be given a label in the on-screen questionnaire of &quot;Yes&quot; and the second would be given a label of &quot;No&quot;. Should the participant select the first button, the Boolean value `true` will be stored for their response. The Boolean value `false` will be stored should they select the second button.
+
+[ {&quot;label&quot; : &quot;Male&quot;, &quot;value&quot; : &quot;male&quot;}, {&quot;label&quot; : &quot;Female&quot;, &quot;value&quot; : &quot;female&quot;} ]
+
+\\ Providing this value for `questionRadioOptions` would result in two radio buttons. The first would be given a label in the on-screen questionnaire of &quot;Male&quot; and the second would be given a label of &quot;Female&quot;. Should the participant select the first button, the string &quot;male&quot; will be stored for their response. The string &quot;female&quot; will be stored should they select the second button.
+
+[ {&quot;label&quot; : &quot;Male&quot;, &quot;value&quot; : 1}, {&quot;label&quot; : &quot;Female&quot;, &quot;value&quot; : 2}, {&quot;label&quot; : &quot;Not Specified&quot;, &quot;value&quot; : 3} ]
+
+\\ Providing this value for `questionRadioOptions` would result in three radio buttons. The first would be given a label in the on-screen questionnaire of &quot;Male&quot;, the second would be given a label of &quot;Female&quot;, and the third would be given a label of &quot;Not Specified&quot;. Should the participant select the first button, the number 1 will be stored for their response. Similarly, the numbers 2 and 3 would be specified for the selection of the second or third buttons, respectively.</code></pre><p><strong><code>questionOptions</code></strong></p>
+<p>This (currently poorly named) property is used for <code>&quot;likert&quot;</code> questions much like the <code>questionRadioOptions</code> is used for <code>&quot;radio&quot;</code> questions. The value, again, should be an ordered array of objects that are used to label the points along a five-point Likert-type scale. Here, only labels are required:</p>
+<pre class="prettyprint source"><code>[
+    {&quot;label&quot;: &quot;Disagree strongly&quot;},
+    {&quot;label&quot;: &quot;Disagree a little&quot;},
+    {&quot;label&quot;: &quot;Neither agree nor disagree&quot;},
+    {&quot;label&quot;: &quot;Agree a little&quot;},
+    {&quot;label&quot;: &quot;Agree strongly&quot;}
+]</code></pre><p><strong><code>questionCheckboxOptions</code> and <code>questionDropdownOptions</code></strong></p>
+<p>As <code>questionRadioOptions</code> is to <code>&quot;radio&quot;</code> questions, <code>questionCheckboxOptions</code> is to <code>&quot;checkbox&quot;</code> questions, and <code>questionDropdownOptions</code> is to <code>&quot;dropdown&quot;</code> questions. This property takes an ordered array of strings to use as either the checkbox labels or the options available for selection in the dropdown selection list. For instance, to specify three checkboxes with the labels &quot;Apple&quot;, &quot;Orange&quot;, and &quot;Banana&quot;, give <code>questionCheckboxOptions</code> the following value:</p>
+<pre class="prettyprint source"><code>[ &quot;Apple&quot;, &quot;Orange&quot;, &quot;Banana&quot; ]</code></pre><p>On the other hand, to provide a dropdown list with the same values, but in a different order, give <code>questionDropdownOptions</code> the following value:</p>
+<pre class="prettyprint source"><code>[ &quot;Orange&quot;, &quot;Apple&quot;, &quot;Banana&quot; ]</code></pre><p><strong><code>questionDropdownOptions</code></strong></p>
+<p>Ordered array of strings to use as dropdown list.</p>
+<p><strong><code>questionLikertLeftImageSrc</code> and <code>questionLikertRightImageSrc</code></strong></p>
+<p>The optional <code>questionLikertLeftImageSrc</code> and <code>questionLikertRightImageSrc</code> properties take strings as value that represent the paths to images to be displayed at the left and right sides of a Likert-type scale, respectively:</p>
+<pre class="prettyprint source"><code>{
+    ...,
+    &quot;questionLikertLeftImageSrc&quot;: &quot;/modules/core/img/scale-left-engaged.png&quot;,
+    &quot;questionLikertRightImageSrc&quot;: &quot;/modules/core/img/scale-right-engaged.png&quot;,
+    ...
+}</code></pre><p><strong><code>questionLikertSingleImageSrc</code></strong></p>
+<p>The optional <code>questionLikertSingleImageSrc</code> property takes a string as its value that represents the path to an image to be displayed above and centered over a Likert-type scale:</p>
+<pre class="prettyprint source"><code>{
+    ...,
+    &quot;questionLikertSingleImageSrc&quot;: &quot;/modules/core/img/scale-above-positivity.png&quot;,
+    ...
+}</code></pre><p><strong><code>questionIsAssociatedToMedia</code></strong></p>
+<p>The required <code>questionIsAssociatedToMedia</code> property specifies that a question corresponds to a particular media excerpt by taking a Boolean <code>true</code> or <code>false</code> as its value. When this value is set to <code>true</code>, multiple responses for questions with the same <code>questionStoragePath</code> property are stored in an ordered array that is used as the value for the <code>questionStoragePath</code> property in the final <code>trialData</code> document.</p>
+<p>For example, in the demonstration study provided with the framework, two media excerpts are played. We present the same questionnaire to the participant following each media excerpt. In order to specify that responses on the questionnaire following the first excerpt are associated with the first excerpt (and the same for the second questionnaire and excerpt), the values for <code>questionIsAssociatedToMedia</code> for all questions in these questionnaires are all set to <code>true</code>. So, for those questons with their <code>questionStoragePath</code> property set to <code>&quot;data.answers.positivity&quot;</code>, the corresponding section of a participant's <code>trialData</code> document might look something like this:</p>
+<pre class="prettyprint source"><code> {
+    data: {
+        answers: {
+            positivity: [2, 5]
+        }
+    }
+}</code></pre><p>Here, the participant chose a value of <code>2</code> when responding to the positivity question following the first excerpt. Likewise, they chose a value of <code>5</code> when responding to the positivity question following the second excerpt.</p>
+<p><strong><code>questionRequired</code></strong></p>
+<p>Specifying <code>true</code> as the value for the <code>questionRequired</code> property indicates that the participant <em>must</em> answer this question before being allowed to proceed. Correspondingly, specifying <code>false</code> for this value indicates that the participant may proceed without answering this question.</p>
+<h5>Media Slides</h5><p>Media slides are created by giving a slide object the name <code>&quot;media-playback&quot;</code>. In addition to the <code>name</code> property, their objects take two more properties: <code>mediaType</code> and <code>media</code>.</p>
+<p><strong><code>mediaType</code></strong></p>
+<p>The <code>mediaType</code> property is <strong>required</strong>, and specifies that this media excerpt is either pre-specified, or that this media excerpt is to be selected randomly from the media pool specified in the top-level <a href="#mediaPool"><code>mediaPool</code></a> property. To specify that the media is to be a set, pre-selected excerpt, give <code>mediaType</code> the value <code>&quot;fixed&quot;</code>. Use the value <code>&quot;random&quot;</code> to specify that the excerpt should be randomly selected from the media pool.</p>
+<p><strong><code>media</code></strong></p>
+<p>If <code>mediaType</code> is <code>&quot;fixed&quot;</code>, you must specify the <code>ObjectId</code> of the media to use for the media excerpt. This <code>ObjectId</code> does not necessarily need to be included in the <code>mediaPool</code> array.</p>
+<p>These are example slide objects for fixed and random media excerpts, respectively:</p>
+<pre class="prettyprint source"><code>{
+    &quot;name&quot; : &quot;media-playback&quot;, 
+    &quot;mediaType&quot; : &quot;fixed&quot;, 
+    &quot;media&quot; : ObjectId(&quot;547c92416577a50a2ebde517&quot;)
+}</code></pre><pre class="prettyprint source"><code>{
+    &quot;name&quot; : &quot;media-playback&quot;, 
+    &quot;mediaType&quot; : &quot;random&quot;
+}</code></pre><h1>Content and Design</h1><h2>Editing the Welcome Screen</h2><p>The first screen shown during the study is easy to customize. Simply edit the file at <code>public/modules/core/views/home.client.view.html</code> to suit your needs.</p>
+<h2>Changing the Visual Design</h2><p>The simplest means of changing the visual design of a study is by editing the CSS files that govern the visual styling of the website. The main CSS file is located at <code>public/modules/core/css/core.css</code>. You may also provide your own CSS file. All CSS files (that end with the <code>.css</code> extension) placed in the <code>public/modules/**/css/</code> folders will be included.</p>
+<h2>Adding Custom Slides</h2><p>Adding your own slides is straightforward, and involves three separate steps:</p>
+<ol>
+<li>Construct the HTML file for your slide.</li>
+<li>Add an entry to the routing file.</li>
+<li>Include your slide's name in the structure design document for your study in the MongoDB database.</li>
+</ol>
+<h3>Constructing the HTML File for Your Slide</h3><p>The easiest way to go about doing this is by following the example of one of the existing HTML files in the <code>public/modules/core/views/</code> directory. There are a few important points to note about these files.</p>
+<p>First, the Emotion in Motion framework uses the <a href="http://getbootstrap.com/">Bootstrap</a> front-end framework for its visual styling. Most of the outer structure of each page is defined for you. Therefore, the HTML file for an individual slide needs to only contain what is to be presented as the actual slide content (there's no need to worry about the header, menus, etc.) For instance, this is (most of) the content of the file at <code>public/modules/core/views/pox-instructions.client.view.html</code>:</p>
+<pre class="prettyprint source"><code>&lt;div class=&quot;row&quot;>
+    &lt;div class=&quot;col-md-12&quot;>
+
+        &lt;h1 translate>Heart Sensor&lt;/h1>
+
+        &lt;p translate>Now, insert your index finger into the grey plastic clip. Your finger should touch the rubber stopper at the end.&lt;/p>
+    &lt;/div>
+&lt;/div>
+&lt;div class=&quot;row&quot;>
+    &lt;div class=&quot;col-md-12 text-center&quot;>
+        &lt;img src=&quot;/modules/core/img/hand-pox.png&quot;>
+    &lt;/div>
+&lt;/div>
+&lt;div class=&quot;row&quot;>
+    &lt;div class=&quot;col-md-12&quot;>
+        &lt;p>&lt;button class=&quot;btn btn-primary btn-lg&quot; data-ng-click=&quot;advanceSlide()&quot; translate>Continue&lt;/button>&lt;/p>
+    &lt;/div>
+&lt;/div></code></pre><p>Of note, each 'section' of the slide is surrounded with a <code>div</code> styled with the <code>row</code> class provided by Bootstrap. This particular slide is made of three rows. The first row gives the header title of the slide and a paragraph with instructions. The second row contains a centered image. The final row presents the button that allows the user to advance to the next slide. All styling (and layout) is accomplished through classes provided by Bootstrap; get to know its simple collection of classes--they are your friends for easily accomplishing even the most complex of layouts. Of course, nothing is stopping you from simply entering text here--you're free to include whatever you'd like.</p>
+<p>Take particular note of two things in this HTML. First, the tags that surround all text provided on this slide use the <code>translate</code> <a href="https://angularjs.org/">AngularJS</a> directive (e.g., <code>&lt;h1 translate&gt;Heart Sensor&lt;/h1&gt;</code>). Any tags that include this directive will be automatically translated to the selected language of the user, provided that you have <a href="#internationalization">provided the necessary translations</a>. Second, the <code>button</code> in the bottom row of the slide includes the <code>data-ng-click=&quot;advanceSlide()&quot;</code> attribute. Including this attribute on any clickable element on your page will advance the user to the next slide as you have specified in the <a href="#study-specification-structure">study specification structure</a>. Without this attribute, there will be no way for participants to advance through your study.</p>
+<h3>Adding Your Slide to the Routing File</h3><p>With your HTML slide complete, add it to the routing file at <code>public/modules/core/config/core.client.routes.js</code>. Here's the end of that file that ships with the framework:</p>
+<pre class="prettyprint source"><code>            .state('thank-you', {
+                url: '/thank-you',
+                templateUrl: 'modules/core/views/thank-you.client.view.html'
+            });
+    }
+]);</code></pre><p>To add an HTML file that you've created in the <code>public/modules/core/views/</code> directory called <code>credits.client.view.html</code>, and for this file to be accessible at the <code>/credits</code> URL, we'd simply add an entry to the end of the file as follows:</p>
+<pre class="prettyprint source"><code>            .state('thank-you', {
+                url: '/thank-you',
+                templateUrl: 'modules/core/views/thank-you.client.view.html'
+            })
+            .state('credits', {
+                url: '/credits',
+                templateUrl: 'modules/core/views/credits.client.view.html'
+            });
+    }
+]);</code></pre><p>The very first argument to this call to the <code>state</code> function (here, <code>'credits'</code>) is the name by which you will refer to this slide in your <a href="#study-specification-structure">study specification structure</a>.</p>
+<p>Finally, note that <em>adding new questionnaires to your study does not mean that you must create a new questionnaire HTML file</em>. Simply use the <code>&quot;questionnaire&quot;</code> name for your slide object in your <a href="#study-specification-structure">study specification structure</a> and use the <code>data</code> property of the slide object to <a href="#questionnaire-slides">describe the questionnaire</a>. Everything else will be handled by the framework.</p>
+<h3>Adding Your Slide to Your Study Specification Structure Document</h3><p>By whichever means is easiest for you (either through a <a href="http://docs.mongodb.org/ecosystem/tools/administration-interfaces/">GUI</a> or the <a href="https://docs.mongodb.org/manual/reference/">command line</a>), edit your <a href="#study-specification-structure">study specification structure</a> to include your new slide. As noted above, use the name you provided in the routing file to refer to your new slide in the structure document.</p>
+<h1>Media Files</h1><p>We are currently developing a means of video playback, but for now, only audio media excerpts are supported. The <a href="#the-max-patches">Max helper application</a> controls the playback of these media files. In order to add new audio files for use in your study, you must:</p>
+<ol>
+<li>Add information about the file to the MongoDB database.</li>
+<li>Place the file in the location in which the Max application looks for media files.</li>
+</ol>
+<h2>Adding a Media File to the MongoDB Database</h2><p>Information about media files are stored in the MongoDB database just like study specification documents. Each media file has its own document in the <code>media</code> collection in the database. A typical file looks like this:</p>
+<pre class="prettyprint source"><code>{ 
+    &quot;_id&quot; : ObjectId(&quot;538b777e2212e1eda2ff48ab&quot;), 
+    &quot;artist&quot; : &quot;Minnie Riperton&quot;, 
+    &quot;bpm&quot; : null, 
+    &quot;comments&quot; : null, 
+    &quot;emotion_tags&quot; : [
+        ObjectId(&quot;538bd9002212e1eda2ff5299&quot;)
+    ], 
+    &quot;excerpt_end_time&quot; : 205.54, 
+    &quot;excerpt_start_time&quot; : 125.53, 
+    &quot;genres&quot; : [
+        ObjectId(&quot;538bd1e52212e1eda2ff5297&quot;)
+    ], 
+    &quot;has_lyrics&quot; : true, 
+    &quot;key&quot; : null, 
+    &quot;label&quot; : &quot;H005&quot;, 
+    &quot;source&quot; : null, 
+    &quot;title&quot; : &quot;Reasons&quot;, 
+    &quot;type&quot; : &quot;audio&quot;, 
+    &quot;year&quot; : ISODate(&quot;1974-01-01T00:00:00.000+0000&quot;), 
+    &quot;file&quot; : ObjectId(&quot;538b8ae7352f20fbd59e20d2&quot;)
+}</code></pre><p>The only <em>required</em> properties that a media document in the database must have are <code>artist</code>, <code>title</code>, and <code>label</code>. <code>artist</code> and <code>title</code> are straightforward. The <code>label</code> is the a string that the Max application will use for finding and playing back the media excerpt. Here, then, Max will look for a <code>H005.wav</code> file if this media excerpt is selected for use in a session. In order to add your own media files, simply add a document to the <code>media</code> collection in the database (either through a <a href="http://docs.mongodb.org/ecosystem/tools/administration-interfaces/">GUI</a> or the <a href="https://docs.mongodb.org/manual/reference/">command line</a>), with at least the following information:</p>
+<pre class="prettyprint source"><code>{
+    artist: &quot;Artist Name Here&quot;,
+    title: &quot;Media Title Here&quot;,
+    label: &quot;First Part of Excerpt Filename Here (without extension)&quot;
+}</code></pre><h2>Max Application Media File Location</h2><p>The Max application looks for files in the <code>EiMpatch/media/</code> directory. If you add an excerpt to the database with the label <code>&quot;Bananarama&quot;</code>, then, Max will expect to find the file <code>EiMpatch/media/Bananarama.wav</code>.</p>
+<h1>Recorded Session Data</h1><p>In the demo applicaiton, two types of data are collected, recorded, and saved during a session: the data in the <code>trialData</code> document/object, and the data recorded from the sensors.  </p>
+<h2><code>trialData</code> Data</h2><p><code>trialData</code> objects contain metadata <em>about</em> the experiment session as well as responses given by the participant during the session. The metadata contain, for instance, the date and time of the session, as well as a copy of the study specification structure that was used to generate the session. Every <code>trialData</code> object is associated with a UUID (universally unique identifier) generated by the applicaiton. Upon completion of a session, a JSON file containing the <code>trialData</code> object for the session is stored in the <code>trials/</code> directory.</p>
+<h2>Sensor Data</h2><p>Sensor data is collected, recorded, and saved by the Max helper application. A sensor data file is generated for every media excerpt playback, and these files are stored in the <code>EiMpatch/data/</code> directory. As an example, if the UUID <code>92a7d913-63d7-4e37-af01-a6ca19ae2be3</code> was generated by the application for a specific participant, the following files would be generated from the session:</p>
+<pre class="prettyprint source"><code># The sensor data files for media excerpts labeled &quot;C002&quot; and &quot;T018&quot;:
+.\EiMpatch\data\92a7d913-63d7-4e37-af01-a6ca19ae2be3_C002.txt
+.\EiMpatch\data\92a7d913-63d7-4e37-af01-a6ca19ae2be3_T018.txt
+
+# The trialData JSON file:
+.\trials\92a7d913-63d7-4e37-af01-a6ca19ae2be3.trial.json</code></pre><h3>Sensor Data File Format</h3><p>In the demo app, sensor data is recorded into space-delimited CSV files with a single-line header giving the names of each column.</p>
+<h1>Helper Programs</h1><h2>The Max Patches</h2><h2>The Arduino Patches</h2><h1>Internationalization</h1><p>The use of the <code>translate</code> directive in any of your <a href="#constructing-the-html-file-for-your-slide">HTML code</a> will automatically translate the enclosed text to the language that the participant has selected. For this to work correctly, several things must be in place. We'll discuss these in terms of adding new text and translations for which the target language is already available as an option in the header menu, and adding a new language option to the menu itself.</p>
+<h2>Adding New Translated Text</h2><p>If your target language is already available in the header menu, you'll need to generate a translation file for all strings in the application for your target language. We use the <a href="https://angular-gettext.rocketeer.be/">angular-gettext</a> tool for integrating internationalization into the application. angular-gettext provides an extraction tool for extracting all strings in the application that require translation, and a compilation tool for including translations in the application once the strings have been translated.</p>
+<h3>Extracting Strings for Translation</h3><p>To extract strings for translation, simply run</p>
+<pre class="prettyprint source"><code>node_modules\grunt-cli\bin\grunt nggettext_extract</code></pre><p>This will produce the file <code>po\template.pot</code>. The <code>.pot</code> file contains entries for every string present in the application and can be used with a number of software tools or web services (we use <a href="https://crowdin.com/">Crowdin</a>) to generate a <code>.po</code> file. a <code>.po</code> file contains the <em>translations</em> of all strings into a specific language.</p>
+<p>The <code>.pot</code> file will extract all strings from all HTML pages included in your application. If, however, you have included text that is not directly part of an HTML page, but is included in one <em>through your modifications of the study specification document</em> (e.g., checkbox labels, etc.), you'll need to make a couple of changes before running the command to extract strings. To include these strings, they must be present in the <code>public\modules\core\config\core.client.missing-keys.js</code> file. This is what the <em>bottom</em> of that file may look like</p>
+<pre class="prettyprint source"><code>        gettext('119');
+        gettext('120');
+        gettext('121');
+        gettext('Begin Playback');
+    }
+]);</code></pre><p>Here, <code>'119'</code>, <code>'120'</code>, <code>'121'</code>, and <code>'Begin Playback'</code> are all strings that are not directly written into an HTML file in the application. If we also need to include the string, <code>'Good Morning!'</code> for translation, we would simply add it to the bottom of the file as follows</p>
+<pre class="prettyprint source"><code>        gettext('119');
+        gettext('120');
+        gettext('121');
+        gettext('Begin Playback');
+        gettext('Good Morning!');
+    }
+]);</code></pre><p>This change will now include <code>'Good Morning!'</code> for translation when <code>node_modules\grunt-cli\bin\grunt nggettext_extract</code> is run.</p>
+<p>If you're wondering whether or not you've included all such strings in the <code>core.client.missing-keys.js</code> file, they are easy to find. By default, angular-gettext's debug mode is enabled. When this is the case, when a user has selected a particular language from the header menu and a string is used in the application for which there is not translation, the string will be prepended with <code>[MISSING]:</code>. This indicates that the string that follows <code>[MISSING]:</code> should be included in the <code>core.client.missing-keys.js</code> file. To make sure you've included all 'missing' strings for translation, simply select the target language and go through the study, looking for any <code>[MISSING]:</code> indicators.</p>
+<p>Once you've generated a <code>.pot</code> file and used software or a web service to translate all the strings it contains, you'll be able to export a <code>.po</code> file. To compile these translations into your application, simply put the <code>.po</code> file in to the <code>po/</code> directory, and run</p>
+<pre class="prettyprint source"><code>node_modules\grunt-cli\bin\grunt nggettext_compile</code></pre><p>If and when this command completes successfully, the translations you provided in your <code>.po</code> file will be available to the application.</p>
+<h2>Adding New Languages</h2><p>If your target language for translation is not available in the dropdown menu from the header, it is straightforward to edit the application to make it available for your participants. To do so, edit the <code>public\modules\core\views\header.client.view.html</code> file. The <code>&lt;li&gt;...&lt;/li&gt;</code> sections represent the languages available in the dropdown menu. Here is the line that makes Taiwanese available as a selection</p>
+<pre class="prettyprint source"><code>&lt;li>&lt;a ng-click=&quot;setLanguage('zh_TW')&quot;>中文&lt;/a>&lt;/li></code></pre><p>Here, the string inside the parentheses should match the name of the <code>.po</code> file (you'll see in the demo app that a translation file is available for Taiwanese at <code>po/zh_TW.po</code>.) The text inside of the <code>&lt;a ...&gt;&lt;/a&gt;</code> tag gives the textual label that the participant will see in the dropdown list itself (here, '中文'). To add a language option for Zulu, then, we would need to add the file <code>po/zu.po</code>, and the following line to <code>public\modules\core\views\header.client.view.html</code></p>
+<pre class="prettyprint source"><code>&lt;li>&lt;a ng-click=&quot;setLanguage('zu')&quot;>Zulu&lt;/a>&lt;/li></code></pre><h2>Setting the Default Language</h2><p>The default language for your application is set in <code>public/application.js</code>. The demo app ships with English as the default language, as set by this line</p>
+<pre class="prettyprint source"><code>gettextCatalog.setCurrentLanguage('en');</code></pre><p>To choose a new default language, change <code>'en'</code> to be the language you would like to be the default (starting) language. For instance, to change this to use our Taiwanese translation as the default language, we would change this line to</p>
+<pre class="prettyprint source"><code>gettextCatalog.setCurrentLanguage('zh_TW');</code></pre><p>The default language only governs the language used when the first screen is initially loaded. After this point, participants are free to change the language using the dropdown menu in the header.</p>
+<h1>Building a Production Version of Your Study Application</h1><p>Running the application with <code>node_modules/grunt-cli/bin/grunt</code> starts a Node.js web server. By default, this runs in <em>development</em> mode, which can be considerably slower than running in <em>production</em> mode. Running in production mode requires that you have built a production-ready version of your application. To do so, run the following command from the root directory of the repository:</p>
+<pre class="prettyprint source"><code>node_modules/grunt-cli/bin/grunt build</code></pre><p>Once this successfully completes, use the following modification of the server startup command to run in production mode:</p>
+<pre class="prettyprint source"><code>NODE_ENV=production node_modules/grunt-cli/bin/grunt</code></pre><h1>Adding Custom Directives</h1><p>AngularJS directives provide much of the <em>special sauce</em> in the Emotion in Motion framework; they are, for instance, how questionnaires are automatically built based on the information you provide in the study specification structure document. There's plenty more that one can accomplish with additional custom directives, and we encourage you to write your own (and <a href="#contributing-changes">submit them</a> for the rest of us to use!). To do so, you'll need to get your feet wet with <a href="https://angularjs.org">AngularJS</a>, but feel free to look through what we've already written in <code>public/modules/core/directives/</code> to get started.</p>
+<h1>Contributing Changes</h1><p>The development of the Emotion in Motion framework is still in its early stages. If you would like to contribute to this ongoing work, please <a href="https://github.com/brennon/eim/pulls">submit a pull request</a>!</p>
+<p>If you do make changes, please ensure that you've added the appropriate tests
+. In addition, creating links to these pre- and post-commit git hooks will 
+ensure that all tests are still passing before committing any changes:</p>
+<pre class="prettyprint source"><code># From the root directory of the repository:
+ln -s ../../pre-commit.sh .git/hooks/pre-commit
+ln -s ../../post-commit.sh .git/hooks/post-commit</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config_custom.html">config/custom</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Sep 29 2015 13:00:00 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

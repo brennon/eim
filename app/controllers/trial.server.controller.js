@@ -1,8 +1,6 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
+// Module dependencies
 var fs = require('fs');
 var trialFileDirectory = './trials/';
 
