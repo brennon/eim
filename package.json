@@ -3,6 +3,7 @@
   "description": "Emotion in Motion Experiment Platform",
   "version": "0.1.0",
   "author": "Brennon Bortz",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "github.com:brennon/eim.git"
