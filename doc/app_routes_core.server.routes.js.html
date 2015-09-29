@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: config/custom.js</title>
+    <title>JSDoc: Source: app/routes/core.server.routes.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: config/custom.js</h1>
+    <h1 class="page-title">Source: app/routes/core.server.routes.js</h1>
 
     
 
@@ -29,33 +29,31 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
- * Custom configuration module
- * @module config/custom
- */
-
-/**
- * The customConfiguration object is included as a property on the object that
- * is returned when /app/config/config.js is required. To make custom
- * properties available to the rest of your application that may differ for
- * your particular deployment, add them as properties of the
- * customConfiguration object and require() the config.js file.
+ * Core server routes
  *
- * @type {{}}
- * @property {object}   metadata Metadata are stored on the trial data that
- * the application saves for each experiment session.
- * @property {number}   metadata.terminal The terminal number that will be
- * recorded for every session on this computer.
+ * @module
  */
-var customConfiguration = {};
 
-customConfiguration.metadata = {};
+// Controller for these routes
+var controller = require('../../app/controllers/core');
 
-customConfiguration.metadata.terminal = 1;
+// Helper modules
+var config = require('../../config/config');
 
-module.exports = exports = {
-    customConfiguration: customConfiguration
-};
-</code></pre>
+module.exports = function(app) {
+
+    // GET the index page
+    app.get('/', controller.index);
+
+    // GET the Node environment
+    app.get('/api/nodeenv', function(req, res) {
+        return res.status(200).json({ env: process.env.NODE_ENV });
+    });
+
+    app.get('/api/config', function(req, res) {
+        return res.status(200).json(config.customConfiguration);
+    });
+};</code></pre>
         </article>
     </section>
 

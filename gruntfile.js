@@ -178,21 +178,6 @@ module.exports = function(grunt) {
 
             },
             src: ['coverage/**/lcov.info']
-        },
-        jsdoc: {
-            dist: {
-                src: [
-                    'README.md',
-                    'app/controllers/**/*',
-                    'app/models/**/*',
-                    'app/routes/**/*',
-                    'app/views/**/*',
-                    'config/custom.js'
-                ],
-                options: {
-                    dest: 'doc'
-                }
-            }
         }
     });
 
