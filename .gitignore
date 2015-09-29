@@ -1,0 +1,17 @@
+.DS_Store
+.nodemonignore
+.sass-cache/
+npm-debug.log
+node_modules/
+app/tests/coverage/
+.bower-*/
+.idea/
+daemon/
+application.log
+config/custom.js
+.foreverignore
+EiMpatch/data/**
+EiMpatch/_DeletedItems
+.coveralls.yml
+coverage/
+server-coverage.sh
