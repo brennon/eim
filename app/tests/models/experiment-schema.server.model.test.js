@@ -12,7 +12,10 @@ var Media,
  * Test helpers
  */
 var rewire = require('rewire');
+
+/* jshint ignore:start */
 var sinon = require('sinon');
+/* jshint ignore:end */
 
 // Server
 var server = require('../../../server');
@@ -251,7 +254,7 @@ describe('ExperimentSchema Model', function() {
                 var model, testFunction;
 
                 before(function() {
-                    delete mongoose.connection.models['ExperimentSchema'];
+                    delete mongoose.connection.models.ExperimentSchema;
                     model = rewire('../../models/experiment-schema.server.model');
 
                     //noinspection JSUnresolvedFunction
@@ -280,7 +283,7 @@ describe('ExperimentSchema Model', function() {
         var blankSchema = { media: [] };
 
         before(function() {
-            delete mongoose.connection.models['ExperimentSchema'];
+            delete mongoose.connection.models.ExperimentSchema;
             model = rewire('../../models/experiment-schema.server.model');
 
             //noinspection JSUnresolvedFunction

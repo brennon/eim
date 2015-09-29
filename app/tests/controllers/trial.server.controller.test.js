@@ -9,10 +9,13 @@ var should = require('chai').should();
  * Test helpers
  */
 var rewire = require('rewire');
-var sinon = require('sinon');
 var httpMocks = require('node-mocks-http');
 var fs = require('fs');
 var request = require('supertest');
+
+/* jshint ignore:start */
+var sinon = require('sinon');
+/* jshint ignore:end */
 
 /**
  * Module under test
