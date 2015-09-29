@@ -73,7 +73,7 @@ module.exports = function() {
 	}
 
 	// Request body parsing middleware should be above methodOverride
-	app.use(bodyParser.urlencoded());
+	app.use(bodyParser.urlencoded({extended: true}));
 	app.use(bodyParser.json());
 	app.use(methodOverride());
 
@@ -85,6 +85,8 @@ module.exports = function() {
 
 	// Express MongoDB session storage
 	app.use(session({
+		resave: true,
+		saveUninitialized: false,
 		secret: config.sessionSecret,
 		store: new mongoStore({
 			db: mongoose.connection.db,
