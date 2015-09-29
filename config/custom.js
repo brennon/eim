@@ -24,6 +24,6 @@ customConfiguration.metadata = {};
 
 customConfiguration.metadata.terminal = 1;
 
-module.exports = exports = {
+module.exports = {
     customConfiguration: customConfiguration
 };
