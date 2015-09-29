@@ -140,7 +140,7 @@
                         expect(mockTrialData.data.metadata.terminal).toEqual(42);
                         done();
                     })
-                    .catch(function() {
+                    .catch(function(err) {
                         done(err);
                     });
                 $httpBackend.flush();
