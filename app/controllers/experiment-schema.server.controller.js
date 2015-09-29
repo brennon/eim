@@ -58,7 +58,7 @@ exports.random = function(req, res) {
                     schema[0].buildExperiment(function(err, builtExperiment) {
 
                         // Send the response
-                        res.json(200, builtExperiment);
+                        res.status(200).json(builtExperiment);
                     });
                 });
         }
