@@ -56,7 +56,7 @@ describe('OSCController', function() {
         controller.eventEmitter.constructor.name.should.equal('EventEmitter');
     });
 
-    describe('#buildLogMessageFromMessage', function() {
+    describe('buildLogMessageFromMessage()', function() {
 
         var originalError = console.error;
         var originalLog = console.log;
@@ -90,9 +90,15 @@ describe('OSCController', function() {
             });
         });
 
+        it('should log an error when no arguments were sent with the' +
+            ' message', function() {
+            buildLogMessageFromMessage([]);
+            errorSpy.calledOnce.should.equal(true);
+            errorSpy.args[0][0].should.match(/Malformed OSC error message received.*/);
+        });
+
         it('should only accept an array as its argument', function() {
             buildLogMessageFromMessage('not an array');
-
             errorSpy.calledOnce.should.equal(true);
             errorSpy.args[0][0].should.match(/Malformed OSC error message received.*/);
         });
