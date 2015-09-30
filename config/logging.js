@@ -59,24 +59,41 @@ switch((process.env.NODE_ENV || '').toLowerCase()){
     break;
 }
 
-function formatArgs(args){
-  return util.format.apply(util.format, Array.prototype.slice.call(args));
-}
+//function formatArgs(args){
+//  return util.format.apply(util.format, Array.prototype.slice.call(args));
+//}
+//
+//var appendString = '(Terminal: ' + customConfig.metadata.terminal + ')';
+//
+//function packageLoggerArguments(args) {
+//
+//  if (args.length === 1) {
+//    return args;
+//  }
+//
+//  if (typeof a[a.length - 1] === 'object') {
+//    var popped = a.pop();
+//  }
+//}
 
-var appendString = '(Terminal: ' + customConfig.metadata.terminal + ')';
+//console.log = function(){
+//  logger.info.apply(logger, formatArgs(arguments), appendString]);
+//};
+//console.info = function(){
+//  logger.info.apply(logger, [formatArgs(arguments), appendString]);
+//};
+//console.warn = function(){
+//  logger.warn.apply(logger, [formatArgs(arguments), appendString]);
+//};
+//console.error = function(){
+//  logger.error.apply(logger, [formatArgs(arguments), appendString]);
+//};
+//console.debug = function(){
+//  logger.debug.apply(logger, [formatArgs(arguments), appendString]);
+//};
 
-console.log = function(){
-  logger.info.apply(logger, [formatArgs(arguments), appendString]);
-};
-console.info = function(){
-  logger.info.apply(logger, [formatArgs(arguments), appendString]);
-};
-console.warn = function(){
-  logger.warn.apply(logger, [formatArgs(arguments), appendString]);
-};
-console.error = function(){
-  logger.error.apply(logger, [formatArgs(arguments), appendString]);
-};
-console.debug = function(){
-  logger.debug.apply(logger, [formatArgs(arguments), appendString]);
-};
+console.log = logger.info;
+console.info = logger.info;
+console.warn = logger.warn;
+console.error = logger.error;
+console.debug = logger.debug;

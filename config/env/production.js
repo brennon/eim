@@ -26,7 +26,8 @@ module.exports = {
         		'public/lib/UUID.js/dist/uuid.core.js',
         		'public/lib/angular-hotkeys/build/hotkeys.min.js',
 				'public/lib/angular-gettext/dist/angular-gettext.min.js',
-				'public/i18n/translations.js'
+				'public/i18n/translations.js',
+				'public/lib/angular-loggly-logger/angular-loggly-logger.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',
