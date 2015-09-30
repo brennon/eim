@@ -15,8 +15,7 @@ function buildLogMessageFromMessage(msg) {
 
     // Bail and log an error message if we didn't get an array
     if (!Array.isArray(msg) || msg.length === 0) {
-        console.error('Malformed OSC error message received:\n' +
-            util.inspect(msg));
+        console.error('Malformed OSC error message received.', msg);
         return;
     }
 
@@ -81,13 +80,11 @@ function createOSCReceiver(callback) {
 // Close sockets
 exports.closeSockets = function() {
     try {
-        //console.log('trying to close receiver');
         oscReceiver.close();
     } catch (e) {
     }
 
     try {
-        //console.log('trying to close sender');
         oscSender.close();
     } catch (e) {
     }
@@ -133,7 +130,7 @@ exports.sendJSONMessage = function(data, callback) {
             callback
         );
 
-        console.info('Sent OSC message:\n' + util.inspect(data));
+        console.info('Sent OSC message.', data);
     }
 
     // If outgoing port is not yet open, open it

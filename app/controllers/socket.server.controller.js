@@ -23,8 +23,7 @@ var io;
 
 // Logging function for incoming events
 function logEventReceived(event, data) {
-    console.log(event + ' event received from client with data:\n' +
-        util.inspect(data));
+    console.log(event + ' event received from client.', data);
 }
 
 exports.init = function(httpServer) {

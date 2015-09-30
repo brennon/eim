@@ -18,7 +18,7 @@ exports.create = function(req, res) {
             req.body.metadata.session_number + '.trial.json';
 
     } else {
-        console.log('Failed to create trial JSON file. Bad request received.');
+        console.log('Failed to create trial JSON file. Bad request received.', req);
         return res.status(500).json({
             error: 'No metadata.session_number property found.',
             request_body: req.body
