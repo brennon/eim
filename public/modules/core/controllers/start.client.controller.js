@@ -62,12 +62,12 @@ angular.module('core').controller('StartController', [
 
         this.errorTimeout = $timeout(function() {
         }, 10000);
+
         this.errorTimeout.then(function() {
-            if (!$scope.readyToAdvance) {
+            if (!$scope.readyToAdvance()) {
                 $scope.addGenericErrorAlert();
 
-                throw new Error('Max had not responded to startExperiment' +
-                    ' message after 10 seconds');
+                throw new Error('Max did not responded to the startExperiment message within 10 seconds.');
             }
         });
     }

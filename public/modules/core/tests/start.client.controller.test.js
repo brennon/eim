@@ -170,7 +170,7 @@
 
                 $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
 
-                mockScope.readyToAdvance = true;
+                mockScope.readyToAdvance = function() { return true; };
                 expect($timeout.flush).not.toThrow();
             });
 
@@ -183,7 +183,7 @@
                     $timeout: $timeout
                 });
 
-                mockScope.readyToAdvance = false;
+                mockScope.readyToAdvance = function() { return false; };
 
                 $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
 
