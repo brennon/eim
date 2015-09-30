@@ -3,6 +3,6 @@
 /**
  * `OSC` routes
  *
- * @module {function} "experiment-schema.server.routes"
+ * @module {function} "osc.server.routes"
  */
 module.exports = function(app) {};
