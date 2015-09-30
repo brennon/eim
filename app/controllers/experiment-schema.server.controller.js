@@ -90,12 +90,16 @@ exports.random = function(req, res) {
                     schema[0].buildExperiment(function(err, builtExperiment) {
 
                         if (err) {
+
+                            // Report the error and set the response
                             console.error('Error building experiment from' +
                                 ' ExperimentSchema', err);
-                        }
+                            res.status(500).json({error: err.message});
+                        } else {
 
-                        // Send the response
-                        res.status(200).json(builtExperiment);
+                            // Send the response
+                            res.status(200).json(builtExperiment);
+                        }
                     });
                 });
         }

@@ -28,6 +28,7 @@ cp -R app-orig/tests app/
 NODE_ENV=test node_modules/.bin/mocha --require server.js app/tests/**/* -R mocha-lcov-reporter > coverage/server/lcov_temp.info
 MOCHARESULT=$?
 sed 's,SF:,SF:./app/,' coverage/server/lcov_temp.info > coverage/server/lcov.info
+NODE_ENV=test node_modules/.bin/mocha --require server.js app/tests/**/* -R html-cov > coverage/server/index.html
 rm -f coverage/server/lcov_temp.info
 rm -rf app
 mv app-orig app
