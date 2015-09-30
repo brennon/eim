@@ -32,6 +32,7 @@
     "template": "templates/default",
     "encoding": "utf8",
     "destination": "./doc/",
-    "recurse": true
+    "recurse": true,
+    "access": "all"
   }
 }

@@ -14,9 +14,9 @@ var http = BluebirdPromise.promisifyAll(require('http'));
 var execFile = require('child_process').execFile;
 
 // Require the logging module in all environments but test
-if (process.env.NODE_ENV !== 'test') {
+//if (process.env.NODE_ENV !== 'test') {
     require('./config/logging');
-}
+//}
 
 /**
  * Main application entry file.

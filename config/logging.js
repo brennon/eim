@@ -41,8 +41,13 @@ switch ((process.env.NODE_ENV || '').toLowerCase()) {
         });
         break;
     case 'test':
-        // Don't set up the logger overrides
-        return;
+        console.log('TESTLOGGER');
+        logger.add(winston.transports.Console, {
+            colorize: true,
+            timestamp: true,
+            level: 'debug'
+        });
+        break;
     default:
         logger.add(winston.transports.Console, {
             colorize: true,
@@ -116,5 +121,6 @@ console.error = function() {
     logger.error.apply(logger, formatArgs(arguments));
 };
 console.debug = function() {
+    console.log('here');
     logger.debug.apply(logger, formatArgs(arguments));
 };
