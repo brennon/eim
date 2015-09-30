@@ -7,12 +7,15 @@ var mongoose = require('mongoose'),
 // List of Experiment schemas
 exports.list = function(req, res) {
 
+    console.info('Fetching all ExperimentSchemas.');
+
     ExperimentSchema.find({}, function(err, schemas) {
 
         if (err) {
-            res.json(500, {error: err.message});
+            console.error('Error fetching all ExperimentSchemas.', err);
+            res.status(500).json({error: err.message});
         } else {
-            res.json(200, schemas);
+            res.status(200).json(schemas);
         }
     });
 };
@@ -20,17 +23,25 @@ exports.list = function(req, res) {
 // Build a random experiment from a random ExperimentSchema
 exports.random = function(req, res) {
 
+    console.info('Building experiment from a random ExperimentSchema.')
+
     function errorHandler(err) {
-        res.json(500, {error: err.message});
+        res.status(500).json({error: err.message});
     }
 
     ExperimentSchema.count({}, function(err, count) {
 
         if (err) {
+
+            console.error('Error counting ExperimentSchemas.', err);
             return errorHandler(err);
+
         } else if (count < 1) {
+
+            console.warn('No ExperimentSchemas found in database.');
             return errorHandler(new Error('No experiment schemas in' +
                 ' database.'));
+
         } else {
 
             // Get a random number from [0, number of schema)
@@ -44,12 +55,21 @@ exports.random = function(req, res) {
                 .exec(function(err, schema) {
 
                     if (err) {
+                        console.error(
+                            'Error fetching one ExperimentSchema.',
+                            err
+                        );
                         return errorHandler(err);
                     }
 
                     // Using the controller, build an experiment from this
                     // schema
                     schema[0].buildExperiment(function(err, builtExperiment) {
+
+                        if (err) {
+                            console.error('Error building experiment from' +
+                                ' ExperimentSchema', err);
+                        }
 
                         // Send the response
                         res.status(200).json(builtExperiment);
