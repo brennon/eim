@@ -48,7 +48,7 @@ describe('ExperimentSchema Controller Tests', function() {
             describe('when a schema is not available', function() {
 
                 // Mock ExperimentSchema model for controller
-                var errorMessage = 'No schema found';
+                var errorMessage = 'No schema found.';
                 var experimentSchemaMock = {
                     find: function(filter, callback) {
                         callback(new Error(errorMessage));
