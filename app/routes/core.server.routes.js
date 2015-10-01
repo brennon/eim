@@ -20,7 +20,8 @@ module.exports = function(app) {
      *
      * @example http://<ADDRESS>:<PORT>/
      *
-     * @name Index page
+     * @name Index page route
+     * @inner
      */
     app.get('/', controller.index);
 
@@ -29,7 +30,8 @@ module.exports = function(app) {
      *
      * @example http://<ADDRESS>:<PORT>/api/nodeenv
      *
-     * @name Node environment
+     * @name Node environment route
+     * @inner
      */
     app.get('/api/nodeenv', function(req, res) {
         return res.status(200).json({ env: process.env.NODE_ENV });
@@ -40,7 +42,8 @@ module.exports = function(app) {
      *
      * @example http://<ADDRESS>:<PORT>/api/config
      *
-     * @name Custom configuration information
+     * @name Custom configuration information route
+     * @inner
      */
     app.get('/api/config', function(req, res) {
         return res.status(200).json(config.customConfiguration);
