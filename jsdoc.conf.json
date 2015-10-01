@@ -14,7 +14,9 @@
       "app/routes/",
       "app/views/",
       "config/custom.js",
-      "public/modules/"
+      "public/modules/",
+      "public/application.js",
+      "server.js"
     ],
     "includePattern": ".+\\.js(doc)?$",
     "excludePattern": "(^|\\/|\\\\)_"

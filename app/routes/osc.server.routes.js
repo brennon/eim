@@ -3,6 +3,7 @@
 /**
  * `OSC` routes
  *
- * @module {function} OSCServerRoutes
+ * @module {function} Node.OSCServerRoutes
+ * @memberof Node
  */
 module.exports = function(app) {};

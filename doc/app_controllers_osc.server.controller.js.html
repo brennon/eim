@@ -34,7 +34,8 @@
  * This module provides functionality for communication to and from the
  * server over [Open Sound Control](http://opensoundcontrol.org/).
  *
- * @module {{}} OSCServerController
+ * @module {{}} Node.OSCServerController
+ * @memberof Node
  */
 
 /*
@@ -109,6 +110,16 @@ function incomingMessageHandler(msg) {
 
     } else {
 
+        /**
+         * This event is fired when the server receives an OSC message.
+         *
+         * The object sent with this event is a JavaScript object
+         * representation of the OSC message.
+         *
+         * @event oscMessageReceived
+         * @type {{}}
+         */
+
         exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
     }
 }
@@ -154,8 +165,8 @@ exports.closeSockets = function() {
  *
  * This method first ensures that both sockets are closed, then opens each
  * socket on the ports specified in {@link
- * module:OSCServerController.outgoingPort|outgoingPort} and {@link
- * module:OSCServerController.incomingPort|incomingPort}.
+ * Node.module:OSCServerController.outgoingPort|outgoingPort} and {@link
+ * Node.module:OSCServerController.incomingPort|incomingPort}.
  *
  * @param {function} callback Will be called after initialization is complete
  */
@@ -179,16 +190,6 @@ exports.init = function(callback) {
 };
 
 /**
- * This event is fired when the server receives an OSC message.
- *
- * The object sent with this event is a JavaScript object representation of
- * the OSC message.
- *
- * @event oscMessageReceived
- * @type {{}}
- */
-
-/**
  * This `EventEmitter` emits OSC-related events. Consumers can listen here
  * to be notified when OSC messages are sent or received.
  *
@@ -203,8 +204,9 @@ exports.eventEmitter = new EventEmitter();
  * The object to be sent must match the requirements for an OSC message or
  * bundle as specified by [osc-min](https://www.npmjs.com/package/osc-min/).
  * The message will be sent to the host in {@link
- * module:OSCServerController.outgoingHost|outgoingHost} on the port in {@link
- * module:OSCServerController.outgoingPort|outgoingPort}.
+ * Node.module:OSCServerController.outgoingHost|outgoingHost} on the port in
+ * {@link
+ * Node.module:OSCServerController.outgoingPort|outgoingPort}.
  *
  * @param {{}} data The object to be sent over OSC
  * @param {function} callback The function to be called after the message
@@ -243,8 +245,9 @@ exports.sendJSONMessage = function(data, callback) {
  * The object to be sent must match the requirements for an OSC message or
  * bundle as specified by [osc-min](https://www.npmjs.com/package/osc-min/).
  * The message will be sent to the host in {@link
- * module:OSCServerController.outgoingHost|outgoingHost} on the port in {@link
- * module:OSCServerController.outgoingPort|outgoingPort}. The response
+ * Node.module:OSCServerController.outgoingHost|outgoingHost} on the port in
+ * {@link
+ * Node.module:OSCServerController.outgoingPort|outgoingPort}. The response
  * is augmented to include the message that was sent.
  *
  * @param {http.ClientRequest} req The client request
@@ -274,13 +277,13 @@ exports.sendMessage = function(req, res) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="module-ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="module-ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="module-OSCServerController.html">OSCServerController</a></li><li><a href="module-OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="module-SocketServerController.html">SocketServerController</a></li><li><a href="module-TrialServerController.html">TrialServerController</a></li><li><a href="module-TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Events</h3><ul><li><a href="module-OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="module-SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="CustomConfiguration.html">CustomConfiguration</a></li><li><a href="ExperimentManager.html">ExperimentManager</a></li><li><a href="ExperimentSchemaSchema.html">ExperimentSchemaSchema</a></li><li><a href="MediaSchema.html">MediaSchema</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="ExperimentManager.html">ExperimentManager</a></li><li><a href="Node.html">Node</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 10:31:19 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 11:09:56 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

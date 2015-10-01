@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: app/controllers/trial.server.controller.js</title>
+    <title>JSDoc: Source: server.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: app/controllers/trial.server.controller.js</h1>
+    <h1 class="page-title">Source: server.js</h1>
 
     
 
@@ -29,72 +29,83 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
- * Trial Controller module
- *
- * This module provides functionality for saving trial files to disk.
- *
- * @module {{}} Node.TrialServerController
- * @memberof Node
+ * @namespace Node
  */
 
-// Module dependencies
-var fs = require('fs');
-
-/**
- * The directory on disk, relative to the root of the installation, where
- * trial JSON files will be saved.
- *
- * @private
- * @type {string}
+/*
+  Module dependencies.
  */
-var trialFileDirectory = './trials/';
 
-/**
- * Creates a new trial file. This method requires that the body of the
- * request be a JSON object with the `metadata.session_number` set. The
- * trial is then saved to {@link
- * Node.module:TrialServerController~trialFileDirectory|trialFileDirectory}
- * with the name `&lt;SESSIONNUMBER>.trial.json`.
- *
- * @param {http.ClientRequest} req The client request
- * @param {http.ServerResponse} res The server response
- * @return {undefined}
+var BluebirdPromise = require('bluebird');
+BluebirdPromise.longStackTraces();
+
+var init = require('./config/init')();
+var config = require('./config/config');
+var mongoose = BluebirdPromise.promisifyAll(require('mongoose'));
+var http = BluebirdPromise.promisifyAll(require('http'));
+var execFile = require('child_process').execFile;
+
+// Require the logging module in all environments but test
+//if (process.env.NODE_ENV !== 'test') {
+    require('./config/logging');
+//}
+
+/*
+  Main application entry file.
+
+  Please note that the order of loading is important.
  */
-exports.create = function(req, res) {
-    console.info('Creating new trial JSON file.');
 
-    var outputFilename;
+var app, server;
 
-    if (req.body.hasOwnProperty('metadata') &amp;&amp;
-        req.body.metadata.hasOwnProperty('session_number') &amp;&amp;
-        typeof req.body.metadata.session_number === 'string' &amp;&amp;
-        req.body.metadata.session_number) {
+// Instead of exporting the app as we did before, export a promise. On
+// resolution, the handler for this promise will be passed the started app.
+exports = module.exports = mongoose.connectAsync(config.db)
+    .then(function() {
+        console.log('EIM application starting');
+        console.log('Connected to database');
 
-        outputFilename = trialFileDirectory +
-            req.body.metadata.session_number + '.trial.json';
+        app = require('./config/express')();
+        console.log('Started Express server');
+    })
+    .then(function() {
+        return http.createServer(app);
+    })
+    .then(function(createdServer) {
+        server = createdServer;
+        return server.listenAsync(config.port);
+    })
+    .then(function() {
 
-    } else {
-        console.error('Failed to create trial JSON file. Bad request' +
-            ' received.', req);
-        return res.status(500).json({
-            error: 'No metadata.session_number property found.',
-            request_body: req.body
-        });
-    }
+        // Require OSC
+        require('./app/controllers/osc').init();
+        console.log('Initialized OSC');
 
-    fs.writeFile(outputFilename,
-        JSON.stringify(req.body, null, 4),
-        function(err) {
+        // Fire up SocketIO
+        var socket = require('./app/controllers/socket');
+        socket.init(server);
+        console.log('Initialized Socket.IO');
 
-            if (err) {
-                console.error('Could not write new trial JSON file.', err);
-                res.status(500).json({error: err.message});
-            } else {
-                console.info('Wrote new JSON file to ' + outputFilename);
-                res.status(200).json({});
-            }
-        });
-};
+        // Expose app--see above comment about exporting a promise instead
+        //exports = module.exports = app;
+
+        // Logging initialization
+        console.log('EIM application successfully started on port ' +
+            config.port);
+
+        // FIXME: This is hacky sh*t
+        // If we are in production mode, try and open Chrome
+        if (process.env.NODE_ENV === 'production') {
+            var chrome = 'C:\\Program' +
+                ' Files\\Google\\Chrome\\Application\\chrome.exe';
+            execFile(chrome, ['--kiosk', 'http://localhost:3000']);
+        }
+
+        return app;
+    })
+    .catch(function(e) {
+        console.error('Error starting EIM application: ' + e.message);
+    });
 </code></pre>
         </article>
     </section>

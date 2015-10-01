@@ -3,7 +3,8 @@
 /**
  * `ExperimentSchema` controller
  *
- * @module {{}} ExperimentSchemaServerController
+ * @module {{}} Node.ExperimentSchemaServerController
+ * @memberof Node
  */
 
 // Module dependencies

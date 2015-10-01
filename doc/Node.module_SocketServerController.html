@@ -28,10 +28,6 @@
 
 <header>
     
-        
-            
-        
-    
 </header>
 
 <article>
@@ -56,7 +52,8 @@ through a <a href="http://socket.io/">socket.io</a> connection.</p>
 <li><p>Incoming messages:</p>
 <ol>
 <li>SocketServerController module listens for <code>oscMessageReceived</code> events
-emitted by the <a href="module-OSCServerController.html">OSCServerController</a> module</li>
+emitted by the <a href="Node.module_OSCServerController.html">OSCServerController</a>
+module</li>
 <li>SocketServerController module emits its own
 <code>oscMessageReceived</code> event on client sockets with the same data</li>
 </ol>
@@ -65,20 +62,6 @@ emitted by the <a href="module-OSCServerController.html">OSCServerController</a>
         
 
         
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <dl class="details">
@@ -122,20 +105,6 @@ emitted by the <a href="module-OSCServerController.html">OSCServerController</a>
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         
     
     </div>
@@ -170,7 +139,7 @@ emitted by the <a href="module-OSCServerController.html">OSCServerController</a>
     <p>Initializes the module. Once initialized, clients that connect over
 socket.io receive the messages this module emits, as described above. The
 server then also listens on each client connection for OSC messages to be
-sent using the <a href="module-OSCServerController.html">OSCServerController</a>
+sent using the <a href="Node.module_OSCServerController.html">OSCServerController</a>
 module, also as described above.</p>
 </div>
 
@@ -264,7 +233,7 @@ module, also as described above.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line51">line 51</a>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line53">line 53</a>
     </li></ul></dd>
     
 
@@ -329,7 +298,7 @@ module, also as described above.</p>
 
 <div class="description">
     <p>This event is fired when the module receives an OSC message from
-the <a href="module-OSCServerController.html">OSCServerController</a>
+the <a href="Node.module_OSCServerController.html">OSCServerController</a>
 module.</p>
 <p>The object sent with this event is a JavaScript object
 representation of the OSC message.</p>
@@ -386,7 +355,7 @@ representation of the OSC message.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line86">line 86</a>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line88">line 88</a>
     </li></ul></dd>
     
 
@@ -426,7 +395,7 @@ representation of the OSC message.</p>
 <div class="description">
     <p>This event is fired when the module sends an OSC message
 using the
-<a href="module-OSCServerController.html">OSCServerController</a>
+<a href="Node.module_OSCServerController.html">OSCServerController</a>
 module.</p>
 <p>The object sent with this event is a JavaScript object
 representation of the OSC message.</p>
@@ -483,7 +452,7 @@ representation of the OSC message.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line67">line 67</a>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -521,13 +490,13 @@ representation of the OSC message.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="module-ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="module-ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="module-OSCServerController.html">OSCServerController</a></li><li><a href="module-OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="module-SocketServerController.html">SocketServerController</a></li><li><a href="module-TrialServerController.html">TrialServerController</a></li><li><a href="module-TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Events</h3><ul><li><a href="module-OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="module-SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="CustomConfiguration.html">CustomConfiguration</a></li><li><a href="ExperimentManager.html">ExperimentManager</a></li><li><a href="ExperimentSchemaSchema.html">ExperimentSchemaSchema</a></li><li><a href="MediaSchema.html">MediaSchema</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="ExperimentManager.html">ExperimentManager</a></li><li><a href="Node.html">Node</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 10:31:19 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 11:09:56 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

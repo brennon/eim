@@ -1,7 +1,11 @@
 'use strict';
 
 /**
- * Module dependencies.
+ * @namespace Node
+ */
+
+/*
+  Module dependencies.
  */
 
 var BluebirdPromise = require('bluebird');
@@ -18,9 +22,10 @@ var execFile = require('child_process').execFile;
     require('./config/logging');
 //}
 
-/**
- * Main application entry file.
- * Please note that the order of loading is important.
+/*
+  Main application entry file.
+
+  Please note that the order of loading is important.
  */
 
 var app, server;

@@ -5,7 +5,8 @@
  *
  * This module provides functionality for saving trial files to disk.
  *
- * @module {{}} TrialServerController
+ * @module {{}} Node.TrialServerController
+ * @memberof Node
  */
 
 // Module dependencies
@@ -24,8 +25,8 @@ var trialFileDirectory = './trials/';
  * Creates a new trial file. This method requires that the body of the
  * request be a JSON object with the `metadata.session_number` set. The
  * trial is then saved to {@link
- * module:TrialServerController~trialFileDirectory|trialFileDirectory}
- * with the name `<SESSION NUMBER>.trial.json`.
+ * Node.module:TrialServerController~trialFileDirectory|trialFileDirectory}
+ * with the name `<SESSIONNUMBER>.trial.json`.
  *
  * @param {http.ClientRequest} req The client request
  * @param {http.ServerResponse} res The server response

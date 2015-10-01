@@ -4,7 +4,8 @@
 /**
  * `Trial` routes
  *
- * @module {function} TrialServerRoutes
+ * @module {function} Node.TrialServerRoutes
+ * @memberof Node
  */
 
 module.exports = function(app) {

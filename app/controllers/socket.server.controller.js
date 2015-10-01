@@ -20,11 +20,13 @@
  * - Incoming messages:
  *
  *  1. SocketServerController module listens for `oscMessageReceived` events
- *  emitted by the {@link module:OSCServerController|OSCServerController} module
+ *  emitted by the {@link Node.module:OSCServerController|OSCServerController}
+ *  module
  *  2. SocketServerController module emits its own
  *  `oscMessageReceived` event on client sockets with the same data
  *
- * @module {{}} SocketServerController
+ * @module {{}} Node.SocketServerController
+ * @memberof Node
  */
 
 // Module dependencies
@@ -42,7 +44,7 @@ function logEventReceived(event, data) {
  * Initializes the module. Once initialized, clients that connect over
  * socket.io receive the messages this module emits, as described above. The
  * server then also listens on each client connection for OSC messages to be
- * sent using the {@link module:OSCServerController|OSCServerController}
+ * sent using the {@link Node.module:OSCServerController|OSCServerController}
  * module, also as described above.
  *
  * @param {http.Server} httpServer A Node.js HTTP server
@@ -67,7 +69,7 @@ exports.init = function(httpServer) {
                 /**
                  * This event is fired when the module sends an OSC message
                  * using the
-                 * {@link module:OSCServerController|OSCServerController}
+                 * {@link Node.module:OSCServerController|OSCServerController}
                  * module.
                  *
                  * The object sent with this event is a JavaScript object
@@ -85,7 +87,7 @@ exports.init = function(httpServer) {
 
             /**
              * This event is fired when the module receives an OSC message from
-             * the {@link module:OSCServerController|OSCServerController}
+             * the {@link Node.module:OSCServerController|OSCServerController}
              * module.
              *
              * The object sent with this event is a JavaScript object

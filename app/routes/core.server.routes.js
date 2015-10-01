@@ -4,7 +4,8 @@
  * `Core` routes. These are the 'core' routes made available by the web server
  * that allow access to basic, 'core' functionality.
  *
- * @module {function} CoreServerRoutes
+ * @module {function} Node.CoreServerRoutes
+ * @memberof Node
  */
 
 // Controller for these routes

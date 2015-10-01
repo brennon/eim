@@ -2,8 +2,8 @@
 
 /**
  * Custom configuration module
- * @module config/custom
- * @namespace CustomConfiguration
+ * @module Node.CustomConfiguration
+ * @memberof Node
  */
 
 /**
@@ -13,7 +13,6 @@
  * your particular deployment, add them as properties of the
  * customConfiguration object and require() the config.js file.
  *
- * @memberof CustomConfiguration
  * @type {{}}
  * @property {object}   metadata Metadata are stored on the trial data that
  * the application saves for each experiment session.

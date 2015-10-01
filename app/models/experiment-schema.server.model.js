@@ -9,11 +9,12 @@ var _ = require('lodash');
 var BluebirdPromise = require('bluebird');
 
 /**
- * The Mongoose `Schema` for an `ExperimentSchema`. This schema is used in
+ * The [Mongoose](http://mongoosejs.com/) `Schema` for an
+ * `ExperimentSchema`. This schema is used in
  * creating the Mongoose `Model` for an `ExperimentSchema`.
  *
- * @module "experiment-schema.server.model"
- * @namespace ExperimentSchemaSchema
+ * @module Node.ExperimentSchemaServerModel
+ * @memberof Node
  * @type {mongoose.Schema}
  */
 var ExperimentSchemaSchema = new Schema({
@@ -38,7 +39,6 @@ var ExperimentSchemaSchema = new Schema({
  *
  * @private
  * @inner
- * @memberof ExperimentSchemaSchema
  * @param {*} value The value to be validated
  * @returns {Boolean} `true` if the validation is successful; `false` otherwise
  */
@@ -55,7 +55,6 @@ function requiredArrayValidator(value) {
  *
  * @private
  * @inner
- * @memberof ExperimentSchemaSchema
  * @param {ExperimentSchema} schema
  * @param {Number} index The index into `schema`'s `media` array
  * @param {mongoose.ObjectId} mediaId The ID corresponding to the document
@@ -107,12 +106,12 @@ ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
  * This method draws one available `ExperimentSchema` document at random
  * from the database. This `media` array of this document is populated. For
  * any fixed media specified in the document, their details are found and
- * inserted directly into the final document. The callback
+ * inserted directly into the final document. The callback will be called
+ * upon completion and provided with the 'built' experiment.
  *
  * @function buildExperiment
  * @instance
- * @memberof ExperimentSchemaSchema
- * @param {ExperimentSchemaSchema~buildExperimentCallback} callback
+ * @param {Node.module:ExperimentSchemaServerModel~buildExperimentCallback} callback Will be called upon completion
  */
 ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
 
@@ -161,7 +160,7 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
 };
 
 /**
- * @callback ExperimentSchemaSchema~buildExperimentCallback
+ * @callback buildExperimentCallback
  * @param {*} err Any error that `buildExperiment()` encountered
  * @param {ExperimentSchema} schema The built `ExperimentSchema`
  */
