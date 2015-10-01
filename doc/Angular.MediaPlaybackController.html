@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ExperimentManager</title>
+    <title>JSDoc: Class: MediaPlaybackController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ExperimentManager</h1>
+    <h1 class="page-title">Class: MediaPlaybackController</h1>
 
     
 
@@ -31,7 +31,7 @@
         <h2>
             <span class="ancestors"><a href="Angular.html">Angular</a>.</span>
         
-        ExperimentManager
+        MediaPlaybackController
         </h2>
         
     
@@ -44,16 +44,15 @@
 
     
 
-    <h4 class="name" id="ExperimentManager"><span class="type-signature"></span>new ExperimentManager<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="MediaPlaybackController"><span class="type-signature"></span>new MediaPlaybackController<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>The <code>ExperimentManager</code> service has two main responsibilities: managing
-the state (the 'slide' that is presented to the user) and the
-<a href="Angular.TrialData.html">TrialData</a> service.</p>
+    <p>In the demo application, the <code>MediaPlaybackController</code> is responsible for
+initiating the playback of media excerpts.</p>
 </div>
 
 
@@ -97,7 +96,7 @@ the state (the 'slide' that is presented to the user) and the
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_services_experiment-manager.client.service.js.html">public/modules/core/services/experiment-manager.client.service.js</a>, <a href="public_modules_core_services_experiment-manager.client.service.js.html#line3">line 3</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -135,6 +134,13 @@ the state (the 'slide' that is presented to the user) and the
      
 
     
+        <h3 class="subsection-title">Namespaces</h3>
+
+        <dl>
+            <dt><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></dt>
+            <dd></dd>
+        </dl>
+    
 
     
 
@@ -146,15 +152,37 @@ the state (the 'slide' that is presented to the user) and the
 
     
 
-    <h4 class="name" id="advanceSlide"><span class="type-signature"></span>advanceSlide<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="oscMessageReceivedListener"><span class="type-signature"></span>oscMessageReceivedListener<span class="signature">(data)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Advances the state to the next state as defined in the study
-specification document (see the <a href="index.html">README</a>).</p>
+    <p>This method is called when the server fires the
+<code>oscMessageReceived</code> event on the socket.io socket to which the
+client is connected.</p>
+<p>The message may indicate one of three things:</p>
+<ol>
+<li>Playback has begun<ul>
+<li>In this case, the page is simply blacked out.</li>
+</ul>
+</li>
+<li>Playback has ended<ul>
+<li>Here, the blackout is removed, the emotion index is requestd,
+<a href="Angular.MediaPlaybackController_$scope.html#currentButtonLabel">$scope#currentButtonLabel</a>
+is set to <code>'Continue'</code>, <a href="Angular.MediaPlaybackController_$scope.html#mediaHasPlayed">$scope#mediaHasPlayed</a>
+is set to <code>true</code>, and <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a> is set to <code>true</code>.</li>
+</ul>
+</li>
+<li>The emotion index has been received<ul>
+<li>In this last case, <a href="Angular.TrialData.html">TrialData</a> is
+updated with the received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a>
+is set to <code>false</code>, and the slide is advanced by calling
+<a href="Angular.ExperimentManager.html#advanceSlide">ExperimentManager#advanceSlide</a>.</li>
+</ul>
+</li>
+</ol>
 </div>
 
 
@@ -163,6 +191,55 @@ specification document (see the <a href="index.html">README</a>).</p>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The data sent with the event</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -198,12 +275,19 @@ specification document (see the <a href="index.html">README</a>).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_services_experiment-manager.client.service.js.html">public/modules/core/services/experiment-manager.client.service.js</a>, <a href="public_modules_core_services_experiment-manager.client.service.js.html#line24">line 24</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line171">line 171</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Node.module_SocketServerController.html">Node.module:SocketServerController</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -247,25 +331,26 @@ specification document (see the <a href="index.html">README</a>).</p>
 
     
 
-    <h4 class="name" id="masterReset"><span class="type-signature"></span>masterReset<span class="signature">()</span><span class="type-signature"> &rarr; {$q.promise}</span></h4>
+    <h4 class="name" id="requestEmotionIndex"><span class="type-signature"></span>requestEmotionIndex<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Resets the experiment session.</p>
-<p>In resetting the session, after resetting the <a href="Angular.TrialData.html">TrialData</a> service, <code>masterReset()</code> does
-the following:</p>
-<ul>
-<li>Generates a new UUID for the session number</li>
-<li>Fetches a random experiment schema from the backend</li>
-<li><p>Gets the terminal number (as specified in
-<code>config/custom.js</code> for this specific machine</p>
-<p>The <a href="Angular.TrialData.html">TrialData</a> service is then updated
-with these new data.</p>
-</li>
-</ul>
+    <p>Requests the most recently recorded emotion index from the server
+over OSC. The message used to retrieve this value is like the
+following:</p>
+<pre class="prettyprint source"><code>{
+    oscType: 'message',
+    address: '/eim/control/emotionIndex',
+    args: [
+        {
+            type: 'string',
+            value: &lt;SESSIONNUMBER>
+        }
+    ]
+}</code></pre>
 </div>
 
 
@@ -309,7 +394,7 @@ with these new data.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_services_experiment-manager.client.service.js.html">public/modules/core/services/experiment-manager.client.service.js</a>, <a href="public_modules_core_services_experiment-manager.client.service.js.html#line50">line 50</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -335,11 +420,6 @@ with these new data.</p>
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>This promise is resolved when the reset
-is complete and rejected if the reset fails.</p>
-</div>
-
 
 
 <dl>
@@ -348,7 +428,7 @@ is complete and rejected if the reset fails.</p>
     </dt>
     <dd>
         
-<span class="param-type">$q.promise</span>
+<span class="param-type">undefined</span>
 
 
     </dd>

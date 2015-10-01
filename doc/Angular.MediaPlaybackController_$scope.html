@@ -29,7 +29,7 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="Angular.html">Angular</a><a href="Angular.DemographicsController.html">.DemographicsController</a>#</span>
+            <span class="ancestors"><a href="Angular.html">Angular</a><a href="Angular.MediaPlaybackController.html">.MediaPlaybackController</a>#</span>
         
         $scope
         </h2>
@@ -41,7 +41,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>The <code>DemographicsController</code>'s <code>$scope</code> object. All properties on
+            <div class="description"><p>The <code>MediaPlaybackController</code>'s <code>$scope</code> object. All properties on
 <code>$scope</code> are available to the view.</p></div>
         
 
@@ -77,7 +77,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line22">line 22</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -108,16 +108,14 @@
 
         
             
-<h4 class="name" id="nationalities"><span class="type-signature"></span>nationalities<span class="type-signature"> :Array.&lt;string></span></h4>
+<h4 class="name" id="buttonAction"><span class="type-signature"></span>buttonAction<span class="type-signature"> :function</span></h4>
 
 
 
 
 <div class="description">
-    <p>An array of nationalities.</p>
-<p>Every nationality in this array is
-also included in the <a href="Angular.MissingKeys.html">missing keys file</a>. To make additional nationalities available, add them both
-here and there.</p>
+    <p>The method to which the button in the view is bound. Initially,
+the button is bound to <a href="Angular.MediaPlaybackController_$scope.html#startMediaPlayback">$scope#startMediaPlayback</a>.</p>
 </div>
 
 
@@ -126,7 +124,7 @@ here and there.</p>
     <ul>
         <li>
             
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">function</span>
 
 
         </li>
@@ -165,7 +163,7 @@ here and there.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line33">line 33</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -183,15 +181,13 @@ here and there.</p>
 
         
             
-<h4 class="name" id="years"><span class="type-signature"></span>years<span class="type-signature"> :Array.&lt;number></span></h4>
+<h4 class="name" id="buttonDisabled"><span class="type-signature"></span>buttonDisabled<span class="type-signature"> :boolean</span></h4>
 
 
 
 
 <div class="description">
-    <p>An array of years.</p>
-<p>By default, this is a list of every year from one hundred years
-before the current year up to and including the current year.</p>
+    <p>Indicates whether or not the 'continue' button is disabled.</p>
 </div>
 
 
@@ -200,7 +196,7 @@ before the current year up to and including the current year.</p>
     <ul>
         <li>
             
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type">boolean</span>
 
 
         </li>
@@ -239,7 +235,151 @@ before the current year up to and including the current year.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line88">line 88</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="currentButtonLabel"><span class="type-signature"></span>currentButtonLabel<span class="type-signature"> :string</span></h4>
+
+
+
+
+<div class="description">
+    <p>The initial label for the button in the view.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">string</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="mediaHasPlayed"><span class="type-signature"></span>mediaHasPlayed<span class="type-signature"> :boolean</span></h4>
+
+
+
+
+<div class="description">
+    <p>Indicates whether or not the media excerpt has been played.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -266,17 +406,33 @@ before the current year up to and including the current year.</p>
 
     
 
-    <h4 class="name" id="genderChanged"><span class="type-signature"></span>genderChanged<span class="signature">(gender)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="startMediaPlayback"><span class="type-signature"></span>startMediaPlayback<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Save gender selection to the <a href="Angular.TrialData.html">TrialData</a>
-service.</p>
-<p>The value of <code>gender</code> is converted to
-<code>TrialData.data.answers.sex</code>.</p>
+    <p>Sends a message to the Max helper application to initiate media
+playback. The message includes the current session number and the
+media label (according to the <a href="index.html">study specification
+document</a>), both retrieved from the <a href="Angular.TrialData.html">TrialData</a> service. This object sent with this
+message is formatted like the following:</p>
+<pre class="prettyprint source"><code>{
+    oscType: 'message,
+    address: '/eim/control/mediaID',
+    args: [
+        {
+            type: 'string',
+            value: &lt;MEDIALABEL>
+        },
+        {
+            type: 'string',
+            value: &lt;SESSIONNUMBER>
+        }
+    ]
+}</code></pre><p>When this method is called, <a href="Angular.MediaPlaybackController_$scope.html#buttonAction">$scope#buttonAction</a>
+is bound to <a href="Angular.ExperimentManager.html#advanceSlide">ExperimentManager#advanceSlide</a>.</p>
 </div>
 
 
@@ -285,55 +441,6 @@ service.</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>gender</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The new gender</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -369,310 +476,7 @@ service.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line142">line 142</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">undefined</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="nationalityChanged"><span class="type-signature"></span>nationalityChanged<span class="signature">(nationality)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Save nationality selection to the <a href="Angular.TrialData.html">TrialData</a> service.</p>
-<p>The value of <code>nationality</code> is converted to lower case and saved
-in <code>TrialData.data.answers.nationality</code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>nationality</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The new nationality</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line105">line 105</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">undefined</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="yearChanged"><span class="type-signature"></span>yearChanged<span class="signature">(year)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Save year selection to the <a href="Angular.TrialData.html">TrialData</a>
-service.</p>
-<p>The value of <code>year</code> is converted to
-<code>TrialData.data.answers.dob</code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>year</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The new year</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line124">line 124</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line66">line 66</a>
     </li></ul></dd>
     
 

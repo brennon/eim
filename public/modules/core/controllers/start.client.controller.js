@@ -7,6 +7,7 @@
  * continuing in the session if Max is not responsive.
  *
  * @class Angular.StartController
+ * @memberof Angular
  */
 
 angular.module('core').controller('StartController', [

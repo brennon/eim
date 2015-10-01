@@ -1,4 +1,32 @@
-'use strict';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/controllers/media-playback.client.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/controllers/media-playback.client.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
  * In the demo application, the `MediaPlaybackController` is responsible for
@@ -78,11 +106,11 @@ angular.module('core').controller('MediaPlaybackController', [
          *     args: [
          *         {
          *             type: 'string',
-         *             value: <MEDIALABEL>
+         *             value: &lt;MEDIALABEL>
          *         },
          *         {
          *             type: 'string',
-         *             value: <SESSIONNUMBER>
+         *             value: &lt;SESSIONNUMBER>
          *         }
          *     ]
          * }
@@ -102,8 +130,6 @@ angular.module('core').controller('MediaPlaybackController', [
             var mediaIndex = TrialData.data.state.mediaPlayCount;
             var mediaLabel = TrialData.data.media[mediaIndex].label;
 
-            $log.debug('Requesting playback of \'' + mediaLabel + '\'.');
-
             SocketIOService.emit('sendOSCMessage', {
                 oscType: 'message',
                 address: '/eim/control/mediaID',
@@ -118,9 +144,6 @@ angular.module('core').controller('MediaPlaybackController', [
                     }
                 ]
             });
-
-            $log.debug('Binding $scope.buttonAction in' +
-                ' MediaPlaybackController to ExperimentManager.advanceSlide');
 
             $scope.buttonAction = ExperimentManager.advanceSlide;
         };
@@ -149,7 +172,7 @@ angular.module('core').controller('MediaPlaybackController', [
          *     args: [
          *         {
          *             type: 'string',
-         *             value: <SESSIONNUMBER>
+         *             value: &lt;SESSIONNUMBER>
          *         }
          *     ]
          * }
@@ -161,9 +184,6 @@ angular.module('core').controller('MediaPlaybackController', [
          * @return {undefined}
          */
         this.requestEmotionIndex = function() {
-
-            $log.debug('Requesting emotion index.');
-
             SocketIOService.emit('sendOSCMessage', {
                 oscType: 'message',
                 address: '/eim/control/emotionIndex',
@@ -204,9 +224,6 @@ angular.module('core').controller('MediaPlaybackController', [
          * @see Node.module:SocketServerController
          */
         this.oscMessageReceivedListener = function(data) {
-
-            $log.debug('OSC message received.');
-            $log.debug(data);
 
             // If it was a media playback message
             if (data.address === '/eim/status/playback') {
@@ -275,10 +292,6 @@ angular.module('core').controller('MediaPlaybackController', [
         // Send a message to stop media playback when this controller is
         // destroyed. Also, remove OSC message event listeners.
         $scope.$on('$destroy', function stopMediaPlayback() {
-
-            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
-                ' playback, removing OSC listener, and showing body.');
-
             SocketIOService.emit('sendOSCMessage', {
                 oscType: 'message',
                 address: '/eim/control/stopMedia',
@@ -296,4 +309,26 @@ angular.module('core').controller('MediaPlaybackController', [
             $scope.showBody();
         });
     }
-]);
+]);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 16:32:27 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
