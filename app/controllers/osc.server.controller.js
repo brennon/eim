@@ -151,12 +151,12 @@ exports.init = function(callback) {
 };
 
 /**
- * oscMessageReceived event. This event is fired when the server receives an
- * OSC message.
+ * This event is fired when the server receives an OSC message.
  *
- * The object sent with this event is a JSON representation of the OSC message.
+ * The object sent with this event is a JavaScript object representation of
+ * the OSC message.
  *
- * @event module:OSCServerController~oscMessageReceived
+ * @event oscMessageReceived
  * @type {{}}
  */
 
@@ -165,7 +165,7 @@ exports.init = function(callback) {
  * to be notified when OSC messages are sent or received.
  *
  * @type {EventEmitter}
- * @fires module:OSCServerController~oscMessageReceived
+ * @fires oscMessageReceived
  */
 exports.eventEmitter = new EventEmitter();
 

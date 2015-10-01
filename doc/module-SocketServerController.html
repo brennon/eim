@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: SocketServerController</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: SocketServerController</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Socket Controller module</p>
+<p>This module provides functionality for allowing clients to send and
+receive <a href="http://opensoundcontrol.org/">Open Sound Control</a> (OSC) messages
+through a <a href="http://socket.io/">socket.io</a> connection.</p>
+<p>In general, the OSC message flow is as follows:</p>
+<ul>
+<li><p>Outgoing messages:</p>
+<ol>
+<li>A client connects to the server over socket.io</li>
+<li>Client emits the 'sendOSCMessage' event</li>
+<li>SocketServerController module sends message</li>
+<li>After sending the message, SocketServerController emits the
+'oscMessageSent' event on the client socket</li>
+</ol>
+</li>
+<li><p>Incoming messages:</p>
+<ol>
+<li>SocketServerController module listens for <code>oscMessageReceived</code> events
+emitted by the <a href="module-OSCServerController.html">OSCServerController</a> module</li>
+<li>SocketServerController module emits its own
+<code>oscMessageReceived</code> event on client sockets with the same data</li>
+</ol>
+</li>
+</ul></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".init"><span class="type-signature">(static) </span>init<span class="signature">(httpServer)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Initializes the module. Once initialized, clients that connect over
+socket.io receive the messages this module emits, as described above. The
+server then also listens on each client connection for OSC messages to be
+sent using the <a href="module-OSCServerController.html">OSCServerController</a>
+module, also as described above.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>httpServer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">http.Server</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A Node.js HTTP server</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line51">line 51</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">undefined</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:oscMessageReceived">oscMessageReceived</h4>
+
+    
+
+
+
+<div class="description">
+    <p>This event is fired when the module receives an OSC message from
+the <a href="module-OSCServerController.html">OSCServerController</a>
+module.</p>
+<p>The object sent with this event is a JavaScript object
+representation of the OSC message.</p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~event:oscMessageSent">oscMessageSent</h4>
+
+    
+
+
+
+<div class="description">
+    <p>This event is fired when the module sends an OSC message
+using the
+<a href="module-OSCServerController.html">OSCServerController</a>
+module.</p>
+<p>The object sent with this event is a JavaScript object
+representation of the OSC message.</p>
+</div>
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="module-ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="module-ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="module-OSCServerController.html">OSCServerController</a></li><li><a href="module-OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="module-SocketServerController.html">SocketServerController</a></li><li><a href="module-TrialServerController.html">TrialServerController</a></li><li><a href="module-TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Events</h3><ul><li><a href="module-OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="module-SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="CustomConfiguration.html">CustomConfiguration</a></li><li><a href="ExperimentManager.html">ExperimentManager</a></li><li><a href="ExperimentSchemaSchema.html">ExperimentSchemaSchema</a></li><li><a href="MediaSchema.html">MediaSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 10:31:19 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

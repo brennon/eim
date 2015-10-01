@@ -32,7 +32,7 @@ var trialFileDirectory = './trials/';
  * @return {undefined}
  */
 exports.create = function(req, res) {
-    console.log('Creating new trial JSON file.');
+    console.info('Creating new trial JSON file.');
 
     var outputFilename;
 
@@ -45,7 +45,8 @@ exports.create = function(req, res) {
             req.body.metadata.session_number + '.trial.json';
 
     } else {
-        console.log('Failed to create trial JSON file. Bad request received.', req);
+        console.error('Failed to create trial JSON file. Bad request' +
+            ' received.', req);
         return res.status(500).json({
             error: 'No metadata.session_number property found.',
             request_body: req.body
@@ -60,7 +61,7 @@ exports.create = function(req, res) {
                 console.error('Could not write new trial JSON file.', err);
                 res.status(500).json({error: err.message});
             } else {
-                console.log('Wrote new JSON file to ' + outputFilename);
+                console.info('Wrote new JSON file to ' + outputFilename);
                 res.status(200).json({});
             }
         });
