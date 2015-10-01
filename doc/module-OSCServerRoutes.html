@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: app/routes/core.server.routes.js</title>
+    <title>JSDoc: Module: OSCServerRoutes</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,68 +17,126 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: app/routes/core.server.routes.js</h1>
+    <h1 class="page-title">Module: OSCServerRoutes</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+        
+            
+        
+    
+</header>
 
-/**
- * `Core` routes. These are the 'core' routes made available by the web server
- * that allow access to basic, 'core' functionality.
- *
- * @module {function} CoreServerRoutes
- */
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p><code>OSC</code> routes</p></div>
+        
 
-// Controller for these routes
-var controller = require('../../app/controllers/core');
+        
+            
 
-// Helper modules
-var config = require('../../config/config');
 
-module.exports = function(app) {
 
-    /**
-     * Gets the index page
-     *
-     * @example http://&lt;ADDRESS>:&lt;PORT>/
-     *
-     * @name Index page route
-     * @inner
-     */
-    app.get('/', controller.index);
 
-    /**
-     * Get the current Node.js environment
-     *
-     * @example http://&lt;ADDRESS>:&lt;PORT>/api/nodeenv
-     *
-     * @name Node environment route
-     * @inner
-     */
-    app.get('/api/nodeenv', function(req, res) {
-        return res.status(200).json({ env: process.env.NODE_ENV });
-    });
 
-    /**
-     * Get the custom configuration for this machine
-     *
-     * @example http://&lt;ADDRESS>:&lt;PORT>/api/config
-     *
-     * @name Custom configuration information route
-     * @inner
-     */
-    app.get('/api/config', function(req, res) {
-        return res.status(200).json(config.customConfiguration);
-    });
-};</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="app_routes_osc.server.routes.js.html">app/routes/osc.server.routes.js</a>, <a href="app_routes_osc.server.routes.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
