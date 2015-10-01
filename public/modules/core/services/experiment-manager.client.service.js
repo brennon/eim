@@ -26,7 +26,8 @@ angular.module('core').factory('ExperimentManager', [
              * specification document (see the [README](index.html)).
              *
              * @function advanceSlide
-             * @memberof Angular.ExperimentManager.
+             * @instance
+             * @memberof Angular.ExperimentManager
              * @return {undefined}
              */
             advanceSlide: function() {
@@ -62,7 +63,8 @@ angular.module('core').factory('ExperimentManager', [
               *  with these new data.
              *
              * @function masterReset
-             * @memberof Angular.ExperimentManager.
+             * @memberof Angular.ExperimentManager
+             * @instance
              * @return {$q.promise} This promise is resolved when the reset
              * is complete and rejected if the reset fails.
              */

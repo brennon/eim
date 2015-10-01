@@ -141,7 +141,7 @@ angular.module('core').factory('TrialData', ['$log',
             setValueForPath: function(path, value, options) {
 
                 $log.debug('Setting ' + path + ' in TrialData to: ' +
-                    value + '.', options);
+                    value, options);
 
                 if (value === 'true') {
                     value = true;
