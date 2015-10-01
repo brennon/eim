@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: TrialServerRoutes</title>
+    <title>JSDoc: Namespace: $scope</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: TrialServerRoutes</h1>
+    <h1 class="page-title">Namespace: $scope</h1>
 
     
 
@@ -28,13 +28,21 @@
 
 <header>
     
+        <h2>
+            <span class="ancestors"><a href="Angular.html">Angular</a><a href="Angular.HomeController.html">.HomeController</a>#</span>
+        
+        $scope
+        </h2>
+        
+    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description"><p><code>Trial</code> routes</p></div>
+            <div class="description"><p>The <code>HomeController</code>'s <code>$scope</code> object. All properties on <code>$scope</code>
+are available to the view.</p></div>
         
 
         
@@ -69,7 +77,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_routes_trial.server.routes.js.html">app/routes/trial.server.routes.js</a>, <a href="app_routes_trial.server.routes.js.html#line4">line 4</a>
+        <a href="public_modules_core_controllers_home.client.controller.js.html">public/modules/core/controllers/home.client.controller.js</a>, <a href="public_modules_core_controllers_home.client.controller.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -100,17 +108,29 @@
 
         
             
-<h4 class="name" id="~Uploadatrial"><span class="type-signature">(inner) </span>Upload a trial<span class="type-signature"></span></h4>
+<h4 class="name" id="readyToAdvance"><span class="type-signature"></span>readyToAdvance<span class="type-signature"> :boolean</span></h4>
 
 
 
 
 <div class="description">
-    <p>Send a trial document to the server. This document is sent to the
-<code>trial.server.controller#create</code> method.</p>
+    <p>Ready to advance flag.</p>
+<p>On instantiation of the controller, this is set to <code>false</code>. Once
+the <a href="Angular.ExperimentManager.html">ExperimentManager</a> is reset,
+this flag is set to <code>true</code>.</p>
 </div>
 
 
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">boolean</span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -145,7 +165,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_routes_trial.server.routes.js.html">app/routes/trial.server.routes.js</a>, <a href="app_routes_trial.server.routes.js.html#line15">line 15</a>
+        <a href="public_modules_core_controllers_home.client.controller.js.html">public/modules/core/controllers/home.client.controller.js</a>, <a href="public_modules_core_controllers_home.client.controller.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -158,11 +178,6 @@
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>http://&lt;ADDRESS>:&lt;PORT>/api/trials</code></pre>
 
 
 

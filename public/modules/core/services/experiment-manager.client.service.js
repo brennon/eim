@@ -1,28 +1,33 @@
 'use strict';
 
-
-// Trial Data service used to persist data for individual trials
-
 /**
- * Angular service for managing experiment sessions on the frontend.
+ * The `ExperimentManager` service has two main responsibilities: managing
+ * the state (the 'slide' that is presented to the user) and the
+ * {@link Angular.TrialData|TrialData} service.
  *
- * @module experiment-manager.client.service
- * @namespace ExperimentManager
+ * @class Angular.ExperimentManager
+ * @memberof Angular
  */
+
 angular.module('core').factory('ExperimentManager', [
     'TrialData',
     '$q',
     '$http',
     '$state',
+    '$log',
     function(TrialData, $q, $http, $state) {
+
+        console.debug('Instantiating ExperimentManager service.');
 
         return {
 
             /**
-             * Advances the slide.
+             * Advances the state to the next state as defined in the study
+             * specification document (see the [README](index.html)).
              *
              * @function advanceSlide
-             * @memberof ExperimentManager#
+             * @memberof Angular.ExperimentManager.
+             * @return {undefined}
              */
             advanceSlide: function() {
 
@@ -44,18 +49,22 @@ angular.module('core').factory('ExperimentManager', [
             /**
              * Resets the experiment session.
              *
-             * In resetting the session, after resetting the `TrialData`
-             * service, `masterReset()` does the following:
+             * In resetting the session, after resetting the {@link
+             * Angular.TrialData|TrialData} service, `masterReset()` does
+             * the following:
              *
              *  - Generates a new UUID for the session number
              *  - Fetches a random experiment schema from the backend
              *  - Gets the terminal number (as specified in
              *  `config/custom.js` for this specific machine
              *
-             *  The `TrialData` service is then updated with these new data.
+             *  The {@link Angular.TrialData|TrialData} service is then updated
+              *  with these new data.
              *
              * @function masterReset
-             * @memberof ExperimentManager#
+             * @memberof Angular.ExperimentManager.
+             * @return {$q.promise} This promise is resolved when the reset
+             * is complete and rejected if the reset fails.
              */
             masterReset: function() {
 

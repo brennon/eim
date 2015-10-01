@@ -21,7 +21,7 @@
  *
  * To add your own state, simply add another call to
  * `$stateProvider.state()`. The name of the state should match the name of
- * the slide in your schema structure document (see the README).
+ * the slide in your schema structure document (see the [README](index.html)).
  *
  * @example
  *
@@ -40,13 +40,18 @@
  *
  *         ...
  *
- * @class Angular.RoutesClient
+ * @class Angular.Routes
  * @memberof Angular
  */
 
 // Setting up route
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
+
+        var $log =  angular.injector(['ng']).get('$log')
+        $log.debug('Configuring routes in' +
+            ' modules/core/config/core.client.routes.js');
+
         // Redirect to home view when route not found
         $urlRouterProvider.otherwise('/');
 

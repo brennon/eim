@@ -1,4 +1,32 @@
-'use strict';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/services/trial-data.client.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/services/trial-data.client.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
  * The `TrialData` service is responsible for collecting the responses
@@ -141,7 +169,7 @@ angular.module('core').factory('TrialData', ['$log',
             setValueForPath: function(path, value, options) {
 
                 $log.debug('Setting ' + path + ' in TrialData to: ' +
-                    value + '.', options);
+                    value.toString() + '.', options);
 
                 if (value === 'true') {
                     value = true;
@@ -150,7 +178,7 @@ angular.module('core').factory('TrialData', ['$log',
                 }
 
                 var numericRegex = /\d+\.?\d?/;
-                if (typeof value === 'string' && value.match(numericRegex)) {
+                if (typeof value === 'string' &amp;&amp; value.match(numericRegex)) {
                     value = parseFloat(value);
                 }
 
@@ -159,17 +187,17 @@ angular.module('core').factory('TrialData', ['$log',
                     value = value.toLowerCase();
                 }
 
-                if (path && value !== undefined) {
+                if (path &amp;&amp; value !== undefined) {
                     var schema = this;  // a moving reference to internal objects within this (this TrialData)
                     var pList = path.split('.');
                     var len = pList.length;
-                    for (var i = 0; i < len - 1; i++) {
+                    for (var i = 0; i &lt; len - 1; i++) {
                         var elem = pList[i];
                         if (!schema[elem]) schema[elem] = {};
                         schema = schema[elem];
                     }
 
-                    if (options && options.hasOwnProperty('array_index') && typeof options.array_index === 'number') {
+                    if (options &amp;&amp; options.hasOwnProperty('array_index') &amp;&amp; typeof options.array_index === 'number') {
 
                         if (schema[pList[len - 1]] === undefined) {
                             schema[pList[len - 1]] = [];
@@ -177,7 +205,7 @@ angular.module('core').factory('TrialData', ['$log',
 
                         // Iterate over array up to one less than options.array_index
                         // If each index isn't set up to this point, set it to null
-                        for (var j = 0; j < options.array_index; j++) {
+                        for (var j = 0; j &lt; options.array_index; j++) {
                             if (schema[pList[len - 1]][j] === undefined) {
                                 schema[pList[len - 1]][j] = null;
                             }
@@ -216,12 +244,12 @@ angular.module('core').factory('TrialData', ['$log',
             setValueForPathForCurrentMedia: function(path, value) {
 
                 $log.debug('Setting ' + path + ' in TrialData for current' +
-                    ' media to: ' + value + '.');
+                    ' media to: ' + value.toString() + '.', options);
 
                 var index;
 
                 // If no media have played (we're likely debugging)
-                if (this.data.state.mediaPlayCount <= 0) {
+                if (this.data.state.mediaPlayCount &lt;= 0) {
                     index = 0;
                 } else {
                     index = this.data.state.mediaPlayCount - 1;
@@ -263,4 +291,26 @@ angular.module('core').factory('TrialData', ['$log',
 
         return trialData;
     }
-]);
+]);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 14:22:53 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

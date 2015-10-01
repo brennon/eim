@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: TrialServerRoutes</title>
+    <title>JSDoc: Source: public/modules/core/controllers/home.client.controller.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,166 +17,74 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: TrialServerRoutes</h1>
+    <h1 class="page-title">Source: public/modules/core/controllers/home.client.controller.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p><code>Trial</code> routes</p></div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_routes_trial.server.routes.js.html">app/routes/trial.server.routes.js</a>, <a href="app_routes_trial.server.routes.js.html#line4">line 4</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~Uploadatrial"><span class="type-signature">(inner) </span>Upload a trial<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <p>Send a trial document to the server. This document is sent to the
-<code>trial.server.controller#create</code> method.</p>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_routes_trial.server.routes.js.html">app/routes/trial.server.routes.js</a>, <a href="app_routes_trial.server.routes.js.html#line15">line 15</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>http://&lt;ADDRESS>:&lt;PORT>/api/trials</code></pre>
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * In the demo application, the `HomeController` is the primary
+ * controller used for the `'home'` state. This controller resets the
+ * {@link Angular.ExperimentManager|ExperimentManager} service and, when
+ * successful, sets the `readyToAdvance` flag on its `$scope` to `true`.
+ *
+ * @class Angular.HomeController
+ */
+
+angular.module('core').controller('HomeController', ['ExperimentManager', '$scope', '$log',
+    function(ExperimentManager, $scope, $log) {
+
+        $log.debug('Loading HomeController.');
+
+        // Reset ExperimentManager for new trial
+        ExperimentManager.masterReset().then(
+            function experimentResetSuccessHandler() {
+                $scope.readyToAdvance = true;
+            },
+            function experimentResetErrorHandler() {
+                $scope.addGenericErrorAlert();
+                throw new Error('An experiment schema could not be fetched ' +
+                    'from the server');
+            }
+        );
+
+        /**
+         * The `HomeController`'s `$scope` object. All properties on `$scope`
+         * are available to the view.
+         *
+         * @name $scope
+         * @namespace
+         * @instance
+         * @memberof Angular.HomeController
+         * @type {{}}
+         */
+
+        /**
+         * Ready to advance flag.
+         *
+         * On instantiation of the controller, this is set to `false`. Once
+         * the {@link Angular.ExperimentManager|ExperimentManager} is reset,
+         * this flag is set to `true`.
+         *
+         * @name readyToAdvance
+         * @memberof Angular.HomeController#$scope
+         * @instance
+         * @type {boolean}
+         */
+
+        // Ready to move to next slide?
+        $scope.readyToAdvance = false;
+
+    }
+]);</code></pre>
+        </article>
+    </section>
 
 
 

@@ -15,7 +15,8 @@
  * 1. Add all such strings to this file. In particular, add a separate call
  * to `gettext('Your string here');` following those you see in this file.
  * 2. Run the `nggettext_extract` task again.
- * 3. Proceed with the translation instructions as given in the README.
+ * 3. Proceed with the translation instructions as given in the
+ * [README](index.html).
  *
  * As an example, if the following were the contents of the
  * `core.client.missing-keys.js` file, the strings, `'No Signal'`, `'Signal
@@ -34,7 +35,7 @@
  *     }
  * ]);
  *
- * @class Angular.MissingKeysClient
+ * @class Angular.MissingKeys
  * @memberof Angular
  */
 

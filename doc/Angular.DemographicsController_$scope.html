@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: ExperimentSchemaServerModel</title>
+    <title>JSDoc: Namespace: $scope</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: ExperimentSchemaServerModel</h1>
+    <h1 class="page-title">Namespace: $scope</h1>
 
     
 
@@ -28,15 +28,21 @@
 
 <header>
     
+        <h2>
+            <span class="ancestors"><a href="Angular.html">Angular</a><a href="Angular.DemographicsController.html">.DemographicsController</a>#</span>
+        
+        $scope
+        </h2>
+        
+    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description"><p>The <a href="http://mongoosejs.com/">Mongoose</a> <code>Schema</code> for an
-<code>ExperimentSchema</code>. This schema is used in
-creating the Mongoose <code>Model</code> for an <code>ExperimentSchema</code>.</p></div>
+            <div class="description"><p>The <code>DemographicsController</code>'s <code>$scope</code> object. All properties on
+<code>$scope</code> are available to the view.</p></div>
         
 
         
@@ -71,7 +77,7 @@ creating the Mongoose <code>Model</code> for an <code>ExperimentSchema</code>.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_models_experiment-schema.server.model.js.html">app/models/experiment-schema.server.model.js</a>, <a href="app_models_experiment-schema.server.model.js.html#line11">line 11</a>
+        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -98,6 +104,159 @@ creating the Mongoose <code>Model</code> for an <code>ExperimentSchema</code>.</
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="nationalities"><span class="type-signature"></span>nationalities<span class="type-signature"> :Array.&lt;string></span></h4>
+
+
+
+
+<div class="description">
+    <p>An array of nationalities.</p>
+<p>Every nationality in this array is
+also included in the <a href="Angular.MissingKeys.html">missing keys file</a>. To make additional nationalities available, add them both
+here and there.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;string></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="years"><span class="type-signature"></span>years<span class="type-signature"> :Array.&lt;number></span></h4>
+
+
+
+
+<div class="description">
+    <p>An array of years.</p>
+<p>By default, this is a list of every year from one hundred years
+before the current year up to and including the current year.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;number></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -107,18 +266,17 @@ creating the Mongoose <code>Model</code> for an <code>ExperimentSchema</code>.</
 
     
 
-    <h4 class="name" id="buildExperiment"><span class="type-signature"></span>buildExperiment<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="genderChanged"><span class="type-signature"></span>genderChanged<span class="signature">(gender)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>This method draws one available <code>ExperimentSchema</code> document at random
-from the database. This <code>media</code> array of this document is populated. For
-any fixed media specified in the document, their details are found and
-inserted directly into the final document. The callback will be called
-upon completion and provided with the 'built' experiment.</p>
+    <p>Save gender selection to the <a href="Angular.TrialData.html">TrialData</a>
+service.</p>
+<p>The value of <code>gender</code> is converted to
+<code>TrialData.data.answers.sex</code>.</p>
 </div>
 
 
@@ -154,13 +312,13 @@ upon completion and provided with the 'built' experiment.</p>
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>gender</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Node.module_ExperimentSchemaServerModel.html#~buildExperimentCallback">Node.module:ExperimentSchemaServerModel~buildExperimentCallback</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -170,7 +328,7 @@ upon completion and provided with the 'built' experiment.</p>
 
             
 
-            <td class="description last"><p>Will be called upon completion</p></td>
+            <td class="description last"><p>The new gender</p></td>
         </tr>
 
     
@@ -211,343 +369,7 @@ upon completion and provided with the 'built' experiment.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_models_experiment-schema.server.model.js.html">app/models/experiment-schema.server.model.js</a>, <a href="app_models_experiment-schema.server.model.js.html#line105">line 105</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~requiredArrayValidator"><span class="type-signature">(private, inner) </span>requiredArrayValidator<span class="signature">(value)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>A validator for Mongoose schemas that requires that its single argument
-be an <code>Array</code> of length greater than 0.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The value to be validated</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_models_experiment-schema.server.model.js.html">app/models/experiment-schema.server.model.js</a>, <a href="app_models_experiment-schema.server.model.js.html#line45">line 45</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p><code>true</code> if the validation is successful; <code>false</code> otherwise</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~updateSchemaForFixedMedia"><span class="type-signature">(private, inner) </span>updateSchemaForFixedMedia<span class="signature">(schema, index, mediaId)</span><span class="type-signature"> &rarr; {bluebird.BluebirdPromise}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Given an ExperimentSchema, an index into that schema's <code>media</code> array, and
-the ID of a <code>Media</code> document in the database, this function retrieves the
-document associated with that ID from the database, and updates the media
-array of the schema with information from this document. A promise is
-returned that is resolved when the schema is updated.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>schema</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ExperimentSchema</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The index into <code>schema</code>'s <code>media</code> array</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mediaId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">mongoose.ObjectId</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The ID corresponding to the document
-that should be retrieved from the database</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_models_experiment-schema.server.model.js.html">app/models/experiment-schema.server.model.js</a>, <a href="app_models_experiment-schema.server.model.js.html#line64">line 64</a>
+        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -581,7 +403,7 @@ that should be retrieved from the database</p></td>
     </dt>
     <dd>
         
-<span class="param-type">bluebird.BluebirdPromise</span>
+<span class="param-type">undefined</span>
 
 
     </dd>
@@ -592,21 +414,21 @@ that should be retrieved from the database</p></td>
 
 
         
-    
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
-
-        
-                
+            
 
     
 
-    <h4 class="name" id="~buildExperimentCallback"><span class="type-signature"></span>buildExperimentCallback<span class="signature">(err, schema)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="nationalityChanged"><span class="type-signature"></span>nationalityChanged<span class="signature">(nationality)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
+
+<div class="description">
+    <p>Save nationality selection to the <a href="Angular.TrialData.html">TrialData</a> service.</p>
+<p>The value of <code>nationality</code> is converted to lower case and saved
+in <code>TrialData.data.answers.nationality</code>.</p>
+</div>
 
 
 
@@ -641,13 +463,13 @@ that should be retrieved from the database</p></td>
 
         <tr>
             
-                <td class="name"><code>err</code></td>
+                <td class="name"><code>nationality</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">string</span>
 
 
             
@@ -657,30 +479,7 @@ that should be retrieved from the database</p></td>
 
             
 
-            <td class="description last"><p>Any error that <code>buildExperiment()</code> encountered</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>schema</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">ExperimentSchema</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The built <code>ExperimentSchema</code></p></td>
+            <td class="description last"><p>The new nationality</p></td>
         </tr>
 
     
@@ -721,7 +520,7 @@ that should be retrieved from the database</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_models_experiment-schema.server.model.js.html">app/models/experiment-schema.server.model.js</a>, <a href="app_models_experiment-schema.server.model.js.html#line162">line 162</a>
+        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -744,10 +543,182 @@ that should be retrieved from the database</p></td>
 
 
 
+<h5>Returns:</h5>
 
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">undefined</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="yearChanged"><span class="type-signature"></span>yearChanged<span class="signature">(year)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Save year selection to the <a href="Angular.TrialData.html">TrialData</a>
+service.</p>
+<p>The value of <code>year</code> is converted to
+<code>TrialData.data.answers.dob</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>year</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
             
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new year</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line124">line 124</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">undefined</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
     
 
     

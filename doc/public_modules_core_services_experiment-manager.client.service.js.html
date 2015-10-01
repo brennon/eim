@@ -28,29 +28,34 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-
-// Trial Data service used to persist data for individual trials
-
 /**
- * Angular service for managing experiment sessions on the frontend.
+ * The `ExperimentManager` service has two main responsibilities: managing
+ * the state (the 'slide' that is presented to the user) and the
+ * {@link Angular.TrialData|TrialData} service.
  *
- * @module experiment-manager.client.service
- * @namespace ExperimentManager
+ * @class Angular.ExperimentManager
+ * @memberof Angular
  */
+
 angular.module('core').factory('ExperimentManager', [
     'TrialData',
     '$q',
     '$http',
     '$state',
+    '$log',
     function(TrialData, $q, $http, $state) {
+
+        console.debug('Instantiating ExperimentManager service.');
 
         return {
 
             /**
-             * Advances the slide.
+             * Advances the state to the next state as defined in the study
+             * specification document (see the [README](index.html)).
              *
              * @function advanceSlide
-             * @memberof ExperimentManager#
+             * @memberof Angular.ExperimentManager.
+             * @return {undefined}
              */
             advanceSlide: function() {
 
@@ -72,18 +77,22 @@ angular.module('core').factory('ExperimentManager', [
             /**
              * Resets the experiment session.
              *
-             * In resetting the session, after resetting the `TrialData`
-             * service, `masterReset()` does the following:
+             * In resetting the session, after resetting the {@link
+             * Angular.TrialData|TrialData} service, `masterReset()` does
+             * the following:
              *
              *  - Generates a new UUID for the session number
              *  - Fetches a random experiment schema from the backend
              *  - Gets the terminal number (as specified in
              *  `config/custom.js` for this specific machine
              *
-             *  The `TrialData` service is then updated with these new data.
+             *  The {@link Angular.TrialData|TrialData} service is then updated
+              *  with these new data.
              *
              * @function masterReset
-             * @memberof ExperimentManager#
+             * @memberof Angular.ExperimentManager.
+             * @return {$q.promise} This promise is resolved when the reset
+             * is complete and rejected if the reset fails.
              */
             masterReset: function() {
 
@@ -138,13 +147,13 @@ angular.module('core').factory('ExperimentManager', [
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.MissingKeysClient.html">MissingKeysClient</a></li><li><a href="Angular.RoutesClient.html">RoutesClient</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="ExperimentManager.html">ExperimentManager</a></li><li><a href="Node.html">Node</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 11:47:13 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 14:22:53 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
