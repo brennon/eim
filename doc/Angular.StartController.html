@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ExperimentManager</title>
+    <title>JSDoc: Class: StartController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ExperimentManager</h1>
+    <h1 class="page-title">Class: StartController</h1>
 
     
 
@@ -31,7 +31,7 @@
         <h2>
             <span class="ancestors"><a href="Angular.html">Angular</a>.</span>
         
-        ExperimentManager
+        StartController
         </h2>
         
     
@@ -44,16 +44,17 @@
 
     
 
-    <h4 class="name" id="ExperimentManager"><span class="type-signature"></span>new ExperimentManager<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="StartController"><span class="type-signature"></span>new StartController<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>The <code>ExperimentManager</code> service has two main responsibilities: managing
-the state (the 'slide' that is presented to the user) and the
-<a href="Angular.TrialData.html">TrialData</a> service.</p>
+    <p>In the demo application, the <code>StartController</code> is the primary
+controller used for the <code>'start'</code> state. This controller checks that the
+Max helper application is responsive, and blocks participants from
+continuing in the session if Max is not responsive.</p>
 </div>
 
 
@@ -97,7 +98,7 @@ the state (the 'slide' that is presented to the user) and the
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_services_experiment-manager.client.service.js.html">public/modules/core/services/experiment-manager.client.service.js</a>, <a href="public_modules_core_services_experiment-manager.client.service.js.html#line3">line 3</a>
+        <a href="public_modules_core_controllers_start.client.controller.js.html">public/modules/core/controllers/start.client.controller.js</a>, <a href="public_modules_core_controllers_start.client.controller.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -135,7 +136,92 @@ the state (the 'slide' that is presented to the user) and the
      
 
     
+        <h3 class="subsection-title">Namespaces</h3>
 
+        <dl>
+            <dt><a href="Angular.StartController_$scope.html">$scope</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="errorTimeout"><span class="type-signature"></span>errorTimeout<span class="type-signature"> :$q.Promise</span></h4>
+
+
+
+
+<div class="description">
+    <p>When the controller is instantiated, this timeout is set. The
+timeout waits ten seconds for Max to respond that it is ready. If
+Max does not respond within this time, an error is shown to the user.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">$q.Promise</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_start.client.controller.js.html">public/modules/core/controllers/start.client.controller.js</a>, <a href="public_modules_core_controllers_start.client.controller.js.html#line130">line 130</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -146,15 +232,16 @@ the state (the 'slide' that is presented to the user) and the
 
     
 
-    <h4 class="name" id=".advanceSlide"><span class="type-signature">(static) </span>advanceSlide<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="oscMessageReceivedListener"><span class="type-signature"></span>oscMessageReceivedListener<span class="signature">(data)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Advances the state to the next state as defined in the study
-specification document (see the <a href="index.html">README</a>).</p>
+    <p>This method is called when the server fires the
+<code>oscMessageReceived</code> event on the socket.io socket to which the
+client is connected.</p>
 </div>
 
 
@@ -163,6 +250,55 @@ specification document (see the <a href="index.html">README</a>).</p>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The data sent with the event</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -198,12 +334,19 @@ specification document (see the <a href="index.html">README</a>).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_services_experiment-manager.client.service.js.html">public/modules/core/services/experiment-manager.client.service.js</a>, <a href="public_modules_core_services_experiment-manager.client.service.js.html#line24">line 24</a>
+        <a href="public_modules_core_controllers_start.client.controller.js.html">public/modules/core/controllers/start.client.controller.js</a>, <a href="public_modules_core_controllers_start.client.controller.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
     
 
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="Node.module_SocketServerController.html">Node.module:SocketServerController</a></li>
+        </ul>
+    </dd>
     
 
     
@@ -247,25 +390,16 @@ specification document (see the <a href="index.html">README</a>).</p>
 
     
 
-    <h4 class="name" id=".masterReset"><span class="type-signature">(static) </span>masterReset<span class="signature">()</span><span class="type-signature"> &rarr; {$q.promise}</span></h4>
+    <h4 class="name" id="sendExperimentStartMessage"><span class="type-signature"></span>sendExperimentStartMessage<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Resets the experiment session.</p>
-<p>In resetting the session, after resetting the <a href="Angular.TrialData.html">TrialData</a> service, <code>masterReset()</code> does
-the following:</p>
-<ul>
-<li>Generates a new UUID for the session number</li>
-<li>Fetches a random experiment schema from the backend</li>
-<li><p>Gets the terminal number (as specified in
-<code>config/custom.js</code> for this specific machine</p>
-<p>The <a href="Angular.TrialData.html">TrialData</a> service is then updated
-with these new data.</p>
-</li>
-</ul>
+    <p>Send a message to the server indicating that the client is ready
+to start the experiment. This method sets Angular.StartController#$scope.maxReady to <code>false</code> before
+sending the message.</p>
 </div>
 
 
@@ -309,7 +443,7 @@ with these new data.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_services_experiment-manager.client.service.js.html">public/modules/core/services/experiment-manager.client.service.js</a>, <a href="public_modules_core_services_experiment-manager.client.service.js.html#line49">line 49</a>
+        <a href="public_modules_core_controllers_start.client.controller.js.html">public/modules/core/controllers/start.client.controller.js</a>, <a href="public_modules_core_controllers_start.client.controller.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -335,11 +469,6 @@ with these new data.</p>
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <p>This promise is resolved when the reset
-is complete and rejected if the reset fails.</p>
-</div>
-
 
 
 <dl>
@@ -348,7 +477,7 @@ is complete and rejected if the reset fails.</p>
     </dt>
     <dd>
         
-<span class="param-type">$q.promise</span>
+<span class="param-type">undefined</span>
 
 
     </dd>
