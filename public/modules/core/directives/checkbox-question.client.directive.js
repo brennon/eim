@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * @class Angular.checkboxQuestionDirective
+ */
+
 angular.module('core').directive('checkboxQuestion', [
     '$compile',
     'TrialData',

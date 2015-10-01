@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * @class Angular.radioQuestionDirective
+ */
+
 angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
 
     return {

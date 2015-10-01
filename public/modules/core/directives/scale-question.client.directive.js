@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * @class Angular.scaleQuestionDirective
+ */
+
 angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
 
   var buildDescriptionsRow = function(scope, element, attrs) {

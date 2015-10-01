@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/directives/scale-question.client.directive.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/directives/scale-question.client.directive.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @class Angular.scaleQuestionDirective
+ */
+
+angular.module('core').directive('scaleQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
+
+  var buildDescriptionsRow = function(scope, element, attrs) {
+    var descriptions;
+    if (attrs.minimumDescription &amp;&amp; attrs.maximumDescription) {
+
+      // Main row div
+      descriptions = angular.element('&lt;div>&lt;/div>');
+      descriptions.addClass('row');
+      descriptions.addClass('scale-descriptions');
+
+      // Side and center spacers
+      var sideSpacer = angular.element('&lt;div>&lt;/div>');
+      sideSpacer.addClass('col-md-2');
+
+      var centerSpacer = angular.element('&lt;div>&lt;/div>');
+      centerSpacer.addClass('col-md-4');
+
+      var descriptionsInnerRow = angular.element('&lt;div>&lt;/div>');
+      descriptionsInnerRow.addClass('col-md-8');
+      descriptionsInnerRow.addClass('scale-descriptions-inner-row');
+
+      var fifthsColumnSpacer = angular.element('&lt;div>&lt;/div>');
+      fifthsColumnSpacer.addClass('col-md-5ths');
+
+      // Left and right text blocks
+      var leftTextBlock = angular.element('&lt;div translate>&lt;/div>');
+      leftTextBlock.addClass('col-md-5ths');
+      leftTextBlock.addClass('small');
+      leftTextBlock.addClass('text-center');
+      leftTextBlock.addClass('scale-minimum-description');
+      leftTextBlock.html(attrs.minimumDescription);
+
+      var rightTextBlock = leftTextBlock.clone();
+      rightTextBlock.removeClass('scale-minimum-description');
+      rightTextBlock.addClass('scale-maximum-description');
+      rightTextBlock.html(attrs.maximumDescription);
+
+      // Append text blocks and spacers to inner row
+      descriptionsInnerRow.append(leftTextBlock);
+      descriptionsInnerRow.append(
+          fifthsColumnSpacer.clone(),
+          fifthsColumnSpacer.clone(),
+          fifthsColumnSpacer.clone()
+      );
+      descriptionsInnerRow.append(rightTextBlock);
+
+      // Append children to main row
+      descriptions.append(
+          sideSpacer.clone(),
+          descriptionsInnerRow,
+          sideSpacer.clone()
+      );
+    }
+
+    return descriptions;
+  };
+
+  return {
+    restrict: 'E',
+    scope: {},
+
+    link: function(scope, element, attrs) {
+
+      scope.sendToTrialData = function(path, value) {
+        if (!attrs.associatedToMedia) {
+          TrialData.setValueForPath(path, value);
+        } else {
+          TrialData.setValueForPathForCurrentMedia(path, value);
+        }
+      };
+
+      scope[attrs.questionId+'RadioGroup'] = null;
+
+      scope.$watch(attrs.questionId+'RadioGroup', function(newValue) {
+        scope.sendToTrialData(attrs.controllerDataPath, parseInt(newValue));
+      });
+
+      var questionHeader;
+      if (attrs.labelType === 'labelLeft') {
+        questionHeader = angular.element('&lt;div class="row">&lt;div class="col-md-12">&lt;label translate>' + attrs.questionLabel + '&lt;/label>&lt;/div>&lt;/div>');
+      } else {
+        questionHeader = angular.element('&lt;div class="row">&lt;div class="col-md-12 text-center">&lt;h3 translate>' + attrs.questionLabel + '&lt;/h3>&lt;/div>&lt;/div>');
+      }
+
+      var image;
+      if (attrs.singleImgSrc) {
+        image = angular.element('&lt;div class="row">&lt;div class="col-md-2">&lt;/div>&lt;div class="col-md-8 text-center">&lt;img src="' + attrs.singleImgSrc + '">&lt;/div>&lt;div class="col-md-2">&lt;/div>&lt;/div>');
+      } else if (attrs.leftImgSrc &amp;&amp; attrs.rightImgSrc) {
+        image = angular.element('&lt;div class="row">&lt;div class="col-md-2">&lt;/div>&lt;div class="col-md-2">&lt;img src="' + attrs.leftImgSrc + '">&lt;/div>&lt;div class="col-md-4">&lt;/div>&lt;div class="col-md-2">&lt;img src="' + attrs.rightImgSrc + '">&lt;/div>&lt;div class="col-md-2">&lt;/div>&lt;/div>');
+      }
+
+      var optionLabels;
+      if (element.data('questionOptions') &amp;&amp; element.data('questionOptions').choices) {
+        var choices = element.data('questionOptions').choices;
+
+        optionLabels = angular.element('&lt;div class="row">&lt;/div>');
+
+        optionLabels.append('&lt;div class="col-md-2 option-label-spacer">&lt;/div>');
+
+        var centerGroup = angular.element('&lt;div class="col-md-8 option-label-container text-center">&lt;/div>');
+
+        for (var i = 0; i &lt; choices.length; i++) {
+          var choiceDiv = angular.element('&lt;div class="col-md-5ths option-label text-center">{{ \'' + choices[i].label + '\' | translate }}&lt;/div>');
+          centerGroup.append(choiceDiv);
+        }
+
+        optionLabels.append(centerGroup);
+
+        optionLabels.append('&lt;div class="col-md-2 option-label-spacer">&lt;/div>');
+      }
+
+      var innerRadioHTML = '';
+
+      for (var j = 1; j &lt;= 5; j++) {
+        innerRadioHTML += '&lt;div class="col-md-5ths text-center">&lt;input type="radio" name="'+attrs.questionId+'RadioGroup" id="'+attrs.questionId+'RadioGroup'+j+'" value="'+j+'" required ng-model="'+attrs.questionId+'RadioGroup">&lt;/div>';
+      }
+
+      var radios = angular.element('&lt;div class="row">\n    &lt;div class="col-md-2">&lt;/div>\n    &lt;div class="col-md-8 text-center">\n        '+innerRadioHTML+'&lt;div class="row">\n        &lt;/div>\n    &lt;/div>\n    &lt;div class="col-md-2">&lt;/div>\n&lt;/div>');
+
+      // Build descriptions row
+      var descriptions = buildDescriptionsRow(scope, element, attrs);
+
+      // Wrap everything in a row div with well class
+      var wrapperDiv = angular.element('&lt;div class="row well">&lt;/div>');
+
+      wrapperDiv.append(
+          questionHeader,
+          image,
+          optionLabels,
+          radios,
+          descriptions
+      );
+
+      // Add wrapper div to element and compile the element
+      element.append(wrapperDiv);
+      $compile(element.contents())(scope);
+    }
+  };
+}]);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 16:49:59 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

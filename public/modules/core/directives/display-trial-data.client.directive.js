@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * @class Angular.displayTrialDataDirective
+ */
+
 // Display Trial Data for debugging
 angular.module('core').directive('displayTrialData', function() {
 

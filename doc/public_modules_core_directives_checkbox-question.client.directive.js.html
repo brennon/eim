@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: DemographicsController</title>
+    <title>JSDoc: Source: public/modules/core/directives/checkbox-question.client.directive.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,148 +17,108 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: DemographicsController</h1>
+    <h1 class="page-title">Source: public/modules/core/directives/checkbox-question.client.directive.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="Angular.html">Angular</a>.</span>
-        
-        DemographicsController
-        </h2>
-        
-    
-</header>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
 
-<article>
-    <div class="container-overview">
-    
-        
+/**
+ * @class Angular.checkboxQuestionDirective
+ */
 
-    
+angular.module('core').directive('checkboxQuestion', [
+    '$compile',
+    'TrialData',
+    function($compile, TrialData) {
 
-    <h4 class="name" id="DemographicsController"><span class="type-signature"></span>new DemographicsController<span class="signature">()</span><span class="type-signature"></span></h4>
+        return {
+            restrict: 'E',
+            scope: {},
 
-    
+            link: function(scope, element, attrs) {
+                scope.someSelected = false;
 
+                scope.sendToTrialData = function(path, value) {
 
+                    //noinspection JSUnresolvedVariable
+                    if (!attrs.associatedToMedia) {
+                        TrialData.setValueForPath(path, value);
+                    } else {
+                        TrialData.setValueForPathForCurrentMedia(path, value);
+                    }
+                };
 
-<div class="description">
-    <p>In the demo application, the <code>DemographicsController</code> was the primary
-controller used for the <code>'demographics'</code> state. This controller provides
-functionality for passing responses from the form in the demographics
-state on to the <a href="Angular.TrialData.html">TrialData</a> service. Note,
-however, that in the demo application, the demographics questionnaire is
-now dynamically generated using a <code>'questionnaire'</code> slide in the study
-specification document (see the <a href="index.html">README</a>). The
-<code>DemographicsController</code> and
-view are still here for you to use, however.</p>
-</div>
+                scope.updateCheckboxes = function() {
+                    var newSomeSelectedValue = false;
 
-
-
-
-
-
+                    var checkedOptions = [];
+                    var inputs = element.find('input');
+                    for (var i = 0; i &lt; inputs.length; i++) {
+                        var input = angular.element(inputs[i]);
 
 
+                        /* istanbul ignore else */
+                        if (input.attr('name') === attrs.questionId + 'Checkbox') {
+                            if (input.prop('checked') === true) {
+                                newSomeSelectedValue = true;
+                                checkedOptions
+                                    .push(input.attr('value').toLowerCase());
+                            }
+                        }
+                    }
 
+                    scope.someSelected = newSomeSelectedValue;
 
+                    checkedOptions.sort();
 
+                    //noinspection JSUnresolvedVariable
+                    scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
+                };
 
+                var questionText = '&lt;div class="row well">&lt;div class="col-md-12">&lt;label for="' + attrs.questionId + 'Checkbox" translate>' + attrs.questionLabel + '&lt;/label>&lt;div>';
 
-<dl class="details">
+                var innerQuestionText = '';
 
-    
+                if (element.data('checkboxOptions')) {
 
-    
+                    // Iterate over checkbox options
+                    for (var i = 0; i &lt; element.data('checkboxOptions').length; i++) {
 
-    
+                        var thisOption = element.data('checkboxOptions')[i];
 
-    
+                        innerQuestionText += '&lt;label class="checkbox-inline">';
 
-    
+                        innerQuestionText += '&lt;input type="checkbox" name="' + attrs.questionId + 'Checkbox" id="' + attrs.questionId + 'Checkbox' + thisOption + '" value="' + thisOption + '" ng-model="' + attrs.questionId + 'Checkbox' + thisOption + '" ng-change="updateCheckboxes()"';
 
-    
+                        if (attrs.questionRequired) {
+                            innerQuestionText += 'ng-required="!someSelected"';
+                        }
 
-    
+                        innerQuestionText += '>{{\'' + thisOption + '\' | translate}}&lt;/input>';
 
-    
+                        innerQuestionText += '&lt;/label>';
+                    }
+                }
 
-    
+                questionText += innerQuestionText + '&lt;/div>&lt;/div>&lt;/div>';
 
-    
+                var questionElement = angular.element(questionText);
 
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_demographics.client.controller.js.html">public/modules/core/controllers/demographics.client.controller.js</a>, <a href="public_modules_core_controllers_demographics.client.controller.js.html#line3">line 3</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-        <h3 class="subsection-title">Namespaces</h3>
-
-        <dl>
-            <dt><a href="Angular.DemographicsController_$scope.html">$scope</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+                element.append(questionElement);
+                $compile(element.contents())(scope);
+            }
+        };
+    }
+]);
+</code></pre>
+        </article>
+    </section>
 
 
 

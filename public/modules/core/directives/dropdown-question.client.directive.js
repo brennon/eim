@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * @class Angular.dropdownQuestionDirective
+ */
+
 angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
 
     return {

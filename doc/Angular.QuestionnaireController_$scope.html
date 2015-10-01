@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: SocketServerController</title>
+    <title>JSDoc: Namespace: $scope</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: SocketServerController</h1>
+    <h1 class="page-title">Namespace: $scope</h1>
 
     
 
@@ -28,37 +28,21 @@
 
 <header>
     
+        <h2>
+            <span class="ancestors"><a href="Angular.html">Angular</a><a href="Angular.QuestionnaireController.html">.QuestionnaireController</a>#</span>
+        
+        $scope
+        </h2>
+        
+    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description"><p>Socket Controller module</p>
-<p>This module provides functionality for allowing clients to send and
-receive <a href="http://opensoundcontrol.org/">Open Sound Control</a> (OSC) messages
-through a <a href="http://socket.io/">socket.io</a> connection.</p>
-<p>In general, the OSC message flow is as follows:</p>
-<ul>
-<li><p>Outgoing messages:</p>
-<ol>
-<li>A client connects to the server over socket.io</li>
-<li>Client emits the 'sendOSCMessage' event</li>
-<li>SocketServerController module sends message</li>
-<li>After sending the message, SocketServerController emits the
-'oscMessageSent' event on the client socket</li>
-</ol>
-</li>
-<li><p>Incoming messages:</p>
-<ol>
-<li>SocketServerController module listens for <code>oscMessageReceived</code> events
-emitted by the <a href="Node.module_OSCServerController.html">OSCServerController</a>
-module</li>
-<li>SocketServerController module emits its own
-<code>oscMessageReceived</code> event on client sockets with the same data</li>
-</ol>
-</li>
-</ul></div>
+            <div class="description"><p>The <code>QuestionnaireController</code>'s <code>$scope</code> object. All properties on
+<code>$scope</code> are available to the view.</p></div>
         
 
         
@@ -93,7 +77,7 @@ module</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line3">line 3</a>
+        <a href="public_modules_core_controllers_questionnaire.client.controller.js.html">public/modules/core/controllers/questionnaire.client.controller.js</a>, <a href="public_modules_core_controllers_questionnaire.client.controller.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -120,191 +104,18 @@ module</li>
     
 
     
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id="questionnaireData"><span class="type-signature"></span>questionnaireData<span class="type-signature"> :Object</span></h4>
 
-    
-
-    <h4 class="name" id=".init"><span class="type-signature">(static) </span>init<span class="signature">(httpServer)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
-
-    
 
 
 
 <div class="description">
-    <p>Initializes the module. Once initialized, clients that connect over
-socket.io receive the messages this module emits, as described above. The
-server then also listens on each client connection for OSC messages to be
-sent using the <a href="Node.module_OSCServerController.html">OSCServerController</a>
-module, also as described above.</p>
+    <p>The questionnaire data retrieved from <a href="Angular.TrialData.html">TrialData</a>.</p>
 </div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>httpServer</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">http.Server</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A Node.js HTTP server</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line53">line 53</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">undefined</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-    
-
-    
-
-    
-        <h3 class="subsection-title">Events</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="~event:oscMessageReceived">oscMessageReceived</h4>
-
-    
-
-
-
-<div class="description">
-    <p>This event is fired when the module receives an OSC message from
-the <a href="Node.module_OSCServerController.html">OSCServerController</a>
-module.</p>
-<p>The object sent with this event is a JavaScript object
-representation of the OSC message.</p>
-</div>
-
-
 
 
 
@@ -322,10 +133,6 @@ representation of the OSC message.</p>
 
 
 
-
-
-
-
 <dl class="details">
 
     
@@ -355,7 +162,7 @@ representation of the OSC message.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line88">line 88</a>
+        <a href="public_modules_core_controllers_questionnaire.client.controller.js.html">public/modules/core/controllers/questionnaire.client.controller.js</a>, <a href="public_modules_core_controllers_questionnaire.client.controller.js.html#line41">line 41</a>
     </li></ul></dd>
     
 
@@ -371,114 +178,13 @@ representation of the OSC message.</p>
 
 
 
-
-
-
-
-
-
-
-
-
-
         
-            
-
-    
-
-    <h4 class="name" id="~event:oscMessageSent">oscMessageSent</h4>
-
-    
-
-
-
-<div class="description">
-    <p>This event is fired when the module sends an OSC message
-using the
-<a href="Node.module_OSCServerController.html">OSCServerController</a>
-module.</p>
-<p>The object sent with this event is a JavaScript object
-representation of the OSC message.</p>
-</div>
-
-
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
     
 
     
 
     
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_controllers_socket.server.controller.js.html">app/controllers/socket.server.controller.js</a>, <a href="app_controllers_socket.server.controller.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
     
 </article>
 
