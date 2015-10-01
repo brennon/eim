@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: app/routes/trial.server.routes.js</title>
+    <title>JSDoc: Source: public/modules/core/controllers/last-screen.client.controller.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: app/routes/trial.server.routes.js</h1>
+    <h1 class="page-title">Source: public/modules/core/controllers/last-screen.client.controller.js</h1>
 
     
 
@@ -28,28 +28,21 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-
 /**
- * `Trial` routes
+ * The `LastScreenController` simply posts the object in `TrialData.data` to
+ * the server to be written to a file.
  *
- * @module {function} Node.TrialServerRoutes
- * @memberof Node
+ * @class Angular.LastScreenController
+ * @see Angular.TrialData
+ * @see Node.module:TrialServerRoutes
+ * @see Node.module:TrialServerController
  */
 
-module.exports = function(app) {
-
-    var controller = require('../../app/controllers/trial');
-
-    /**
-     * Send a trial document to the server. This document is sent to the
-     * `trial.server.controller#create` method.
-     *
-     * @example http://&lt;ADDRESS>:&lt;PORT>/api/trials
-     *
-     * @name Upload a trial
-     */
-    app.route('/api/trials').post(controller.create);
-};</code></pre>
+angular.module('core').controller('LastScreenController', ['$scope', 'TrialData', '$http',
+    function($scope, TrialData, $http) {
+        $http.post('/api/trials', TrialData.data);
+    }
+]);</code></pre>
         </article>
     </section>
 
