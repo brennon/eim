@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: OSCServerRoutes</title>
+    <title>JSDoc: Class: MissingKeysClient</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: OSCServerRoutes</h1>
+    <h1 class="page-title">Class: MissingKeysClient</h1>
 
     
 
@@ -28,16 +28,62 @@
 
 <header>
     
+        <h2>
+            <span class="ancestors"><a href="Angular.html">Angular</a>.</span>
+        
+        MissingKeysClient
+        </h2>
+        
+    
 </header>
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description"><p><code>OSC</code> routes</p></div>
-        
 
-        
+    
+
+    <h4 class="name" id="MissingKeysClient"><span class="type-signature"></span>new MissingKeysClient<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>This <strong>is not</strong>, in fact, a class, but rather a file for defining those
+strings that
+<a href="https://angular-gettext.rocketeer.be/">angular-gettext</a> does not
+automatically extract for translation using the <code>nggettext_extract</code> Grunt
+task. The file is located at
+<code>/public/modules/core/config/core.client.missing-keys.js</code>.</p>
+<p>If you've translated your text following the instructions in the README,
+and you still see text prepended with <code>[MISSING:]</code> when you browse to
+your application, you'll need to do the following:</p>
+<ol>
+<li>Add all such strings to this file. In particular, add a separate call
+to <code>gettext('Your string here');</code> following those you see in this file.</li>
+<li>Run the <code>nggettext_extract</code> task again.</li>
+<li>Proceed with the translation instructions as given in the README.</li>
+</ol>
+<p>As an example, if the following were the contents of the
+<code>core.client.missing-keys.js</code> file, the strings, <code>'No Signal'</code>, <code>'Signal
+OK'</code>, and <code>'Personal Details'</code>, would be extracted (along with all
+other strings that are automatically extracted) by the
+<code>nggettext_extract</code> Grunt task and included in the file at
+<code>/po/template.pot</code> for your use in creating translations.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -69,7 +115,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="app_routes_osc.server.routes.js.html">app/routes/osc.server.routes.js</a>, <a href="app_routes_osc.server.routes.js.html#line3">line 3</a>
+        <a href="public_modules_core_config_core.client.missing-keys.js.html">public/modules/core/config/core.client.missing-keys.js</a>, <a href="public_modules_core_config_core.client.missing-keys.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -81,7 +127,31 @@
 </dl>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>angular.module('core').controller(['gettext',
+   function (gettext) {
+        gettext('No Signal');
+        gettext('Signal OK');
+        gettext('Personal Details');
+    }
+]);</code></pre>
+
+
+
     
     </div>
 
