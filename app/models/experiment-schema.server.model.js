@@ -12,7 +12,8 @@ var BluebirdPromise = require('bluebird');
  * The Mongoose `Schema` for an `ExperimentSchema`. This schema is used in
  * creating the Mongoose `Model` for an `ExperimentSchema`.
  *
- * @constructor
+ * @module "experiment-schema.server.model"
+ * @namespace ExperimentSchemaSchema
  * @type {mongoose.Schema}
  */
 var ExperimentSchemaSchema = new Schema({
@@ -171,3 +172,5 @@ console.debug(
     'Registered schema for ExperimentSchema model.',
     ExperimentSchemaSchema
 );
+
+module.exports.schema = ExperimentSchemaSchema;

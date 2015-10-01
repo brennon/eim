@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: app/routes/experiment-schema.server.routes.js</title>
+    <title>JSDoc: Source: app/models/media.server.model.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: app/routes/experiment-schema.server.routes.js</h1>
+    <h1 class="page-title">Source: app/models/media.server.model.js</h1>
 
     
 
@@ -28,24 +28,57 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-/**
- * `ExperimentSchema` routes
- *
- * @module {function} "experiment-schema.server.routes"
+/*
+ Module dependencies
  */
-module.exports = function(app) {
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
-  var controller = require('../../app/controllers/experiment-schema');
+/**
+ * The Mongoose `Schema` for a `Media` document. This schema is used in
+ * creating the Mongoose `Model` for a `Media` document.
+ *
+ * @module "media.server.model"
+ * @namespace MediaSchema
+ * @type {mongoose.Schema}
+ */
+var MediaSchema = new Schema({
+    type: {
+        type: String,
+        required: true
+    },
+    artist: {
+        type: String,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    label: {
+        type: String,
+        required: true
+    },
+    has_lyrics: Boolean,
+    comments: String,
+    year: Date,
+    excerpt_start_time: Number,
+    excerpt_end_time: Number,
+    bpm: Number,
+    source: String,
+    key: String,
+    emotion_tags: [Schema.Types.ObjectId],
+    genres: [Schema.Types.ObjectId],
+    file: Schema.Types.ObjectId
+});
 
-  /**
-   * Gets a random experiment schema from the database.
-   *
-   * @example http://&lt;ADDRESS>:&lt;PORT>/api/experiment-schemas/random
-   *
-   * @name Random experiment schema
-   */
-  app.route('/api/experiment-schemas/random').get(controller.random);
-};
+mongoose.model('Media', MediaSchema);
+console.debug(
+    'Registered schema for Media model.',
+    MediaSchema
+);
+
+module.exports.schema = MediaSchema;
 </code></pre>
         </article>
     </section>

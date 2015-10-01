@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: config/custom</title>
+    <title>JSDoc: Module: "trial.server.routes"</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: config/custom</h1>
+    <h1 class="page-title">Module: "trial.server.routes"</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Custom configuration module</p></div>
+            <div class="description"><p><code>Trial</code> routes</p></div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="config_custom.js.html">config/custom.js</a>, <a href="config_custom.js.html#line3">line 3</a>
+        <a href="app_routes_trial.server.routes.js.html">app/routes/trial.server.routes.js</a>, <a href="app_routes_trial.server.routes.js.html#line4">line 4</a>
     </li></ul></dd>
     
 
@@ -132,133 +132,18 @@
 
         
             
-<h4 class="name" id="~customConfiguration"><span class="type-signature">(inner) </span>customConfiguration<span class="type-signature"> :Object</span></h4>
+<h4 class="name" id="~Uploadatrial"><span class="type-signature">(inner) </span>Upload a trial<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>The customConfiguration object is included as a property on the object that
-is returned when /app/config/config.js is required. To make custom
-properties available to the rest of your application that may differ for
-your particular deployment, add them as properties of the
-customConfiguration object and require() the config.js file.</p>
+    <p>Send a trial document to the server. This document is sent to the
+<code>trial.server.controller#create</code> method.</p>
 </div>
 
 
 
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>metadata</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Metadata are stored on the trial data that
-the application saves for each experiment session.</p>
-                <h6>Properties</h6>
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>terminal</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The terminal number that will be
-recorded for every session on this computer.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -292,7 +177,7 @@ recorded for every session on this computer.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="config_custom.js.html">config/custom.js</a>, <a href="config_custom.js.html#line21">line 21</a>
+        <a href="app_routes_trial.server.routes.js.html">app/routes/trial.server.routes.js</a>, <a href="app_routes_trial.server.routes.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -305,6 +190,11 @@ recorded for every session on this computer.</p></td>
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>http://&lt;ADDRESS>:&lt;PORT>/api/trials</code></pre>
 
 
 

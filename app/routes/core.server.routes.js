@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * `Core` routes. These are the 'core' routes made available by the webserver, and allow access to basic, 'core' functionality.
+ * `Core` routes. These are the 'core' routes made available by the web server
+ * that allow access to basic, 'core' functionality.
  *
  * @module {function} "core.server.routes"
  */
