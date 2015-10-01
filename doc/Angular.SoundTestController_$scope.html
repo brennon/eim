@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: public/modules/core/directives/dropdown-question.client.directive.js</title>
+    <title>JSDoc: Namespace: $scope</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,81 +17,288 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: public/modules/core/directives/dropdown-question.client.directive.js</h1>
+    <h1 class="page-title">Namespace: $scope</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+        <h2>
+            <span class="ancestors"><a href="Angular.html">Angular</a><a href="Angular.SoundTestController.html">.SoundTestController</a>#</span>
+        
+        $scope
+        </h2>
+        
+    
+</header>
 
-/**
- * @class Angular.dropdownQuestionDirective
- */
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>The <code>SoundTestController</code>'s <code>$scope</code> object. All properties on
+<code>$scope</code> are available to the view.</p></div>
+        
 
-angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
+        
 
-    return {
-        restrict: 'E',
-        scope: {},
 
-        link: function(scope, element, attrs) {
+<dl class="details">
 
-            scope.sendToTrialData = function(path, value) {
-                if (!attrs.associatedToMedia) {
-                    TrialData.setValueForPath(path, value);
-                } else {
-                    TrialData.setValueForPathForCurrentMedia(path, value);
-                }
-            };
+    
 
-            scope[attrs.questionId + 'Select'] = null;
+    
 
-            scope.$watch(attrs.questionId + 'Select', function(newValue) {
-                scope.sendToTrialData(attrs.controllerDataPath, newValue);
-            });
+    
 
-            var rowDiv = angular.element('&lt;div class="row well">&lt;/div>');
+    
 
-            var formDiv = angular.element('&lt;div class="col-md-12 form-group">&lt;/div>');
+    
 
-            rowDiv.append(formDiv);
+    
 
-            var label = angular.element('&lt;label class="control-label" translate>'+attrs.questionLabel+'&lt;/label>');
-            label.prop('for', attrs.questionId);
+    
 
-            formDiv.append(label);
+    
 
-            var select = angular.element('&lt;select class="form-control" required>&lt;/select>');
-            select.attr('id', attrs.questionId);
-            select.attr('name', attrs.questionId);
-            select.attr('ng-model', attrs.questionId + 'Select');
+    
 
-            if (element.data('dropdownOptions')) {
+    
 
-                scope.dropdownOptions = element.data('dropdownOptions');
+    
 
-                for (var i in element.data('dropdownOptions')) {
-                    var optionText = element.data('dropdownOptions')[i];
-                    var option = angular.element('&lt;option>{{ "'+ optionText +'" | translate }}&lt;/option>');
-                    option.attr('value', optionText);
-                    select.append(option);
-                }
-            }
+    
 
-            formDiv.append(select);
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_sound-test.client.controller.js.html">public/modules/core/controllers/sound-test.client.controller.js</a>, <a href="public_modules_core_controllers_sound-test.client.controller.js.html#line45">line 45</a>
+    </li></ul></dd>
+    
 
-            element.append(rowDiv);
-            $compile(element.contents())(scope);
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="destroyed"><span class="type-signature"></span>destroyed<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Indicates whether or not <a href="Angular.SoundTestController_$scope.html">$scope</a> has been destroyed.
+Initially set to <code>false</code>.</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_sound-test.client.controller.js.html">public/modules/core/controllers/sound-test.client.controller.js</a>, <a href="public_modules_core_controllers_sound-test.client.controller.js.html#line102">line 102</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="stopSoundTest"><span class="type-signature"></span>stopSoundTest<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sends a message to Max to stop the sound test. This message looks
+like the following:</p>
+<pre class="prettyprint source"><code>{
+    oscType: 'message',
+    address: '/eim/control/soundTest',
+    args: [
+        {
+            type: 'integer',
+            value: 0
+        },
+        {
+            type: 'string',
+            value: &lt;SESSIONNUMBER>
         }
-    };
-}]);
-</code></pre>
-        </article>
-    </section>
+    ]
+}</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_sound-test.client.controller.js.html">public/modules/core/controllers/sound-test.client.controller.js</a>, <a href="public_modules_core_controllers_sound-test.client.controller.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">undefined</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
@@ -105,7 +312,7 @@ angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', f
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 17:18:41 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 17:18:42 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

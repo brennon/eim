@@ -16,7 +16,12 @@ angular.module('core').controller(
         '$scope',
         'TrialData',
         '$http',
-        function($scope, TrialData, $http) {
+        '$log',
+        function($scope, TrialData, $http, $log) {
+
+            $log.debug('Loading LastScreenController.');
+
+            // Send TrialData.data to the backend
             $http.post('/api/trials', TrialData.data);
         }
     ]);

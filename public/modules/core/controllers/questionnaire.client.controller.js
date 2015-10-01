@@ -28,7 +28,7 @@ angular.module('core').controller('QuestionnaireController', [
     '$log',
     function($scope, TrialData, $log) {
 
-        $log.debug('Loading QuestionnaireController.');
+        $log.info('Loading QuestionnaireController.');
 
         /**
          * The `QuestionnaireController`'s `$scope` object. All properties on

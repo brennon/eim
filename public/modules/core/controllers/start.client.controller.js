@@ -7,7 +7,6 @@
  * continuing in the session if Max is not responsive.
  *
  * @class Angular.StartController
- * @memberof Angular
  */
 
 angular.module('core').controller('StartController', [
@@ -19,7 +18,7 @@ angular.module('core').controller('StartController', [
     '$log',
     function($scope, $timeout, TrialData, ExperimentManager, SocketIOService, $log) {
 
-        $log.debug('Loading StartController.');
+        $log.info('Loading StartController.');
 
         /**
          * The `StartController`'s `$scope` object. All properties on `$scope`

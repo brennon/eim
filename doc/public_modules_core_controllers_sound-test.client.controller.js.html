@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: public/modules/core/directives/dropdown-question.client.directive.js</title>
+    <title>JSDoc: Source: public/modules/core/controllers/sound-test.client.controller.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: public/modules/core/directives/dropdown-question.client.directive.js</h1>
+    <h1 class="page-title">Source: public/modules/core/controllers/sound-test.client.controller.js</h1>
 
     
 
@@ -29,67 +29,123 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
- * @class Angular.dropdownQuestionDirective
+ * The `SignalTestController` coordinates with Max to run a sound test. The
+ * message to start the sound test is sent to Max immediately when the
+ * controller is loaded.
+ *
+ * @class Angular.SoundTestController
  */
 
-angular.module('core').directive('dropdownQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
+angular.module('core').controller('SoundTestController', [
+    '$scope',
+    'SocketIOService',
+    'TrialData',
+    'gettextCatalog',
+    '$log',
+    function($scope, SocketIOService, TrialData, gettextCatalog, $log) {
 
-    return {
-        restrict: 'E',
-        scope: {},
+        $log.debug('Loading SoundTestController.');
 
-        link: function(scope, element, attrs) {
+        // Get current language
+        var currentLanguage = gettextCatalog.currentLanguage;
 
-            scope.sendToTrialData = function(path, value) {
-                if (!attrs.associatedToMedia) {
-                    TrialData.setValueForPath(path, value);
-                } else {
-                    TrialData.setValueForPathForCurrentMedia(path, value);
+        // Send a message to Max to start the sound test
+        $log.debug('Sending start sound test message to Max.');
+        SocketIOService.emit('sendOSCMessage', {
+            oscType: 'message',
+            address: '/eim/control/soundTest',
+            args: [
+                {
+                    type: 'integer',
+                    value: 1
+                },
+                {
+                    type: 'string',
+                    value: currentLanguage
+                },
+                {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
                 }
-            };
+            ]
+        });
 
-            scope[attrs.questionId + 'Select'] = null;
+        /**
+         * The `SoundTestController`'s `$scope` object. All properties on
+         * `$scope` are available to the view.
+         *
+         * @name $scope
+         * @namespace
+         * @instance
+         * @memberof Angular.SoundTestController
+         * @type {{}}
+         */
 
-            scope.$watch(attrs.questionId + 'Select', function(newValue) {
-                scope.sendToTrialData(attrs.controllerDataPath, newValue);
+        /**
+         * Sends a message to Max to stop the sound test. This message looks
+         * like the following:
+         *
+         * ```
+         * {
+         *     oscType: 'message',
+         *     address: '/eim/control/soundTest',
+         *     args: [
+         *         {
+         *             type: 'integer',
+         *             value: 0
+         *         },
+         *         {
+         *             type: 'string',
+         *             value: &lt;SESSIONNUMBER>
+         *         }
+         *     ]
+         * }
+         * ```
+         *
+         * @function stopSoundTest
+         * @memberof Angular.SoundTestController#$scope
+         * @instance
+         * @return {undefined}
+         */
+        $scope.stopSoundTest = function() {
+
+            $log.debug('Sending stop sound test message to Max.');
+
+            SocketIOService.emit('sendOSCMessage', {
+                oscType: 'message',
+                address: '/eim/control/soundTest',
+                args: [
+                    {
+                        type: 'integer',
+                        value: 0
+                    },
+                    {
+                        type: 'string',
+                        value: '' + TrialData.data.metadata.session_number
+                    }
+                ]
             });
+        };
 
-            var rowDiv = angular.element('&lt;div class="row well">&lt;/div>');
+        /**
+         * Indicates whether or not {@link
+         * Angular.SoundTestController#$scope|$scope} has been destroyed.
+         * Initially set to `false`.
+         *
+         * @name destroyed
+         * @memberof Angular.SoundTestController#$scope
+         * @instance
+         */
+        $scope.destroyed = false;
 
-            var formDiv = angular.element('&lt;div class="col-md-12 form-group">&lt;/div>');
+        // Send stop sound test message when controller is destroyed
+        $scope.$on('$destroy', function() {
 
-            rowDiv.append(formDiv);
-
-            var label = angular.element('&lt;label class="control-label" translate>'+attrs.questionLabel+'&lt;/label>');
-            label.prop('for', attrs.questionId);
-
-            formDiv.append(label);
-
-            var select = angular.element('&lt;select class="form-control" required>&lt;/select>');
-            select.attr('id', attrs.questionId);
-            select.attr('name', attrs.questionId);
-            select.attr('ng-model', attrs.questionId + 'Select');
-
-            if (element.data('dropdownOptions')) {
-
-                scope.dropdownOptions = element.data('dropdownOptions');
-
-                for (var i in element.data('dropdownOptions')) {
-                    var optionText = element.data('dropdownOptions')[i];
-                    var option = angular.element('&lt;option>{{ "'+ optionText +'" | translate }}&lt;/option>');
-                    option.attr('value', optionText);
-                    select.append(option);
-                }
-            }
-
-            formDiv.append(select);
-
-            element.append(rowDiv);
-            $compile(element.contents())(scope);
-        }
-    };
-}]);
-</code></pre>
+            $log.debug('SoundTestController $scope destroyed.');
+            $scope.stopSoundTest();
+        });
+    }
+]);</code></pre>
         </article>
     </section>
 
