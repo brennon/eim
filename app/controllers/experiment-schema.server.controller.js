@@ -3,7 +3,7 @@
 /**
  * `ExperimentSchema` controller
  *
- * @module {{}} "experiment-schema.server.controller"
+ * @module {{}} ExperimentSchemaServerController
  */
 
 // Module dependencies

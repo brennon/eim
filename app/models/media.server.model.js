@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  * The Mongoose `Schema` for a `Media` document. This schema is used in
  * creating the Mongoose `Model` for a `Media` document.
  *
- * @module "media.server.model"
+ * @module MediaServerModel
  * @namespace MediaSchema
  * @type {mongoose.Schema}
  */

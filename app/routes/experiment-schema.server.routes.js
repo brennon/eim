@@ -3,7 +3,7 @@
 /**
  * `ExperimentSchema` routes
  *
- * @module {function} "experiment-schema.server.routes"
+ * @module {function} ExperimentSchemaServerRoutes
  */
 module.exports = function(app) {
 

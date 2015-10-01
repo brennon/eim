@@ -4,7 +4,7 @@
 /**
  * `Trial` routes
  *
- * @module {function} "trial.server.routes"
+ * @module {function} TrialServerRoutes
  */
 
 module.exports = function(app) {
