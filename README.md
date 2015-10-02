@@ -4,6 +4,10 @@
 
 This is the Emotion in Motion experiment framework from the Music, Sensors and Emotion research group. For more information, contact us at [emotion.in.motion@musicsensorsemotion.com](mailto:emotion.in.motion@musicsensorsemotion.com).
 
+# Documentation
+
+Complete documentation is available [here](https://brennon.github.io/eim/).
+
 # Installation
 
 1. Clone the EiM git repository:
@@ -51,6 +55,15 @@ This is the Emotion in Motion experiment framework from the Music, Sensors and E
     ```
 
 7. Browse to [http://localhost:3000/](http://localhost:3000/).
+
+# Custom Configuration
+
+There are a few things you'll likely want to change about your installation 
+straight away (the terminal numbers of the machines on which you install your
+ app, the default language, etc.) All of these changes can be made in the 
+ file at `config/custom.js`. The options for configuring this file are 
+ described both in comments the file itself, as well as in the documentation 
+ for the `CustomConfiguration` module.
 
 # Debug Mode
 
