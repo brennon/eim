@@ -16,7 +16,8 @@ angular.module('core').controller('StartController', [
     'ExperimentManager',
     'SocketIOService',
     '$log',
-    function($scope, $timeout, TrialData, ExperimentManager, SocketIOService, $log) {
+    function($scope, $timeout, TrialData, ExperimentManager, SocketIOService,
+             $log) {
 
         $log.info('Loading StartController.');
 
@@ -52,7 +53,8 @@ angular.module('core').controller('StartController', [
         /**
          * This method is called when the server fires the
          * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected.
+         * client is connected. The receipt of unexpected or malformed
+         * messages will result in a warning on the console.
          *
          * @function oscMessageReceivedListener
          * @memberof Angular.StartController#
@@ -66,10 +68,18 @@ angular.module('core').controller('StartController', [
             console.info(data);
 
             /* istanbul ignore else */
-            if (data.address === '/eim/status/startExperiment') {
+            if (typeof data === 'object' &&
+                !Array.isArray(data) &&
+                data.hasOwnProperty('address') &&
+                data.address === '/eim/status/startExperiment') {
                 $scope.$apply(function() {
                     $scope.maxReady = true;
                 });
+            } else {
+                $log.warn(
+                    'StartController did not handle an OSC message.',
+                    data
+                );
             }
         };
 
@@ -95,7 +105,7 @@ angular.module('core').controller('StartController', [
         /**
          * Send a message to the server indicating that the client is ready
          * to start the experiment. This method sets {@link
-         * Angular.StartController#$scope.maxReady} to `false` before
+            * Angular.StartController#$scope.maxReady} to `false` before
          * sending the message.
          *
          * @function sendExperimentStartMessage
