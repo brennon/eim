@@ -246,7 +246,7 @@ angular.module('core').directive('questionnaire', [
                  * support this property. It should be a 'keypath' into the
                  * TrialData.data object at which the response to this question
                  * should be stored. See {@link
-                 * Angular.TrialData#setValueForPath|TrialData#setValueForPath}
+                    * Angular.TrialData#setValueForPath|TrialData#setValueForPath}
                  * for more information on these keypaths. (required)
                  *
                  * @property {boolean} questionIsAssociatedToMedia All question
@@ -257,7 +257,7 @@ angular.module('core').directive('questionnaire', [
                  * questions with the same questionStoragePath property are
                  * stored in an ordered array that is used as the value for
                  * the `questionStoragePath` property in {@link
-                 * Angular.TrialData#data|TrialData#data}.
+                    * Angular.TrialData#data|TrialData#data}.
                  *
                  * For example, in the demonstration study provided with the
                  * framework, two media excerpts are played. We present the same
@@ -360,7 +360,7 @@ angular.module('core').directive('questionnaire', [
                  * label that should be displayed to the user, while the
                  * `'value'` property corresponds to the value that is
                  * actually saved to {@link
-                 * Angular.TrialData#data|TrialData#data}, should the user
+                    * Angular.TrialData#data|TrialData#data}, should the user
                  * select this radio button.
                  *
                  * ```
