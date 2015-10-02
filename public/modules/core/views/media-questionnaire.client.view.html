@@ -1,0 +1,13 @@
+<div data-ng-controller="QuestionnaireController">
+
+  <questionnaire questionnaire-data="questionnaireData" questionnaire-form="questionnaireForm"></questionnaire>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+        <button class="btn btn-primary btn-lg" ng-disabled="!debugMode && questionnaireForm.$invalid" data-ng-click="advanceSlide()" translate>Continue</button>
+      </p>
+    </div>
+  </div>
+  <display-trial-data></display-trial-data>
+</div>

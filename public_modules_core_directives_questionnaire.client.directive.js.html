@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/directives/questionnaire.client.directive.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/directives/questionnaire.client.directive.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * The `questionnaireDirective` is used to dynamically inject a
+ * questionnaire into a view. It leverages several other directives to do
+ * this work:
+ *
+ * - {@link Angular.checkboxQuestionDirective|checkboxQuestionDirective}
+ * - {@link Angular.dropdownQuestionDirective|dropdownQuestionDirective}
+ * - {@link Angular.radioQuestionDirective|radioQuestionDirective}
+ * - {@link Angular.scaleQuestionDirective|scaleQuestionDirective}
+ *
+ * @class Angular.questionnaireDirective
+ * @see Angular.checkboxQuestionDirective
+ * @see Angular.dropdownQuestionDirective
+ * @see Angular.radioQuestionDirective
+ * @see Angular.scaleQuestionDirective
+ */
+
+angular.module('core').directive('questionnaire', ['$compile', function($compile) {
+
+    var buildScaleQuestion = function(item) {
+        var questionElement = angular.element('&lt;scale-question>&lt;/scale-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionLabelType) {
+            questionElement.attr('label-type', item.questionLabelType);
+        }
+
+        if (item.questionLikertMinimumDescription) {
+            questionElement.attr(
+                'minimum-description',
+                item.questionLikertMinimumDescription
+            );
+        }
+
+        if (item.questionLikertMaximumDescription) {
+            questionElement.attr(
+                'maximum-description',
+                item.questionLikertMaximumDescription
+            );
+        }
+
+        if (item.questionLikertSingleImageSrc) {
+            questionElement.attr(
+                'single-img-src',
+                item.questionLikertSingleImageSrc
+            );
+        }
+
+        if (item.questionLikertLeftImageSrc) {
+            questionElement.attr(
+                'left-img-src',
+                item.questionLikertLeftImageSrc
+            );
+        }
+
+        if (item.questionLikertRightImageSrc) {
+            questionElement.attr(
+                'right-img-src',
+                item.questionLikertRightImageSrc
+            );
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr(
+                'controller-data-path',
+                item.questionStoragePath
+            );
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr(
+                'associated-to-media',
+                item.questionIsAssociatedToMedia
+            );
+        }
+
+        if (item.questionOptions) {
+            questionElement.data('questionOptions', item.questionOptions);
+        }
+
+        return questionElement;
+    };
+
+    var buildRadioQuestion = function(item) {
+        var questionElement = angular.element('&lt;radio-question>&lt;/radio-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr(
+                'controller-data-path',
+                item.questionStoragePath
+            );
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr(
+                'associated-to-media',
+                item.questionIsAssociatedToMedia
+            );
+        }
+
+        if (item.questionRadioOptions) {
+            questionElement.data('radioOptions', item.questionRadioOptions);
+        }
+
+        return questionElement;
+    };
+
+    var buildDropdownQuestion = function(item) {
+        var questionElement = angular.element('&lt;dropdown-question>&lt;/dropdown-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr('controller-data-path', item.questionStoragePath);
+        }
+
+        if (item.questionDropdownOptions) {
+            questionElement.data('dropdownOptions', item.questionDropdownOptions);
+        }
+
+        return questionElement;
+    };
+
+    var buildCheckboxQuestion = function(item) {
+        var questionElement = angular.element('&lt;checkbox-question>&lt;/checkbox-question>');
+
+        if (item.questionId) {
+            questionElement.attr('question-id', item.questionId);
+        }
+
+        if (item.questionLabel) {
+            questionElement.attr('question-label', item.questionLabel);
+        }
+
+        if (item.questionIsAssociatedToMedia) {
+            questionElement.attr('associated-to-media', item.questionIsAssociatedToMedia);
+        }
+
+        if (item.questionStoragePath) {
+            questionElement.attr('controller-data-path', item.questionStoragePath);
+        }
+
+        if (item.questionCheckboxOptions) {
+            questionElement.data('checkboxOptions', item.questionCheckboxOptions);
+        }
+
+        // If questionRequired isn't defined or is explicitly set to true
+        if (!item.hasOwnProperty('questionRequired') || item.questionRequired === true) {
+            questionElement.attr('question-required', 'true');
+        }
+
+        return questionElement;
+    };
+
+    return {
+        restrict: 'E',
+        scope: {
+            questionnaireData: '=',
+            questionnaireForm: '='
+        },
+
+        link: function(scope, element) {
+
+            /**
+             * Represents an individual question in a questionnaire.
+             *
+             * @typedef {{}} questionnaireStructureEntry
+             * @memberof Angular.questionnaireDirective#data
+             * @inner
+             * @property {string} questionType The question type. Supported
+             * `questionType`s include `'likert'`, `'radio'`, `'dropdown'`,
+             * and `'checkbox'`. (required)
+             * @property {string} questionId All types
+             * @property {string} questionLabel All types
+             * @property {string} questionLabelType scale
+             * @property {string} questionStoragePath All types
+             * @property {string} questionIsAssociatedToMedia All types
+             * @property {string} questionLikertMinimumDescription scale
+             * @property {string} questionLikertMaximumDescription scale
+             * @property {string} question@property {string} LikertSingleImageSrc scale
+             * @property {string} questionLikertLeftImageSrc scale
+             * @property {string} questionLikertRightImageSrc scale
+             * @property {*} questionOptions scale
+             * @property {*} questionRadioOptions radio
+             * @property {*} questionDropdownOptions dropdown
+             * @property {*} questionRequired checkbox
+             */
+
+            /**
+             * The data used to build the questionnaire. `data` is bound to
+             * `$scope.questionnaireData` on the enclosing scope.
+             *
+             * @name data
+             * @namespace
+             * @memberof Angular.questionnaireDirective
+             * @instance
+             * @type {{}}
+             * @property {string} title The title of the questionnaire
+             * (optional)
+             * @property {string} introductoryText A block of introductory
+             * text for the questionnaire (optional)
+             * @property {questionnaireStructureEntry[]} structure An array
+             * of questions for the questionnaire (see {@link
+             * Angular.questionnaireDirective#data~questionnaireStructureEntry|questionnaireStructureEntry})
+             * (optional)
+             */
+            var data = scope.questionnaireData;
+
+            // Create an element for the title
+            if (data.title) {
+                var title = angular.element('&lt;h1 translate>' + data.title + '&lt;/h1>');
+                element.append(title);
+            }
+
+            // Create an element for the introductory text
+            if (data.introductoryText) {
+                var introductoryText = angular.element('&lt;div class="row">&lt;div class="col-md-12 introductory-text">&lt;h2 translate>' + data.introductoryText + '&lt;/h2>&lt;/div>&lt;/div>');
+                element.append(introductoryText);
+            }
+
+            var formElement = angular.element('&lt;form class="form" name="questionnaireForm" novalidate>&lt;/form>');
+            element.append(formElement);
+
+            // Iterate over structure
+            for (var i = 0; i &lt; data.structure.length; i++) {
+
+                // Create an element for each structure entry
+                var questionElement;
+                var item = data.structure[i];
+
+                switch (item.questionType) {
+                    case 'likert':
+                        questionElement = buildScaleQuestion(item);
+                        break;
+                    case 'radio':
+                        questionElement = buildRadioQuestion(item);
+                        break;
+                    case 'dropdown':
+                        questionElement = buildDropdownQuestion(item);
+                        break;
+                    case 'checkbox':
+                        questionElement = buildCheckboxQuestion(item);
+                        break;
+                }
+
+                // Append a spacer row
+                var spacerElement = angular.element('&lt;div class="row">&lt;div class="col-md-12 questionSpacer">&lt;/div>&lt;/div>');
+
+                formElement.append(questionElement);
+
+                formElement.append(spacerElement);
+            }
+
+            $compile(element.contents())(scope);
+        }
+    };
+}]);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 22:21:50 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

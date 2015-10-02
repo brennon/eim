@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/controllers/master.client.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/controllers/master.client.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * In the demo application, the `MasterController` is persistent throughout
+ * an experiment session and provides a number of 'session-wide' facilities.
+ * These include restarting a session, exposing the {@link
+ * Angular.TrialData|TrialData} service, changing the language, configuring
+ * hotkeys, showing alerts, and blacking out the screen.
+ *
+ * The hotkeys are configured using the
+ * [angular-hotkeys](https://github.com/chieffancypants/angular-hotkeys)
+ * module. In particular, pressing `'d'` twice will toggle debugging mode. When
+ * in debugging mode, the right arrow key will allow the user to advance to
+ * the next slide. Also, in debugging mode, nothing blocks the user from
+ * advancing through slides (e.g., the user can advance irrespective of
+ * whether or not Max is ready).
+ *
+ * @class Angular.MasterController
+ */
+
+angular.module('core').controller(
+    'MasterController',
+    [
+        '$scope',
+        'TrialData',
+        'hotkeys',
+        'ExperimentManager',
+        'gettextCatalog',
+        '$state',
+        '$timeout',
+        '$log',
+
+        function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
+                 $state, $timeout, $log) {
+
+            $log.debug('Loading MasterController.');
+
+            /**
+             * The `MasterController`'s `$scope` object. All properties on
+             * `$scope` are available to the view.
+             *
+             * @name $scope
+             * @namespace
+             * @instance
+             * @memberof Angular.MasterController
+             * @type {{}}
+             */
+
+            var thisController = this;
+
+            /**
+             * Expose {@link Angular.TrialData#toJson|TrialData#toJson} on
+             * `$scope`. Calling this method returns the result of calling
+             * {@link Angular.TrialData#toJson|TrialData#toJson}.
+             *
+             * @function trialDataJson
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @type {{}}
+             */
+            $scope.trialDataJson = function() {
+                return TrialData.toJson();
+            };
+
+            /**
+             * Set the current language used for displaying content. Ensure
+             * that you have translations available and compiled (see the
+             * [README](index.html)).
+             *
+             * @function setLanguage
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @param {string} language The language code of the language to use
+             * @return {undefined}
+             */
+            $scope.setLanguage = function(language) {
+
+                $log.debug('MasterController setting language to \'' +
+                    language + '\'.');
+
+                gettextCatalog.setCurrentLanguage(language);
+                TrialData.language(language);
+            };
+
+            /**
+             * Return to the `'home'` state.
+             *
+             * @function startOver
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            this.startOver = function() {
+
+                $log.debug('MasterController starting over.');
+
+                $state.go('home', {}, {reload: true});
+            };
+
+            /**
+             * Resets the inactivity timeout.
+             *
+             * The demo application ships with an inactivity timeout. If
+             * after five minutes no interaction with the experiment has
+             * occurred, this timeout fires and calls {@link
+             * Angular.MasterController#$scope#startOver|$scope#startOver}
+             * method.
+             *
+             * @function resetInactivityTimeout
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            // Reset inactivity timeout with a new five-minute timer
+            this.resetInactivityTimeout = function() {
+
+                $log.debug('MasterController resetting inactivity timeout.');
+
+                $timeout.cancel(thisController.inactivityTimeout);
+                thisController.inactivityTimeout = $timeout(
+                    thisController.startOver,
+                    5 * 60 * 1000
+                );
+            };
+            this.resetInactivityTimeout();
+
+            /**
+             * Resets the inactivity timeout and Advances the slide by calling
+             * {@link
+             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
+             *
+             * @function advanceSlide
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.advanceSlide = function() {
+
+                $log.debug('MasterController advancing slide.');
+
+                // Reset the inactivity timeout
+                thisController.resetInactivityTimeout();
+
+                // Wrap ExperimentManager's advance slide
+                ExperimentManager.advanceSlide();
+            };
+
+            /**
+             * Indicates whether or not debugging mode is enabled.
+             *
+             * @name debugMode
+             * @memberof Angular.MasterController#$scope
+             * @type {boolean}
+             */
+            $scope.debugMode = false;
+
+            /**
+             * Toggles debugging mode. If debugging mode is enabled, an
+             * alert is posted to the view.
+             *
+             * @function toggleDebugMode
+             * @instance
+             * @memberof Angular.MasterController#$scope
+             * @return {undefined}
+             */
+            $scope.toggleDebugMode = function() {
+
+                $scope.debugMode = !$scope.debugMode;
+                var alertMessage = 'Debug mode has been ';
+                if ($scope.debugMode) {
+                    $log.info('Debug mode enabled.');
+                    alertMessage += 'enabled.';
+                } else {
+                    $log.info('Debug mode disabled.');
+                    alertMessage += 'disabled.';
+                }
+
+                $scope.addAlert({type: 'info', msg: alertMessage});
+            };
+
+            // Setup hotkeys
+            $log.debug('Setting up hotkeys.');
+            hotkeys.add({
+                combo: 'd d',
+                description: 'Toggle debug mode',
+                callback: $scope.toggleDebugMode
+            });
+
+            hotkeys.add({
+                combo: 'right',
+                description: 'Advance slide',
+                callback: $scope.advanceSlide
+            });
+
+            /**
+             * Array for holding alert messages.
+             *
+             * @name alerts
+             * @type {string[]}
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             */
+            $scope.alerts = [];
+
+            /**
+             * Adds an alert to {@link
+             * Angular.MasterController#$scope#alerts|$scope#alerts}, unless
+             * it is already present.
+             *
+             * @function addAlert
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @param {{}} alert This object should have two properties:
+             * `msg` and `type`. The value of the `msg` property should be
+             * the alert `string`, and the value of the `type` property should
+             * be a `string` indicating the alert type. Acceptable values
+             * for alerty types are: `'success'`, `'info'`, `'warning'`, and
+             * `'danger'`.
+             * @return {undefined}
+             */
+            $scope.addAlert = function(alert) {
+
+                var errorExists = false;
+                for (var i = 0; i &lt; $scope.alerts.length; i++) {
+                    if ($scope.alerts[i].msg === alert.msg &amp;&amp;
+                        $scope.alerts[i].type === alert.type) {
+
+                        $log.debug('Not adding ' + alert.msg + ' to visible' +
+                            ' alerts, as it already exists in $scope.alerts.');
+                        errorExists = true;
+                        break;
+                    }
+                }
+
+                if (!errorExists) {
+                    $log.debug('Adding \'' + alert.msg + '\' to' +
+                        ' $scope.alerts.');
+                    $scope.alerts.push(alert);
+                }
+            };
+
+            /**
+             * Closes the alert in {@link
+             * Angular.MasterController#$scope#alerts|$scope#alerts} at the
+             * specified index.
+             *
+             * @function closeAlert
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @param {number} index The index in the {@link
+             * Angular.MasterController#$scope#alerts|$scope#alerts} array
+             * of the alert to close
+             * @return {undefined}
+             */
+            $scope.closeAlert = function(index) {
+                $log.debug('Closing alert at index ' + index + ': \'' +
+                    $scope.alerts[index].msg + '\'');
+                $scope.alerts.splice(index, 1);
+            };
+
+            /**
+             * Adds a generic error alert to {@link
+             * Angular.MasterController#$scope#alerts|$scope#alerts}. The
+             * alert is a `'danger'`-type alert, and in the demo app
+             * displays the message `'There seems to be a problem. Please
+             * contact a mediator for assistance.'`
+             *
+             * @function addGenericErrorAlert
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.addGenericErrorAlert = function() {
+                $log.debug('Adding generic error alert.');
+                $scope.addAlert({
+                    type: 'danger',
+                    msg: 'There seems to be a problem. Please contact a ' +
+                        'mediator for assistance.'
+                });
+            };
+
+            /**
+             * A flag indicating whether or not the 'blackout' class should
+             * be added to the body of the visible page. When this is
+             * `true`, the page is blacked out.
+             *
+             * @name blackoutClass
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @type {boolean}
+             */
+            $scope.blackoutClass = false;
+
+            /**
+             * A convenience method for setting {@link
+             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
+             * to `true` (and blacking out the page).
+             *
+             * @function hideBody
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.hideBody = function() {
+                $log.debug('Hiding body.');
+                $scope.blackoutClass = true;
+            };
+
+            /**
+             * A convenience method for setting {@link
+                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
+             * to `false` (and reversing the blacking out of the page).
+             *
+             * @function showBody
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.showBody = function() {
+                $log.debug('Showing body.');
+                $scope.blackoutClass = false;
+            };
+
+            /**
+             * A convenience method for toggling the value of {@link
+                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}.
+             *
+             * @function toggleBodyVisibility
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.toggleBodyVisibility = function() {
+                $log.debug('Toggling body visibility.');
+                $scope.blackoutClass = !$scope.blackoutClass;
+            };
+        }
+    ]);</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 22:21:50 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

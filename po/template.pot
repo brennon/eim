@@ -1,0 +1,1736 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "1"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "10"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "100"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "101"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "102"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "103"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "104"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "105"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "106"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "107"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "108"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "109"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "11"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "110"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "111"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "112"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "113"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "114"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "115"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "116"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "117"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "118"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "119"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "12"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "120"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "121"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "13"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "14"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "15"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "16"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "17"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "18"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "19"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "2"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "20"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "21"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "22"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "23"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "24"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "25"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "26"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "27"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "28"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "29"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "3"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "30"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "31"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "32"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "33"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "34"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "35"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "36"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "37"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "38"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "39"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "4"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "40"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "41"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "42"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "43"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "44"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "45"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "46"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "47"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "48"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "49"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "5"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "50"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "51"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "52"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "53"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "54"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "55"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "56"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "57"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "58"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "59"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "6"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "60"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "61"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "62"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "63"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "64"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "65"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "66"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "67"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "68"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "69"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "7"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "70"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "71"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "72"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "73"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "74"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "75"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "76"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "77"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "78"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "79"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "8"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "80"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "81"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "82"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "83"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "84"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "85"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "86"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "87"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "88"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "89"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "9"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "90"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "91"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "92"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "93"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "94"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "95"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "96"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "97"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "98"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "99"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Additional Questions"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Afghan"
+msgstr ""
+
+#: public/modules/core/views/media-playback.client.view.html
+msgid "After the excerpt has played, click the button to Continue."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Age"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Agree a little"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Agree strongly"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Albanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Algerian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "American"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "An expert"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Andorran"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Angolan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Antiguans"
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "Any personal information provided by you will be kept strictly confidential and you will not be personally identifiable by any information provided."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Argentinean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Armenian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Australian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Austrian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Azerbaijani"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bahamian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bahraini"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bangladeshi"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Barbadian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Barbudans"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Batswana"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Begin Playback"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Belarusian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Belgian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Belizean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Beninese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bhutanese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Birth Year"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bolivian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bosnian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Brazilian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "British"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bruneian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Bulgarian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Burkinabe"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Burmese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Burundian"
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "By clicking the 'Continue' button below you agree to participate in this experiment, that this agreement is of your own free will and that you have had the opportunity to ask any questions you may have about this study."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Cambodian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Cameroonian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Canadian"
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "Cancel Experiment"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Cape Verdean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Central African"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Chadian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Chilean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Chinese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Classical"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Colombian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Comoran"
+msgstr ""
+
+#: public/modules/core/views/thank-you.client.view.html
+msgid "Complete Experiment"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Congolese"
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "Consent Form"
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+#: public/modules/core/views/eda-instructions.client.view.html
+#: public/modules/core/views/emotion-index.client.view.html
+#: public/modules/core/views/media-questionnaire.client.view.html
+#: public/modules/core/views/pox-instructions.client.view.html
+#: public/modules/core/views/signal-test.client.view.html
+#: public/modules/core/views/sound-test.client.view.html
+#: public/modules/core/views/start.client.view.html
+msgid "Continue"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Costa Rican"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Croatian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Cuban"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Cypriot"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Czech"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Dance"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Danish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Disagree a little"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Disagree strongly"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Djibouti"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Do you consider yourself a musician or to have specialist musical knowledge?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Do you have any hearing impairments? (If so, you may still participate in the experiment!)"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Do you have any visual impairments? (If so, you may still participate in the experiment!)"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Dominican"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Dutch"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "East Timorese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Ecuadorean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Egyptian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Emirian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Empowered (in control of everything, dominant)"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Equatorial Guinean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Eritrean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Estonian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Ethiopian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Female"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Fijian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Filipino"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Final Questions"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Finnish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Folk"
+msgstr ""
+
+#: public/modules/core/views/thank-you.client.view.html
+msgid "For more information about this experiment, please visit us at: www.musicsensorsemotion.com"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "French"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Gabonese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Gambian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Gender"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Georgian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "German"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Ghanaian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Greek"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Grenadian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Guatemalan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Guinea-Bissauan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Guinean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Guyanese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Haitian"
+msgstr ""
+
+#: public/modules/core/views/pox-instructions.client.view.html
+#: public/modules/core/views/signal-test.client.view.html
+msgid "Heart Sensor"
+msgstr ""
+
+#: public/modules/core/views/start.client.view.html
+msgid "Hello, and welcome to the <em>Emotion in Motion</em> experiment!"
+msgstr ""
+
+#: public/modules/core/views/emotion-index.client.view.html
+msgid "Here, we are displaying the ‘Emotion Index’ we calculated from your physiological signals while you were listening to the media excerpt, on a scale from 1 to 100. A higher index indicates that you were more emotionally responsive to the excerpt you heard as compared to a lower index."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Herzegovinian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "HipHop"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Honduran"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How active or passive did what you have just heard make you feel?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How concentrated were you during this experiment?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How familiar are you with what you have just heard?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How in control did you feel?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How involved and engaged were you with what you have just heard?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How much did you like/dislike what you have just heard?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How positive or negative did what you have just heard make you feel?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How tense or relaxed did you feel while you were listening?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How well do the following statements describe your personality?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "How would you rate your musical expertise?"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Hungarian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I had never heard it before"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I hated it"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I listen to it regularly"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I loved it"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who does a thorough job."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who gets nervous easily."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who has an active imagination."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who has few artistic interests."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who is generally trusting."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who is outgoing, sociable."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who is relaxed, handles stress well."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who is reserved."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who tends to be lazy."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I see myself as someone who tends to find fault with others."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I was engaged with it and responding to it emotionally"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "I-Kiribati"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Icelander"
+msgstr ""
+
+#: public/modules/core/views/signal-test.client.view.html
+msgid "If either sensor does not display 'Signal OK', please contact a mediator for assistance. When both sensors display 'Signal OK', click 'Continue'."
+msgstr ""
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid "If you can hear sound through the headphones, please click 'Continue' to proceed."
+msgstr ""
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid "If you can’t hear any sound through the headphones, please ask a staff member for assistance."
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "If you consent to the above terms, click 'Continue'. Otherwise, click 'Cancel Experiment'."
+msgstr ""
+
+#: public/modules/core/views/media-playback.client.view.html
+msgid "In a moment, a media excerpt will be played. Please make sure you are comfortable, and try to keep your left hand still during listening. When you are ready click the Begin Playback button."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Indian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Indonesian"
+msgstr ""
+
+#: public/modules/core/views/start.client.view.html
+msgid "Instructions"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Iranian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Iraqi"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Irish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Israeli"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Italian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Ivorian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Jamaican"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Japanese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Jazz"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Jordanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Kazakhstani"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Kenyan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Kittian and Nevisian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Kuwaiti"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Kyrgyz"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Laotian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Latvian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Lebanese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Liberian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Libyan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Liechtensteiner"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Lithuanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Luxembourger"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Macedonian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Malagasy"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Malawian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Malaysian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Maldivan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Male"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Malian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Maltese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Marshallese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Mauritanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Mauritian"
+msgstr ""
+
+#: public/modules/core/views/media-playback.client.view.html
+msgid "Media Playback"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Media Questions"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Mexican"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Micronesian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Moldovan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Monacan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Mongolian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Moroccan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Mosotho"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Motswana"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Mozambican"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Musical Background"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Namibian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Nationality"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Nauruan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Neither agree nor disagree"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Nepalese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "New Zealander"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Nicaraguan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Nigerian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Nigerien"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "No"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "No Signal"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "No expertise whatsoever"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "None"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "North Korean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Northern Irish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Norwegian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Not at all"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Not at all engaged, my mind was elsewhere"
+msgstr ""
+
+#: public/modules/core/views/pox-instructions.client.view.html
+msgid "Now, insert your index finger into the grey plastic clip. Your finger should touch the rubber stopper at the end."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Omani"
+msgstr ""
+
+#: public/modules/core/views/thank-you.client.view.html
+msgid "Or, contact us at: emotion.in.motion@musicsensorsemotion.com"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Pakistani"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Palauan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Panamanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Papua New Guinean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Paraguayan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Personal Details"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Peruvian"
+msgstr ""
+
+#: public/modules/core/views/eda-instructions.client.view.html
+msgid "Please place the sensors on the fingers of your <span class=\"text-danger\">left</span> hand as indicated in the photos below. During the listening part of the experiment please keep this hand as still as possible. Wrap the velcro straps around the tips of your 2 middle fingers, making sure that the small metal plate is against the skin of the inside of your finger. The straps should be tight but not so tight that it is uncomfortable."
+msgstr ""
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid "Please put on the provided headphones. Left and right ears are indicated on the headset."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Polish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Pop"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Portuguese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Qatari"
+msgstr ""
+
+#: public/modules/core/views/emotion-index.client.view.html
+msgid "Results"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Rock"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Romanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Russian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Rwandan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Saint Lucian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Salvadoran"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Samoan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "San Marinese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Sao Tomean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Saudi"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Scottish"
+msgstr ""
+
+#: public/modules/core/views/header.client.view.html
+msgid "Select Language"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Select all of the following styles to which you regularly listen:"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Senegalese"
+msgstr ""
+
+#: public/modules/core/views/signal-test.client.view.html
+msgid "Sensor Tests"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Serbian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Seychellois"
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "Should you require any further information please contact us at emotion.in.motion@musicsensorsemotion.com."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Sierra Leonean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Signal OK"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Singaporean"
+msgstr ""
+
+#: public/modules/core/views/signal-test.client.view.html
+msgid "Skin Sensor"
+msgstr ""
+
+#: public/modules/core/views/eda-instructions.client.view.html
+msgid "Skin Sensors"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Slovakian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Slovenian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Solomon Islander"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Somali"
+msgstr ""
+
+#: public/modules/core/views/sound-test.client.view.html
+msgid "Sound Test"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "South African"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "South Korean"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Spanish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Sri Lankan"
+msgstr ""
+
+#: public/modules/core/views/home.client.view.html
+msgid "Start Experiment"
+msgstr ""
+
+#: public/modules/core/views/eda-instructions.client.view.html
+msgid "Step One"
+msgstr ""
+
+#: public/modules/core/views/eda-instructions.client.view.html
+msgid "Step Two"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Sudanese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Surinamer"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Swazi"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Swedish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Swiss"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Syrian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Taiwanese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Tajik"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Tanzanian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Thai"
+msgstr ""
+
+#: public/modules/core/views/thank-you.client.view.html
+msgid "Thank You"
+msgstr ""
+
+#: public/modules/core/views/start.client.view.html
+msgid "The experiment will last approximately 12 minutes."
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "This experiment looks at how music can influence your emotional state, through on-body sensors and self-report questionnaires. If you have any questions please ask a member of the staff or contact the researchers at the email address provided below."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "This questionnaire uses some simple scales to find out how you responded to the media excerpt. We will compare your responses to the biosignals that we measured as you were listening."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Togolese"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Tongan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Trinidadian or Tobagonian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Tunisian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Turkish"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Tuvaluan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Ugandan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Ukrainian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Uruguayan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Uzbekistani"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Venezuelan"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very concentrated"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very distracted"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very drowsy"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very lively"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very negative"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very positive"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very relaxed"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Very tense"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Vietnamese"
+msgstr ""
+
+#: public/modules/core/views/signal-test.client.view.html
+msgid "We are now checking to make sure that we are reading your signals correctly. Please keep your hand still until the indicators show that both signals are good!"
+msgstr ""
+
+#: public/modules/core/views/emotion-index.client.view.html
+msgid "We hope you enjoyed the experiment!"
+msgstr ""
+
+#: public/modules/core/views/start.client.view.html
+msgid "We would like you to wear some sensors that will monitor your heart and skin while you listen to two short media excerpts. After each excerpt, you will be asked some questions about how what you heard made you feel. The first excerpt will be a non-musical sound. The second, will be a musical excerpt selected randomly."
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Weak (without control, submissive)"
+msgstr ""
+
+#: public/modules/core/views/home.client.view.html
+msgid "Welcome"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Welsh"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "World"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Yemenite"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Yes"
+msgstr ""
+
+#: public/modules/core/views/thank-you.client.view.html
+msgid "You can now remove the sensors from your hand."
+msgstr ""
+
+#: public/modules/core/views/consent-form.client.view.html
+msgid "You may also quit the experiment at any time by clicking the 'Emotion in Motion' link at the top-left corner of the screen."
+msgstr ""
+
+#: public/modules/core/views/emotion-index.client.view.html
+msgid "Your emotion index:"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Zambian"
+msgstr ""
+
+#: public/modules/core/config/core.client.missing-keys.js
+msgid "Zimbabwean"
+msgstr ""
+
+#: public/modules/core/views/home.client.view.html
+msgid "to Emotion in Motion"
+msgstr ""

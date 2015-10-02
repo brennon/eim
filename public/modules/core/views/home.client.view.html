@@ -1,0 +1,20 @@
+<div data-ng-controller="HomeController">
+    <div class="jumbotron">
+        <h1 translate>Welcome to Emotion in Motion</h1>
+
+        <p translate>You are invited to measure your emotions as a part of this on-going experiment with music and emotion. Does your body like the music you thought you hated? Using heart rate and electrodermal activity, the experiment measures your psychophysiological response to a selection of music samples. The data that are collected, which cannot be used to identify you, may be published.</p>
+
+        <p><button class="btn btn-primary btn-lg" id="crazy" ng-disabled="!readyToAdvance" ng-click="advanceSlide()" translate>Start Experiment</button></p>
+    </div>
+    <!--<div class="container">-->
+        <div class="row">
+            <div class="col-md-6 text-right">
+                <img class="welcome-logo" src="modules/core/img/muse.png" />
+            </div>
+            <div class="col-md-6 text-left">
+                <img class="welcome-logo" src="modules/core/img/sg.png" />
+            </div>
+        </div>
+    <!--</div>-->
+    <display-trial-data></display-trial-data>
+</div>
