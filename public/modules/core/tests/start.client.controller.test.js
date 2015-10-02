@@ -160,9 +160,9 @@
 
                     badMessages.forEach(function(message, idx) {
 
-                        expect((function() {
+                        expect(function() {
                             controller.oscMessageReceivedListener(message);
-                        })).not.toThrow();
+                        }).not.toThrow();
 
                         expect($log.warn).toHaveBeenCalled();
                         expect($log.warn.calls.argsFor(idx)[0]).toEqual(

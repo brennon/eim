@@ -48,7 +48,7 @@
 angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
 
-        var $log =  angular.injector(['ng']).get('$log')
+        var $log =  angular.injector(['ng']).get('$log');
         $log.debug('Configuring routes in' +
             ' modules/core/config/core.client.routes.js');
 

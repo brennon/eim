@@ -115,7 +115,7 @@ ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
  */
 ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
 
-    console.info('Building random experiment.')
+    console.info('Building random experiment.');
 
     // Populate mediaPool
     this.populate('mediaPool');
