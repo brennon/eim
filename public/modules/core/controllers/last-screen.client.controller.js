@@ -22,6 +22,12 @@ angular.module('core').controller(
             $log.debug('Loading LastScreenController.');
 
             // Send TrialData.data to the backend
-            $http.post('/api/trials', TrialData.data);
+            $http
+                .post('/api/trials', TrialData.data)
+                .catch(function(response) {
+                    var errorMessage = 'The POST to /api/trials failed.';
+                    $log.error(errorMessage, response);
+                    throw new Error(errorMessage);
+                });
         }
     ]);

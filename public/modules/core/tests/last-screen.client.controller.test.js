@@ -43,6 +43,15 @@
 
                 $httpBackend.verifyNoOutstandingExpectation();
             });
+
+            it('should log an error if it received an error from the server', function() {
+
+                $httpBackend.expectPOST('/api/trials').respond(500);
+                $controller('LastScreenController',
+                    { $scope: mockScope, TrialData: {} });
+
+                expect($httpBackend.flush).toThrow();
+            });
         });
     });
 })();
