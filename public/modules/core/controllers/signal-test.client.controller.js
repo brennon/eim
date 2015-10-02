@@ -250,18 +250,36 @@ angular.module('core').controller('SignalTestController', [
                 // If it was an EDA signal quality message
                 if (data.address === '/eim/status/signalQuality/eda') {
 
+                    var edaQuality = data.args[0].value;
+                    if (edaQuality === 0) {
+                        $log.warn(
+                            'Bad EDA signal detected on terminal ' +
+                            TrialData.data.metadata.terminal +
+                            '.'
+                        );
+                    }
+
                     // Update EDA signal quality
                     $scope.$apply(function updateEDAQuality() {
-                        $scope.edaQuality = data.args[0].value;
+                        $scope.edaQuality = edaQuality;
                     });
                 }
 
                 // If it was a POX signal quality message
                 if (data.address === '/eim/status/signalQuality/pox') {
 
+                    var poxQuality = data.args[0].value;
+                    if (poxQuality === 0) {
+                        $log.warn(
+                            'Bad POX signal detected on terminal ' +
+                            TrialData.data.metadata.terminal +
+                            '.'
+                        );
+                    }
+
                     // Update POX signal quality
                     $scope.$apply(function updatePOXQuality() {
-                        $scope.poxQuality = data.args[0].value;
+                        $scope.poxQuality = poxQuality;
                     });
                 }
 

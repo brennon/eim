@@ -10,20 +10,25 @@
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _$log_) {
-            $controller = _$controller_;
-            mockScope = $rootScope.$new();
-            SocketIOService = _SocketIOService_;
-            mockTrialData = {
-                data: {
-                    metadata: {
-                        session_number: 42
-                    }
+        beforeEach(
+            inject(
+                function(_$controller_, $rootScope, _SocketIOService_,
+                         _$timeout_, _$log_) {
+                    $controller = _$controller_;
+                    mockScope = $rootScope.$new();
+                    SocketIOService = _SocketIOService_;
+                    mockTrialData = {
+                        data: {
+                            metadata: {
+                                session_number: 42
+                            }
+                        }
+                    };
+                    $timeout = _$timeout_;
+                    $log = _$log_;
                 }
-            };
-            $timeout = _$timeout_;
-            $log = _$log_;
-        }));
+            )
+        );
 
         it('should be defined', function() {
             var createController = function() {
@@ -401,6 +406,33 @@
                     expect(mockScope.edaQuality).toBe(1);
                 });
 
+                it('should log a warning when EDA quality is 0', function() {
+
+                    // Spy on $log
+                    spyOn($log, 'warn');
+
+                    // Instantiate controller
+                    mockTrialData.data.metadata.terminal = 42;
+                    var controller = $controller('SignalTestController',
+                        { $scope: mockScope, TrialData: mockTrialData }
+                    );
+
+                    // Send the bad EDA message
+                    var mockMessage = {
+                        address: '/eim/status/signalQuality/eda',
+                        args: [
+                            {
+                                value: 0
+                            }
+                        ]
+                    };
+                    controller.oscMessageReceivedListener(mockMessage);
+
+                    // Check expectation
+                    expect($log.warn).toHaveBeenCalledWith('Bad EDA signal' +
+                        ' detected on terminal 42.');
+                });
+
                 it('should set poxQuality to 1 with the correct OSC message', function() {
                     var controller = $controller('SignalTestController',
                         { $scope: mockScope, TrialData: mockTrialData }
@@ -420,6 +452,33 @@
                     controller.oscMessageReceivedListener(mockMessage);
 
                     expect(mockScope.poxQuality).toBe(0);
+                });
+
+                it('should log a warning when POX quality is 0', function() {
+
+                    // Spy on $log
+                    spyOn($log, 'warn');
+
+                    // Instantiate controller
+                    mockTrialData.data.metadata.terminal = 42;
+                    var controller = $controller('SignalTestController',
+                        { $scope: mockScope, TrialData: mockTrialData }
+                    );
+
+                    // Send the bad POXmessage
+                    var mockMessage = {
+                        address: '/eim/status/signalQuality/pox',
+                        args: [
+                            {
+                                value: 0
+                            }
+                        ]
+                    };
+                    controller.oscMessageReceivedListener(mockMessage);
+
+                    // Check expectation
+                    expect($log.warn).toHaveBeenCalledWith('Bad POX signal' +
+                        ' detected on terminal 42.');
                 });
 
                 it('should set poxQuality to 0 with the correct OSC message', function() {
