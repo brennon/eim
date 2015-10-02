@@ -8,7 +8,6 @@
  * @memberof Angular
  */
 
-// Trial Data service used to persist data for individual trials
 angular.module('core').factory('TrialData', ['$log',
     function($log) {
 
@@ -160,7 +159,9 @@ angular.module('core').factory('TrialData', ['$log',
                 }
 
                 if (path && value !== undefined) {
-                    var schema = this;  // a moving reference to internal objects within this (this TrialData)
+                    // A moving reference to internal objects within this
+                    // (this TrialData)
+                    var schema = this;
                     var pList = path.split('.');
                     var len = pList.length;
                     for (var i = 0; i < len - 1; i++) {
@@ -169,14 +170,16 @@ angular.module('core').factory('TrialData', ['$log',
                         schema = schema[elem];
                     }
 
-                    if (options && options.hasOwnProperty('array_index') && typeof options.array_index === 'number') {
+                    if (options && options.hasOwnProperty('array_index') &&
+                        typeof options.array_index === 'number') {
 
                         if (schema[pList[len - 1]] === undefined) {
                             schema[pList[len - 1]] = [];
                         }
 
-                        // Iterate over array up to one less than options.array_index
-                        // If each index isn't set up to this point, set it to null
+                        // Iterate over array up to one less than
+                        // options.array_index. If each index isn't set up to
+                        // this point, set it to null.
                         for (var j = 0; j < options.array_index; j++) {
                             if (schema[pList[len - 1]][j] === undefined) {
                                 schema[pList[len - 1]][j] = null;
