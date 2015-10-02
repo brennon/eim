@@ -42,7 +42,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <button class="btn btn-primary btn-lg btn-danger" ui-sref="home({reload: true})" translate>Cancel Experiment</button>
+        <button class="btn btn-primary btn-lg btn-danger"
+                ng-click="startOver()" translate>Cancel
+            Experiment</button>
         <button class="btn btn-primary btn-lg btn-success" ng-click="advanceSlide()" translate>Continue</button>
     </div>
 </div>

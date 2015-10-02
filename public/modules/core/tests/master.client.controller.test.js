@@ -4,24 +4,114 @@
     describe('MasterController', function() {
 
         //Initialize global variables
-        var mockScope, mockTrialData, mockHotkeys, $controllerConstructor, ExperimentManager, $httpBackend, gettextCatalog, $timeout, TrialData;
+        var mockScope, mockTrialData, mockHotkeys, $controllerConstructor,
+            ExperimentManager, $httpBackend, gettextCatalog, $timeout,
+            TrialData;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function($controller, $rootScope, _ExperimentManager_, _$httpBackend_, _gettextCatalog_, _$timeout_, _TrialData_) {
-            $controllerConstructor = $controller;
-            mockScope = $rootScope.$new();
-            mockHotkeys = { add: function() {} };
-            ExperimentManager = _ExperimentManager_;
-            $httpBackend = _$httpBackend_;
-            gettextCatalog = _gettextCatalog_;
-            $timeout = _$timeout_;
-            TrialData = _TrialData_;
-            mockTrialData = { language: function() {} };
-        }));
+        beforeEach(
+            inject(
+                function($controller, $rootScope, _ExperimentManager_,
+                         _$httpBackend_, _gettextCatalog_, _$timeout_,
+                         _TrialData_) {
+
+                    $controllerConstructor = $controller;
+                    mockScope = $rootScope.$new();
+                    mockHotkeys = {
+                        add: function() {}
+                    };
+                    ExperimentManager = _ExperimentManager_;
+                    $httpBackend = _$httpBackend_;
+                    gettextCatalog = _gettextCatalog_;
+                    $timeout = _$timeout_;
+                    TrialData = _TrialData_;
+                    mockTrialData = {
+                        language: function() {}
+                    };
+                }));
 
         describe('initialization', function() {
+
+            it('should get the default language', function() {
+
+                // Setup HTTP expectation
+                $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                    .respond(200);
+                $httpBackend.expectGET('/api/config').respond();
+
+                // Instantiate controller
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
+
+                // Verify expectation
+                $httpBackend.verifyNoOutstandingExpectation();
+            });
+
+            it('should set the language to the default language', function() {
+
+                // Setup HTTP expectation
+                $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                    .respond(200);
+                $httpBackend.whenGET('/api/config').respond({
+                    defaultLanguage: 'foo'
+                });
+
+                // Spy on gettext
+                spyOn(gettextCatalog, 'setCurrentLanguage');
+
+                // Instantiate controller
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
+
+                $httpBackend.flush();
+
+                expect(gettextCatalog.setCurrentLanguage)
+                    .toHaveBeenCalledWith('foo');
+            });
+
+            it('should log an error if the default language was not' +
+                ' provided by the server', function() {
+
+                // Setup HTTP expectation
+                $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                    .respond(200);
+                $httpBackend.whenGET('/api/config').respond({});
+
+                // Instantiate controller
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
+
+                expect($httpBackend.flush).toThrow();
+            });
+
+            it('should log an error if there was a problem retrieving the' +
+                ' configuration', function() {
+
+                // Setup HTTP expectation
+                $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                    .respond(200);
+                $httpBackend.whenGET('/api/config').respond(500);
+
+                // Instantiate controller
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
+
+                expect($httpBackend.flush).toThrow();
+            });
 
             it('should initialize $scope.debugMode to false', function() {
 
@@ -270,15 +360,22 @@
                 it('should return to the main screen', function () {
 
                     spyOn(mockState, 'go');
-                    ctrl.startOver();
+                    mockScope.startOver();
                     expect(mockState.go.calls.count()).toBe(1);
                 });
 
                 it('should force a reload', function () {
 
                     spyOn(mockState, 'go');
-                    ctrl.startOver();
+                    mockScope.startOver();
                     expect(mockState.go.calls.argsFor(0)[2]).toEqual({reload: true});
+                });
+
+                it('should request the default language again', function() {
+
+                    spyOn(ctrl, 'setLanguageToDefault');
+                    mockScope.startOver();
+                    expect(ctrl.setLanguageToDefault).toHaveBeenCalled();
                 });
             });
 

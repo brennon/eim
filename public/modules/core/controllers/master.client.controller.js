@@ -29,9 +29,9 @@ angular.module('core').controller(
         '$state',
         '$timeout',
         '$log',
-
+        '$http',
         function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
-                 $state, $timeout, $log) {
+                 $state, $timeout, $log, $http) {
 
             $log.debug('Loading MasterController.');
 
@@ -45,8 +45,39 @@ angular.module('core').controller(
              * @memberof Angular.MasterController
              * @type {{}}
              */
-
             var thisController = this;
+
+            /**
+             * Sets the language to the default language as specified in the
+             * {@link Node.module:CustomConfiguration~customConfiguration~defaultLanguage|CustomConfiguration}
+             * module.
+             *
+             * @function setLanguageToDefault
+             * @memberof Angular.MasterController
+             * @instance
+             * @return {undefined}
+             */
+            this.setLanguageToDefault = function() {
+                $http.get('/api/config')
+                    .then(function(response) {
+
+                        if (response.data.hasOwnProperty('defaultLanguage')) {
+                            $scope.setLanguage(response.data.defaultLanguage);
+                        } else {
+                            var message = 'A default language was not ' +
+                                'provided by the server.';
+                            $log.error(message, response);
+                            throw new Error(message);
+                        }
+                    })
+                    .catch(function(response) {
+                        var message = 'There was a problem retrieving the' +
+                            ' configuration from the server.';
+                        $log.error(message, response);
+                        throw new Error(message);
+                    });
+            };
+            this.setLanguageToDefault();
 
             /**
              * Expose {@link Angular.TrialData#toJson|TrialData#toJson} on
@@ -90,11 +121,13 @@ angular.module('core').controller(
              * @instance
              * @return {undefined}
              */
-            this.startOver = function() {
+            $scope.startOver = function() {
 
                 $log.debug('MasterController starting over.');
 
                 $state.go('home', {}, {reload: true});
+
+                thisController.setLanguageToDefault();
             };
 
             /**
@@ -107,7 +140,7 @@ angular.module('core').controller(
              * method.
              *
              * @function resetInactivityTimeout
-             * @memberof Angular.MasterController#$scope
+             * @memberof Angular.MasterController
              * @instance
              * @return {undefined}
              */
