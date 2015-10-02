@@ -4,12 +4,13 @@
     describe('SignalTestController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService, mockTrialData, $timeout;
+        var mockScope, $controller, SocketIOService,
+            mockTrialData, $timeout, $log;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _$log_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             SocketIOService = _SocketIOService_;
@@ -21,6 +22,7 @@
                 }
             };
             $timeout = _$timeout_;
+            $log = _$log_;
         }));
 
         it('should be defined', function() {
@@ -297,6 +299,64 @@
 
                     var callArgs = SocketIOService.removeListener.calls.argsFor(0);
                     expect(callArgs[1]).toBe(controller.oscMessageReceivedListener);
+                });
+
+                it('should log unhandled messages', function() {
+
+                    // Set a spy
+                    spyOn($log, 'warn');
+
+                    // Instantiate the controller
+                    var controller = $controller('SignalTestController',
+                        { $scope: mockScope }
+                    );
+
+                    // Send a message to a bad address
+                    var badMessage = { address: '/badaddress' };
+                    controller.oscMessageReceivedListener(badMessage);
+
+                    // Check expectations
+                    expect($log.warn).toHaveBeenCalled();
+                    expect($log.warn.calls.argsFor(0)[0]).toEqual(
+                        'SignalTestController did not handle an OSC message.'
+                    );
+                    expect($log.warn.calls.argsFor(0)[1]).toEqual(badMessage);
+                });
+
+                it('should log malformed messages',
+                    function() {
+
+                    // Set a spy
+                    spyOn($log, 'warn');
+
+                    // Instantiate the controller
+                    var controller = $controller('SignalTestController',
+                        { $scope: mockScope }
+                    );
+
+                    // Send bad messages
+                    var badMessages = [
+                        'bad',
+                        {},
+                        [],
+                        3.14,
+                        5,
+                        function() {}
+                    ];
+
+                    badMessages.forEach(function(message, idx) {
+
+                        expect(function() {
+                            controller.oscMessageReceivedListener(message);
+                        }).not.toThrow();
+
+                        expect($log.warn).toHaveBeenCalled();
+                        expect($log.warn.calls.argsFor(idx)[0]).toEqual(
+                            'SignalTestController did not handle an OSC' +
+                            ' message.'
+                        );
+                        expect($log.warn.calls.argsFor(idx)[1]).toEqual(message);
+                    });
                 });
 
                 it('should set edaQuality to 1 with the correct OSC message', function() {

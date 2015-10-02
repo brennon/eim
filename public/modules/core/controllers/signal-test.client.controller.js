@@ -219,6 +219,9 @@ angular.module('core').controller('SignalTestController', [
          * Angular.SignalTestController#sendStopSignalTestMessage|sendStopSignalTestMessage}
          * is called.
          *
+         * The receipt of unexpected or malformed messages will result in a
+         * warning on the console.
+         *
          * @function oscMessageReceivedListener
          * @memberof Angular.SignalTestController
          * @instance
@@ -231,33 +234,49 @@ angular.module('core').controller('SignalTestController', [
             console.info('SignalTesttController received an OSC message.');
             console.info(data);
 
-            // If it was an EDA signal quality message
-            if (data.address === '/eim/status/signalQuality/eda') {
+            var expectedMessageAddresses = [
+                '/eim/status/signalQuality/eda',
+                '/eim/status/signalQuality/pox',
+                '/eim/status/testRecordingComplete'
+            ];
 
-                // Update EDA signal quality
-                $scope.$apply(function updateEDAQuality() {
-                    $scope.edaQuality = data.args[0].value;
-                });
-            }
+            // Make sure data is an object with an address property, and that
+            // we expect the message
+            if (typeof data === 'object' &&
+                !Array.isArray(data) &&
+                data.hasOwnProperty('address') &&
+                expectedMessageAddresses.indexOf(data.address) >= 0) {
 
-            // If it was a POX signal quality message
-            if (data.address === '/eim/status/signalQuality/pox') {
+                // If it was an EDA signal quality message
+                if (data.address === '/eim/status/signalQuality/eda') {
 
-                // Update POX signal quality
-                $scope.$apply(function updatePOXQuality() {
-                    $scope.poxQuality = data.args[0].value;
-                });
-            }
+                    // Update EDA signal quality
+                    $scope.$apply(function updateEDAQuality() {
+                        $scope.edaQuality = data.args[0].value;
+                    });
+                }
 
-            // If the test recording has complete
-            if (data.address === '/eim/status/testRecordingComplete') {
+                // If it was a POX signal quality message
+                if (data.address === '/eim/status/signalQuality/pox') {
 
-                // Update continue button
-                $scope.$apply(function() {
-                    $scope.testRecordingComplete = true;
-                });
+                    // Update POX signal quality
+                    $scope.$apply(function updatePOXQuality() {
+                        $scope.poxQuality = data.args[0].value;
+                    });
+                }
 
-                this.sendStopSignalTestMessage();
+                // If the test recording has complete
+                if (data.address === '/eim/status/testRecordingComplete') {
+
+                    // Update continue button
+                    $scope.$apply(function() {
+                        $scope.testRecordingComplete = true;
+                    });
+
+                    this.sendStopSignalTestMessage();
+                }
+            } else {
+                $log.warn('SignalTestController did not handle an OSC message.', data);
             }
         };
 
