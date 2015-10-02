@@ -196,6 +196,9 @@ angular.module('core').controller('MediaPlaybackController', [
          *  is set to `false`, and the slide is advanced by calling
          *  {@link Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
          *
+         * The receipt of unexpected or malformed messages will result in a
+         * warning on the console.
+         *
          * @function oscMessageReceivedListener
          * @memberof Angular.MediaPlaybackController
          * @instance
@@ -208,61 +211,79 @@ angular.module('core').controller('MediaPlaybackController', [
             $log.debug('OSC message received.');
             $log.debug(data);
 
-            // If it was a media playback message
-            if (data.address === '/eim/status/playback') {
+            var expectedMessageAddresses = [
+                '/eim/status/playback',
+                '/eim/status/emotionIndex'
+            ];
 
-                // Check for start or stop message
-                switch (parseInt(data.args[0].value)) {
+            // Make sure data is an object with an address property, and that
+            // we expect the message
+            if (typeof data === 'object' &&
+                !Array.isArray(data) &&
+                data.hasOwnProperty('address') &&
+                expectedMessageAddresses.indexOf(data.address) >= 0) {
 
-                    // If it was a stop message
-                    case 0:
+                // If it was a media playback message
+                if (data.address === '/eim/status/playback') {
 
-                        // Request emotion index from Max
-                        thisController.requestEmotionIndex();
+                    // Check for start or stop message
+                    switch (parseInt(data.args[0].value)) {
 
-                        // Fade in screen
-                        $scope.showBody();
+                        // If it was a stop message
+                        case 0:
 
-                        // Update state
-                        $timeout(function() {
-                            $scope.$apply(function() {
-                                $scope.currentButtonLabel = 'Continue';
-                                $scope.mediaHasPlayed = true;
-                                $scope.buttonDisabled = true;
+                            // Request emotion index from Max
+                            thisController.requestEmotionIndex();
+
+                            // Fade in screen
+                            $scope.showBody();
+
+                            // Update state
+                            $timeout(function() {
+                                $scope.$apply(function() {
+                                    $scope.currentButtonLabel = 'Continue';
+                                    $scope.mediaHasPlayed = true;
+                                    $scope.buttonDisabled = true;
+                                });
                             });
-                        });
-                        break;
+                            break;
 
-                    // If it was a start message
-                    case 1:
+                        // If it was a start message
+                        case 1:
 
-                        // Fade out screen
-                        $scope.hideBody();
-                        break;
+                            // Fade out screen
+                            $scope.hideBody();
+                            break;
+                    }
                 }
-            }
 
-            // If it was an emotion index message
-            if (data.address === '/eim/status/emotionIndex') {
-				
-                var emotionIndex = parseInt(data.args[0].value);
-				
-                // Increment media play count
-                TrialData.data.state.mediaPlayCount++;
-				
-				// Set emotion index in TrialData
-				TrialData.setValueForPathForCurrentMedia(
-                    'data.answers.emotion_indices',
-                    emotionIndex
-                );
+                // If it was an emotion index message
+                if (data.address === '/eim/status/emotionIndex') {
 
-                // Update state
-                $timeout(function() {
-                    $scope.$apply(function() {
-                        $scope.buttonDisabled = false;
-                        ExperimentManager.advanceSlide();
+                    var emotionIndex = parseInt(data.args[0].value);
+
+                    // Increment media play count
+                    TrialData.data.state.mediaPlayCount++;
+
+                    // Set emotion index in TrialData
+                    TrialData.setValueForPathForCurrentMedia(
+                        'data.answers.emotion_indices',
+                        emotionIndex
+                    );
+
+                    // Update state
+                    $timeout(function() {
+                        $scope.$apply(function() {
+                            $scope.buttonDisabled = false;
+                            ExperimentManager.advanceSlide();
+                        });
                     });
-                });
+                }
+            } else {
+                $log.warn(
+                    'MediaPlaybackController did not handle an OSC message.',
+                    data
+                );
             }
         };
 
