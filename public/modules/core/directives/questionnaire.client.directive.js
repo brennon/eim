@@ -128,6 +128,10 @@ angular.module('core').directive('questionnaire', [
                 questionElement.data('radioOptions', item.questionRadioOptions);
             }
 
+            if (item.hasOwnProperty('questionRequired')) {
+                questionElement.data('questionRequired', item.questionRequired);
+            }
+
             return questionElement;
         };
 
@@ -293,8 +297,8 @@ angular.module('core').directive('questionnaire', [
                  * the positivity question following the second excerpt.
                  *
                  * @property {boolean} questionRequired This property is
-                 * supported by the `'checkbox'` and `'dropdown'` question
-                 * types. If its value is `false`, the user will not be
+                 * supported by the `'checkbox'`, `'radio', and `'dropdown'`
+                 * question types. If its value is `false`, the user will not be
                  * required to answer the question. If its value is
                  * *anything* other than false (`true`, `undefined`, 49,
                  * etc.), the user will be required to answer the question.

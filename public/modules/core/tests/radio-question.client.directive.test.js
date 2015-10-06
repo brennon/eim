@@ -92,15 +92,42 @@
                 expect(radios[1].value).toBe('false');
             });
 
-            it('should set the required attribute on each button', function() {
-                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
-                element = angular.element('<radio-question question-id="gender"></radio-question>');
+            it('should set the required attribute on each button by default',
+                function() {
+
+                var options = [
+                    { label: 'Yes', value: true },
+                    { label: 'No', value: false }
+                ];
+                element = angular.element(
+                    '<radio-question question-id="gender"></radio-question>'
+                );
                 element.data('radioOptions', options);
                 $compile(element)($scope);
                 var radios = $(element).find('input[type="radio"]');
                 for (var i = 0; i < radios.length; i++) {
                     var obj = radios[i];
-                    expect(obj.required).toBe(true);
+                    expect(angular.element(obj).attr('required')).toBeTruthy();
+                }
+            });
+
+            it('should not set the required attribute on each button if the' +
+                ' question is not required', function() {
+
+                var options = [
+                    { label: 'Yes', value: true },
+                    { label: 'No', value: false }
+                ];
+                element = angular.element(
+                    '<radio-question question-id="gender"></radio-question>'
+                );
+                element.data('radioOptions', options);
+                element.data('questionRequired', false);
+                $compile(element)($scope);
+                var radios = $(element).find('input[type="radio"]');
+                for (var i = 0; i < radios.length; i++) {
+                    var obj = radios[i];
+                    expect(angular.element(obj).attr('required')).toBeFalsy();
                 }
             });
 

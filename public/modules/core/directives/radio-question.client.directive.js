@@ -78,6 +78,13 @@ angular.module('core').directive('radioQuestion', [
 
                 var innerQuestionText = '';
 
+                // Don't require question if explicitly told not to do so in
+                // data
+                var requiredText = '';
+                if (element.data('questionRequired') !== false) {
+                    requiredText = ' required="required" ';
+                }
+
                 if (element.data('radioOptions')) {
 
                     // Iterate over radio options
@@ -95,10 +102,12 @@ angular.module('core').directive('radioQuestion', [
                             'Radio' + thisOption.label + '" ' +
                             'value="' + thisOption.value + '" ' +
                             'ng-model="' + attrs.questionId + 'RadioGroup" ' +
-                            'required="true">' +
+                            requiredText +
+                            '>' +
                             '{{\'' + thisOption.label + '\' | translate}}' +
                             '</input>' +
                             '</label>';
+
                     }
                 }
 

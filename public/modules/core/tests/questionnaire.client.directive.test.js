@@ -393,6 +393,36 @@
                 var radioQuestionElements = $(element).find('radio-question');
                 expect($(radioQuestionElements).data('radioOptions')).toEqual($scope.questionnaireData.structure[0].questionRadioOptions);
             });
+
+            it('should forward the questionRequired property on to the data' +
+                ' attribute', function() {
+
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'radio',
+                            questionRadioOptions: [
+                                {
+                                    'label': 'Yes',
+                                    'value': true
+                                },
+                                {
+                                    'label': 'No',
+                                    'value': false
+                                }
+                            ],
+                            questionRequired: 'foo'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElement = $(element).find('radio-question');
+                expect($(radioQuestionElement)
+                    .data('questionRequired'))
+                    .toEqual('foo');
+            });
         });
 
         describe('scale-question directives', function () {
