@@ -218,7 +218,7 @@ As noted previously, questionnaire slide objects support an additional `data` pr
 }
 ```
 
-Much like the outer JSON object describes an overall study session, the `data` property of a `questionnaire`-`name`d slide describes a questionnaire-based slide itself. The `data` property takes an object as its value, and supports three properties on this object: `title`, `introductoryText`, and `structure`.
+Much like the outer JSON object describes an overall study session, the `data` property of a `questionnaire`-`name` slide describes a questionnaire-based slide itself. The `data` property takes an object as its value, and supports three properties on this object: `title`, `introductoryText`, and `structure`.
 
 ###### Questionnaire `title` Property
 
