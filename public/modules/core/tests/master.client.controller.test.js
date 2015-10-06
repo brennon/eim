@@ -358,24 +358,34 @@
 
             describe('#startOver', function () {
                 it('should return to the main screen', function () {
-
                     spyOn(mockState, 'go');
                     mockScope.startOver();
                     expect(mockState.go.calls.count()).toBe(1);
                 });
 
                 it('should force a reload', function () {
-
                     spyOn(mockState, 'go');
                     mockScope.startOver();
                     expect(mockState.go.calls.argsFor(0)[2]).toEqual({reload: true});
                 });
 
                 it('should request the default language again', function() {
-
                     spyOn(ctrl, 'setLanguageToDefault');
                     mockScope.startOver();
                     expect(ctrl.setLanguageToDefault).toHaveBeenCalled();
+                });
+
+                it('should set debugging mode to false', function() {
+                    mockScope.debugMode = true;
+                    mockScope.startOver();
+                    expect(mockScope.debugMode).toEqual(false);
+                });
+
+                it('should clear any error messages', function() {
+                    mockScope.alerts.push({type: 'info', msg: 'Debug mode' +
+                    ' enabled'});
+                    mockScope.startOver();
+                    expect(mockScope.alerts).toEqual([]);
                 });
             });
 

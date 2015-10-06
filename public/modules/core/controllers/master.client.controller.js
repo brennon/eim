@@ -127,6 +127,10 @@ angular.module('core').controller(
 
                 $state.go('home', {}, {reload: true});
 
+                $scope.debugMode = false;
+
+                $scope.alerts = [];
+
                 thisController.setLanguageToDefault();
             };
 
