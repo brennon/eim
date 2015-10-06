@@ -537,7 +537,7 @@ The Max application looks for files in the `EiMpatch/media/` directory. If you a
 
 # Recorded Session Data
 
-In the demo applicaiton, two types of data are collected, recorded, and saved during a session: the data in the `trialData` document/object, and the data recorded from the sensors.  
+In the demo application, two types of data are collected, recorded, and saved during a session: the data in the `trialData` document/object, and the data recorded from the sensors.  
 
 ## `trialData` Data
 
