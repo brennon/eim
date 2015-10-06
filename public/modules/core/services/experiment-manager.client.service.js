@@ -15,7 +15,8 @@ angular.module('core').factory('ExperimentManager', [
     '$http',
     '$state',
     '$log',
-    function(TrialData, $q, $http, $state) {
+    'rfc4122',
+    function(TrialData, $q, $http, $state, $log, rfc4122) {
 
         console.debug('Instantiating ExperimentManager service.');
 
@@ -76,8 +77,7 @@ angular.module('core').factory('ExperimentManager', [
                 TrialData.reset();
 
                 // Generate new session identifier and store it in TrialData
-                /* global UUID */
-                TrialData.data.metadata.session_number = UUID.generate();
+                TrialData.data.metadata.session_number = rfc4122.v4();
 
                 // Get a new experiment setup from the backend
                 $http.get('/api/experiment-schemas/random')
@@ -93,7 +93,8 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata.terminal = data.metadata.terminal;
+                                TrialData.data.metadata.terminal =
+                                    data.metadata.terminal;
                                 deferred.resolve();
                             })
                             .error(function() {

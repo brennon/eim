@@ -5,7 +5,7 @@
 
         //Initialize global variables
         var ExperimentManager, mockTrialData, $state, $httpBackend,
-            $rootScope;
+            $rootScope, rfc4122;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
@@ -39,11 +39,12 @@
                 $provide.value('TrialData', mockTrialData);
             });
 
-            inject(function(_ExperimentManager_, _$state_, _$httpBackend_, _$rootScope_, _$http_) {
+            inject(function(_ExperimentManager_, _$state_, _$httpBackend_, _$rootScope_, _rfc4122_) {
                 ExperimentManager = _ExperimentManager_;
                 $state = _$state_;
                 $httpBackend = _$httpBackend_;
                 $rootScope = _$rootScope_;
+                rfc4122 = _rfc4122_;
             });
         });
 
@@ -117,10 +118,9 @@
             });
 
             it('should generate a session ID', function() {
-                /* global UUID */
-                spyOn(UUID, 'generate');
+                spyOn(rfc4122, 'v4');
                 ExperimentManager.masterReset();
-                expect(UUID.generate.calls.count()).toBe(1);
+                expect(rfc4122.v4.calls.count()).toBe(1);
             });
 
             it('should set the session ID on TrialData', function() {

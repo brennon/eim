@@ -57,6 +57,16 @@ describe('socketFactory', function () {
 
   });
 
+  describe('#connect', function () {
+
+    it('should call the underlying socket.connect', function () {
+      mockIoSocket.connect = spy;
+      socket.connect();
+      expect(spy).toHaveBeenCalled();
+    });
+
+  });
+
 
   describe('#once', function () {
 
@@ -212,6 +222,22 @@ describe('socketFactory', function () {
       expect(spy).toHaveBeenCalled();
     }));
 
+    it('should use an empty prefix if specified', inject(function (socketFactory) {
+      var socket = socketFactory({
+        ioSocket: mockIoSocket,
+        scope: scope,
+        prefix: ''
+      });
+
+      socket.forward('event');
+
+      scope.$on('event', spy);
+      mockIoSocket.emit('event');
+      $timeout.flush();
+
+      expect(spy).toHaveBeenCalled();
+    }));
+
     it('should forward to the specified scope when one is provided', function () {
       var child = scope.$new();
       spyOn(child, '$broadcast');
@@ -222,6 +248,15 @@ describe('socketFactory', function () {
       $timeout.flush();
 
       expect(child.$broadcast).toHaveBeenCalled();
+    });
+
+    it('should pass all arguments to scope.$on', function () {
+      socket.forward('event');
+      scope.$on('socket:event', spy);
+      mockIoSocket.emit('event', 1, 2, 3);
+      $timeout.flush();
+
+      expect(spy.calls[0].args.slice(1)).toEqual([1, 2, 3]);
     });
   });
 

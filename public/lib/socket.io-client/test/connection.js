@@ -115,6 +115,82 @@ describe('connection', function() {
     }, 500);
   });
 
+  it('should reconnect manually', function(done) {
+    var socket = io({ forceNew: true });
+    socket.once('connect', function() {
+      socket.disconnect();
+    }).once('disconnect', function() {
+      socket.once('connect', function() {
+        socket.disconnect();
+        done();
+      });
+      socket.connect();
+    });
+  });
+
+  it('should reconnect automatically after reconnecting manually', function(done){
+    var socket = io({ forceNew: true });
+    socket.once('connect', function() {
+      socket.disconnect();
+    }).once('disconnect', function() {
+      socket.on('reconnect', function() {
+        socket.disconnect();
+        done();
+      });
+      socket.connect();
+      setTimeout(function() {
+        socket.io.engine.close();
+      }, 500);
+    });
+  });
+
+  it('should attempt reconnects after a failed reconnect', function(done){
+    var manager = io.Manager({ reconnection: true, timeout: 0, reconnectionAttempts: 2, reconnectionDelay: 10 });
+    var socket = manager.socket('/timeout');
+    socket.once('reconnect_failed', function() {
+      var reconnects = 0;
+      var reconnectCb = function() {
+        reconnects++;
+      };
+
+      manager.on('reconnect_attempt', reconnectCb);
+      manager.on('reconnect_failed', function failed() {
+        expect(reconnects).to.be(2);
+        socket.close();
+        manager.close();
+        done();
+      });
+      socket.connect();
+    });
+  });
+
+  it('reconnect delay should increase every time', function(done){
+    var manager = io.Manager({ reconnection: true, timeout: 0, reconnectionAttempts: 5, reconnectionDelay: 10, randomizationFactor: 0.2 });
+    var socket = manager.socket('/timeout');
+    var reconnects = 0, increasingDelay = true, startTime, prevDelay = 0;
+    
+    socket.on('connect_error', function() {
+      startTime = new Date().getTime();
+    });
+    socket.on('reconnect_attempt', function() {
+      reconnects++;
+      var currentTime = new Date().getTime();
+      var delay = currentTime - startTime;
+      if (delay <= prevDelay) {
+        increasingDelay = false;
+      }
+      prevDelay = delay;
+    });
+
+    socket.on('reconnect_failed', function failed() {
+      expect(reconnects).to.be(5);
+      expect(increasingDelay).to.be.ok();
+      socket.close();
+      manager.close();
+      done();
+    });
+  });
+
   it('reconnect event should fire in socket', function(done){
     var socket = io({ forceNew: true });
 
@@ -126,6 +202,58 @@ describe('connection', function() {
     setTimeout(function() {
       socket.io.engine.close();
     }, 500);
+  });
+
+  it('should not reconnect when force closed', function(done){
+    var socket = io('/invalid', { forceNew: true, timeout: 0, reconnectionDelay: 10 });
+    socket.on('connect_error', function() {
+      socket.on('reconnect_attempt', function() {
+        expect().fail();
+      });
+      socket.disconnect();
+      // set a timeout to let reconnection possibly fire
+      setTimeout(function() {
+        done();
+      }, 500);
+    });
+  });
+
+  it('should stop reconnecting when force closed', function(done){
+    var socket = io('/invalid', { forceNew: true, timeout: 0, reconnectionDelay: 10 });
+    socket.once('reconnect_attempt', function() {
+      socket.on('reconnect_attempt', function() {
+        expect().fail();
+      });
+      socket.disconnect();
+      // set a timeout to let reconnection possibly fire
+      setTimeout(function() {
+        done();
+      }, 500);
+    });
+  });
+
+  it('should stop reconnecting on a socket and keep to reconnect on another', function(done){
+    var manager = io.Manager();
+    var socket1 = manager.socket('/');
+    var socket2 = manager.socket('/asd');
+
+    manager.on('reconnect_attempt', function() {
+      socket1.on('connect', function() {
+        expect().fail();
+      });
+      socket2.on('connect', function() {
+        setTimeout(function() {
+          socket2.disconnect();
+          manager.disconnect();
+          done();
+        }, 500);
+      });
+      socket1.disconnect();
+    });
+
+    setTimeout(function() {
+      manager.engine.close();
+    }, 1000);
   });
 
   it('should try to reconnect twice and fail when requested two attempts with immediate timeout and reconnect enabled', function(done) {
