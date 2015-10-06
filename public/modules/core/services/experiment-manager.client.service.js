@@ -16,11 +16,26 @@ angular.module('core').factory('ExperimentManager', [
     '$state',
     '$log',
     'rfc4122',
-    function(TrialData, $q, $http, $state, $log, rfc4122) {
+    '$rootScope',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
 
-        console.debug('Instantiating ExperimentManager service.');
+        $log.debug('Instantiating ExperimentManager service.');
 
-        return {
+        // Attach an event listener for $rootScope's $stateChangeStart
+        // events and set stateChanging to true when these events are emitted
+        function stateChangeStartListener() {
+            returnObject.stateChanging = true;
+        }
+        $rootScope.$on('$stateChangeStart', stateChangeStartListener);
+
+        // Attach an event listener for $rootScope's $stateChangeSuccess
+        // events and set stateChanging to false when these events are emitted
+        function stateChangeSuccessListener() {
+            returnObject.stateChanging = false;
+        }
+        $rootScope.$on('$stateChangeSuccess', stateChangeSuccessListener);
+
+        var returnObject = {
 
             /**
              * Advances the state to the next state as defined in the study
@@ -33,18 +48,22 @@ angular.module('core').factory('ExperimentManager', [
              */
             advanceSlide: function() {
 
-                TrialData.data.state.currentSlideIndex++;
+                if (!this.stateChanging) {
 
-                var currentSlideIndex = TrialData.data.state.currentSlideIndex;
+                    TrialData.data.state.currentSlideIndex++;
 
-                if (currentSlideIndex === TrialData.data.schema.length) {
-                    $state.go('home', {}, {reload: true});
-                } else {
-                    $state.go(
-                        TrialData.data.schema[currentSlideIndex].name,
-                        {},
-                        {reload: true}
-                    );
+                    var currentSlideIndex =
+                        TrialData.data.state.currentSlideIndex;
+
+                    if (currentSlideIndex === TrialData.data.schema.length) {
+                        $state.go('home', {}, {reload: true});
+                    } else {
+                        $state.go(
+                            TrialData.data.schema[currentSlideIndex].name,
+                            {},
+                            {reload: true}
+                        );
+                    }
                 }
             },
 
@@ -61,7 +80,7 @@ angular.module('core').factory('ExperimentManager', [
              *  `config/custom.js` for this specific machine
              *
              *  The {@link Angular.TrialData|TrialData} service is then updated
-              *  with these new data.
+             *  with these new data.
              *
              * @function masterReset
              * @memberof Angular.ExperimentManager
@@ -108,7 +127,27 @@ angular.module('core').factory('ExperimentManager', [
                     });
 
                 return deferred.promise;
-            }
+            },
+
+            /**
+             * Reflects the current state as reported by Angular's
+             * `$stateProvider`. When the state is changing (a new 'slide'
+             * is being presented--typically after a call to {@link
+             * Angular.ExperimentManager#advanceSlide advanceSlide}, this
+             * will be set to `true`. When the change completes, this will
+             * be set to `true`.
+             *
+             * @var stateChanging
+             * @memberof Angular.ExperimentManager
+             * @instance
+             * @type {boolean}
+             */
+            stateChanging: false,
+
+            stateChangeStartListener: stateChangeStartListener,
+            stateChangeSuccessListener: stateChangeSuccessListener
         };
+
+        return returnObject;
     }
 ]);

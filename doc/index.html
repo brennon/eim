@@ -45,6 +45,7 @@
     <section>
         <article><p><a href="https://travis-ci.org/brennon/eim"><img src="https://travis-ci.org/brennon/eim.svg" alt="Build Status"></a> <a href="https://david-dm.org/brennon/eim.png"><img src="https://david-dm.org/brennon/eim.png" alt="Dependency Status"></a> <a href="https://coveralls.io/github/brennon/eim?branch=master"><img src="https://coveralls.io/repos/brennon/eim/badge.svg?branch=master&amp;service=github" alt="Coverage Status"></a><a href="https://codeclimate.com/github/brennon/eim"><img src="https://codeclimate.com/github/brennon/eim/badges/gpa.svg" alt="Code Climate"></a></p>
 <h1>Emotion in Motion</h1><p>This is the Emotion in Motion experiment framework from the Music, Sensors and Emotion research group. For more information, contact us at <a href="mailto:emotion.in.motion@musicsensorsemotion.com">emotion.in.motion@musicsensorsemotion.com</a>.</p>
+<h1>Documentation</h1><p>Complete documentation is available <a href="https://brennon.github.io/eim/">here</a>.</p>
 <h1>Installation</h1><ol>
 <li><p>Clone the EiM git repository:</p>
 <pre class="prettyprint source"><code> git clone https://github.com/brennon/eim.git</code></pre></li>
@@ -68,6 +69,25 @@
 <pre class="prettyprint source"><code> node_modules/grunt-cli/bin/grunt</code></pre></li>
 <li><p>Browse to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
 </li>
+</ol>
+<h1>Custom Configuration</h1><p>There are a few things you'll likely want to change about your installation 
+straight away (the terminal numbers of the machines on which you install your
+ app, the default language, etc.) All of these changes can be made in the 
+ file at <code>config/custom.js</code>. The options for configuring this file are 
+ described both in comments the file itself, as well as in the documentation 
+ for the <code>CustomConfiguration</code> module.</p>
+<h1>Debug Mode</h1><p>As you dig into customizing the framework for your own use, you should be 
+aware of debugging mode. When viewing any page in your application, pressing 
+the <code>'D'</code> key twice will toggle debugging mode. This enables two things:</p>
+<ol>
+<li>View the current <a href="#objects"><code>TrialData</code></a> document. As you'll read
+below, this document is where all information about the current experiment 
+session is stored. In debugging mode, you can see it at the bottom of the 
+page as it updates in real time.</li>
+<li>Advance through the experiment without impediment. Some sections of your 
+design may require the user to, for instance, answer questions before being 
+allowed to proceed. In debugging mode, the right arrow key will advance you 
+to the next slide irrespective of these impediments.</li>
 </ol>
 <h1>Study Specification Structure</h1><p>A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see <a href="http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/">this site</a> for a gentle introduction.</p>
 <p>By default, the application looks in the <code>experimentschemas</code> collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:</p>
@@ -208,7 +228,7 @@
 <p><strong><code>questionLikertMaximumDescription</code></strong></p>
 <p>The <code>questionLikertMaximumDescription</code> takes a string that is used as a description at the right-most end of the Likert-type scale. This property is optional.</p>
 <p><strong><code>questionStoragePath</code></strong></p>
-<p>The <code>questionStoragePath</code> property represents a dot-delimited path into the <a href="#trialData-objects"><code>trialData</code> object</a> that is generated as the participant completes the session. This <code>trialData</code> object holds all information about the participant's session. Typically, all input received from the participant is stored in a top-level property of this object named &quot;data&quot;. So, to store the participant's response to a question about their musical experience, we might specify the <code>questionStoragePath</code> property for this question as <code>data.questionnaire_two.musical_expertise</code>. This would result in a <code>trialData</code> object that looks something like the following (with other distracting information removed):</p>
+<p>The <code>questionStoragePath</code> property represents a dot-delimited path into the <a href="#objects"><code>trialData</code> object</a> that is generated as the participant completes the session. This <code>trialData</code> object holds all information about the participant's session. Typically, all input received from the participant is stored in a top-level property of this object named &quot;data&quot;. So, to store the participant's response to a question about their musical experience, we might specify the <code>questionStoragePath</code> property for this question as <code>data.questionnaire_two.musical_expertise</code>. This would result in a <code>trialData</code> object that looks something like the following (with other distracting information removed):</p>
 <pre class="prettyprint source"><code>{
     \\ Other properties here
     data: {
@@ -363,7 +383,7 @@
     label: &quot;First Part of Excerpt Filename Here (without extension)&quot;
 }</code></pre><h2>Max Application Media File Location</h2><p>The Max application looks for files in the <code>EiMpatch/media/</code> directory. If you add an excerpt to the database with the label <code>&quot;Bananarama&quot;</code>, then, Max will expect to find the file <code>EiMpatch/media/Bananarama.wav</code>.</p>
 <h1>Recorded Session Data</h1><p>In the demo applicaiton, two types of data are collected, recorded, and saved during a session: the data in the <code>trialData</code> document/object, and the data recorded from the sensors.  </p>
-<h2><code>trialData</code> Data</h2><p><code>trialData</code> objects contain metadata <em>about</em> the experiment session as well as responses given by the participant during the session. The metadata contain, for instance, the date and time of the session, as well as a copy of the study specification structure that was used to generate the session. Every <code>trialData</code> object is associated with a UUID (universally unique identifier) generated by the applicaiton. Upon completion of a session, a JSON file containing the <code>trialData</code> object for the session is stored in the <code>trials/</code> directory.</p>
+<h2><code>trialData</code> Objects</h2><p><code>trialData</code> objects contain metadata <em>about</em> the experiment session as well as responses given by the participant during the session. The metadata contain, for instance, the date and time of the session, as well as a copy of the study specification structure that was used to generate the session. Every <code>trialData</code> object is associated with a UUID (universally unique identifier) generated by the applicaiton. Upon completion of a session, a JSON file containing the <code>trialData</code> object for the session is stored in the <code>trials/</code> directory.</p>
 <h2>Sensor Data</h2><p>Sensor data is collected, recorded, and saved by the Max helper application. A sensor data file is generated for every media excerpt playback, and these files are stored in the <code>EiMpatch/data/</code> directory. As an example, if the UUID <code>92a7d913-63d7-4e37-af01-a6ca19ae2be3</code> was generated by the application for a specific participant, the following files would be generated from the session:</p>
 <pre class="prettyprint source"><code># The sensor data files for media excerpts labeled &quot;C002&quot; and &quot;T018&quot;:
 .\EiMpatch\data\92a7d913-63d7-4e37-af01-a6ca19ae2be3_C002.txt
@@ -423,7 +443,7 @@ ln -s ../../post-commit.sh .git/hooks/post-commit</code></pre></article>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Fri Oct 02 2015 15:47:42 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 06 2015 09:56:31 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
