@@ -48,6 +48,16 @@ customConfiguration.metadata.terminal = 1;
  */
 customConfiguration.defaultLanguage = 'en';
 
+/**
+ * Your token for the Loggly service
+ *
+ * @name logglyToken
+ * @memberof Node.module:CustomConfiguration~customConfiguration
+ * @inner
+ * @type {string}
+ */
+customConfiguration.logglyToken = '';
+
 module.exports = {
     customConfiguration: customConfiguration
 };
