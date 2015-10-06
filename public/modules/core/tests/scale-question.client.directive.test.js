@@ -226,11 +226,23 @@
                 }
             });
 
-            it('should set the required attribute on each radio button', function() {
+            it('should set the required attribute on each radio button by' +
+                ' default', function() {
                 $compile(element)($scope);
                 var inputs = $(element).find('input[type="radio"][name="powerRadioGroup"]');
                 for (var i = 0; i < inputs.length; i++) {
                     expect(inputs[i].required).toBe(true);
+                }
+            });
+
+            it('should not set the required attribute on each radio button' +
+                ' when specified', function() {
+                element.data('questionRequired', false);
+                $compile(element)($scope);
+                var inputs = $(element)
+                    .find('input[type="radio"][name="powerRadioGroup"]');
+                for (var i = 0; i < inputs.length; i++) {
+                    expect(inputs[i].required).toBe(false);
                 }
             });
 

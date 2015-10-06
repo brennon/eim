@@ -623,6 +623,44 @@
                 var scaleQuestionElement= $(element).find('scale-question');
                 expect($(scaleQuestionElement).data('questionOptions')).toEqual($scope.questionnaireData.structure[0].questionOptions);
             });
+
+            it('should forward the questionRequired property on to the data' +
+                ' attribute', function() {
+
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionOptions: {
+                                choices: [
+                                    {
+                                        label: 'Disagree strongly'
+                                    },
+                                    {
+                                        label: 'Disagree a little'
+                                    },
+                                    {
+                                        label: 'Neither agree nor disagree'
+                                    },
+                                    {
+                                        label: 'Agree a little'
+                                    },
+                                    {
+                                        label: 'Agree strongly'
+                                    }
+                                ]
+                            },
+                            questionRequired: 'foo'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElement= $(element).find('scale-question');
+                expect(scaleQuestionElement.data('questionRequired'))
+                    .toEqual('foo');
+            });
         });
 
         describe('dropdown-question directives', function () {

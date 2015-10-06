@@ -199,6 +199,13 @@ angular.module('core').directive('scaleQuestion', [
                     );
                 }
 
+                // Don't require question if explicitly told not to do so in
+                // data
+                var requiredText = '';
+                if (element.data('questionRequired') !== false) {
+                    requiredText = ' required="required" ';
+                }
+
                 var innerRadioHTML = '';
 
                 for (var j = 1; j <= 5; j++) {
@@ -208,7 +215,7 @@ angular.module('core').directive('scaleQuestion', [
                         'name="' + attrs.questionId + 'RadioGroup" ' +
                         'id="' + attrs.questionId + 'RadioGroup' + j + '" ' +
                         'value="' + j + '" ' +
-                        'required ' +
+                        requiredText +
                         'ng-model="' + attrs.questionId + 'RadioGroup">' +
                         '</div>';
                 }
