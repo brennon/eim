@@ -70,9 +70,16 @@ angular.module('core').directive('dropdownQuestion', [
 
                 formDiv.append(label);
 
+                // Create select element
                 var select = angular.element(
                     '<select class="form-control" required></select>'
                 );
+
+                // Remove 'required' attribute if this was specified in data
+                if (element.data('questionRequired') === false) {
+                    select.removeAttr('required');
+                }
+
                 select.attr('id', attrs.questionId);
                 select.attr('name', attrs.questionId);
                 select.attr('ng-model', attrs.questionId + 'Select');

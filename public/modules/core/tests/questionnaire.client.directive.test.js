@@ -698,6 +698,27 @@
                 var radioQuestionElements = $(element).find('dropdown-question');
                 expect($(radioQuestionElements).data('dropdownOptions')).toEqual($scope.questionnaireData.structure[0].questionDropdownOptions);
             });
+
+            it('should forward the questionRequired property on to the data' +
+                ' attribute', function() {
+
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionDropdownOptions: ['a', 'b', 'c', 'd'],
+                            questionRequired: 'foo'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var dropdownElement = $(element).find('dropdown-question');
+                expect($(dropdownElement)
+                    .data('questionRequired'))
+                    .toEqual('foo');
+            });
         });
 
         describe('checkbox-question directives', function () {

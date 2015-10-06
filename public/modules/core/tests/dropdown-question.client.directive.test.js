@@ -87,14 +87,39 @@
                 expect(selectParent.hasClass('form-group')).toBe(true);
             });
 
-            it('should mark the element as required', function() {
-                var options = ['a','b','c'];
-                element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
-                $compile(element)($scope);
-                $scope.$digest();
-                var select = $(element).find('select');
-                expect(select.prop('required')).toBe(true);
+            describe('should mark the element', function() {
+
+                var options = ['a', 'b', 'c'];
+                var element;
+
+                beforeEach(function() {
+                    element = angular.element('<dropdown-question' +
+                        ' question-id="nationality"></dropdown-question>');
+                    element.data('dropdownOptions', options);
+                });
+
+                it('as required by default', function() {
+                    $compile(element)($scope);
+                    $scope.$digest();
+                    var select = $(element).find('select');
+                    expect(select.prop('required')).toBe(true);
+                });
+
+                it('as required when explicitly specified', function() {
+                    element.data('questionRequired', true);
+                    $compile(element)($scope);
+                    $scope.$digest();
+                    var select = $(element).find('select');
+                    expect(select.prop('required')).toBe(true);
+                });
+
+                it('as not required when explicitly specified', function() {
+                    element.data('questionRequired', false);
+                    $compile(element)($scope);
+                    $scope.$digest();
+                    var select = $(element).find('select');
+                    expect(select.prop('required')).toBe(false);
+                });
             });
         });
 

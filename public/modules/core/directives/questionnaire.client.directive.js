@@ -165,6 +165,10 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
+            if (item.hasOwnProperty('questionRequired')) {
+                questionElement.data('questionRequired', item.questionRequired);
+            }
+
             return questionElement;
         };
 
@@ -288,6 +292,13 @@ angular.module('core').directive('questionnaire', [
                  * Likewise, they chose a value of `5` when responding to
                  * the positivity question following the second excerpt.
                  *
+                 * @property {boolean} questionRequired This property is
+                 * supported by the `'checkbox'` and `'dropdown'` question
+                 * types. If its value is `false`, the user will not be
+                 * required to answer the question. If its value is
+                 * *anything* other than false (`true`, `undefined`, 49,
+                 * etc.), the user will be required to answer the question.
+                 *
                  * @property {string} questionLikertMinimumDescription This
                  * property is used by the `'scale'` question type. The minimum
                  * description is displayed below the left end of the scale.
@@ -360,7 +371,7 @@ angular.module('core').directive('questionnaire', [
                  * label that should be displayed to the user, while the
                  * `'value'` property corresponds to the value that is
                  * actually saved to {@link
-                    * Angular.TrialData#data|TrialData#data}, should the user
+                 * Angular.TrialData#data|TrialData#data}, should the user
                  * select this radio button.
                  *
                  * ```
@@ -406,13 +417,6 @@ angular.module('core').directive('questionnaire', [
                  *     "Undecided"
                  * ]
                  * ```
-                 *
-                 * @property {boolean} questionRequired This property is
-                 * supported by the `'checkbox'` question type. If its value is
-                 * `true` or `undefined`, then the user will be required to
-                 * check one of the available checkboxes. If its value is
-                 * `false`, the user will not be required to check at least one
-                 * checkbox.
                  */
 
                 /**

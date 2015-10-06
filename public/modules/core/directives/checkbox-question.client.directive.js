@@ -76,7 +76,10 @@ angular.module('core').directive('checkboxQuestion', [
                     checkedOptions.sort();
 
                     //noinspection JSUnresolvedVariable
-                    scope.sendToTrialData(attrs.controllerDataPath, checkedOptions);
+                    scope.sendToTrialData(
+                        attrs.controllerDataPath,
+                        checkedOptions
+                    );
                 };
 
                 var questionText =
