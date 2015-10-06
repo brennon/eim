@@ -29,66 +29,120 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
+ * The `radioQuestion` directive is used to dynamically create a radio button
+ * question into a view. It is used by the {@link
+    * Angular.questionnaireDirective|questionnaire} directive to build whole
+ * questionnaires.
+ *
  * @class Angular.radioQuestionDirective
+ * @see Angular.questionnaireDirective
  */
 
-angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', function($compile, TrialData) {
+angular.module('core').directive('radioQuestion', [
+    '$compile',
+    'TrialData',
+    '$log',
+    function($compile, TrialData, $log) {
 
-    return {
-        restrict: 'E',
-        scope: {},
+        $log.debug('Compiling radioQuestion directive.');
 
-        link: function(scope, element, attrs) {
+        /**
+         * The data used to build the radio question is found in the `scope`
+         * argument passed to the directive's `#link` function. When a
+         * {@link Angular.questionnaireDirective|questionnaire} directive
+         * employs a `radioQuestion` directive, it passes
+         * the appropriate {@link Angular.questionnaireDirective#data~questionnaireStructureEntry|questionnaireStructureEntry}
+         * for this parameter.
+         *
+         * @name scope
+         * @memberof Angular.radioQuestionDirective
+         * @inner
+         * @type {{}}
+         * @see Angular.questionnaireDirective
+         */
 
-            scope.sendToTrialData = function(path, value) {
-                if (!attrs.associatedToMedia) {
-                    TrialData.setValueForPath(path, value);
-                } else {
-                    TrialData.setValueForPathForCurrentMedia(path, value);
+        return {
+            restrict: 'E',
+            scope: {},
+
+            link: function(scope, element, attrs) {
+
+                scope.sendToTrialData = function(path, value) {
+                    if (!attrs.associatedToMedia) {
+                        TrialData.setValueForPath(path, value);
+                    } else {
+                        TrialData.setValueForPathForCurrentMedia(path, value);
+                    }
+                };
+
+                scope[attrs.questionId + 'RadioGroup'] = null;
+
+                scope.$watch(
+                    attrs.questionId + 'RadioGroup',
+                    function(newValue) {
+
+                        // Convert 'true' to true literals and similar for
+                        // 'false'
+                        if (newValue === 'true') {
+                            newValue = true;
+                        } else if (newValue === 'false') {
+                            newValue = false;
+                        }
+
+                        scope.sendToTrialData(
+                            attrs.controllerDataPath,
+                            newValue
+                        );
+                    });
+
+                var questionText =
+                    '&lt;div class="row">' +
+                    '&lt;div class="col-md-12">' +
+                    '&lt;label for="' + attrs.questionId + 'Radio" ' +
+                    'translate>' +
+                    attrs.questionLabel +
+                    '&lt;/label>' +
+                    '&lt;div>';
+
+                var innerQuestionText = '';
+
+                if (element.data('radioOptions')) {
+
+                    // Iterate over radio options
+                    for (var i = 0;
+                         i &lt; element.data('radioOptions').length;
+                         i++) {
+
+                        var thisOption = element.data('radioOptions')[i];
+
+                        innerQuestionText +=
+                            '&lt;label class="radio-inline">' +
+                            '&lt;input type="radio" name="' +
+                            attrs.questionId + 'RadioGroup" ' +
+                            'id="' + attrs.questionId +
+                            'Radio' + thisOption.label + '" ' +
+                            'value="' + thisOption.value + '" ' +
+                            'ng-model="' + attrs.questionId + 'RadioGroup" ' +
+                            'required="true">' +
+                            '{{\'' + thisOption.label + '\' | translate}}' +
+                            '&lt;/input>' +
+                            '&lt;/label>';
+                    }
                 }
-            };
 
-            scope[attrs.questionId + 'RadioGroup'] = null;
+                questionText += innerQuestionText + '&lt;/div>&lt;/div>&lt;/div>';
 
-            scope.$watch(attrs.questionId + 'RadioGroup', function(newValue) {
+                var questionElement = angular.element(questionText);
 
-                // Convert 'true' to true literals and similar for 'false'
-                if (newValue === 'true') {
-                    newValue = true;
-                } else if (newValue === 'false') {
-                    newValue = false;
-                }
+                // Add well class
+                questionElement.addClass('well');
 
-                scope.sendToTrialData(attrs.controllerDataPath, newValue);
-            });
-
-            var questionText = '&lt;div class="row">&lt;div class="col-md-12">&lt;label for="' + attrs.questionId + 'Radio" translate>' + attrs.questionLabel + '&lt;/label>&lt;div>';
-
-            var innerQuestionText = '';
-
-            if (element.data('radioOptions')) {
-
-                // Iterate over radio options
-                for (var i = 0; i &lt; element.data('radioOptions').length; i++) {
-
-                    var thisOption = element.data('radioOptions')[i];
-
-                    innerQuestionText += '&lt;label class="radio-inline">&lt;input type="radio" name="' + attrs.questionId + 'RadioGroup" id="' + attrs.questionId + 'Radio' + thisOption.label + '" value="' + thisOption.value + '" ng-model="' + attrs.questionId + 'RadioGroup" required="true">{{\'' + thisOption.label + '\' | translate}}&lt;/input>&lt;/label>';
-                }
+                element.append(questionElement);
+                $compile(element.contents())(scope);
             }
-
-            questionText += innerQuestionText + '&lt;/div>&lt;/div>&lt;/div>';
-
-            var questionElement = angular.element(questionText);
-
-            // Add well class
-            questionElement.addClass('well');
-
-            element.append(questionElement);
-            $compile(element.contents())(scope);
-        }
-    };
-}]);</code></pre>
+        };
+    }]);
+</code></pre>
         </article>
     </section>
 
@@ -98,13 +152,13 @@ angular.module('core').directive('radioQuestion', ['$compile', 'TrialData', func
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Thu Oct 01 2015 22:21:50 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 06 2015 09:56:31 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
