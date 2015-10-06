@@ -566,7 +566,7 @@ In the demo app, sensor data is recorded into space-delimited CSV files with a s
 
 The framework uses Max MSP software to handle playback and data capture for the experiments. The patches are enclosed in the project named 'EmotionInMotion.maxproj'. Opening this project will open the 'MAIN.maxpat' and the 'EiMsensors.maxpat' patches.
 
-# The MAIN Patch
+### The MAIN Patch
 
 The MAIN patch is dived in three subpatches:
 
@@ -576,7 +576,7 @@ The MAIN patch is dived in three subpatches:
 
 3) p PLAYBACK&RECORD: This subpatch handles de playback of MEDIA and records sensor data into text files. The sensor data must be sent through an OSC message, with the label eim/sensorData followed by a list with each column representing a different channel of data.
 
-# The Sensor Patches
+### The Sensor Patches
 
 Included in the project, there is a DEMO patch with an example of the configuration used in our experiments with Electrodermal (EDA) and Pulse Oximetry (POX) sensors connected to an Arduino. In the 'patchers' folder, the following patches are available:
 
