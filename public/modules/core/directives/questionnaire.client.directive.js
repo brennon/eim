@@ -24,18 +24,10 @@ angular.module('core').directive('questionnaire', [
 
         $log.debug('Compiling questionnaire directive.');
 
-        var buildScaleQuestion = function(item) {
+        function buildScaleQuestion(item) {
             var questionElement = angular.element(
                 '<scale-question></scale-question>'
             );
-
-            if (item.questionId) {
-                questionElement.attr('question-id', item.questionId);
-            }
-
-            if (item.questionLabel) {
-                questionElement.attr('question-label', item.questionLabel);
-            }
 
             if (item.questionLabelType) {
                 questionElement.attr('label-type', item.questionLabelType);
@@ -76,112 +68,26 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.questionStoragePath) {
-                questionElement.attr(
-                    'controller-data-path',
-                    item.questionStoragePath
-                );
-            }
-
-            if (item.questionIsAssociatedToMedia) {
-                questionElement.attr(
-                    'associated-to-media',
-                    item.questionIsAssociatedToMedia
-                );
-            }
-
             return questionElement;
-        };
+        }
 
-        var buildRadioQuestion = function(item) {
-            var questionElement = angular.element(
+        function buildRadioQuestion() {
+            return angular.element(
                 '<radio-question></radio-question>'
             );
+        }
 
-            if (item.questionId) {
-                questionElement.attr('question-id', item.questionId);
-            }
-
-            if (item.questionLabel) {
-                questionElement.attr('question-label', item.questionLabel);
-            }
-
-            if (item.questionStoragePath) {
-                questionElement.attr(
-                    'controller-data-path',
-                    item.questionStoragePath
-                );
-            }
-
-            if (item.questionIsAssociatedToMedia) {
-                questionElement.attr(
-                    'associated-to-media',
-                    item.questionIsAssociatedToMedia
-                );
-            }
-
-            return questionElement;
-        };
-
-        var buildDropdownQuestion = function(item) {
-            var questionElement = angular.element(
+        function buildDropdownQuestion() {
+            return angular.element(
                 '<dropdown-question></dropdown-question>'
             );
+        }
 
-            if (item.questionId) {
-                questionElement.attr('question-id', item.questionId);
-            }
-
-            if (item.questionLabel) {
-                questionElement.attr('question-label', item.questionLabel);
-            }
-
-            if (item.questionIsAssociatedToMedia) {
-                questionElement.attr(
-                    'associated-to-media',
-                    item.questionIsAssociatedToMedia
-                );
-            }
-
-            if (item.questionStoragePath) {
-                questionElement.attr(
-                    'controller-data-path',
-                    item.questionStoragePath
-                );
-            }
-
-            return questionElement;
-        };
-
-        var buildCheckboxQuestion = function(item) {
-            var questionElement = angular.element(
+        function buildCheckboxQuestion() {
+            return angular.element(
                 '<checkbox-question></checkbox-question>'
             );
-
-            if (item.questionId) {
-                questionElement.attr('question-id', item.questionId);
-            }
-
-            if (item.questionLabel) {
-                questionElement.attr('question-label', item.questionLabel);
-            }
-
-            if (item.questionIsAssociatedToMedia) {
-                questionElement.attr(
-                    'associated-to-media',
-                    item.questionIsAssociatedToMedia
-                );
-            }
-
-            if (item.questionStoragePath) {
-                questionElement.attr(
-                    'controller-data-path',
-                    item.questionStoragePath
-                );
-            }
-
-            return questionElement;
-        };
+        }
 
         return {
             restrict: 'E',
@@ -415,11 +321,15 @@ angular.module('core').directive('questionnaire', [
                 var data = scope.questionnaireData;
 
                 // Create an element for the title
-                if (data.title) {
-                    var title = angular.element('<h1 translate>' + data.title +
-                        '</h1>');
-                    element.append(title);
+                var title;
+                if (typeof data.title === 'string') {
+                    title = angular.element('<h1></h1>');
+                    title.attr('translate', '');
+                    title.html(data.title);
+                } else {
+                    $log.error('Questionnaire title must be a string.');
                 }
+                element.append(title);
 
                 // Create an element for the introductory text
                 if (data.introductoryText) {
@@ -468,6 +378,28 @@ angular.module('core').directive('questionnaire', [
                         questionElement.data('questionRequired', item.questionRequired);
                     } else {
                         questionElement.data('questionRequired', true);
+                    }
+
+                    if (item.hasOwnProperty('questionStoragePath')) {
+                        questionElement.attr(
+                            'controller-data-path',
+                            item.questionStoragePath
+                        );
+                    }
+
+                    if (item.hasOwnProperty('questionIsAssociatedToMedia')) {
+                        questionElement.attr(
+                            'associated-to-media',
+                            item.questionIsAssociatedToMedia
+                        );
+                    }
+
+                    if (item.hasOwnProperty('questionId')) {
+                        questionElement.attr('question-id', item.questionId);
+                    }
+
+                    if (item.hasOwnProperty('questionLabel')) {
+                        questionElement.attr('question-label', item.questionLabel);
                     }
 
                     // Append a spacer row
