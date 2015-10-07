@@ -90,14 +90,6 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.hasOwnProperty('questionOptions')) {
-                questionElement.data('questionOptions', item.questionOptions);
-            }
-
-            if (item.hasOwnProperty('questionRequired')) {
-                questionElement.data('questionRequired', item.questionRequired);
-            }
-
             return questionElement;
         };
 
@@ -126,14 +118,6 @@ angular.module('core').directive('questionnaire', [
                     'associated-to-media',
                     item.questionIsAssociatedToMedia
                 );
-            }
-
-            if (item.questionOptions) {
-                questionElement.data('questionOptions', item.questionOptions);
-            }
-
-            if (item.hasOwnProperty('questionRequired')) {
-                questionElement.data('questionRequired', item.questionRequired);
             }
 
             return questionElement;
@@ -166,14 +150,6 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.hasOwnProperty('questionOptions')) {
-                questionElement.data('questionOptions', item.questionOptions);
-            }
-
-            if (item.hasOwnProperty('questionRequired')) {
-                questionElement.data('questionRequired', item.questionRequired);
-            }
-
             return questionElement;
         };
 
@@ -202,17 +178,6 @@ angular.module('core').directive('questionnaire', [
                     'controller-data-path',
                     item.questionStoragePath
                 );
-            }
-
-            if (item.hasOwnProperty('questionOptions')) {
-                questionElement.data('questionOptions', item.questionOptions);
-            }
-
-            // If questionRequired isn't defined or is explicitly set to true
-            if (!item.hasOwnProperty('questionRequired') ||
-                item.questionRequired === true) {
-
-                questionElement.attr('question-required', 'true');
             }
 
             return questionElement;
@@ -493,6 +458,16 @@ angular.module('core').directive('questionnaire', [
                         case 'checkbox':
                             questionElement = buildCheckboxQuestion(item);
                             break;
+                    }
+
+                    if (item.hasOwnProperty('questionOptions')) {
+                        questionElement.data('questionOptions', item.questionOptions);
+                    }
+
+                    if (item.hasOwnProperty('questionRequired')) {
+                        questionElement.data('questionRequired', item.questionRequired);
+                    } else {
+                        questionElement.data('questionRequired', true);
                     }
 
                     // Append a spacer row

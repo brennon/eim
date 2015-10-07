@@ -222,7 +222,6 @@
                 element.data('questionOptions', options);
                 $compile(element)($scope);
 
-                console.log(element);
                 var inputs = $(element).find('input[type="radio"]');
                 var secondInput = $(inputs[1]);
 

@@ -100,7 +100,6 @@ angular.module('core').directive('checkboxQuestion', [
                          i++) {
 
                         var thisOption = element.data('questionOptions').choices[i];
-                        console.log(thisOption);
 
                         innerQuestionText += '<label class="checkbox-inline">';
 
@@ -113,7 +112,7 @@ angular.module('core').directive('checkboxQuestion', [
                             'Checkbox' + thisOption.value +
                             '" ng-change="updateCheckboxes()"';
 
-                        if (attrs.questionRequired) {
+                        if (element.data('questionRequired') !== false) {
                             innerQuestionText += 'ng-required="!someSelected"';
                         }
 

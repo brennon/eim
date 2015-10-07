@@ -286,9 +286,6 @@
                 $scope.questionnaireData = {
                     structure: [
                         {
-                            questionType: 'nothing'
-                        },
-                        {
                             questionType: 'radio'
                         },
                         {
@@ -913,10 +910,10 @@
                 $compile(element)($scope);
 
                 var checkboxQuestionElements = $(element).find('checkbox-question');
-                expect($(checkboxQuestionElements).attr('question-required')).toBe('true');
+                expect($(checkboxQuestionElements).data('question-required')).toBe(true);
             });
 
-            it('should not add the question-required attribute for a checkbox-question directive if it is not required', function () {
+            it('should add the question-required attribute for a checkbox-question directive if it is not required', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -929,14 +926,14 @@
                 $compile(element)($scope);
 
                 var checkboxQuestionElements = $(element).find('checkbox-question');
-                expect($(checkboxQuestionElements).attr('question-required')).toBe(undefined);
+                expect($(checkboxQuestionElements).data('question-required')).toBe(false);
             });
 
             it('should default to setting the question-required attribute for a checkbox-question directive if it is not defined', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
-                            questionType: 'checkbox',
+                            questionType: 'checkbox'
                         }
                     ]
                 };
@@ -944,7 +941,7 @@
                 $compile(element)($scope);
 
                 var checkboxQuestionElements = $(element).find('checkbox-question');
-                expect($(checkboxQuestionElements).attr('question-required')).toBe('true');
+                expect($(checkboxQuestionElements).data('question-required')).toBe(true);
             });
         });
     });
