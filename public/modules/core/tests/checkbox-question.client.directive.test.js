@@ -42,17 +42,21 @@
 
         describe('checkboxes', function() {
             it('should add a checkbox for each option', function() {
-                var options = ['Rock', 'Pop', 'Folk'];
+                var options = { choices: [
+                    {label: 'Rock', value: 'Rock'},
+                    {label: 'Pop', value: 'Pop'},
+                    {label: 'Folk', value: 'Folk'}
+                ]};
                 element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
-                element.data('checkboxOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
 
                 var checkboxes = element.find('input[type="checkbox"]');
-                expect(checkboxes.length).toBe(options.length);
+                expect(checkboxes.length).toBe(options.choices.length);
                 for (var i = 0; i < checkboxes.length; i++) {
                     var checkbox = checkboxes[i];
-                    expect(checkbox.value).toBe(options[i]);
-                    expect(checkbox.id).toBe('musicStylesCheckbox' + options[i]);
+                    expect(checkbox.value).toBe(options.choices[i].value);
+                    expect(checkbox.id).toBe('musicStylesCheckbox' + options.choices[i].value);
                     expect(checkbox.name).toBe('musicStylesCheckbox');
                     expect($(checkbox).attr('checked')).toBeUndefined();
                 }
@@ -131,9 +135,13 @@
 
         describe('#updateCheckboxes', function() {
             it('should send the correct values to #sendToTrialData', function() {
-                var options = ['Rock', 'Pop', 'Folk'];
+                var options = { choices: [
+                    {label: 'Rock', value: 'Rock'},
+                    {label: 'Pop', value: 'Pop'},
+                    {label: 'Folk', value: 'Folk'}
+                ]};
                 element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
-                element.data('checkboxOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
 
                 element.isolateScope().musicStylesCheckboxRock = false;
@@ -152,9 +160,13 @@
             });
 
             it('should set someSelected to true if some boxes are checked', function() {
-                var options = ['Rock', 'Pop', 'Folk'];
+                var options = { choices: [
+                    {label: 'Rock', value: 'Rock'},
+                    {label: 'Pop', value: 'Pop'},
+                    {label: 'Folk', value: 'Folk'}
+                ]};
                 element = angular.element('<checkbox-question question-label="Music Styles" question-id="musicStyles"></checkbox-question>');
-                element.data('checkboxOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
 
                 element.isolateScope().someSelected = false;

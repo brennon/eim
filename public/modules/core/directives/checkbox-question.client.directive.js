@@ -92,31 +92,32 @@ angular.module('core').directive('checkboxQuestion', [
 
                 var innerQuestionText = '';
 
-                if (element.data('checkboxOptions')) {
+                if (element.data('questionOptions')) {
 
                     // Iterate over checkbox options
                     for (var i = 0;
-                         i < element.data('checkboxOptions').length;
+                         i < element.data('questionOptions').choices.length;
                          i++) {
 
-                        var thisOption = element.data('checkboxOptions')[i];
+                        var thisOption = element.data('questionOptions').choices[i];
+                        console.log(thisOption);
 
                         innerQuestionText += '<label class="checkbox-inline">';
 
                         innerQuestionText +=
                             '<input type="checkbox" name="' + attrs.questionId +
                             'Checkbox" id="' + attrs.questionId +
-                            'Checkbox' + thisOption +
-                            '" value="' + thisOption +
+                            'Checkbox' + thisOption.value +
+                            '" value="' + thisOption.value +
                             '" ng-model="' + attrs.questionId +
-                            'Checkbox' + thisOption +
+                            'Checkbox' + thisOption.value +
                             '" ng-change="updateCheckboxes()"';
 
                         if (attrs.questionRequired) {
                             innerQuestionText += 'ng-required="!someSelected"';
                         }
 
-                        innerQuestionText += '>{{\'' + thisOption +
+                        innerQuestionText += '>{{\'' + thisOption.label +
                             '\' | translate}}</input>';
 
                         innerQuestionText += '</label>';

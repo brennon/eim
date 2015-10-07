@@ -85,14 +85,14 @@ angular.module('core').directive('radioQuestion', [
                     requiredText = ' required="required" ';
                 }
 
-                if (element.data('radioOptions')) {
+                if (element.data('questionOptions')) {
 
                     // Iterate over radio options
                     for (var i = 0;
-                         i < element.data('radioOptions').length;
+                         i < element.data('questionOptions').choices.length;
                          i++) {
 
-                        var thisOption = element.data('radioOptions')[i];
+                        var thisOption = element.data('questionOptions').choices[i];
 
                         innerQuestionText +=
                             '<label class="radio-inline">' +

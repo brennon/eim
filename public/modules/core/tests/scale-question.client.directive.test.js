@@ -1,58 +1,344 @@
 'use strict';
 
 (function() {
-    describe('scale-question directive', function() {
+    describe('scaleQuestion directive', function() {
 
-        //Initialize global variables
+        // Initialize global variables
         var $scope, $compile, element, TrialData;
+
+        // Valid options
+        var validQuestionOptions = {
+            choices: [
+                { label: 'a' },
+                { label: 'b' },
+                { label: 'c' },
+                { label: 'd' },
+                { label: 'e' }
+            ]
+        };
+        var validSingleImgSrc = 'singleImage.png';
+        var validLeftImgSrc = 'leftImage.png';
+        var validRightImgSrc = 'rightImage.png';
+        var validMinimumDescription = 'Minimum description';
+        var validMaximumDescription = 'Maximum description';
+        var validQuestionText = 'Question Text';
+        var validQuestionId = 'power';
+        var validPath = 'data.answers.ratings.power';
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
         beforeEach(inject(function(_$rootScope_, _$compile_, _TrialData_) {
-            $scope = _$rootScope_;
+            $scope = _$rootScope_.$new();
             $compile = _$compile_;
-            element = angular.element('<scale-question question-label="qText" single-img-src="img/single.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
+            element = angular.element(
+                '<scale-question question-label="' + validQuestionText + '" ' +
+                'single-img-src="' + validSingleImgSrc + '" ' +
+                'question-id="' + validQuestionId + '" ' +
+                'minimum-description="' + validMinimumDescription + '" ' +
+                'maximum-description="' + validMaximumDescription + '" ' +
+                'controller-data-path="' + validPath + '">' +
+                '</scale-question>'
+            );
             TrialData = _TrialData_;
-        }));
-        
-        it('should add a header for the question text', function() {
+
+            // Attach question options to question
+            element.data('questionOptions', validQuestionOptions);
+
+            // Compile the element and process scope
             $compile(element)($scope);
             $scope.$digest();
-            expect(element.html()).toMatch(/<h3.*qText.*\/h3>/);
+        }));
+
+        describe('header', function() {
+            it('should be added', function() {
+                var regex = new RegExp(
+                    '<h3.*' + validQuestionText + '.*\/h3>'
+                );
+                expect(element.html()).toMatch(regex);
+            });
+
+            it('should be a label if the labelType is set to labelLeft',
+                function() {
+
+                element = angular.element(
+                    '<scale-question question-label="'+validQuestionText+'" ' +
+                    'label-type="labelLeft" ' +
+                    'single-img-src="' + validSingleImgSrc + '" ' +
+                    'question-id="' + validQuestionId + '" ' +
+                    'minimum-description="' + validMinimumDescription + '" ' +
+                    'maximum-description="' + validMaximumDescription + '" ' +
+                    'controller-data-path="' + validPath + '">' +
+                    '</scale-question>'
+                );
+
+                // Attach question options to question
+                element.data('questionOptions', validQuestionOptions);
+
+                $compile(element)($scope);
+                $scope.$digest();
+
+                var badRegex = new RegExp(
+                    '<h3.*' + validQuestionText + '.*\/h3>'
+                );
+
+                var goodRegex = new RegExp(
+                    '<label.*' + validQuestionText + '.*\/label>'
+                );
+
+                expect(element.html()).not.toMatch(badRegex);
+                expect(element.html()).toMatch(goodRegex);
+            });
         });
 
-        it('should add a label if the labelType is set to labelLeft', function() {
-            element = angular.element('<scale-question question-label="qText" label-type="labelLeft" single-img-src="img/single.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
-            $compile(element)($scope);
-            $scope.$digest();
+        describe('validation', function() {
+            var validationFn;
 
-            expect(element.html()).not.toMatch(/<h3>qText<\/h3>/);
-            expect(element.html()).toMatch(/<label.*qText.*\/label>/);
+            beforeEach(function() {
+                var ctrl = element.controller('scaleQuestion');
+                validationFn = ctrl.questionOptionsAreValid;
+            });
+
+            it('should pass with good arguments', function() {
+                expect(validationFn(
+                    validQuestionOptions,
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeTruthy();
+            });
+
+            it('should not fail if there are no questionOptions',
+                function() {
+                expect(validationFn(
+                    undefined,
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeTruthy();
+            });
+
+            it('should fail if questionOptions is not an object',
+                function() {
+                expect(validationFn(
+                    ['a', 'b', 'c'],
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if there are no questionOptions.choices',
+                function() {
+                expect(validationFn(
+                    {},
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if questionOptions.choices is not an array',
+                function() {
+                expect(validationFn(
+                    {choices: 'foo'},
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if there are not five choices', function() {
+                expect(validationFn(
+                    {choices:[]},
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if there the choices are not all objects',
+                function() {
+                expect(validationFn(
+                    {choices:[1,2,{},4,5]},
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if not all five choices have labels', function() {
+                expect(validationFn(
+                    {
+                        choices: [
+                            { label: 'a' },
+                            { label: 'b' },
+                            { label: 'c' },
+                            { label: 'd' },
+                            {}
+                        ]
+                    },
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if not all five choices have strings as labels',
+                function() {
+
+                expect(validationFn(
+                    {
+                        choices: [
+                            { label: 'a' },
+                            { label: 'b' },
+                            { label: 'c' },
+                            { label: 'd' },
+                            { label: 5 }
+                        ]
+                    },
+                    validSingleImgSrc,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if the single image source was not a string',
+                function() {
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    42,
+                    undefined,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if only one of two images was specified',
+                function() {
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    validLeftImgSrc,
+                    undefined,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    undefined,
+                    validRightImgSrc,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if both two images are not strings', function() {
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    validLeftImgSrc,
+                    42,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    42,
+                    validRightImgSrc,
+                    validMinimumDescription,
+                    validMaximumDescription
+                )).toBeFalsy();
+            });
+
+            it('should fail if only one of two descriptions was specified',
+                function() {
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    validLeftImgSrc,
+                    validRightImgSrc,
+                    undefined,
+                    validMaximumDescription
+                )).toBeFalsy();
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    validLeftImgSrc,
+                    validRightImgSrc,
+                    validMinimumDescription,
+                    undefined
+                )).toBeFalsy();
+            });
+
+            it('should fail if both two descriptions are not strings',
+                function() {
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    validLeftImgSrc,
+                    validRightImgSrc,
+                    42,
+                    validMaximumDescription
+                )).toBeFalsy();
+
+                expect(validationFn(
+                    validQuestionOptions,
+                    undefined,
+                    validLeftImgSrc,
+                    validRightImgSrc,
+                    validMinimumDescription,
+                    42
+                )).toBeFalsy();
+            });
         });
 
         describe('single image', function() {
 
             var imageRow;
+            var imageRegex = new RegExp(
+                '<img src="' + validSingleImgSrc + '".*>'
+            );
 
             beforeEach(function() {
-
-                $compile(element)($scope);
                 var wrapperRow = $(element.children()[0]);
                 imageRow = $(wrapperRow.children()[1]);
             });
 
-            // include a row for the whole bit
-            // include the right class on the row (row and custom)
-            // include spacers with the right classes (col and custom)
-            // include the image div with the right classes (col and custom)
-            // include an image tag with the correct image
-
             it('should include the image', function() {
-                expect(element.html()).toMatch(/<img.*src="img\/single.png".*>/);
+                expect(element.html()).toMatch(imageRegex);
             });
 
-            it('should add space to either side of the image and center it', function() {
+            it('should add space to either side of the image and center it',
+                function() {
 
                 // Should be spacer div, then image div, then spacer div
                 var labelRowChildren = imageRow.children();
@@ -64,71 +350,74 @@
                 expect($(labelRowChildren[0]).hasClass('col-md-2')).toBe(true);
                 expect($(labelRowChildren[2]).hasClass('col-md-2')).toBe(true);
 
-                // The center div should be eight columns wide, centered, and hold the image
+                // The center div should be eight columns wide, centered,
+                // and hold the image
                 var centerDiv = $(labelRowChildren[1]);
                 expect(centerDiv.hasClass('col-md-8')).toBe(true);
                 expect(centerDiv.hasClass('text-center')).toBe(true);
-                expect(centerDiv.children()[0].outerHTML).toMatch(/img\/single.png/);
+                expect(centerDiv.children()[0].outerHTML).toMatch(imageRegex);
             });
         });
 
         describe('extreme images', function() {
-            it('should include both images', function() {
-                element = angular.element('<scale-question question-label="qText" left-img-src="img/left.png" right-img-src="img/right.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
+            beforeEach(function() {
+                element = angular.element(
+                    '<scale-question question-label="'+validQuestionText+'" ' +
+                    'label-type="labelLeft" ' +
+                    'left-img-src="' + validLeftImgSrc + '" ' +
+                    'right-img-src="' + validRightImgSrc + '" ' +
+                    'question-id="' + validQuestionId + '" ' +
+                    'minimum-description="' + validMinimumDescription + '" ' +
+                    'maximum-description="' + validMaximumDescription + '" ' +
+                    'controller-data-path="' + validPath + '">' +
+                    '</scale-question>'
+                );
+
+                // Attach question options to question
+                element.data('questionOptions', validQuestionOptions);
+
                 $compile(element)($scope);
-                expect(element.html()).toMatch(/<img.*src="img\/left.png".*>/);
-                expect(element.html()).toMatch(/<img.*src="img\/right.png".*>/);
+                $scope.$digest();
+            });
+
+            it('should include both images', function() {
+                expect(element.html()).toMatch(
+                    new RegExp('<img.*src="'+validLeftImgSrc+'".*>')
+                );
+                expect(element.html()).toMatch(
+                    new RegExp('<img.*src="'+validRightImgSrc+'".*>')
+                );
             });
 
             it('should properly space both images', function() {
-                element = angular.element('<scale-question question-label="qText" left-img-src="img/left.png" right-img-src="img/right.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
-                $compile(element)($scope);
                 var imgRow = $(element).find('div.row')[2];
-                expect($(imgRow).html()).toMatch(/(col-md-2.*){2}col-md-4.*(col-md-2.*){2}/);
+                expect($(imgRow).html())
+                    .toMatch(/(col-md-2.*){2}col-md-4.*(col-md-2.*){2}/);
             });
         });
 
         describe('option labels', function() {
             it('should correctly layout the DOM for the labels', function() {
-                var mockOptions = {
-                    choices : [
-                        {
-                            label : 'Disagree strongly'
-                        },
-                        {
-                            label : 'Disagree a little'
-                        },
-                        {
-                            label : 'Neither agree nor disagree'
-                        },
-                        {
-                            label : 'Agree a little'
-                        },
-                        {
-                            label : 'Agree strongly'
-                        }
-                    ]
-                };
 
-                // Main element
-                element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
-                element.data('questionOptions', mockOptions);
-                $compile(element)($scope);
-                $scope.$digest();
-
-                var wrapperRow = $($(element).children()[0]);
-                var labelRow = $(wrapperRow).children()[1];
+                // Get row for option labels
+                var labelRow = $(element).find('div.row-likert-option-label');
                 var childrenDivs = $(labelRow).children();
 
-                // First and last children should be spacers and cols
-                expect($(childrenDivs[0]).hasClass('option-label-spacer')).toBe(true);
-                expect($(childrenDivs[0]).hasClass('col-md-2')).toBe(true);
-                expect($(childrenDivs[2]).hasClass('option-label-spacer')).toBe(true);
-                expect($(childrenDivs[2]).hasClass('col-md-2')).toBe(true);
+                // First and last children of this row should be spacers and
+                // cols
+                expect($(childrenDivs[0]).hasClass('option-label-spacer'))
+                    .toBe(true);
+                expect($(childrenDivs[0]).hasClass('col-md-2'))
+                    .toBe(true);
+                expect($(childrenDivs[2]).hasClass('option-label-spacer'))
+                    .toBe(true);
+                expect($(childrenDivs[2]).hasClass('col-md-2'))
+                    .toBe(true);
 
                 // Middle child should be a col that contains a row
                 var middleChild = $(childrenDivs[1]);
-                expect(middleChild.hasClass('option-label-container')).toBe(true);
+                expect(middleChild.hasClass('likert-option-label-container'))
+                    .toBe(true);
                 expect(middleChild.hasClass('col-md-8')).toBe(true);
 
                 // Middle child should be divided into fifths
@@ -137,7 +426,8 @@
                 for (var i = 0; i < innerRowChildren.length; i++) {
                     var thisChildDiv = $(innerRowChildren[i]);
                     expect(thisChildDiv.hasClass('col-md-5ths')).toBe(true);
-                    expect(thisChildDiv.hasClass('option-label')).toBe(true);
+                    expect(thisChildDiv.hasClass('likert-option-label'))
+                        .toBe(true);
 
                     // Text should be centered
                     expect(thisChildDiv.hasClass('text-center')).toBe(true);
@@ -145,47 +435,29 @@
             });
 
             it('should correctly layout the DOM for the labels', function() {
-                var mockOptions = {
-                    choices : [
-                        {
-                            label : 'Disagree strongly'
-                        },
-                        {
-                            label : 'Disagree a little'
-                        },
-                        {
-                            label : 'Neither agree nor disagree'
-                        },
-                        {
-                            label : 'Agree a little'
-                        },
-                        {
-                            label : 'Agree strongly'
-                        }
-                    ]
-                };
-                element = angular.element('<scale-question question-label="qText" question-label-type="labelLeft" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
-                element.data('questionOptions', mockOptions);
-                $compile(element)($scope);
-                $scope.$digest();
 
-                var labelRow = $(element).find('div.row')[1];
-                var childrenDivs = $(labelRow).children();
+                // Get the option labels
+                var optionLabels = $(element).find('.likert-option-label');
 
-                var middleChild = $(childrenDivs[1]);
-
-                var innerRow = $(middleChild.children()[0]);
-
-                var innerRowChildren = innerRow.children();
-                for (var i = 0; i < innerRowChildren.length; i++) {
-                    expect($(innerRowChildren[i]).text()).toBe(mockOptions.choices[i].label);
+                // Should all match the ones passed to element.data
+                for (var i = 0; i < optionLabels.length; i++) {
+                    expect($(optionLabels[i]).text())
+                        .toBe(validQuestionOptions.choices[i].label);
                 }
             });
         });
 
         describe('no images', function() {
            it('should not include any images', function() {
-               element = angular.element('<scale-question question-label="qText" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power"></scale-question>');
+               element = angular.element(
+                   '<scale-question question-label="'+validQuestionText+'" ' +
+                   'label-type="labelLeft" ' +
+                   'question-id="' + validQuestionId + '" ' +
+                   'minimum-description="' + validMinimumDescription + '" ' +
+                   'maximum-description="' + validMaximumDescription + '" ' +
+                   'controller-data-path="' + validPath + '">' +
+                   '</scale-question>'
+               );
                $compile(element)($scope);
 
                var images = $(element).find('img');
@@ -195,69 +467,79 @@
         });
 
         describe('radio buttons', function() {
+            var radios;
+
+            beforeEach(function() {
+                radios = $(element)
+                    .find('input[id^='+validQuestionId+'RadioGroup]');
+            });
+
             it('should add five radio buttons', function() {
-                $compile(element)($scope);
-                var regex = /(input type="radio")/g;
-                var result = element.html().match(regex);
-                expect(result.length).toBe(5);
+                expect(radios.length).toBe(5);
             });
 
             it('should set the correct id on each radio button', function() {
-                $compile(element)($scope);
-                var inputs = $(element).find('input[type="radio"]');
-                for (var i = 0; i < inputs.length; i++) {
-                    expect(inputs[i].id).toBe('powerRadioGroup'+(i+1));
+                for (var i = 0; i < radios.length; i++) {
+                    expect(radios[i].id)
+                        .toBe(validQuestionId + 'RadioGroup' + (i+1));
                 }
             });
 
             it('should set the correct value on each radio button', function() {
-                $compile(element)($scope);
-                var inputs = $(element).find('input[type="radio"]');
-                for (var i = 0; i < inputs.length; i++) {
-                    expect(parseInt(inputs[i].value)).toBe(i+1);
+                for (var i = 0; i < radios.length; i++) {
+                    expect(parseInt(radios[i].value)).toBe(i+1);
                 }
             });
 
             it('should set the correct name on each radio button', function() {
-                $compile(element)($scope);
-                var inputs = $(element).find('input[type="radio"]');
-                for (var i = 0; i < inputs.length; i++) {
-                    expect(inputs[i].name).toBe('powerRadioGroup');
+                for (var i = 0; i < radios.length; i++) {
+                    expect(radios[i].name).toBe('powerRadioGroup');
                 }
             });
 
             it('should set the required attribute on each radio button by' +
                 ' default', function() {
-                $compile(element)($scope);
-                var inputs = $(element).find('input[type="radio"][name="powerRadioGroup"]');
-                for (var i = 0; i < inputs.length; i++) {
-                    expect(inputs[i].required).toBe(true);
+                for (var i = 0; i < radios.length; i++) {
+                    expect(radios[i].required).toBe(true);
                 }
             });
 
+            // TODO: questionRequired should be an attribute, not on data
+
             it('should not set the required attribute on each radio button' +
                 ' when specified', function() {
+
+                element = angular.element(
+                    '<scale-question question-label="'+validQuestionText+'" ' +
+                    'label-type="labelLeft" ' +
+                    'question-id="' + validQuestionId + '" ' +
+                    'minimum-description="' + validMinimumDescription + '" ' +
+                    'maximum-description="' + validMaximumDescription + '" ' +
+                    'controller-data-path="' + validPath + '">' +
+                    '</scale-question>'
+                );
+
                 element.data('questionRequired', false);
                 $compile(element)($scope);
-                var inputs = $(element)
-                    .find('input[type="radio"][name="powerRadioGroup"]');
-                for (var i = 0; i < inputs.length; i++) {
-                    expect(inputs[i].required).toBe(false);
+
+                radios = $(element)
+                    .find('input[id^='+validQuestionId+'RadioGroup]');
+
+                for (var i = 0; i < radios.length; i++) {
+                    expect(radios[i].required).toBe(false);
                 }
             });
 
             it('should set the correct model on each radio button', function() {
-                $compile(element)($scope);
-                var inputs = $(element).find('input[type="radio"][name="powerRadioGroup"]');
-                for (var i = 0; i < inputs.length; i++) {
-                    expect($(inputs[i]).attr('ng-model')).toBe('powerRadioGroup');
+                for (var i = 0; i < radios.length; i++) {
+                    expect($(radios[i]).attr('ng-model'))
+                        .toBe(validQuestionId + 'RadioGroup');
                 }
             });
         });
-        
+
         describe('textual descriptions', function() {
-            var wrapperRow,
-                descriptionsBlock,
+            var descriptionsBlock,
                 descriptionsBlockClass,
                 leftDescriptionDiv,
                 rightDescriptionDiv,
@@ -267,14 +549,12 @@
                 innerRowChildren;
 
             beforeEach(function() {
-                $compile(element)($scope);
-                element = $(element);
-                wrapperRow = $(element.children()[0]);
-                descriptionsBlock = $(wrapperRow).children()[3];
-                descriptionsBlockClass = 'scale-descriptions';
+                descriptionsBlockClass = 'row-likert-descriptions';
+                descriptionsBlock = $(element)
+                    .find('.' + descriptionsBlockClass);
                 leftSpacer = $(descriptionsBlock).children()[0];
-                rightSpacer = $(descriptionsBlock).children()[2];
                 innerRow = $(descriptionsBlock).children()[1];
+                rightSpacer = $(descriptionsBlock).children()[2];
                 innerRowChildren = $(innerRow).children();
                 leftDescriptionDiv = $(innerRowChildren[0]);
                 rightDescriptionDiv = $(innerRowChildren[4]);
@@ -293,8 +573,10 @@
                 }
             });
 
-            it('should give the inner row the scale-descriptions-inner-row class', function() {
-                expect($(innerRow).hasClass('scale-descriptions-inner-row')).toBe(true);
+            it('should give the inner row the likert-descriptions-container ' +
+                'class', function() {
+                expect($(innerRow).hasClass('likert-descriptions-container'))
+                    .toBe(true);
             });
 
             it('should make the side spacers two columns wide', function() {
@@ -302,60 +584,85 @@
                 expect($(rightSpacer).hasClass('col-md-2')).toBe(true);
             });
 
-            it('should give the descriptions div class scale-descriptions', function() {
-                expect($(descriptionsBlock).hasClass(descriptionsBlockClass)).toBe(true);
-            });
-
             it('should include the minimum description', function() {
-                expect($(leftDescriptionDiv).html()).toMatch(/Lower description/);
-            });
-            
-            it('should include the maximum description', function() {
-                expect($(rightDescriptionDiv).html()).toMatch(/Upper description/);
+                expect($(leftDescriptionDiv).html())
+                    .toMatch(validMinimumDescription);
             });
 
-            it('should include the small class on the minimum description', function() {
+            it('should include the maximum description', function() {
+                expect($(rightDescriptionDiv).html())
+                    .toMatch(validMaximumDescription);
+            });
+
+            it('should include the small class on the minimum description',
+                function() {
                 expect($(leftDescriptionDiv).hasClass('small')).toBe(true);
             });
 
-            it('should include the small class on the maximum description', function() {
+            it('should include the small class on the maximum description',
+                function() {
                 expect($(rightDescriptionDiv).hasClass('small')).toBe(true);
             });
 
-            it('should include the text-center class on the minimum description', function() {
-                expect($(leftDescriptionDiv).hasClass('text-center')).toBe(true);
+            it('should include the text-center class on the minimum ' +
+                'description', function() {
+                expect($(leftDescriptionDiv).hasClass('text-center'))
+                    .toBe(true);
             });
 
-            it('should include the text-right class on the maximum description', function() {
-                expect($(rightDescriptionDiv).hasClass('text-center')).toBe(true);
+            it('should include the text-right class on the maximum ' +
+                'description', function() {
+                expect($(rightDescriptionDiv).hasClass('text-center'))
+                    .toBe(true);
             });
 
-            it('should include the col-md-5ths class on the minimum description', function() {
-                expect($(leftDescriptionDiv).hasClass('col-md-5ths')).toBe(true);
+            it('should include the col-md-5ths class on the minimum ' +
+                'description', function() {
+                expect($(leftDescriptionDiv).hasClass('col-md-5ths'))
+                    .toBe(true);
             });
 
-            it('should include the col-md-5ths class on the maximum description', function() {
-                expect($(rightDescriptionDiv).hasClass('col-md-5ths')).toBe(true);
+            it('should include the col-md-5ths class on the maximum ' +
+                'description', function() {
+                expect(
+                    $(rightDescriptionDiv).hasClass('col-md-5ths')
+                ).toBe(true);
             });
 
-            it('should include the scale-minimum-description class on the minimum description', function() {
-                expect($(leftDescriptionDiv).hasClass('scale-minimum-description')).toBe(true);
+            it('should include the likert-minimum-description class on the ' +
+                'minimum description', function() {
+                expect(
+                    $(leftDescriptionDiv).hasClass('likert-minimum-description')
+                ).toBe(true);
             });
 
-            it('should include the scale-maximum-description class on the maximum description', function() {
-                expect($(rightDescriptionDiv).hasClass('scale-maximum-description')).toBe(true);
+            it('should include the likert-maximum-description class on the ' +
+                'maximum description', function() {
+                expect(
+                    $(rightDescriptionDiv)
+                        .hasClass('likert-maximum-description')
+                ).toBe(true);
             });
 
             it('should not be included if they aren\'t defined', function() {
-                element = angular.element('<scale-question question-label="qText" question-id="power" controller-data-path="data.answers.ratings.power"></scale-question>');
+                element = angular.element(
+                    '<scale-question question-label="'+validQuestionText+'" ' +
+                    'label-type="labelLeft" ' +
+                    'question-id="' + validQuestionId + '" ' +
+                    'controller-data-path="' + validPath + '">' +
+                    '</scale-question>'
+                );
+
                 $compile(element)($scope);
-                expect(element.find('.' + descriptionsBlockClass).length).toBe(0);
+                expect($(element).find('.' + descriptionsBlockClass).length)
+                    .toBe(0);
             });
         });
 
         describe('data binding', function() {
-            it('should call TrialData with the correct data when an option is selected', function() {
-                $compile(element)($scope);
+            it('should call TrialData with the correct data when an option ' +
+                'is selected', function() {
+
                 var inputs = $(element).find('input[type="radio"]');
                 var secondInput = $(inputs[1]);
 
@@ -365,25 +672,55 @@
                 secondInput.scope().$apply();
 
                 expect(TrialData.setValueForPath.calls.count()).toBe(1);
-                expect(TrialData.setValueForPath.calls.argsFor(0)[0]).toBe('data.answers.ratings.power');
+                expect(TrialData.setValueForPath.calls.argsFor(0)[0])
+                    .toBe('data.answers.ratings.power');
                 expect(TrialData.setValueForPath.calls.argsFor(0)[1]).toBe(1);
             });
 
-            it('should call TrialData with the correct data when an option is selected and the question is associated to media', function() {
-                element = angular.element('<scale-question question-label="qText" single-img-src="img/single.png" question-id="power" minimum-description="Lower description" maximum-description="Upper description" controller-data-path="data.answers.ratings.power" associated-to-media="true"></scale-question>');
-                $compile(element)($scope);
-                var inputs = $(element).find('input[type="radio"]');
-                var secondInput = $(inputs[1]);
+            it('should call TrialData with the correct data when an option ' +
+                'is selected and the question is associated to media',
+                function() {
 
-                TrialData.data.state.mediaPlayCount = 2;
+                element = angular.element(
+                    '<scale-question question-label="'+validQuestionText+'" ' +
+                    'single-img-src="' + validSingleImgSrc + '" ' +
+                    'question-id="' + validQuestionId + '" ' +
+                    'minimum-description="' + validMinimumDescription + '" ' +
+                    'maximum-description="' + validMaximumDescription + '" ' +
+                    'controller-data-path="' + validPath + '">' +
+                    '</scale-question>'
+                );
+                element.attr('associated-to-media', 'true');
+
+                // Attach question options to question
+                element.data('questionOptions', validQuestionOptions);
+
+                $compile(element)($scope);
+                $scope.$digest();
+
                 spyOn(TrialData, 'setValueForPathForCurrentMedia');
 
-                secondInput.scope().powerRadioGroup = '1';
-                secondInput.scope().$apply();
+                TrialData.data.state.mediaPlayCount = 2;
 
-                expect(TrialData.setValueForPathForCurrentMedia.calls.count()).toBe(1);
-                expect(TrialData.setValueForPathForCurrentMedia.calls.argsFor(0)[0]).toBe('data.answers.ratings.power');
-                expect(TrialData.setValueForPathForCurrentMedia.calls.argsFor(0)[1]).toBe(1);
+                element.isolateScope().$apply(function() {
+                    element.isolateScope().powerRadioGroup = '1';
+                });
+
+                expect(
+                    TrialData.setValueForPathForCurrentMedia.calls.count()
+                ).toBe(1);
+                expect(
+                    TrialData
+                        .setValueForPathForCurrentMedia
+                        .calls
+                        .argsFor(0)[0]
+                ).toBe(validPath);
+                expect(
+                    TrialData
+                        .setValueForPathForCurrentMedia
+                        .calls
+                        .argsFor(0)[1]
+                ).toBe(1);
             });
         });
     });

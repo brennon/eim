@@ -84,17 +84,18 @@ angular.module('core').directive('dropdownQuestion', [
                 select.attr('name', attrs.questionId);
                 select.attr('ng-model', attrs.questionId + 'Select');
 
-                if (element.data('dropdownOptions')) {
+                if (element.data('questionOptions')) {
 
-                    scope.dropdownOptions = element.data('dropdownOptions');
+                    scope.dropdownOptions = element.data('questionOptions').choices;
 
-                    for (var i in element.data('dropdownOptions')) {
-                        var optionText = element.data('dropdownOptions')[i];
+                    for (var i in scope.dropdownOptions) {
+                        var optionText = scope.dropdownOptions[i];
                         var option = angular.element(
-                            '<option>{{ "' + optionText + '" | translate }}' +
+                            '<option>{{ "' + optionText.label + '" |' +
+                            ' translate }}' +
                             '</option>'
                         );
-                        option.attr('value', optionText);
+                        option.attr('value', optionText.value);
                         select.append(option);
                     }
                 }

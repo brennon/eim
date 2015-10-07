@@ -33,14 +33,110 @@ angular.module('core').directive('scaleQuestion', [
          * @see Angular.questionnaireDirective
          */
 
-        var buildDescriptionsRow = function(scope, element, attrs) {
+        // Build a header (main question text) row
+        function buildHeaderRow(labelType, labelHTML) {
+
+            var row;
+            row = angular.element('<div></div>');
+            row.addClass('row');
+
+            var columns = angular.element('<div></div>');
+            columns.addClass('col-md-12');
+
+            var label;
+
+            if (labelType === 'labelLeft') {
+                label = angular.element('<label></label>');
+            } else {
+                label = angular.element('<h3></h3>');
+            }
+
+            label.attr('translate', '');
+            label.html(labelHTML);
+
+            row.append(columns);
+            columns.append(label);
+
+            return row;
+        }
+
+        // Build a row to hold the images
+        function buildImageRow(singleImgSrc, leftImgSrc, rightImgSrc) {
+
+            var row;
+
+            // If there is either a single image source or there are both
+            // left and right image sources
+            if (typeof singleImgSrc === 'string' ||
+                (typeof leftImgSrc === 'string' &&
+                 typeof rightImgSrc === 'string')) {
+
+                // Main row
+                row = angular.element('<div></div>');
+                row.addClass('row likert-image-row');
+
+                var twoColumns = angular.element('<div></div>');
+                twoColumns.addClass('col-md-2');
+
+                // If there is only one image
+                if (singleImgSrc) {
+
+                    var image = angular.element('<img>');
+                    image.attr('src', singleImgSrc);
+
+                    var eightColumns = angular.element('<div></div>');
+                    eightColumns.addClass('col-md-8');
+                    eightColumns.addClass('text-center');
+
+                    eightColumns.append(image);
+
+                    row.append(
+                        twoColumns.clone(),
+                        eightColumns,
+                        twoColumns.clone()
+                    );
+
+                // If we have two side images
+                } else if (leftImgSrc && rightImgSrc) {
+
+                    var leftImage = angular.element('<img>');
+                    leftImage.attr('src', leftImgSrc);
+
+                    var leftImageColumns = twoColumns.clone();
+                    leftImageColumns.append(leftImage);
+
+                    var rightImage = angular.element('<img>');
+                    rightImage.attr('src', rightImgSrc);
+
+                    var rightImageColumns = twoColumns.clone();
+                    rightImageColumns.append(rightImage);
+
+                    var fourColumns = angular.element('<div></div>');
+                    fourColumns.addClass('col-md-4');
+
+                    row.append(
+                        twoColumns.clone(),
+                        leftImageColumns,
+                        fourColumns.clone(),
+                        rightImageColumns,
+                        twoColumns.clone()
+                    );
+                }
+            }
+
+            return row;
+        }
+
+        // Build a row that holds descriptions under each radio button
+        function buildDescriptionsRow(minimumDesc, maximumDesc) {
+
             var descriptions;
-            if (attrs.minimumDescription && attrs.maximumDescription) {
+            if (minimumDesc && maximumDesc) {
 
                 // Main row div
                 descriptions = angular.element('<div></div>');
                 descriptions.addClass('row');
-                descriptions.addClass('scale-descriptions');
+                descriptions.addClass('row-likert-descriptions');
 
                 // Side and center spacers
                 var sideSpacer = angular.element('<div></div>');
@@ -51,7 +147,7 @@ angular.module('core').directive('scaleQuestion', [
 
                 var descriptionsInnerRow = angular.element('<div></div>');
                 descriptionsInnerRow.addClass('col-md-8');
-                descriptionsInnerRow.addClass('scale-descriptions-inner-row');
+                descriptionsInnerRow.addClass('likert-descriptions-container');
 
                 var fifthsColumnSpacer = angular.element('<div></div>');
                 fifthsColumnSpacer.addClass('col-md-5ths');
@@ -61,13 +157,13 @@ angular.module('core').directive('scaleQuestion', [
                 leftTextBlock.addClass('col-md-5ths');
                 leftTextBlock.addClass('small');
                 leftTextBlock.addClass('text-center');
-                leftTextBlock.addClass('scale-minimum-description');
-                leftTextBlock.html(attrs.minimumDescription);
+                leftTextBlock.addClass('likert-minimum-description');
+                leftTextBlock.html(minimumDesc);
 
                 var rightTextBlock = leftTextBlock.clone();
-                rightTextBlock.removeClass('scale-minimum-description');
-                rightTextBlock.addClass('scale-maximum-description');
-                rightTextBlock.html(attrs.maximumDescription);
+                rightTextBlock.removeClass('likert-minimum-description');
+                rightTextBlock.addClass('likert-maximum-description');
+                rightTextBlock.html(maximumDesc);
 
                 // Append text blocks and spacers to inner row
                 descriptionsInnerRow.append(leftTextBlock);
@@ -87,14 +183,246 @@ angular.module('core').directive('scaleQuestion', [
             }
 
             return descriptions;
-        };
+        }
+
+        function questionIsValid(questionOptions,
+                                         singleImgSrc,
+                                         leftImgSrc,
+                                         rightImgSrc,
+                                         minimumDescription,
+                                         maximumDescription) {
+
+            // questionOptions must be present...
+            if (questionOptions !== undefined) {
+
+                // ...must be an object...
+                if (typeof questionOptions !== 'object' ||
+                    Array.isArray(questionOptions)) {
+                    $log.error('questionOptions was not an object.');
+                    return false;
+                }
+
+                // ...and must have a choices property...
+                if (!questionOptions.hasOwnProperty('choices')) {
+                    $log.error(
+                        'questionOptions did not have a choice property.'
+                    );
+                    return false;
+                }
+
+                // questionOptions.choices must be an array...
+                if (!Array.isArray(questionOptions.choices)) {
+                    $log.error('questionOptions.choices was not an array.');
+                    return false;
+                }
+
+                // ...must have five entries...
+                if (questionOptions.choices.length !== 5) {
+                    $log.error('questionOptions.choices did not have five' +
+                        ' choices.');
+                    return false;
+                }
+
+                for (var i in questionOptions.choices) {
+                    var choice = questionOptions.choices[i];
+
+                    // ...that are objects...
+                    if (typeof choice !== 'object' || Array.isArray(choice)) {
+                        $log.error('questionOptions.choices[' + i + '] was ' +
+                            'not an object.');
+                        return false;
+                    }
+
+                    // ...that each have a label property...
+                    if (!choice.hasOwnProperty('label')) {
+                        $log.error('questionOptions.choices[' + i + '] did ' +
+                            'not have a label property.');
+                        return false;
+                    }
+
+                    // ...that are each strings
+                    if (typeof choice.label !== 'string') {
+                        $log.error('questionOptions.choices[' + i + '].label ' +
+                            'was not a string.');
+                        return false;
+                    }
+                }
+            }
+
+            // If one image source was provided, it must be a string
+            if (singleImgSrc !== undefined &&
+                typeof singleImgSrc !== 'string') {
+                $log.error('single-img-src was not a string.');
+                return false;
+            }
+
+            // If one of the two image sources was provided, we must have the
+            // other
+            if ((leftImgSrc !== undefined && rightImgSrc === undefined) ||
+                (rightImgSrc !== undefined && leftImgSrc === undefined)) {
+
+                $log.error('Either left-img-src or right-img-src was given,' +
+                    ' but the other was not.');
+                return false;
+            }
+
+            // If two image sources were provided, both must be strings
+            if (leftImgSrc !== undefined && rightImgSrc !== undefined) {
+                if (typeof leftImgSrc !== 'string' ||
+                    typeof rightImgSrc !== 'string') {
+
+                    $log.error('Either left-img-src or right-img-src was' +
+                        ' not a string');
+                    return false;
+                }
+            }
+
+            // If one of the two descriptions was provided, we must have the
+            // other
+            if ((minimumDescription !== undefined &&
+                maximumDescription === undefined) ||
+                (maximumDescription !== undefined &&
+                minimumDescription === undefined)) {
+
+                $log.error('Either minimum-description or maximum-description' +
+                    ' was given, but the other was not.');
+                return false;
+            }
+
+            // If two descriptions were provided, both must be strings
+            if (minimumDescription !== undefined &&
+                maximumDescription !== undefined) {
+
+                if (typeof minimumDescription !== 'string' ||
+                    typeof maximumDescription !== 'string') {
+
+                    $log.error('Either minimum-description or' +
+                        ' maximum-description was not a string.');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function buildOptionLabelsRow(questionOptions) {
+
+            var optionLabelsRow;
+
+            if (questionOptions !== undefined &&
+                questionOptions.hasOwnProperty('choices')) {
+
+                var choices = questionOptions.choices;
+
+                var div = angular.element('<div></div>');
+
+                optionLabelsRow = div.clone();
+                optionLabelsRow.addClass('row row-likert-option-label');
+
+                var spacer = div.clone();
+                spacer.addClass('col-md-2 option-label-spacer');
+
+                optionLabelsRow.append(spacer.clone());
+
+                var choiceContainer = div.clone();
+                choiceContainer.addClass(
+                    'col-md-8 likert-option-label-container text-center'
+                );
+
+                var choice = div.clone();
+                choice.addClass('col-md-5ths likert-option-label text-center');
+                choice.attr('translate', '');
+
+                for (var i in choices) {
+                    var thisChoice = choice.clone();
+                    thisChoice.html(
+                        '{{ \'' + choices[i].label + '\' }}'
+                    );
+                    choiceContainer.append(thisChoice);
+                }
+
+                optionLabelsRow.append(choiceContainer);
+
+                optionLabelsRow.append(spacer.clone());
+            }
+
+            return optionLabelsRow;
+        }
+
+        function buildRadiosRow(questionId, questionRequired) {
+
+            // Don't require question if explicitly told not to do so in
+            // data
+            var responseRequired = false;
+            if (questionRequired !== false) {
+                responseRequired = true;
+            }
+
+            var div = angular.element('<div></div>');
+
+            var radioDiv = div.clone();
+            radioDiv.addClass('col-md-5ths text-center');
+
+            var centerContainer = div.clone();
+            centerContainer.addClass('col-md-8 text-center');
+
+            var radioInput = angular.element('<input>');
+            radioInput.attr('type', 'radio');
+            radioInput.attr('name', questionId + 'RadioGroup');
+            radioInput.attr('ng-model', questionId + 'RadioGroup');
+
+            if (responseRequired) {
+                radioInput.attr('required', '');
+            }
+
+            for (var i = 1; i <= 5; i++) {
+                var thisRadioDiv = radioDiv.clone();
+
+                var thisRadio = radioInput.clone();
+                thisRadio.attr('id', questionId + 'RadioGroup' + i);
+                thisRadio.attr('value', i);
+
+                thisRadioDiv.append(thisRadio);
+                centerContainer.append(thisRadioDiv);
+            }
+
+            var radiosRow = div.clone();
+            radiosRow.addClass('row');
+
+            var spacer = div.clone();
+            spacer.addClass('col-md-2');
+
+            radiosRow.append(
+                spacer.clone(),
+                centerContainer,
+                spacer.clone()
+            );
+
+            return radiosRow;
+        }
 
         return {
             restrict: 'E',
             scope: {},
+            controller: function scaleQuestionController() {
+                this.questionOptionsAreValid = questionIsValid;
+            },
 
-            link: function(scope, element, attrs) {
+            link: function(scope, element, attrs, ctrl) {
 
+                // Validate the questionOptions
+                if (!questionIsValid(
+                        element.data('questionOptions'),
+                        attrs.singleImgSrc,
+                        attrs.leftImgSrc,
+                        attrs.rightImgSrc,
+                        attrs.minimumDescription,
+                        attrs.maximumDescription)
+                    ) {
+                    return;
+                }
+
+                // Bind input to TrialData
                 scope.sendToTrialData = function(path, value) {
                     if (!attrs.associatedToMedia) {
                         TrialData.setValueForPath(path, value);
@@ -103,8 +431,12 @@ angular.module('core').directive('scaleQuestion', [
                     }
                 };
 
+                // Initialize a dynamically-named variable to keep track of
+                // changing responses to null
                 scope[attrs.questionId + 'RadioGroup'] = null;
 
+                // Watch that dynamically named variable and update
+                // TrialData when it changes
                 scope.$watch(
                     attrs.questionId + 'RadioGroup',
                     function(newValue) {
@@ -114,143 +446,46 @@ angular.module('core').directive('scaleQuestion', [
                         );
                     });
 
-                var questionHeader;
-                if (attrs.labelType === 'labelLeft') {
-                    questionHeader = angular.element(
-                        '<div class="row">' +
-                        '<div class="col-md-12">' +
-                        '<label translate>' +
-                        attrs.questionLabel +
-                        '</label>' +
-                        '</div>' +
-                        '</div>'
-                    );
-                } else {
-                    questionHeader = angular.element(
-                        '<div class="row">' +
-                        '<div class="col-md-12 text-center">' +
-                        '<h3 translate>' +
-                        attrs.questionLabel +
-                        '</h3>' +
-                        '</div>' +
-                        '</div>'
-                    );
-                }
-
-                var image;
-                if (attrs.singleImgSrc) {
-                    image = angular.element(
-                        '<div class="row">' +
-                        '<div class="col-md-2">' +
-                        '</div>' +
-                        '<div class="col-md-8 text-center">' +
-                        '<img src="' + attrs.singleImgSrc + '">' +
-                        '</div>' +
-                        '<div class="col-md-2">' +
-                        '</div>' +
-                        '</div>');
-                } else if (attrs.leftImgSrc && attrs.rightImgSrc) {
-                    image = angular.element(
-                        '<div class="row">' +
-                        '<div class="col-md-2"></div>' +
-                        '<div class="col-md-2">' +
-                        '<img src="' + attrs.leftImgSrc + '">' +
-                        '</div>' +
-                        '<div class="col-md-4"></div>' +
-                        '<div class="col-md-2">' +
-                        '<img src="' + attrs.rightImgSrc + '">' +
-                        '</div>' +
-                        '<div class="col-md-2"></div>' +
-                        '</div>'
-                    );
-                }
-
-                var optionLabels;
-                if (element.data('questionOptions') &&
-                    element.data('questionOptions').choices) {
-
-                    var choices = element.data('questionOptions').choices;
-
-                    optionLabels = angular.element('<div class="row"></div>');
-
-                    optionLabels.append(
-                        '<div class="col-md-2 option-label-spacer"></div>'
-                    );
-
-                    var centerGroup = angular.element(
-                        '<div class="col-md-8 option-label-container ' +
-                        'text-center"></div>'
-                    );
-
-                    for (var i = 0; i < choices.length; i++) {
-                        var choiceDiv = angular.element(
-                            '<div class="col-md-5ths option-label ' +
-                            'text-center">' +
-                            '{{ \'' + choices[i].label + '\' | translate }}' +
-                            '</div>'
-                        );
-                        centerGroup.append(choiceDiv);
-                    }
-
-                    optionLabels.append(centerGroup);
-
-                    optionLabels.append(
-                        '<div class="col-md-2 option-label-spacer"></div>'
-                    );
-                }
-
-                // Don't require question if explicitly told not to do so in
-                // data
-                var requiredText = '';
-                if (element.data('questionRequired') !== false) {
-                    requiredText = ' required="required" ';
-                }
-
-                var innerRadioHTML = '';
-
-                for (var j = 1; j <= 5; j++) {
-                    innerRadioHTML +=
-                        '<div class="col-md-5ths text-center">' +
-                        '<input type="radio" ' +
-                        'name="' + attrs.questionId + 'RadioGroup" ' +
-                        'id="' + attrs.questionId + 'RadioGroup' + j + '" ' +
-                        'value="' + j + '" ' +
-                        requiredText +
-                        'ng-model="' + attrs.questionId + 'RadioGroup">' +
-                        '</div>';
-                }
-
-                var radios = angular.element(
-                    '<div class="row">' +
-                    '<div class="col-md-2"></div>' +
-                    '<div class="col-md-8 text-center">' +
-                    innerRadioHTML +
-                    '<div class="row">' +
-                    '</div>' +
-                    '</div>' +
-                    '<div class="col-md-2">' +
-                    '</div>' +
-                    '</div>'
+                var headerRow = buildHeaderRow(
+                    attrs.labelType,
+                    attrs.questionLabel
                 );
 
-                // Build descriptions row
-                var descriptions = buildDescriptionsRow(scope, element, attrs);
-
-                // Wrap everything in a row div with well class
-                var wrapperDiv = angular.element(
-                    '<div class="row well"></div>'
+                var imageRow = buildImageRow(
+                    attrs.singleImgSrc,
+                    attrs.leftImgSrc,
+                    attrs.rightImgSrc
                 );
 
-                wrapperDiv.append(
-                    questionHeader,
-                    image,
-                    optionLabels,
-                    radios,
-                    descriptions
+                var radiosRow = buildRadiosRow(
+                    attrs.questionId,
+                    element.data('questionRequired')
                 );
 
-                // Add wrapper div to element and compile the element
-                element.append(wrapperDiv);
+                var optionLabelsRow = buildOptionLabelsRow(
+                    element.data('questionOptions')
+                );
+
+                var descriptionsRow = buildDescriptionsRow(
+                    attrs.minimumDescription,
+                    attrs.maximumDescription
+                );
+
+                // Wrap everything in a div with well and row classes
+                var wellRow = angular.element('<div></div>');
+                wellRow.addClass('row well');
+
+                // Append everything we built
+                wellRow.append(
+                    headerRow,
+                    imageRow,
+                    optionLabelsRow,
+                    radiosRow,
+                    descriptionsRow
+                );
+
+                // Add well div to element and compile the element
+                element.append(wellRow);
                 $compile(element.contents())(scope);
             }
         };

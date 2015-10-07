@@ -90,7 +90,7 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.questionOptions) {
+            if (item.hasOwnProperty('questionOptions')) {
                 questionElement.data('questionOptions', item.questionOptions);
             }
 
@@ -128,8 +128,8 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.questionRadioOptions) {
-                questionElement.data('radioOptions', item.questionRadioOptions);
+            if (item.questionOptions) {
+                questionElement.data('questionOptions', item.questionOptions);
             }
 
             if (item.hasOwnProperty('questionRequired')) {
@@ -166,11 +166,8 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.questionDropdownOptions) {
-                questionElement.data(
-                    'dropdownOptions',
-                    item.questionDropdownOptions
-                );
+            if (item.hasOwnProperty('questionOptions')) {
+                questionElement.data('questionOptions', item.questionOptions);
             }
 
             if (item.hasOwnProperty('questionRequired')) {
@@ -207,11 +204,8 @@ angular.module('core').directive('questionnaire', [
                 );
             }
 
-            if (item.questionCheckboxOptions) {
-                questionElement.data(
-                    'checkboxOptions',
-                    item.questionCheckboxOptions
-                );
+            if (item.hasOwnProperty('questionOptions')) {
+                questionElement.data('questionOptions', item.questionOptions);
             }
 
             // If questionRequired isn't defined or is explicitly set to true
@@ -307,11 +301,6 @@ angular.module('core').directive('questionnaire', [
                  * (`true`, `undefined`, 49, etc.), the user will be
                  * required to answer the question.
                  *
-                 * @property {string} questionLikertMinimumDescription This
-                 * property is used by the `'likert'` question type. The minimum
-                 * description is displayed below the left end of the scale.
-                 * (optional)
-                 *
                  * @property {string} questionLabelType This property is used
                  * by the `'likert'` question type. Providing a value of
                  * `'labelLeft'` for this property will produce the
@@ -319,9 +308,18 @@ angular.module('core').directive('questionnaire', [
                  * font size. Otherwise, the label will be printed in a larger
                  * font and centered over the scale. (optional)
                  *
+                 * @property {string} questionLikertMinimumDescription This
+                 * property is used by the `'likert'` question type. The minimum
+                 * description is displayed below the left end of the scale.
+                 * If this property is specified, then
+                 * `questionLikertMaximumDescription` must also be specified.
+                 * (optional)
+                 *
                  * @property {string} questionLikertMaximumDescription This
                  * property is used by the `'likert'` question type. The minimum
                  * description is displayed below the right end of the scale.
+                 * If this property is specified, then
+                 * `questionLikertMinimumDescription` must also be specified.
                  * (optional)
                  *
                  * @property {string} questionLikertSingleImageSrc This
@@ -332,12 +330,16 @@ angular.module('core').directive('questionnaire', [
                  * @property {string} questionLikertLeftImageSrc This
                  * property is used by the `'likert'` question type. The value
                  * should be a path to an image to be displayed above and
-                 * above the left end of the scale. (optional)
+                 * above the left end of the scale. If this property
+                 * is specified, then `questionLikertRightImageSrc
+                 * must also be specified. (optional)
                  *
                  * @property {string} questionLikertRightImageSrc This
                  * property is used by the `'likert'` question type. The value
                  * should be a path to an image to be displayed above and
-                 * above the right end of the scale. (optional)
+                 * above the right end of the scale. If this property
+                 * is specified, then `questionLikertLeftImageSrc must also
+                 * be specified. (optional)
                  *
                  * @property {{}} questionOptions This property is used and
                  * required by the `'likert'` question type. The `'likert'`

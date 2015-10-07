@@ -374,16 +374,18 @@
                     structure: [
                         {
                             questionType: 'radio',
-                            questionRadioOptions: [
-                                {
-                                    'label': 'Yes',
-                                    'value': true
-                                },
-                                {
-                                    'label': 'No',
-                                    'value': false
-                                }
-                            ]
+                            questionOptions: {
+                                choices: [
+                                    {
+                                        'label': 'Yes',
+                                        'value': true
+                                    },
+                                    {
+                                        'label': 'No',
+                                        'value': false
+                                    }
+                                ]
+                            }
                         }
                     ]
                 };
@@ -391,7 +393,7 @@
                 $compile(element)($scope);
 
                 var radioQuestionElements = $(element).find('radio-question');
-                expect($(radioQuestionElements).data('radioOptions')).toEqual($scope.questionnaireData.structure[0].questionRadioOptions);
+                expect($(radioQuestionElements).data('questionOptions')).toEqual($scope.questionnaireData.structure[0].questionOptions);
             });
 
             it('should forward the questionRequired property on to the data' +
@@ -751,12 +753,13 @@
                 expect($(radioQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
 
-            it('should add the dropdown options on the data attribute of a dropdown-question directive', function () {
+            it('should add the dropdown options to the data of a' +
+                ' dropdown-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
                             questionType: 'dropdown',
-                            questionDropdownOptions: ['a', 'b', 'c', 'd']
+                            questionOptions: ['a', 'b', 'c', 'd']
                         }
                     ]
                 };
@@ -774,7 +777,7 @@
                     structure: [
                         {
                             questionType: 'dropdown',
-                            questionDropdownOptions: ['a', 'b', 'c', 'd'],
+                            questionOptions: ['a', 'b', 'c', 'd'],
                             questionRequired: 'foo'
                         }
                     ]
@@ -882,7 +885,11 @@
                     structure: [
                         {
                             questionType: 'checkbox',
-                            questionCheckboxOptions: ['a', 'b', 'c', 'd']
+                            questionOptions: { choices: [
+                                {label: 'Rock', value: 'Rock'},
+                                {label: 'Pop', value: 'Pop'},
+                                {label: 'Folk', value: 'Folk'}
+                            ]}
                         }
                     ]
                 };
