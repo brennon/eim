@@ -117,7 +117,7 @@ angular.module('core').directive('questionnaire', [
                  * @property {string} questionLabel All question types
                  * support this property. It should be a string that
                  * contains the text of the question itself (e.g., 'How old
-                 * are you?') (required)
+                 * are you?') (optional)
                  *
                  * @property {string} questionStoragePath All question types
                  * support this property. It should be a 'keypath' into the
@@ -134,7 +134,7 @@ angular.module('core').directive('questionnaire', [
                  * questions with the same questionStoragePath property are
                  * stored in an ordered array that is used as the value for
                  * the `questionStoragePath` property in {@link
-                    * Angular.TrialData#data|TrialData#data}.
+                 * Angular.TrialData#data|TrialData#data}. (optional)
                  *
                  * For example, in the demonstration study provided with the
                  * framework, two media excerpts are played. We present the same
@@ -170,7 +170,7 @@ angular.module('core').directive('questionnaire', [
                  * `false`, the user will not be required to answer the
                  * question. If its value is *anything* other than false
                  * (`true`, `undefined`, 49, etc.), the user will be
-                 * required to answer the question.
+                 * required to answer the question. (optional)
                  *
                  * @property {string} questionLabelType This property is used
                  * by the `'likert'` question type. Providing a value of
@@ -213,90 +213,44 @@ angular.module('core').directive('questionnaire', [
                  * be specified. (optional)
                  *
                  * @property {{}} questionOptions This property is used and
-                 * required by the `'likert'` question type. The `'likert'`
-                 * question type currently uses a five-point scale. The
-                 * `questionOptions` property should be an object with a
-                 * `choices` property that holds an array of five objects--each
-                 * object in this array represents a description of each choice
-                 * along the scale, moving from left to right.
+                 * required by all question types. In general, each question
+                 * type requires that this be an object that has a `choices`
+                 * property, the value of which is an array. Each entry in
+                 * the choices array should be an object that represents a
+                 * single question choice. Each of these objects should
+                 * have both a `label` and a `value` property. The value of
+                 * the `label` property should be a string that is used for
+                 * the display of this question type. The value of the
+                 * `value` property should be the value that should be
+                 * stored when this choice is selected by the user for their
+                 * answer.
                  *
                  * ```
                  * // questionOptions example:
                  * {
                  *     choices: [
                  *         {
-                 *             label: 'Strongly disagree'
+                 *             label: 'Strongly disagree',
+                 *             value: 1
                  *         },
                  *         {
-                 *             label: 'Somewhat disagree'
+                 *             label: 'Somewhat disagree',
+                 *             value: 2
                  *         },
                  *         {
-                 *             label: 'Neither agree nor disagree'
+                 *             label: 'Neither agree nor disagree',
+                 *             value: 3
                  *         },
                  *         {
-                 *             label: 'Somewhat agree'
+                 *             label: 'Somewhat agree',
+                 *             value: 4
                  *         },
                  *         {
-                 *             label: 'Strongly agree'
+                 *             label: 'Strongly agree',
+                 *             value: 5
                  *         }
                  *     ]
                  * }
-                 * ```
-                 *
-                 * @property {Object[]} questionRadioOptions This property is
-                 * supported and required by the `'radio'` question type.
-                 * Its value should be an array of objects, each of which
-                 * represents an individual radio button in the selection.
-                 * Each object should have `'label'` and `'value'`
-                 * properties. The `'label'` property corresponds to the
-                 * label that should be displayed to the user, while the
-                 * `'value'` property corresponds to the value that is
-                 * actually saved to {@link
-                 * Angular.TrialData#data|TrialData#data}, should the user
-                 * select this radio button.
-                 *
-                 * ```
-                 * // questionRadioOptions example:
-                 * [
-                 *     {
-                 *         "label" : "Male",
-                 *         "value" : "male"
-                 *     },
-                 *     {
-                 *         "label" : "Female",
-                 *         "value" : "female"
-                 *     }
-                 * ]
-                 * ```
-                 *
-                 * @property {string[]} questionDropdownOptions This property is
-                 * supported and required by the `'dropdown'` question type. Its
-                 * value should be an array of strings, each of which represents
-                 * an individual option available in the dropdown list.
-                 *
-                 * ```
-                 * // questionDropdownOptions example:
-                 * [
-                 *     "apple",
-                 *     "orange",
-                 *     "banana",
-                 *     "cherry",
-                 *     "strawberry"
-                 * ]
-                 * ```
-                 *
-                 * @property {string[]} questionCheckboxOptions This property is
-                 * supported and required by the `'checkbox'` question type. Its
-                 * value should be an array of strings, each of which represents
-                 * an individual checkbox available in the group of checkboxes.
-                 *
-                 * ```
-                 * // questionCheckboxOptions example:
-                 * [
-                 *     "Yes",
-                 *     "No",
-                 *     "Undecided"
-                 * ]
                  * ```
                  */
 
@@ -315,7 +269,7 @@ angular.module('core').directive('questionnaire', [
                  * text for the questionnaire (optional)
                  * @property {questionnaireStructureEntry[]} structure An array
                  * of questions for the questionnaire (see {@link
-                    * Angular.questionnaireDirective#data~questionnaireStructureEntry|questionnaireStructureEntry})
+                 * Angular.questionnaireDirective#data~questionnaireStructureEntry|questionnaireStructureEntry})
                  * (optional)
                  */
                 var data = scope.questionnaireData;
@@ -394,6 +348,10 @@ angular.module('core').directive('questionnaire', [
                             'questionOptions',
                             item.questionOptions
                         );
+
+                    // There were no questionOptions
+                    } else {
+                        $log.error('questionOptions must be provided.');
                     }
 
                     if (item.hasOwnProperty('questionRequired')) {
@@ -409,10 +367,20 @@ angular.module('core').directive('questionnaire', [
                     }
 
                     if (item.hasOwnProperty('questionStoragePath')) {
-                        questionElement.attr(
-                            'controller-data-path',
-                            item.questionStoragePath
-                        );
+                        if (typeof item.questionStoragePath === 'string') {
+                            questionElement.attr(
+                                'controller-data-path',
+                                item.questionStoragePath
+                            );
+
+                        // questionStoragePath wasn't a string
+                        } else {
+                            $log.error('questionStoragePath must be a string.');
+                        }
+
+                    // questionStoragePath wasn't present
+                    } else {
+                        $log.error('questionStoragePath must be provided.');
                     }
 
                     if (item.hasOwnProperty('questionIsAssociatedToMedia')) {
@@ -423,7 +391,20 @@ angular.module('core').directive('questionnaire', [
                     }
 
                     if (item.hasOwnProperty('questionId')) {
-                        questionElement.attr('question-id', item.questionId);
+                        if (typeof item.questionId === 'string') {
+                            questionElement.attr(
+                                'question-id',
+                                item.questionId
+                            );
+
+                        // questionId wasn't a string
+                        } else {
+                            $log.error('questionId must be a string.');
+                        }
+
+                    // questionId wasn't present
+                    } else {
+                        $log.error('questionId must be provided.');
                     }
 
                     if (item.hasOwnProperty('questionLabel')) {
@@ -433,18 +414,20 @@ angular.module('core').directive('questionnaire', [
                         );
                     }
 
-                    // Append a spacer row
+                    // Build a spacer row
                     var spacerRow = div.clone();
                     spacerRow.addClass('row');
 
                     var spacerColumns = div.clone();
-                    spacerColumns.addClass('col-md-12 questionSpacer');
+                    spacerColumns.addClass('col-md-12 question-spacer');
                     spacerRow.append(spacerColumns);
 
+                    // Add question and spacer to form
                     formElement.append(questionElement);
                     formElement.append(spacerRow);
                 }
 
+                // Add form to main element
                 element.append(formElement);
 
                 $compile(element.contents())(scope);

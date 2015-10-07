@@ -72,7 +72,7 @@
 
             var scaleQuestionElements = $(element).find('scale-question');
             var spacerDiv = $(scaleQuestionElements).next().children()[0];
-            expect($(spacerDiv).hasClass('questionSpacer')).toBe(true);
+            expect($(spacerDiv).hasClass('question-spacer')).toBe(true);
         });
 
         it('should bind the isolated questionnaireForm to the local questionnaireForm', function () {
@@ -573,7 +573,8 @@
                 expect($(scaleQuestionElements).attr('associated-to-media')).toBe('true');
             });
 
-            it('should add the storage path attribute for a scale-question directive', function () {
+            it('should add the storage path attribute for a scale-question' +
+                ' directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {

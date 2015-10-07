@@ -179,7 +179,7 @@ of questions for the questionnaire (see <a href="Angular.questionnaireDirective_
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_directives_questionnaire.client.directive.js.html">public/modules/core/directives/questionnaire.client.directive.js</a>, <a href="public_modules_core_directives_questionnaire.client.directive.js.html#line430">line 430</a>
+        <a href="public_modules_core_directives_questionnaire.client.directive.js.html">public/modules/core/directives/questionnaire.client.directive.js</a>, <a href="public_modules_core_directives_questionnaire.client.directive.js.html#line257">line 257</a>
     </li></ul></dd>
     
 
@@ -335,7 +335,7 @@ identifies this question within this questionnaire.
             <td class="description last"><p>All question types
 support this property. It should be a string that
 contains the text of the question itself (e.g., 'How old
-are you?') (required)</p></td>
+are you?') (optional)</p></td>
         </tr>
 
     
@@ -392,7 +392,7 @@ excerpt by taking a Boolean true or false as its value. When
 this value is set to true, multiple responses for
 questions with the same questionStoragePath property are
 stored in an ordered array that is used as the value for
-the <code>questionStoragePath</code> property in <a href="Angular.TrialData.html#data">TrialData#data</a>.</p>
+the <code>questionStoragePath</code> property in <a href="Angular.TrialData.html#data">TrialData#data</a>. (optional)</p>
 <p>For example, in the demonstration study provided with the
 framework, two media excerpts are played. We present the same
 questionnaire to the participant following each media
@@ -443,33 +443,7 @@ support this property. If its value is
 <code>false</code>, the user will not be required to answer the
 question. If its value is <em>anything</em> other than false
 (<code>true</code>, <code>undefined</code>, 49, etc.), the user will be
-required to answer the question.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>questionLikertMinimumDescription</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>This
-property is used by the <code>'likert'</code> question type. The minimum
-description is displayed below the left end of the scale.
-(optional)</p></td>
+required to answer the question. (optional)</p></td>
         </tr>
 
     
@@ -504,6 +478,34 @@ font and centered over the scale. (optional)</p></td>
 
         <tr>
             
+                <td class="name"><code>questionLikertMinimumDescription</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>This
+property is used by the <code>'likert'</code> question type. The minimum
+description is displayed below the left end of the scale.
+If this property is specified, then
+<code>questionLikertMaximumDescription</code> must also be specified.
+(optional)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>questionLikertMaximumDescription</code></td>
             
 
@@ -523,6 +525,8 @@ font and centered over the scale. (optional)</p></td>
             <td class="description last"><p>This
 property is used by the <code>'likert'</code> question type. The minimum
 description is displayed below the right end of the scale.
+If this property is specified, then
+<code>questionLikertMinimumDescription</code> must also be specified.
 (optional)</p></td>
         </tr>
 
@@ -575,7 +579,9 @@ centered over the scale. (optional)</p></td>
             <td class="description last"><p>This
 property is used by the <code>'likert'</code> question type. The value
 should be a path to an image to be displayed above and
-above the left end of the scale. (optional)</p></td>
+above the left end of the scale. If this property
+is specified, then `questionLikertRightImageSrc
+must also be specified. (optional)</p></td>
         </tr>
 
     
@@ -601,7 +607,9 @@ above the left end of the scale. (optional)</p></td>
             <td class="description last"><p>This
 property is used by the <code>'likert'</code> question type. The value
 should be a path to an image to be displayed above and
-above the right end of the scale. (optional)</p></td>
+above the right end of the scale. If this property
+is specified, then `questionLikertLeftImageSrc must also
+be specified. (optional)</p></td>
         </tr>
 
     
@@ -625,141 +633,42 @@ above the right end of the scale. (optional)</p></td>
             
 
             <td class="description last"><p>This property is used and
-required by the <code>'likert'</code> question type. The <code>'likert'</code>
-question type currently uses a five-point scale. The
-<code>questionOptions</code> property should be an object with a
-<code>choices</code> property that holds an array of five objects--each
-object in this array represents a description of each choice
-along the scale, moving from left to right.</p>
+required by all question types. In general, each question
+type requires that this be an object that has a <code>choices</code>
+property, the value of which is an array. Each entry in
+the choices array should be an object that represents a
+single question choice. Each of these objects should
+have both a <code>label</code> and a <code>value</code> property. The value of
+the <code>label</code> property should be a string that is used for
+the display of this question type. The value of the
+<code>value</code> property should be the value that should be
+stored when this choice is selected by the user for their
+answer.</p>
 <pre class="prettyprint source"><code>// questionOptions example:
 {
     choices: [
         {
-            label: 'Strongly disagree'
+            label: 'Strongly disagree',
+            value: 1
         },
         {
-            label: 'Somewhat disagree'
+            label: 'Somewhat disagree',
+            value: 2
         },
         {
-            label: 'Neither agree nor disagree'
+            label: 'Neither agree nor disagree',
+            value: 3
         },
         {
-            label: 'Somewhat agree'
+            label: 'Somewhat agree',
+            value: 4
         },
         {
-            label: 'Strongly agree'
+            label: 'Strongly agree',
+            value: 5
         }
     ]
 }</code></pre></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>questionRadioOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>This property is
-supported and required by the <code>'radio'</code> question type.
-Its value should be an array of objects, each of which
-represents an individual radio button in the selection.
-Each object should have <code>'label'</code> and <code>'value'</code>
-properties. The <code>'label'</code> property corresponds to the
-label that should be displayed to the user, while the
-<code>'value'</code> property corresponds to the value that is
-actually saved to <a href="Angular.TrialData.html#data">TrialData#data</a>, should the user
-select this radio button.</p>
-<pre class="prettyprint source"><code>// questionRadioOptions example:
-[
-    {
-        &quot;label&quot; : &quot;Male&quot;,
-        &quot;value&quot; : &quot;male&quot;
-    },
-    {
-        &quot;label&quot; : &quot;Female&quot;,
-        &quot;value&quot; : &quot;female&quot;
-    }
-]</code></pre></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>questionDropdownOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>This property is
-supported and required by the <code>'dropdown'</code> question type. Its
-value should be an array of strings, each of which represents
-an individual option available in the dropdown list.</p>
-<pre class="prettyprint source"><code>// questionDropdownOptions example:
-[
-    &quot;apple&quot;,
-    &quot;orange&quot;,
-    &quot;banana&quot;,
-    &quot;cherry&quot;,
-    &quot;strawberry&quot;
-]</code></pre></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>questionCheckboxOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>This property is
-supported and required by the <code>'checkbox'</code> question type. Its
-value should be an array of strings, each of which represents
-an individual checkbox available in the group of checkboxes.</p>
-<pre class="prettyprint source"><code>// questionCheckboxOptions example:
-[
-    &quot;Yes&quot;,
-    &quot;No&quot;,
-    &quot;Undecided&quot;
-]</code></pre></td>
         </tr>
 
     
@@ -798,7 +707,7 @@ an individual checkbox available in the group of checkboxes.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_directives_questionnaire.client.directive.js.html">public/modules/core/directives/questionnaire.client.directive.js</a>, <a href="public_modules_core_directives_questionnaire.client.directive.js.html#line236">line 236</a>
+        <a href="public_modules_core_directives_questionnaire.client.directive.js.html">public/modules/core/directives/questionnaire.client.directive.js</a>, <a href="public_modules_core_directives_questionnaire.client.directive.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -834,7 +743,7 @@ an individual checkbox available in the group of checkboxes.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 06 2015 15:10:16 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 17:04:19 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
