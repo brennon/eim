@@ -123,7 +123,7 @@ angular.module('core').directive('questionnaire', [
                  * support this property. It should be a 'keypath' into the
                  * TrialData.data object at which the response to this question
                  * should be stored. See {@link
-                    * Angular.TrialData#setValueForPath|TrialData#setValueForPath}
+                 * Angular.TrialData#setValueForPath|TrialData#setValueForPath}
                  * for more information on these keypaths. (required)
                  *
                  * @property {boolean} questionIsAssociatedToMedia All question
@@ -320,35 +320,54 @@ angular.module('core').directive('questionnaire', [
                  */
                 var data = scope.questionnaireData;
 
+                var div = angular.element('<div></div>');
+
                 // Create an element for the title
-                var title;
-                if (typeof data.title === 'string') {
-                    title = angular.element('<h1></h1>');
-                    title.attr('translate', '');
-                    title.html(data.title);
-                } else {
-                    $log.error('Questionnaire title must be a string.');
+                if (data.hasOwnProperty('title')) {
+                    if (typeof data.title === 'string') {
+
+                        var title = angular.element('<h1></h1>');
+                        title.attr('translate', '');
+                        title.html(data.title);
+                        element.append(title);
+                    } else {
+                        $log.error('Questionnaire title must be a string.');
+                    }
                 }
-                element.append(title);
 
                 // Create an element for the introductory text
-                if (data.introductoryText) {
-                    var introductoryText = angular.element(
-                        '<div class="row">' +
-                        '<div class="col-md-12 introductory-text">' +
-                        '<h2 translate>' + data.introductoryText +
-                        '</h2></div></div>'
-                    );
-                    element.append(introductoryText);
+                if (data.hasOwnProperty('introductoryText')) {
+                    if (typeof data.introductoryText === 'string') {
+
+                        var row = div.clone();
+                        row.addClass('row');
+
+                        var columns = div.clone();
+                        columns.addClass('col-md-12 introductory-text');
+
+                        var heading = angular.element('<h2></h2>');
+                        heading.attr('translate', '');
+                        heading.html(data.introductoryText);
+
+                        element.append(row);
+                        row.append(columns);
+                        columns.append(heading);
+                    } else {
+                        $log.error('Questionnaire introductory text must be a' +
+                            ' string.');
+                    }
                 }
 
-                var formElement = angular.element(
-                    '<form class="form" name="questionnaireForm" novalidate>' +
-                    '</form>'
-                );
-                element.append(formElement);
+                var formElement = angular.element('<form></form>');
+                formElement.addClass('form');
+                formElement.attr('name', 'questionnaireForm');
+                formElement.attr('novalidate', '');
 
                 // Iterate over structure
+                if (data.structure.length === 0) {
+                    $log.warn('No questions found for questionnaire.');
+                }
+
                 for (var i = 0; i < data.structure.length; i++) {
 
                     // Create an element for each structure entry
@@ -371,13 +390,22 @@ angular.module('core').directive('questionnaire', [
                     }
 
                     if (item.hasOwnProperty('questionOptions')) {
-                        questionElement.data('questionOptions', item.questionOptions);
+                        questionElement.data(
+                            'questionOptions',
+                            item.questionOptions
+                        );
                     }
 
                     if (item.hasOwnProperty('questionRequired')) {
-                        questionElement.data('questionRequired', item.questionRequired);
+                        questionElement.data(
+                            'questionRequired',
+                            item.questionRequired
+                        );
                     } else {
-                        questionElement.data('questionRequired', true);
+                        questionElement.data(
+                            'questionRequired',
+                            true
+                        );
                     }
 
                     if (item.hasOwnProperty('questionStoragePath')) {
@@ -399,21 +427,25 @@ angular.module('core').directive('questionnaire', [
                     }
 
                     if (item.hasOwnProperty('questionLabel')) {
-                        questionElement.attr('question-label', item.questionLabel);
+                        questionElement.attr(
+                            'question-label',
+                            item.questionLabel
+                        );
                     }
 
                     // Append a spacer row
-                    var spacerElement = angular.element(
-                        '<div class="row">' +
-                        '<div class="col-md-12 questionSpacer">' +
-                        '</div>' +
-                        '</div>'
-                    );
+                    var spacerRow = div.clone();
+                    spacerRow.addClass('row');
+
+                    var spacerColumns = div.clone();
+                    spacerColumns.addClass('col-md-12 questionSpacer');
+                    spacerRow.append(spacerColumns);
 
                     formElement.append(questionElement);
-
-                    formElement.append(spacerElement);
+                    formElement.append(spacerRow);
                 }
+
+                element.append(formElement);
 
                 $compile(element.contents())(scope);
             }
