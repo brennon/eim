@@ -45,6 +45,10 @@ Complete documentation is available [here](https://brennon.github.io/eim/).
     mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
     mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production
     ```
+    
+    The first of these three databases represent the databases that are used 
+    in the development, test, and production [Node environments]
+    (#environments).
 
 5. Start the Max helper project located at `EiMpatch/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
 
@@ -55,6 +59,33 @@ Complete documentation is available [here](https://brennon.github.io/eim/).
     ```
 
 7. Browse to [http://localhost:3000/](http://localhost:3000/).
+
+# Environments
+
+Many commands described here behave differently depending on the Node 
+environment, which is set on the command line by prepending the command with 
+`NODE_ENV=environmentname`. For instance, to run the command listed in the 
+sixth step of the [Installation](#installation) sequence in the 'development'
+ environment, use `NODE_ENV=development node_modules/grunt-cli/bin/grunt`.
+
+As an example of the differences that occur between environments, when the 
+above mentioned command is run in the development environment, the original 
+versions of all of the scripts in the framework are used when running the 
+server. In the production environment, however, a 'minified' version is used 
+(all 'extra' information is removed from all script files, and they are all 
+glued together to be one long file). It is much more efficient for the web 
+server to send this one minified file to a client than all of the individual 
+scripts that this application uses. This is one example of how the 
+production environment, in general, starts up a much faster, more efficient 
+server. The development environment, on the other hand, is the environment 
+you'll likely want to use when making changes to the framework. We will 
+attempt to be clear in these documents when it is important to choose one 
+environment over another.
+
+Of particular note here are the several database you'll see in your MongoDB 
+database after loading the demo app data. Either the `emotion-in-motion-dev`, 
+`emotion-in-motion-test`, or `emotion-in-motion-production` databases is 
+chosen for use according to the current Node environment. 
 
 # Custom Configuration
 
@@ -82,9 +113,20 @@ to the next slide irrespective of these impediments.
  
 # Study Specification Structure
  
-A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) for a gentle introduction.
+A study using Emotion in Motion is described by a MongoDB document (much like a 
+JSON file) stored in the MongoDB database. Specifying study structures in this 
+way essentially means that only knowledge of JSON is required in order to 
+create a new study that requires only the modification of components already 
+present in the provided demonstration study. JSON is a simple, textual format 
+for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) 
+for a gentle introduction.
 
-By default, the application looks in the `experimentschemas` collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:
+By default, the application looks in the `experimentschemas` collection in the 
+database for study specification documents. If more than one of these documents 
+are present, one is chosen at random for presenting your study to the 
+participant. (Thus, if only one of these documents is present, the structure 
+described by this document will be the structure that is always used.) The demo 
+application contains and presents only one study with the following structure:
 
 1. Welcome screen
 2. Consent form
@@ -98,7 +140,9 @@ By default, the application looks in the `experimentschemas` collection in the d
 10. Emotion indices
 11. Thank you screen
 
-This structure is *completely* customizable, which we describe below. This default study, like any other study, is described in a MongoDB document. This MongoDB document has the following basic structure:
+This structure is *completely* customizable, which we describe below. This 
+default study, like any other study, is described in a MongoDB document. This 
+MongoDB document has the following basic structure:
 
 ```
 {  
