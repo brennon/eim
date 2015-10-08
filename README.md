@@ -564,35 +564,52 @@ In the demo app, sensor data is recorded into space-delimited CSV files with a s
 
 ## The Max Patches
 
-The framework uses Max MSP software to handle playback and data capture for the experiments. The patches are enclosed in the project named 'EmotionInMotion.maxproj'. Opening this project will open the 'MAIN.maxpat' and the 'EiMsensors.maxpat' patches.
+The framework uses the Max software to handle playback and data capture for 
+the experiments. The patches are enclosed in the project named 
+`EmotionInMotion.maxproj`. Opening this project will open the `MAIN.maxpat` 
+and the `EiMsensors.maxpat` patches.
 
 ### The MAIN Patch
 
-The MAIN patch is dived in three subpatches:
+The `MAIN` patch is dived in three subpatches:
 
-1) p EiM_BRAIN: This subpatch handles OSC communications with the server, receiving instructions for playback, experiment labels, language, and sending feedback regarding the development of the expreriment. It also has settings for configuring the different folders that contain the media and sensor data files. Additionally, it is possible to configure the header labels for the sensor data columns.
-
-2) p soundTest: This subpatch checks the configuration of the sound parameters to make sure the soundcard is turned ON and that the headphones are correctly placed.
-
-3) p PLAYBACK&RECORD: This subpatch handles de playback of MEDIA and records sensor data into text files. The sensor data must be sent through an OSC message, with the label eim/sensorData followed by a list with each column representing a different channel of data.
+1. `p EiM_BRAIN`: This subpatch handles OSC communications with the server, 
+receiving instructions for playback, experiment labels, language, and sending 
+feedback regarding the development of the expreriment. It also has settings for 
+configuring the different folders that contain the media and sensor data files. 
+Additionally, it is possible to configure the header labels for the sensor data 
+columns.
+2. `p soundTest`: This subpatch checks the configuration of the sound 
+parameters to make sure the soundcard is turned ON and that the headphones are 
+correctly placed.
+3. `p PLAYBACK&RECORD`: This subpatch handles de playback of MEDIA and records 
+sensor data into text files. The sensor data must be sent through an OSC 
+message, with the label eim/sensorData followed by a list with each column 
+representing a different channel of data.
 
 ### The Sensor Patches
 
-Included in the project, there is a DEMO patch with an example of the configuration used in our experiments with Electrodermal (EDA) and Pulse Oximetry (POX) sensors connected to an Arduino. In the 'patchers' folder, the following patches are available:
+Included in the project, there is a DEMO patch with an example of the 
+configuration used in our experiments with Electrodermal Activity (EDA) and 
+Pulse Oximetry (POX) sensors connected to an Arduino. In the `patchers` 
+folder, the following patches are available:
 
-1) ArduinoEiM_EDA.maxpat: Patch configured to receive data from an EDA sensor connected to an Arduino (see Arduino script).
-
-2) ArduinoEiM_POX.maxpat: Patch configured to receive data from a POX sensor connected to an Arduino (see Arduino script).
-
-3) EDAtool.maxpat: Patch that processes and extracts features from an EDA signal. It also evaluates and reports the signal's status.
-
-4) HRfromPOX.maxpat: Patch that processes HR from the POX signal.  It also evaluates and reports the signal's status.
-
-5) testServer.maxpat: DEMO patch to test communication with the server.
+1. `ArduinoEiM_EDA.maxpat`: Patch configured to receive data from an EDA sensor
+ connected to an Arduino (see Arduino script).
+2. `ArduinoEiM_POX.maxpat`: Patch configured to receive data from a POX sensor 
+connected to an Arduino (see Arduino script).
+3. `EDAtool.maxpat`: Patch that processes and extracts features from an EDA 
+signal. It also evaluates and reports the signal's status.
+4. `HRfromPOX.maxpat`: Patch that processes HR from the POX signal.  It also 
+evaluates and reports the signal's status.
+5. `testServer.maxpat`: Demonstration patch to test communication with the 
+server.
 
 ## Arduino Script
 
-An Arduino Script is available to be used with the DEMO patches. This script configures the arduino to capture sensor data connected to an analog channel and stream it over the serial port to Max MSP.
+An Arduino Script is available to be used with the DEMO patches. This script 
+configures the arduino to capture sensor data connected to an analog channel 
+and stream it over the serial port to Max.
 
 ```
 #define SAMPLING_INTERVAL 10     // 10ms (100Hz) for EDA, 4ms (250Hz) for POX
