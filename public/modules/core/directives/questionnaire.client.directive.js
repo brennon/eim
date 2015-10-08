@@ -328,6 +328,12 @@ angular.module('core').directive('questionnaire', [
                     var questionElement;
                     var item = data.structure[i];
 
+                    if (!item.hasOwnProperty('questionType') ||
+                        typeof item.questionType !== 'string') {
+                        $log.error('questionType must be provided.');
+                        $log.error(item);
+                    }
+
                     switch (item.questionType) {
                         case 'likert':
                             questionElement = buildScaleQuestion(item);
@@ -341,6 +347,10 @@ angular.module('core').directive('questionnaire', [
                         case 'checkbox':
                             questionElement = buildCheckboxQuestion(item);
                             break;
+                        default:
+                            $log.error('Unrecognized questionType: ' +
+                                item.questionType);
+                            break;
                     }
 
                     if (item.hasOwnProperty('questionOptions')) {
@@ -349,9 +359,13 @@ angular.module('core').directive('questionnaire', [
                             item.questionOptions
                         );
 
-                    // There were no questionOptions
-                    } else {
-                        $log.error('questionOptions must be provided.');
+                    // There were no questionOptions and this isn't a likert
+                    // question
+                    } else if (item.questionType !== 'likert') {
+                        $log.error('questionOptions must be provided for' +
+                            ' questionTypes other than \'likert\'.');
+                        console.log('item:');
+                        console.log(item);
                     }
 
                     if (item.hasOwnProperty('questionRequired')) {
