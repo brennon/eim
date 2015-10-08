@@ -53,7 +53,9 @@ describe('Socket Controller', function() {
 
             // Check the spy
             mockLog.calledOnce.should.equal(true);
-            mockLog.args[0][0].should.match(/foo.*bar/);
+
+            mockLog.args[0][0].should.equal('foo event received from client.');
+            mockLog.args[0][1].should.equal('bar');
         });
     });
 

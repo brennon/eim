@@ -1,5 +1,18 @@
 'use strict';
 
+/**
+ * OSC Controller module
+ *
+ * This module provides functionality for communication to and from the
+ * server over [Open Sound Control](http://opensoundcontrol.org/).
+ *
+ * @module {{}} Node.OSCServerController
+ * @memberof Node
+ */
+
+/*
+  Helper modules
+ */
 var udp = require('dgram');
 var osc = require('osc-min');
 var EventEmitter = require('events').EventEmitter;
@@ -7,15 +20,33 @@ var util = require('util');
 
 var oscSender, oscReceiver;
 
+/**
+ * The port over which OSC messages will be sent.
+ *
+ * @type {number}
+ */
 exports.outgoingPort = 7000;
+
+/**
+ * The port over which OSC messages will be received.
+ *
+ * @type {number}
+ */
 exports.incomingPort = 7001;
+
+/**
+ * The hostname of the host to which OSC messages will be sent.
+ *
+ * @type {string}
+ */
 exports.outgoingHost = 'localhost';
 
 function buildLogMessageFromMessage(msg) {
 
     // Bail and log an error message if we didn't get an array
-    if (!Array.isArray(msg)) {
-        return console.error('Malformed OSC error message received: ' + msg);
+    if (!Array.isArray(msg) || msg.length === 0) {
+        console.error('Malformed OSC error message received.', msg);
+        return;
     }
 
     var level = msg[0].value.toUpperCase();
@@ -51,6 +82,16 @@ function incomingMessageHandler(msg) {
 
     } else {
 
+        /**
+         * This event is fired when the server receives an OSC message.
+         *
+         * The object sent with this event is a JavaScript object
+         * representation of the OSC message.
+         *
+         * @event oscMessageReceived
+         * @type {{}}
+         */
+
         exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
     }
 }
@@ -74,24 +115,33 @@ function createOSCReceiver(callback) {
     }, 0);
 }
 
-// Socket management
-
-// Close sockets
+/**
+ * Close both the incoming socket and the outgoing socket.
+ *
+ * @return {undefined}
+ */
 exports.closeSockets = function() {
     try {
-        //console.log('trying to close receiver');
         oscReceiver.close();
     } catch (e) {
     }
 
     try {
-        //console.log('trying to close sender');
         oscSender.close();
     } catch (e) {
     }
 };
 
-// Main initialization
+/**
+ * Initialize the module.
+ *
+ * This method first ensures that both sockets are closed, then opens each
+ * socket on the ports specified in {@link
+ * Node.module:OSCServerController.outgoingPort|outgoingPort} and {@link
+ * Node.module:OSCServerController.incomingPort|incomingPort}.
+ *
+ * @param {function} callback Will be called after initialization is complete
+ */
 exports.init = function(callback) {
     setTimeout(function createSocket() {
 
@@ -111,11 +161,30 @@ exports.init = function(callback) {
     }, 0);
 };
 
-// Consumers of this module can listen here for OSC-related events
+/**
+ * This `EventEmitter` emits OSC-related events. Consumers can listen here
+ * to be notified when OSC messages are sent or received.
+ *
+ * @type {EventEmitter}
+ * @fires oscMessageReceived
+ */
 exports.eventEmitter = new EventEmitter();
 
-// Send an OSC message that meets osc-min's message definition over the
-// outgoing socket
+/**
+ * Sends an object over OSC.
+ *
+ * The object to be sent must match the requirements for an OSC message or
+ * bundle as specified by [osc-min](https://www.npmjs.com/package/osc-min/).
+ * The message will be sent to the host in {@link
+ * Node.module:OSCServerController.outgoingHost|outgoingHost} on the port in
+ * {@link
+ * Node.module:OSCServerController.outgoingPort|outgoingPort}.
+ *
+ * @param {{}} data The object to be sent over OSC
+ * @param {function} callback The function to be called after the message
+ * has been sent
+ * @return {undefined}
+ */
 exports.sendJSONMessage = function(data, callback) {
 
     function sendMessage() {
@@ -131,7 +200,7 @@ exports.sendJSONMessage = function(data, callback) {
             callback
         );
 
-        console.info('Sent OSC message: ' + util.inspect(data));
+        console.info('Sent OSC message.', data);
     }
 
     // If outgoing port is not yet open, open it
@@ -142,7 +211,21 @@ exports.sendJSONMessage = function(data, callback) {
     }
 };
 
-// Expose OSC message send on the API
+/**
+ * Sends an object from an `http.ClientRequest` params over OSC.
+ *
+ * The object to be sent must match the requirements for an OSC message or
+ * bundle as specified by [osc-min](https://www.npmjs.com/package/osc-min/).
+ * The message will be sent to the host in {@link
+ * Node.module:OSCServerController.outgoingHost|outgoingHost} on the port in
+ * {@link
+ * Node.module:OSCServerController.outgoingPort|outgoingPort}. The response
+ * is augmented to include the message that was sent.
+ *
+ * @param {http.ClientRequest} req The client request
+ * @param {http.ServerResponse} res The server response
+ * @return {undefined}
+ */
 exports.sendMessage = function(req, res) {
     var message = {
         oscType: 'message',

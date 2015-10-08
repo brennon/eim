@@ -72,7 +72,7 @@
 
             var scaleQuestionElements = $(element).find('scale-question');
             var spacerDiv = $(scaleQuestionElements).next().children()[0];
-            expect($(spacerDiv).hasClass('questionSpacer')).toBe(true);
+            expect($(spacerDiv).hasClass('question-spacer')).toBe(true);
         });
 
         it('should bind the isolated questionnaireForm to the local questionnaireForm', function () {
@@ -286,9 +286,6 @@
                 $scope.questionnaireData = {
                     structure: [
                         {
-                            questionType: 'nothing'
-                        },
-                        {
                             questionType: 'radio'
                         },
                         {
@@ -374,6 +371,35 @@
                     structure: [
                         {
                             questionType: 'radio',
+                            questionOptions: {
+                                choices: [
+                                    {
+                                        'label': 'Yes',
+                                        'value': true
+                                    },
+                                    {
+                                        'label': 'No',
+                                        'value': false
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var radioQuestionElements = $(element).find('radio-question');
+                expect($(radioQuestionElements).data('questionOptions')).toEqual($scope.questionnaireData.structure[0].questionOptions);
+            });
+
+            it('should forward the questionRequired property on to the data' +
+                ' attribute', function() {
+
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'radio',
                             questionRadioOptions: [
                                 {
                                     'label': 'Yes',
@@ -383,15 +409,18 @@
                                     'label': 'No',
                                     'value': false
                                 }
-                            ]
+                            ],
+                            questionRequired: 'foo'
                         }
                     ]
                 };
 
                 $compile(element)($scope);
 
-                var radioQuestionElements = $(element).find('radio-question');
-                expect($(radioQuestionElements).data('radioOptions')).toEqual($scope.questionnaireData.structure[0].questionRadioOptions);
+                var radioQuestionElement = $(element).find('radio-question');
+                expect($(radioQuestionElement)
+                    .data('questionRequired'))
+                    .toEqual('foo');
             });
         });
 
@@ -544,7 +573,8 @@
                 expect($(scaleQuestionElements).attr('associated-to-media')).toBe('true');
             });
 
-            it('should add the storage path attribute for a scale-question directive', function () {
+            it('should add the storage path attribute for a scale-question' +
+                ' directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -592,6 +622,44 @@
 
                 var scaleQuestionElement= $(element).find('scale-question');
                 expect($(scaleQuestionElement).data('questionOptions')).toEqual($scope.questionnaireData.structure[0].questionOptions);
+            });
+
+            it('should forward the questionRequired property on to the data' +
+                ' attribute', function() {
+
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'likert',
+                            questionOptions: {
+                                choices: [
+                                    {
+                                        label: 'Disagree strongly'
+                                    },
+                                    {
+                                        label: 'Disagree a little'
+                                    },
+                                    {
+                                        label: 'Neither agree nor disagree'
+                                    },
+                                    {
+                                        label: 'Agree a little'
+                                    },
+                                    {
+                                        label: 'Agree strongly'
+                                    }
+                                ]
+                            },
+                            questionRequired: 'foo'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var scaleQuestionElement= $(element).find('scale-question');
+                expect(scaleQuestionElement.data('questionRequired'))
+                    .toEqual('foo');
             });
         });
 
@@ -683,12 +751,13 @@
                 expect($(radioQuestionElements).attr('controller-data-path')).toBe('a.b.c.d');
             });
 
-            it('should add the dropdown options on the data attribute of a dropdown-question directive', function () {
+            it('should add the dropdown options to the data of a' +
+                ' dropdown-question directive', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
                             questionType: 'dropdown',
-                            questionDropdownOptions: ['a', 'b', 'c', 'd']
+                            questionOptions: ['a', 'b', 'c', 'd']
                         }
                     ]
                 };
@@ -697,6 +766,27 @@
 
                 var radioQuestionElements = $(element).find('dropdown-question');
                 expect($(radioQuestionElements).data('dropdownOptions')).toEqual($scope.questionnaireData.structure[0].questionDropdownOptions);
+            });
+
+            it('should forward the questionRequired property on to the data' +
+                ' attribute', function() {
+
+                $scope.questionnaireData = {
+                    structure: [
+                        {
+                            questionType: 'dropdown',
+                            questionOptions: ['a', 'b', 'c', 'd'],
+                            questionRequired: 'foo'
+                        }
+                    ]
+                };
+
+                $compile(element)($scope);
+
+                var dropdownElement = $(element).find('dropdown-question');
+                expect($(dropdownElement)
+                    .data('questionRequired'))
+                    .toEqual('foo');
             });
         });
 
@@ -793,7 +883,11 @@
                     structure: [
                         {
                             questionType: 'checkbox',
-                            questionCheckboxOptions: ['a', 'b', 'c', 'd']
+                            questionOptions: { choices: [
+                                {label: 'Rock', value: 'Rock'},
+                                {label: 'Pop', value: 'Pop'},
+                                {label: 'Folk', value: 'Folk'}
+                            ]}
                         }
                     ]
                 };
@@ -817,10 +911,10 @@
                 $compile(element)($scope);
 
                 var checkboxQuestionElements = $(element).find('checkbox-question');
-                expect($(checkboxQuestionElements).attr('question-required')).toBe('true');
+                expect($(checkboxQuestionElements).data('question-required')).toBe(true);
             });
 
-            it('should not add the question-required attribute for a checkbox-question directive if it is not required', function () {
+            it('should add the question-required attribute for a checkbox-question directive if it is not required', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
@@ -833,14 +927,14 @@
                 $compile(element)($scope);
 
                 var checkboxQuestionElements = $(element).find('checkbox-question');
-                expect($(checkboxQuestionElements).attr('question-required')).toBe(undefined);
+                expect($(checkboxQuestionElements).data('question-required')).toBe(false);
             });
 
             it('should default to setting the question-required attribute for a checkbox-question directive if it is not defined', function () {
                 $scope.questionnaireData = {
                     structure: [
                         {
-                            questionType: 'checkbox',
+                            questionType: 'checkbox'
                         }
                     ]
                 };
@@ -848,7 +942,7 @@
                 $compile(element)($scope);
 
                 var checkboxQuestionElements = $(element).find('checkbox-question');
-                expect($(checkboxQuestionElements).attr('question-required')).toBe('true');
+                expect($(checkboxQuestionElements).data('question-required')).toBe(true);
             });
         });
     });

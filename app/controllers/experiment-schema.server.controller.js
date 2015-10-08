@@ -1,42 +1,71 @@
 'use strict';
 
 /**
- * Module dependencies.
+ * `ExperimentSchema` controller
+ *
+ * @module {{}} Node.ExperimentSchemaServerController
+ * @memberof Node
  */
+
+// Module dependencies
 var mongoose = require('mongoose'),
     ExperimentSchema = mongoose.model('ExperimentSchema');
 
 /**
- * List of Experiment schemas
+ * Fetch all available `ExperimentSchema`s.
+ *
+ * The database is queried for all `ExperimentSchema` documents. These are
+ * used as the JSON response.
+ *
+ * @param {http.ClientRequest} req
+ * @param {http.ServerResponse} res
  */
 exports.list = function(req, res) {
+
+    console.info('Fetching all ExperimentSchemas.');
 
     ExperimentSchema.find({}, function(err, schemas) {
 
         if (err) {
-            res.json(500, {error: err.message});
+            console.error('Error fetching all ExperimentSchemas.', err);
+            res.status(500).json({error: err.message});
         } else {
-            res.json(200, schemas);
+            res.status(200).json(schemas);
         }
     });
 };
 
 /**
- * Build a random experiment from a random ExperimentSchema
+ * 'Build' a proper experiment from one of the available `ExperimentSchema`s.
+ *
+ * A random `ExperimentSchema` is fetched from the database. The
+ * `ExperimentSchema` model's `buildDocument()` method is used to build out
+ * this experiment, and that experiment is used as the JSON response.
+ *
+ * @param {http.ClientRequest} req
+ * @param {http.ServerResponse} res
  */
 exports.random = function(req, res) {
 
+    console.info('Building experiment from a random ExperimentSchema.');
+
     function errorHandler(err) {
-        res.json(500, {error: err.message});
+        res.status(500).json({error: err.message});
     }
 
     ExperimentSchema.count({}, function(err, count) {
 
         if (err) {
+
+            console.error('Error counting ExperimentSchemas.', err);
             return errorHandler(err);
+
         } else if (count < 1) {
+
+            console.warn('No ExperimentSchemas found in database.');
             return errorHandler(new Error('No experiment schemas in' +
                 ' database.'));
+
         } else {
 
             // Get a random number from [0, number of schema)
@@ -50,6 +79,10 @@ exports.random = function(req, res) {
                 .exec(function(err, schema) {
 
                     if (err) {
+                        console.error(
+                            'Error fetching one ExperimentSchema.',
+                            err
+                        );
                         return errorHandler(err);
                     }
 
@@ -57,8 +90,17 @@ exports.random = function(req, res) {
                     // schema
                     schema[0].buildExperiment(function(err, builtExperiment) {
 
-                        // Send the response
-                        res.json(200, builtExperiment);
+                        if (err) {
+
+                            // Report the error and set the response
+                            console.error('Error building experiment from' +
+                                ' ExperimentSchema', err);
+                            res.status(500).json({error: err.message});
+                        } else {
+
+                            // Send the response
+                            res.status(200).json(builtExperiment);
+                        }
                     });
                 });
         }

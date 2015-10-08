@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/models/experiment-schema.server.model.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/models/experiment-schema.server.model.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/*
+    Module dependencies
+ */
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var _ = require('lodash');
+var BluebirdPromise = require('bluebird');
+
+/**
+ * The [Mongoose](http://mongoosejs.com/) `Schema` for an
+ * `ExperimentSchema`. This schema is used in
+ * creating the Mongoose `Model` for an `ExperimentSchema`.
+ *
+ * @module Node.ExperimentSchemaServerModel
+ * @memberof Node
+ * @type {mongoose.Schema}
+ */
+var ExperimentSchemaSchema = new Schema({
+    sensors: [String],
+    structure: {
+        type: Array,
+        required: true
+    },
+    trialCount: {
+        type: Number,
+        required: true
+    },
+    mediaPool: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Media'
+    }]
+});
+
+/**
+ * A validator for Mongoose schemas that requires that its single argument
+ * be an `Array` of length greater than 0.
+ *
+ * @private
+ * @inner
+ * @param {*} value The value to be validated
+ * @returns {Boolean} `true` if the validation is successful; `false` otherwise
+ */
+function requiredArrayValidator(value) {
+    return Array.isArray(value) &amp;&amp; value.length > 0;
+}
+
+/**
+ * Given an ExperimentSchema, an index into that schema's `media` array, and
+ * the ID of a `Media` document in the database, this function retrieves the
+ * document associated with that ID from the database, and updates the media
+ * array of the schema with information from this document. A promise is
+ * returned that is resolved when the schema is updated.
+ *
+ * @private
+ * @inner
+ * @param {ExperimentSchema} schema
+ * @param {Number} index The index into `schema`'s `media` array
+ * @param {mongoose.ObjectId} mediaId The ID corresponding to the document
+ * that should be retrieved from the database
+ * @returns {bluebird.BluebirdPromise}
+ */
+function updateSchemaForFixedMedia(schema, index, mediaId) {
+
+    console.debug(
+        'Updating schema for fixed media at index ' +
+        index +
+        ' using media with ID ' +
+        mediaId,
+        schema
+    );
+
+    return new BluebirdPromise(function(resolve, reject) {
+
+        // Get the media entry for the ObjectID in slide.media
+        var MediaModel = mongoose.model('Media');
+        MediaModel.findOne({_id: mediaId}, {
+            _id: 1,
+            artist: 1,
+            title: 1,
+            label: 1
+        }, function(err, media) {
+
+            if (err) {
+                return reject(err);
+            }
+
+            if (media) {
+                schema.media[index] = media;
+                return resolve();
+            } else {
+                var message = 'Media not found in database for media ID ' +
+                    mediaId;
+                console.error(message);
+                return reject(new Error(message));
+            }
+        });
+    });
+}
+
+// Use the above validator for properties that should contain a non-empty array
+ExperimentSchemaSchema.path('mediaPool').validate(requiredArrayValidator);
+
+/**
+ * This method draws one available `ExperimentSchema` document at random
+ * from the database. This `media` array of this document is populated. For
+ * any fixed media specified in the document, their details are found and
+ * inserted directly into the final document. The callback will be called
+ * upon completion and provided with the 'built' experiment.
+ *
+ * @function buildExperiment
+ * @instance
+ * @param {Node.module:ExperimentSchemaServerModel~buildExperimentCallback} callback Will be called upon completion
+ */
+ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
+
+    console.info('Building random experiment.');
+
+    // Populate mediaPool
+    this.populate('mediaPool');
+
+    var selectedMedia = _.sample(this.mediaPool, this.trialCount);
+
+    var schemaSubset = {
+        _id: this._id,
+        structure: this.structure,
+        sensors: this.sensors,
+        media: selectedMedia
+    };
+
+    // Iterate over structure to look for fixed media-playback slides
+    var indexInMedia = 0;
+    var promises = [];
+    for (var i = 0; i &lt; schemaSubset.structure.length; i++) {
+        var slide = schemaSubset.structure[i];
+
+        if (slide.name === 'media-playback' &amp;&amp; slide.mediaType === 'fixed') {
+            promises.push(
+                updateSchemaForFixedMedia(
+                    schemaSubset,
+                    indexInMedia,
+                    slide.media
+                )
+            );
+            indexInMedia++;
+        } else if (slide.name === 'media-playback' &amp;&amp;
+            slide.mediaType === 'random') {
+            indexInMedia++;
+        }
+    }
+
+    BluebirdPromise.all(promises)
+        .then(function() {
+            return callback(null, schemaSubset);
+        })
+        .catch(function(err) {
+            return callback(err, schemaSubset);
+        });
+};
+
+/**
+ * @callback buildExperimentCallback
+ * @param {*} err Any error that `buildExperiment()` encountered
+ * @param {ExperimentSchema} schema The built `ExperimentSchema`
+ */
+
+// Register schema for ExperimentSchema model
+mongoose.model('ExperimentSchema', ExperimentSchemaSchema);
+console.debug(
+    'Registered schema for ExperimentSchema model.',
+    ExperimentSchemaSchema
+);
+
+module.exports.schema = ExperimentSchemaSchema;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

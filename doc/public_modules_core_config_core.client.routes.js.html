@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/config/core.client.routes.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/config/core.client.routes.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * This **is not**, in fact, a class, but rather a file for defining the
+ * routes that are used in your application. You should only need to edit
+ * this file if you wish to add *new* routes.
+ *
+ * The file configures Angular UI's
+ * [`$stateProvider`](https://github.com/angular-ui/ui-router/wiki) to create
+ * the routes. Each route is created by a single call to
+ * [`$stateProvider.state()`](http://angular-ui.github.io/ui-router/site/#/api/ui.router.state.$stateProvider#methods_state).
+ *
+ * The following is a snippet of the top several lines of the file. The
+ * first six lines can be ignored. The call to `$stateProvider.state()` is
+ * the first of many such calls in the file. This call in particular
+ * configures the `'home'` state. Based on the information given in this
+ * call, the `'home'` state will be accessible by browsing to the root path
+ * of the application (`http://&lt;YOURSERVER>:3000/`). The app will use the
+ * file at `templateURL` (here, `modules/core/views/home.client.view.html`)
+ * to render this state.
+ *
+ * To add your own state, simply add another call to
+ * `$stateProvider.state()`. The name of the state should match the name of
+ * the slide in your schema structure document (see the [README](index.html)).
+ *
+ * @example
+ *
+ * angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+ *     function ($stateProvider, $urlRouterProvider) {
+ *
+ *         // Redirect to home view when route not found
+ *         $urlRouterProvider.otherwise('/');
+ *
+ *         // Home state routing
+ *         $stateProvider
+ *             .state('home', {
+ *                 url: '/',
+ *                 templateUrl: 'modules/core/views/home.client.view.html'
+ *             })
+ *
+ *         ...
+ *
+ * @class Angular.Routes
+ * @memberof Angular
+ */
+
+// Setting up route
+angular.module('core').config(['$stateProvider', '$urlRouterProvider',
+    function ($stateProvider, $urlRouterProvider) {
+
+        var $log =  angular.injector(['ng']).get('$log');
+        $log.debug('Configuring routes in' +
+            ' modules/core/config/core.client.routes.js');
+
+        // Redirect to home view when route not found
+        $urlRouterProvider.otherwise('/');
+
+        // Home state routing
+        $stateProvider
+            .state('home', {
+                url: '/',
+                templateUrl: 'modules/core/views/home.client.view.html'
+            })
+            .state('start', {
+                url: '/start',
+                templateUrl: 'modules/core/views/start.client.view.html'
+            })
+            .state('consent-form', {
+                url: '/consent-form',
+                templateUrl: 'modules/core/views/consent-form.client.view.html'
+            })
+            .state('sound-test', {
+                url: '/sound-test',
+                templateUrl: 'modules/core/views/sound-test.client.view.html'
+            })
+            .state('eda-instructions', {
+                url: '/eda-instructions',
+                templateUrl: 'modules/core/views/eda-instructions.client.view.html'
+            })
+            .state('pox-instructions', {
+                url: '/pox-instructions',
+                templateUrl: 'modules/core/views/pox-instructions.client.view.html'
+            })
+            .state('signal-test', {
+                url: '/signal-test',
+                templateUrl: 'modules/core/views/signal-test.client.view.html'
+            })
+            .state('demographics', {
+                url: '/demographics',
+                templateUrl: 'modules/core/views/demographics.client.view.html'
+            })
+            .state('musical-background', {
+                url: '/musical-background',
+                templateUrl: 'modules/core/views/musical-background.client.view.html'
+            })
+            .state('media-playback', {
+                url: '/media-playback',
+                templateUrl: 'modules/core/views/media-playback.client.view.html'
+            })
+            .state('questionnaire', {
+                url: '/media-questionnaire',
+                templateUrl: 'modules/core/views/media-questionnaire.client.view.html'
+            })
+            .state('emotion-index', {
+                url: '/emotion-index',
+                templateUrl: 'modules/core/views/emotion-index.client.view.html'
+            })
+            .state('thank-you', {
+                url: '/thank-you',
+                templateUrl: 'modules/core/views/thank-you.client.view.html'
+            });
+    }
+]);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

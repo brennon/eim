@@ -1,0 +1,40 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": [
+      "jsdoc",
+      "closure"
+    ]
+  },
+  "source": {
+    "include": [
+      "README.md",
+      "app/controllers/",
+      "app/models/",
+      "app/routes/",
+      "app/views/",
+      "config/custom.js",
+      "public/modules/",
+      "public/application.js",
+      "server.js"
+    ],
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": [],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "plugins": ["plugins/markdown"],
+  "markdown": {
+    "excludeTags": ["author"]
+  },
+  "opts": {
+    "template": "templates/default",
+    "encoding": "utf8",
+    "destination": "./doc/",
+    "recurse": true,
+    "access": "all"
+  }
+}

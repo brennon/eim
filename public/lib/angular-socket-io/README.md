@@ -1,4 +1,4 @@
-# angular-socket-io [![Build Status](https://travis-ci.org/btford/angular-socket-io.png)](https://travis-ci.org/btford/angular-socket-io)
+# angular-socket-io [![Build Status](https://travis-ci.org/btford/angular-socket-io.svg)](https://travis-ci.org/btford/angular-socket-io)
 
 Bower Component for using AngularJS with [Socket.IO](http://socket.io/),
 based on [this](http://briantford.com/blog/angular-socket-io.html).
@@ -234,10 +234,17 @@ controller('MyCtrl', function (socket) {
 });
 ```
 
+
+## FAQ
+
+[Closed issues labelled `FAQ`](https://github.com/btford/angular-socket-io/issues?labels=faq&page=1&state=closed) might have the answer to your question.
+
+
 ## See Also
 
 * [ngSocket](https://github.com/jeffbcross/ngSocket)
 * [angular-socket.io-mock](https://github.com/nullivex/angular-socket.io-mock)
+
 
 ## License
 MIT

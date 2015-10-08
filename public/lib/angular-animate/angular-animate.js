@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.26
+ * @license AngularJS v1.2.29
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -296,9 +296,11 @@ angular.module('ngAnimate', ['ng'])
         //so that all the animated elements within the animation frame
         //will be properly updated and drawn on screen. This is
         //required to perform multi-class CSS based animations with
-        //Firefox. DO NOT REMOVE THIS LINE.
-        var a = bod.offsetWidth + 1;
-        fn();
+        //Firefox. DO NOT REMOVE THIS LINE. DO NOT OPTIMIZE THIS LINE.
+        //THE MINIFIER WILL REMOVE IT OTHERWISE WHICH WILL RESULT IN AN
+        //UNPREDICTABLE BUG THAT IS VERY HARD TO TRACK DOWN AND WILL
+        //TAKE YEARS AWAY FROM YOUR LIFE!
+        fn(bod.offsetWidth);
       });
     };
   }])
@@ -1162,6 +1164,16 @@ angular.module('ngAnimate', ['ng'])
       var parentCounter = 0;
       var animationReflowQueue = [];
       var cancelAnimationReflow;
+      function clearCacheAfterReflow() {
+        if (!cancelAnimationReflow) {
+          cancelAnimationReflow = $$animateReflow(function() {
+            animationReflowQueue = [];
+            cancelAnimationReflow = null;
+            lookupCache = {};
+          });
+        }
+      }
+
       function afterReflow(element, callback) {
         if(cancelAnimationReflow) {
           cancelAnimationReflow();
@@ -1530,7 +1542,8 @@ angular.module('ngAnimate', ['ng'])
         //cancellation function then it means that there is no animation
         //to perform at all
         var preReflowCancellation = animateBefore(animationEvent, element, className);
-        if(!preReflowCancellation) {
+        if (!preReflowCancellation) {
+          clearCacheAfterReflow();
           animationComplete();
           return;
         }
@@ -1605,6 +1618,7 @@ angular.module('ngAnimate', ['ng'])
             });
             return cancellationMethod;
           }
+          clearCacheAfterReflow();
           animationCompleted();
         },
 
@@ -1629,6 +1643,7 @@ angular.module('ngAnimate', ['ng'])
             });
             return cancellationMethod;
           }
+          clearCacheAfterReflow();
           animationCompleted();
         },
 

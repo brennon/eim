@@ -23,10 +23,11 @@ module.exports = {
         		'public/lib/angular-slider/angular-slider.js',
         		'public/lib/socket.io-client/socket.io.js',
 				'public/lib/angular-socket-io/socket.min.js',
-        		'public/lib/UUID.js/dist/uuid.core.js',
+				'public/lib/angular-uuid-service/angular-uuid-service.min.js',
         		'public/lib/angular-hotkeys/build/hotkeys.min.js',
 				'public/lib/angular-gettext/dist/angular-gettext.min.js',
-				'public/i18n/translations.js'
+				'public/i18n/translations.js',
+				'public/lib/angular-loggly-logger/angular-loggly-logger.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',

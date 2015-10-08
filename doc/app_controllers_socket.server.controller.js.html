@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/controllers/socket.server.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/controllers/socket.server.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * Socket Controller module
+ *
+ * This module provides functionality for allowing clients to send and
+ * receive [Open Sound Control](http://opensoundcontrol.org/) (OSC) messages
+ * through a [socket.io](http://socket.io/) connection.
+ *
+ * In general, the OSC message flow is as follows:
+ *
+ * - Outgoing messages:
+ *
+ *  1. A client connects to the server over socket.io
+ *  2. Client emits the 'sendOSCMessage' event
+ *  2. SocketServerController module sends message
+ *  3. After sending the message, SocketServerController emits the
+ *  'oscMessageSent' event on the client socket
+ *
+ * - Incoming messages:
+ *
+ *  1. SocketServerController module listens for `oscMessageReceived` events
+ *  emitted by the {@link Node.module:OSCServerController|OSCServerController}
+ *  module
+ *  2. SocketServerController module emits its own
+ *  `oscMessageReceived` event on client sockets with the same data
+ *
+ * @module {{}} Node.SocketServerController
+ * @memberof Node
+ */
+
+// Module dependencies
+var osc = require('./osc.server.controller.js');
+var util = require('util');
+
+var io;
+
+// Logging function for incoming events
+function logEventReceived(event, data) {
+    console.log(event + ' event received from client.', data);
+}
+
+/**
+ * Initializes the module. Once initialized, clients that connect over
+ * socket.io receive the messages this module emits, as described above. The
+ * server then also listens on each client connection for OSC messages to be
+ * sent using the {@link Node.module:OSCServerController|OSCServerController}
+ * module, also as described above.
+ *
+ * @param {http.Server} httpServer A Node.js HTTP server
+ * @return {undefined}
+ */
+exports.init = function(httpServer) {
+
+    // Require Socket.IO and start listening
+    io = require('socket.io')(httpServer);
+
+    // Setup event handlers
+    io.on('connection', function(socket) {
+
+        // Attach sendOSCMessage event handler
+        socket.on('sendOSCMessage', function(data) {
+
+            logEventReceived('sendOSCMessage', data);
+
+            // Send OSC message
+            osc.sendJSONMessage(data, function() {
+
+                /**
+                 * This event is fired when the module sends an OSC message
+                 * using the
+                 * {@link Node.module:OSCServerController|OSCServerController}
+                 * module.
+                 *
+                 * The object sent with this event is a JavaScript object
+                 * representation of the OSC message.
+                 *
+                 * @event oscMessageSent
+                 * @type {{}}
+                 */
+                socket.emit('oscMessageSent', data);
+            });
+        });
+
+        // Listen for OSC module's 'oscMessageReceived' events
+        osc.eventEmitter.on('oscMessageReceived', function(data) {
+
+            /**
+             * This event is fired when the module receives an OSC message from
+             * the {@link Node.module:OSCServerController|OSCServerController}
+             * module.
+             *
+             * The object sent with this event is a JavaScript object
+             * representation of the OSC message.
+             *
+             * @event oscMessageReceived
+             * @type {{}}
+             */
+
+            // Just pass the data on to the socket
+            socket.emit('oscMessageReceived', data);
+        });
+    });
+};
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -163,10 +163,6 @@ button {
     margin-top: 10px;
 }
 
-.trial-data-row {
-    visibility: hidden;
-}
-
 .ui-view-subcontainer.ng-enter, .ui-view-subcontainer.ng-leave {
     /*position: absolute;*/
     /*left: 0;*/

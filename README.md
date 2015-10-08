@@ -4,6 +4,10 @@
 
 This is the Emotion in Motion experiment framework from the Music, Sensors and Emotion research group. For more information, contact us at [emotion.in.motion@musicsensorsemotion.com](mailto:emotion.in.motion@musicsensorsemotion.com).
 
+# Documentation
+
+Complete documentation is available [here](https://brennon.github.io/eim/).
+
 # Installation
 
 1. Clone the EiM git repository:
@@ -41,6 +45,10 @@ This is the Emotion in Motion experiment framework from the Music, Sensors and E
     mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
     mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production
     ```
+    
+    The first of these three databases represent the databases that are used 
+    in the development, test, and production [Node environments]
+    (#environments).
 
 5. Start the Max helper project located at `EiMpatch/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
 
@@ -51,12 +59,74 @@ This is the Emotion in Motion experiment framework from the Music, Sensors and E
     ```
 
 7. Browse to [http://localhost:3000/](http://localhost:3000/).
+
+# Environments
+
+Many commands described here behave differently depending on the Node 
+environment, which is set on the command line by prepending the command with 
+`NODE_ENV=environmentname`. For instance, to run the command listed in the 
+sixth step of the [Installation](#installation) sequence in the 'development'
+ environment, use `NODE_ENV=development node_modules/grunt-cli/bin/grunt`.
+
+As an example of the differences that occur between environments, when the 
+above mentioned command is run in the development environment, the original 
+versions of all of the scripts in the framework are used when running the 
+server. In the production environment, however, a 'minified' version is used 
+(all 'extra' information is removed from all script files, and they are all 
+glued together to be one long file). It is much more efficient for the web 
+server to send this one minified file to a client than all of the individual 
+scripts that this application uses. This is one example of how the 
+production environment, in general, starts up a much faster, more efficient 
+server. The development environment, on the other hand, is the environment 
+you'll likely want to use when making changes to the framework. We will 
+attempt to be clear in these documents when it is important to choose one 
+environment over another.
+
+Of particular note here are the several database you'll see in your MongoDB 
+database after loading the demo app data. Either the `emotion-in-motion-dev`, 
+`emotion-in-motion-test`, or `emotion-in-motion-production` databases is 
+chosen for use according to the current Node environment. 
+
+# Custom Configuration
+
+There are a few things you'll likely want to change about your installation 
+straight away (the terminal numbers of the machines on which you install your
+ app, the default language, etc.) All of these changes can be made in the 
+ file at `config/custom.js`. The options for configuring this file are 
+ described both in comments the file itself, as well as in the documentation 
+ for the `CustomConfiguration` module.
+
+# Debug Mode
+
+As you dig into customizing the framework for your own use, you should be 
+aware of debugging mode. When viewing any page in your application, pressing 
+the `'D'` key twice will toggle debugging mode. This enables two things:
+
+1. View the current [`TrialData`](#objects) document. As you'll read
+ below, this document is where all information about the current experiment 
+ session is stored. In debugging mode, you can see it at the bottom of the 
+ page as it updates in real time.
+2. Advance through the experiment without impediment. Some sections of your 
+design may require the user to, for instance, answer questions before being 
+allowed to proceed. In debugging mode, the right arrow key will advance you 
+to the next slide irrespective of these impediments.
  
 # Study Specification Structure
  
-A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) for a gentle introduction.
+A study using Emotion in Motion is described by a MongoDB document (much like a 
+JSON file) stored in the MongoDB database. Specifying study structures in this 
+way essentially means that only knowledge of JSON is required in order to 
+create a new study that requires only the modification of components already 
+present in the provided demonstration study. JSON is a simple, textual format 
+for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) 
+for a gentle introduction.
 
-By default, the application looks in the `experimentschemas` collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:
+By default, the application looks in the `experimentschemas` collection in the 
+database for study specification documents. If more than one of these documents 
+are present, one is chosen at random for presenting your study to the 
+participant. (Thus, if only one of these documents is present, the structure 
+described by this document will be the structure that is always used.) The demo 
+application contains and presents only one study with the following structure:
 
 1. Welcome screen
 2. Consent form
@@ -70,7 +140,9 @@ By default, the application looks in the `experimentschemas` collection in the d
 10. Emotion indices
 11. Thank you screen
 
-This structure is *completely* customizable, which we describe below. This default study, like any other study, is described in a MongoDB document. This MongoDB document has the following basic structure:
+This structure is *completely* customizable, which we describe below. This 
+default study, like any other study, is described in a MongoDB document. This 
+MongoDB document has the following basic structure:
 
 ```
 {  
@@ -258,7 +330,7 @@ The `questionLikertMaximumDescription` takes a string that is used as a descript
 
 **`questionStoragePath`**
 
-The `questionStoragePath` property represents a dot-delimited path into the [`trialData` object](#trialData-objects) that is generated as the participant completes the session. This `trialData` object holds all information about the participant's session. Typically, all input received from the participant is stored in a top-level property of this object named "data". So, to store the participant's response to a question about their musical experience, we might specify the `questionStoragePath` property for this question as `data.questionnaire_two.musical_expertise`. This would result in a `trialData` object that looks something like the following (with other distracting information removed):
+The `questionStoragePath` property represents a dot-delimited path into the [`trialData` object](#objects) that is generated as the participant completes the session. This `trialData` object holds all information about the participant's session. Typically, all input received from the participant is stored in a top-level property of this object named "data". So, to store the participant's response to a question about their musical experience, we might specify the `questionStoragePath` property for this question as `data.questionnaire_two.musical_expertise`. This would result in a `trialData` object that looks something like the following (with other distracting information removed):
 
 ```
 {
@@ -539,7 +611,7 @@ The Max application looks for files in the `EiMpatch/media/` directory. If you a
 
 In the demo application, two types of data are collected, recorded, and saved during a session: the data in the `trialData` document/object, and the data recorded from the sensors.  
 
-## `trialData` Data
+## `trialData` Objects
 
 `trialData` objects contain metadata *about* the experiment session as well as responses given by the participant during the session. The metadata contain, for instance, the date and time of the session, as well as a copy of the study specification structure that was used to generate the session. Every `trialData` object is associated with a UUID (universally unique identifier) generated by the applicaiton. Upon completion of a session, a JSON file containing the `trialData` object for the session is stored in the `trials/` directory.
 

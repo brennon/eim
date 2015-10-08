@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/controllers/experiment-schema.server.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/controllers/experiment-schema.server.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * `ExperimentSchema` controller
+ *
+ * @module {{}} Node.ExperimentSchemaServerController
+ * @memberof Node
+ */
+
+// Module dependencies
+var mongoose = require('mongoose'),
+    ExperimentSchema = mongoose.model('ExperimentSchema');
+
+/**
+ * Fetch all available `ExperimentSchema`s.
+ *
+ * The database is queried for all `ExperimentSchema` documents. These are
+ * used as the JSON response.
+ *
+ * @param {http.ClientRequest} req
+ * @param {http.ServerResponse} res
+ */
+exports.list = function(req, res) {
+
+    console.info('Fetching all ExperimentSchemas.');
+
+    ExperimentSchema.find({}, function(err, schemas) {
+
+        if (err) {
+            console.error('Error fetching all ExperimentSchemas.', err);
+            res.status(500).json({error: err.message});
+        } else {
+            res.status(200).json(schemas);
+        }
+    });
+};
+
+/**
+ * 'Build' a proper experiment from one of the available `ExperimentSchema`s.
+ *
+ * A random `ExperimentSchema` is fetched from the database. The
+ * `ExperimentSchema` model's `buildDocument()` method is used to build out
+ * this experiment, and that experiment is used as the JSON response.
+ *
+ * @param {http.ClientRequest} req
+ * @param {http.ServerResponse} res
+ */
+exports.random = function(req, res) {
+
+    console.info('Building experiment from a random ExperimentSchema.');
+
+    function errorHandler(err) {
+        res.status(500).json({error: err.message});
+    }
+
+    ExperimentSchema.count({}, function(err, count) {
+
+        if (err) {
+
+            console.error('Error counting ExperimentSchemas.', err);
+            return errorHandler(err);
+
+        } else if (count &lt; 1) {
+
+            console.warn('No ExperimentSchemas found in database.');
+            return errorHandler(new Error('No experiment schemas in' +
+                ' database.'));
+
+        } else {
+
+            // Get a random number from [0, number of schema)
+            var rand = Math.floor(Math.random() * count);
+
+            // Get a random schema
+            ExperimentSchema.find({})
+                .skip(rand)
+                .limit(1)
+                .populate('mediaPool', 'artist title label')
+                .exec(function(err, schema) {
+
+                    if (err) {
+                        console.error(
+                            'Error fetching one ExperimentSchema.',
+                            err
+                        );
+                        return errorHandler(err);
+                    }
+
+                    // Using the controller, build an experiment from this
+                    // schema
+                    schema[0].buildExperiment(function(err, builtExperiment) {
+
+                        if (err) {
+
+                            // Report the error and set the response
+                            console.error('Error building experiment from' +
+                                ' ExperimentSchema', err);
+                            res.status(500).json({error: err.message});
+                        } else {
+
+                            // Send the response
+                            res.status(200).json(builtExperiment);
+                        }
+                    });
+                });
+        }
+    });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -28,19 +28,23 @@
 
         describe('dropdown options', function() {
             it('should add a select element with associated options', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
                 var selectChildren = $(element).find('select').children();
-                expect(selectChildren.length).toBe(options.length + 1);
+                expect(selectChildren.length).toBe(options.choices.length + 1);
             });
 
             it('should associate the select element with the correct model', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
                 var select = $(element).find('select');
@@ -48,9 +52,11 @@
             });
 
             it('should give the select element the form-group class', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
                 var select = $(element).find('select');
@@ -58,9 +64,11 @@
             });
 
             it('should give the select element the correct id', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
                 var select = $(element).find('select');
@@ -68,9 +76,11 @@
             });
 
             it('should give the select element the correct name', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
                 var select = $(element).find('select');
@@ -78,31 +88,62 @@
             });
 
             it('should wrap the select in a div.form-group', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
                 var selectParent = $(element).find('select').parent();
                 expect(selectParent.hasClass('form-group')).toBe(true);
             });
 
-            it('should mark the element as required', function() {
-                var options = ['a','b','c'];
-                element = angular.element('<dropdown-question question-id="nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
-                $compile(element)($scope);
-                $scope.$digest();
-                var select = $(element).find('select');
-                expect(select.prop('required')).toBe(true);
+            describe('should mark the element', function() {
+
+                var options = {
+                    choices: ['a','b','c']
+                };
+                var element;
+
+                beforeEach(function() {
+                    element = angular.element('<dropdown-question' +
+                        ' question-id="nationality"></dropdown-question>');
+                    element.data('questionOptions', options);
+                });
+
+                it('as required by default', function() {
+                    $compile(element)($scope);
+                    $scope.$digest();
+                    var select = $(element).find('select');
+                    expect(select.prop('required')).toBe(true);
+                });
+
+                it('as required when explicitly specified', function() {
+                    element.data('questionRequired', true);
+                    $compile(element)($scope);
+                    $scope.$digest();
+                    var select = $(element).find('select');
+                    expect(select.prop('required')).toBe(true);
+                });
+
+                it('as not required when explicitly specified', function() {
+                    element.data('questionRequired', false);
+                    $compile(element)($scope);
+                    $scope.$digest();
+                    var select = $(element).find('select');
+                    expect(select.prop('required')).toBe(false);
+                });
             });
         });
 
         describe('data binding', function() {
             it('should call TrialData with the correct data when an option is selected', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality" controller-data-path="data.answers.nationality"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
 
@@ -118,9 +159,11 @@
             });
 
             it('should call TrialData with the correct data when an option is selected and the question is associated to media', function() {
-                var options = ['a','b','c'];
+                var options = {
+                    choices: ['a','b','c']
+                };
                 element = angular.element('<dropdown-question question-id="nationality" controller-data-path="data.answers.ratings.nationality" associated-to-media="true"></dropdown-question>');
-                element.data('dropdownOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 $scope.$digest();
 

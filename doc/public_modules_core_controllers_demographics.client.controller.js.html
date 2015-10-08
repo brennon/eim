@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/controllers/demographics.client.controller.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/controllers/demographics.client.controller.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * In the demo application, the `DemographicsController` was the primary
+ * controller used for the `'demographics'` state. This controller provides
+ * functionality for passing responses from the form in the demographics
+ * state on to the {@link Angular.TrialData|TrialData} service. Note,
+ * however, that in the demo application, the demographics questionnaire is
+ * now dynamically generated using a `'questionnaire'` slide in the study
+ * specification document (see the [README](index.html)). The
+ * `DemographicsController` and
+ * view are still here for you to use, however.
+ *
+ * @class Angular.DemographicsController
+ */
+
+angular.module('core').controller('DemographicsController', ['$scope', 'TrialData', '$log',
+    function($scope, TrialData, $log) {
+
+        $log.debug('Loading DemographicsController.');
+
+        /**
+         * The `DemographicsController`'s `$scope` object. All properties on
+         * `$scope` are available to the view.
+         *
+         * @name $scope
+         * @namespace
+         * @instance
+         * @memberof Angular.DemographicsController
+         * @type {{}}
+         */
+
+        /**
+         * An array of nationalities.
+         *
+         * Every nationality in this array is
+         * also included in the {@link Angular.MissingKeys|missing keys
+         * file}. To make additional nationalities available, add them both
+         * here and there.
+         *
+         * @name nationalities
+         * @memberof Angular.DemographicsController#$scope
+         * @instance
+         * @type {string[]}
+         */
+        $scope.nationalities = ['Afghan', 'Albanian', 'Algerian', 'American',
+            'Andorran', 'Angolan', 'Antiguans', 'Argentinean', 'Armenian',
+            'Australian', 'Austrian', 'Azerbaijani', 'Bahamian', 'Bahraini',
+            'Bangladeshi', 'Barbadian', 'Barbudans', 'Batswana', 'Belarusian',
+            'Belgian', 'Belizean', 'Beninese', 'Bhutanese', 'Bolivian',
+            'Bosnian', 'Brazilian', 'British', 'Bruneian', 'Bulgarian',
+            'Burkinabe', 'Burmese', 'Burundian', 'Cambodian', 'Cameroonian',
+            'Canadian', 'Cape Verdean', 'Central African', 'Chadian',
+            'Chilean', 'Chinese', 'Colombian', 'Comoran', 'Congolese',
+            'Costa Rican', 'Croatian', 'Cuban', 'Cypriot', 'Czech', 'Danish',
+            'Djibouti', 'Dominican', 'Dutch', 'East Timorese', 'Ecuadorean',
+            'Egyptian', 'Emirian', 'Equatorial Guinean', 'Eritrean',
+            'Estonian', 'Ethiopian', 'Fijian', 'Filipino', 'Finnish', 'French',
+            'Gabonese', 'Gambian', 'Georgian', 'German', 'Ghanaian', 'Greek',
+            'Grenadian', 'Guatemalan', 'Guinea-Bissauan', 'Guinean',
+            'Guyanese', 'Haitian', 'Herzegovinian', 'Honduran', 'Hungarian',
+            'I-Kiribati', 'Icelander', 'Indian', 'Indonesian', 'Iranian',
+            'Iraqi', 'Irish', 'Israeli', 'Italian', 'Ivorian', 'Jamaican',
+            'Japanese', 'Jordanian', 'Kazakhstani', 'Kenyan',
+            'Kittian and Nevisian', 'Kuwaiti', 'Kyrgyz', 'Laotian', 'Latvian',
+            'Lebanese', 'Liberian', 'Libyan', 'Liechtensteiner', 'Lithuanian',
+            'Luxembourger', 'Macedonian', 'Malagasy', 'Malawian', 'Malaysian',
+            'Maldivan', 'Malian', 'Maltese', 'Marshallese', 'Mauritanian',
+            'Mauritian', 'Mexican', 'Micronesian', 'Moldovan', 'Monacan',
+            'Mongolian', 'Moroccan', 'Mosotho', 'Motswana', 'Mozambican',
+            'Namibian', 'Nauruan', 'Nepalese', 'New Zealander', 'Nicaraguan',
+            'Nigerian', 'Nigerien', 'North Korean', 'Northern Irish',
+            'Norwegian', 'Omani', 'Pakistani', 'Palauan', 'Panamanian',
+            'Papua New Guinean', 'Paraguayan', 'Peruvian', 'Polish',
+            'Portuguese', 'Qatari', 'Romanian', 'Russian', 'Rwandan',
+            'SaintLucian', 'Salvadoran', 'Samoan', 'San Marinese',
+            'Sao Tomean', 'Saudi', 'Scottish', 'Senegalese', 'Serbian',
+            'Seychellois', 'Sierra Leonean', 'Singaporean', 'Slovakian',
+            'Slovenian', 'Solomon Islander', 'Somali', 'South African',
+            'South Korean', 'Spanish', 'Sri Lankan', 'Sudanese', 'Surinamer',
+            'Swazi', 'Swedish', 'Swiss', 'Syrian', 'Taiwanese', 'Tajik',
+            'Tanzanian', 'Thai', 'Togolese', 'Tongan',
+            'Trinidadian or Tobagonian', 'Tunisian', 'Turkish', 'Tuvaluan',
+            'Ugandan', 'Ukrainian', 'Uruguayan', 'Uzbekistani', 'Venezuelan',
+            'Vietnamese', 'Welsh', 'Yemenite', 'Zambian', 'Zimbabwean'
+        ];
+
+        /**
+         * An array of years.
+         *
+         * By default, this is a list of every year from one hundred years
+         * before the current year up to and including the current year.
+         *
+         * @name years
+         * @memberof Angular.DemographicsController#$scope
+         * @instance
+         * @type {number[]}
+         */
+        $scope.years = [];
+        var thisYear = new Date().getFullYear();
+        for (var i = thisYear; i >= thisYear - 110; i--) {
+            $scope.years.push(i);
+        }
+
+        /**
+         * Save nationality selection to the {@link
+         * Angular.TrialData|TrialData} service.
+         *
+         * The value of `nationality` is converted to lower case and saved
+         * in `TrialData.data.answers.nationality`.
+         *
+         * @function nationalityChanged
+         * @memberof Angular.DemographicsController#$scope
+         * @instance
+         * @param {string} nationality The new nationality
+         * @return {undefined}
+         */
+        $scope.nationalityChanged = function(nationality) {
+            $log.info('Nationality changed to ' + nationality + '.');
+            TrialData.data.answers.nationality =
+                nationality.toString().toLowerCase();
+        };
+
+        /**
+         * Save year selection to the {@link Angular.TrialData|TrialData}
+         * service.
+         *
+         * The value of `year` is converted to
+         * `TrialData.data.answers.dob`.
+         *
+         * @function yearChanged
+         * @memberof Angular.DemographicsController#$scope
+         * @instance
+         * @param {string} year The new year
+         * @return {undefined}
+         */
+        $scope.yearChanged = function(year) {
+            $log.info('Year changed to ' + year + '.');
+            TrialData.data.answers.dob = year;
+        };
+
+        /**
+         * Save gender selection to the {@link Angular.TrialData|TrialData}
+         * service.
+         *
+         * The value of `gender` is converted to
+         * `TrialData.data.answers.sex`.
+         *
+         * @function genderChanged
+         * @memberof Angular.DemographicsController#$scope
+         * @instance
+         * @param {string} gender The new gender
+         * @return {undefined}
+         */
+        $scope.genderChanged = function(gender) {
+            $log.info('Gender changed to ' + gender + '.');
+            TrialData.data.answers.sex = gender;
+        };
+    }
+]);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

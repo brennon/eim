@@ -36,9 +36,6 @@
 	{% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">
 	{% endfor %}
 
-  <!-- Track:js error tracking/logging -->
-  <script type="text/javascript" src="//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js" data-token="60c48ec9a6eb41e4a3b35c207ab3923c"></script>
-
 	<!-- HTML5 Shim -->
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -52,6 +49,7 @@
   <section class="content">
     <section class="container" id="bodyContainer">
       {% block content %}{% endblock %}
+		<display-trial-data ng-show="debugMode"></display-trial-data>
     </section>
   </section>
 

@@ -417,5 +417,30 @@ describe('ExperimentSchema Model', function() {
                 }
             });
         });
+
+        it('should return an error in the callback if there was a' +
+            ' problem', function(done) {
+
+            // Screw with the media IDs to get an error
+            ExperimentSchema
+                .findOne({_id: fixedSchema._id})
+                .populate('mediaPool')
+                .exec(function(err, exp) {
+
+                    for (var i = 0; i < exp.structure.length; i++) {
+                        if (exp.structure[i].name === 'media-playback' &&
+                            exp.structure[i].mediaType === 'fixed') {
+
+                            exp.structure[i].media = fixedSchema._id;
+                        }
+                    }
+
+                    exp.buildExperiment(function(err, build) {
+                        if (err) {
+                            done();
+                        }
+                    });
+                });
+        });
     });
 });

@@ -1,7 +1,7 @@
 {
   "name": "emotion-in-motion",
   "description": "Emotion in Motion Experiment Platform",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "Brennon Bortz",
   "license": "MIT",
   "repository": {
@@ -68,6 +68,7 @@
     "grunt-nodemon": "~0.4.0",
     "jasmine-core": "^2.3.4",
     "jscover": "^1.0.0",
+    "jsdoc": "^3.3.3",
     "karma": "~0.13.10",
     "karma-chrome-launcher": "~0.2.0",
     "karma-coverage": "~0.5.2",

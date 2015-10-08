@@ -6,28 +6,7 @@
         //Initialize global variables
         var TrialData;
         var blankDataObject = {
-            answers: {
-                //musical_expertise: null,
-                //musical_background: null,
-                //most_engaged: null,
-                //hearing_impairments: null,
-                //visual_impairments: null,
-                //nationality: null,
-                //dob: null,
-                //sex: null,
-                //music_styles: [],
-                //most_enjoyed: null,
-                //emotion_indices: [],
-                //ratings: {
-                //    positivity: [],
-                //    like_dislike: [],
-                //    familiarity: [],
-                //    engagement: [],
-                //    activity: [],
-                //    chills: [],
-                //    power: []
-                //}
-            },
+            answers: {},
 
             date: null,
             media: [],
@@ -67,34 +46,6 @@
                 expect(TrialData.data.metadata.language).toBeDefined();
                 expect(TrialData.data.state).toBeDefined();
                 expect(TrialData.data.answers).toBeDefined();
-                //expect(TrialData.data.answers.musical_expertise).toBeNull();
-                //expect(TrialData.data.answers.musical_background).toBeNull();
-                //expect(TrialData.data.answers.most_engaged).toBeNull();
-                //expect(TrialData.data.answers.hearing_impairments).toBeNull();
-                //expect(TrialData.data.answers.visual_impairments).toBeNull();
-                //expect(TrialData.data.answers.nationality).toBeNull();
-                //expect(TrialData.data.answers.dob).toBeNull();
-                //expect(TrialData.data.answers.sex).toBeNull();
-                //expect(TrialData.data.answers.music_styles).toBeDefined();
-                //expect(TrialData.data.answers.music_styles.length).toBe(0);
-                //expect(TrialData.data.answers.most_enjoyed).toBeNull();
-                //expect(TrialData.data.answers.emotion_indices).toBeDefined();
-                //expect(TrialData.data.answers.emotion_indices.length).toBe(0);
-                //expect(TrialData.data.answers.ratings).toBeDefined();
-                //expect(TrialData.data.answers.ratings.positivity).toBeDefined();
-                //expect(TrialData.data.answers.ratings.positivity.length).toBe(0);
-                //expect(TrialData.data.answers.ratings.like_dislike).toBeDefined();
-                //expect(TrialData.data.answers.ratings.like_dislike.length).toBe(0);
-                //expect(TrialData.data.answers.ratings.familiarity).toBeDefined();
-                //expect(TrialData.data.answers.ratings.familiarity.length).toBe(0);
-                //expect(TrialData.data.answers.ratings.engagement).toBeDefined();
-                //expect(TrialData.data.answers.ratings.engagement.length).toBe(0);
-                //expect(TrialData.data.answers.ratings.activity).toBeDefined();
-                //expect(TrialData.data.answers.ratings.activity.length).toBe(0);
-                //expect(TrialData.data.answers.ratings.chills).toBeDefined();
-                //expect(TrialData.data.answers.ratings.chills.length).toBe(0);
-                //expect(TrialData.data.answers.ratings.power).toBeDefined();
-                //expect(TrialData.data.answers.ratings.power.length).toBe(0);
                 expect(TrialData.data.date).toBeNull();
                 expect(TrialData.data.media).toBeDefined();
                 expect(TrialData.data.media.length).toBe(0);

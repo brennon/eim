@@ -48,7 +48,7 @@ describe('ExperimentSchema Controller Tests', function() {
             describe('when a schema is not available', function() {
 
                 // Mock ExperimentSchema model for controller
-                var errorMessage = 'No schema found';
+                var errorMessage = 'No schema found.';
                 var experimentSchemaMock = {
                     find: function(filter, callback) {
                         callback(new Error(errorMessage));
@@ -368,6 +368,73 @@ describe('ExperimentSchema Controller Tests', function() {
 
                     //noinspection JSUnresolvedVariable
                     data.should.deep.equal(builtExperimentMock);
+                });
+            });
+
+            describe('when the build is unsuccessful', function() {
+
+                // Mock ExperimentSchema model for controller
+                var experimentSchemaMock;
+                var schemaQueryResultMock;
+                var errorMessage = 'Error building experiment.';
+                var req, res;
+
+                beforeEach(function() {
+                    schemaQueryResultMock = [{
+                        buildExperiment: function(callback) {
+                            return callback(
+                                new Error(errorMessage),
+                                null
+                            );
+                        }
+                    }];
+
+                    experimentSchemaMock = {
+                        count: function(filter, callback) {
+                            return callback(null, 10);
+                        },
+                        find: function() {
+                            return {
+                                skip: function() {
+                                    return {
+                                        limit: function() {
+                                            return {
+                                                populate: function() {
+                                                    return {
+                                                        exec: function(callback) {
+                                                            callback(null, schemaQueryResultMock);
+                                                        }
+                                                    };
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+
+                    controller.__set__({
+                        ExperimentSchema: experimentSchemaMock
+                    });
+
+                    // Mock request and response
+                    req = httpMocks.createRequest();
+                    res = httpMocks.createResponse();
+
+                    // Call #list
+                    controller.random(req, res);
+                });
+
+                it('should return status 500', function() {
+                    res.statusCode.should.equal(500);
+                });
+
+                it('should return the error in JSON', function() {
+                    var data = JSON.parse(res._getData());
+
+                    //noinspection JSUnresolvedVariable
+                    data.should.deep.equal({error: errorMessage});
                 });
             });
         });

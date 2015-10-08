@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/services/experiment-manager.client.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/services/experiment-manager.client.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * The `ExperimentManager` service has two main responsibilities: managing
+ * the state (the 'slide' that is presented to the user) and the
+ * {@link Angular.TrialData|TrialData} service.
+ *
+ * @class Angular.ExperimentManager
+ * @memberof Angular
+ */
+
+angular.module('core').factory('ExperimentManager', [
+    'TrialData',
+    '$q',
+    '$http',
+    '$state',
+    '$log',
+    'rfc4122',
+    '$rootScope',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
+
+        $log.debug('Instantiating ExperimentManager service.');
+
+        // Attach an event listener for $rootScope's $stateChangeStart
+        // events and set stateChanging to true when these events are emitted
+        function stateChangeStartListener() {
+            returnObject.stateChanging = true;
+        }
+        $rootScope.$on('$stateChangeStart', stateChangeStartListener);
+
+        // Attach an event listener for $rootScope's $stateChangeSuccess
+        // events and set stateChanging to false when these events are emitted
+        function stateChangeSuccessListener() {
+            returnObject.stateChanging = false;
+        }
+        $rootScope.$on('$stateChangeSuccess', stateChangeSuccessListener);
+
+        var returnObject = {
+
+            /**
+             * Advances the state to the next state as defined in the study
+             * specification document (see the [README](index.html)).
+             *
+             * @function advanceSlide
+             * @instance
+             * @memberof Angular.ExperimentManager
+             * @return {undefined}
+             */
+            advanceSlide: function() {
+
+                if (!this.stateChanging) {
+
+                    TrialData.data.state.currentSlideIndex++;
+
+                    var currentSlideIndex =
+                        TrialData.data.state.currentSlideIndex;
+
+                    if (currentSlideIndex === TrialData.data.schema.length) {
+                        $state.go('home', {}, {reload: true});
+                    } else {
+                        $state.go(
+                            TrialData.data.schema[currentSlideIndex].name,
+                            {},
+                            {reload: true}
+                        );
+                    }
+                }
+            },
+
+            /**
+             * Resets the experiment session.
+             *
+             * In resetting the session, after resetting the {@link
+             * Angular.TrialData|TrialData} service, `masterReset()` does
+             * the following:
+             *
+             *  - Generates a new UUID for the session number
+             *  - Fetches a random experiment schema from the backend
+             *  - Gets the terminal number (as specified in
+             *  `config/custom.js` for this specific machine
+             *
+             *  The {@link Angular.TrialData|TrialData} service is then updated
+             *  with these new data.
+             *
+             * @function masterReset
+             * @memberof Angular.ExperimentManager
+             * @instance
+             * @return {$q.promise} This promise is resolved when the reset
+             * is complete and rejected if the reset fails.
+             */
+            masterReset: function() {
+
+                var deferred = $q.defer();
+
+                // Reset TrialData
+                TrialData.reset();
+
+                // Generate new session identifier and store it in TrialData
+                TrialData.data.metadata.session_number = rfc4122.v4();
+
+                // Get a new experiment setup from the backend
+                $http.get('/api/experiment-schemas/random')
+                    .success(function(data) {
+
+                        // Assign the media property from the ExperimentSchema
+                        // we received as the media property on the TrialData
+                        TrialData.data.media = data.media;
+                        TrialData.data.schema = data.structure;
+
+                        // Get custom configuration information from the backend
+                        $http.get('/api/config')
+                            .success(function(data) {
+
+                                // Specify this terminal from custom config
+                                TrialData.data.metadata.terminal =
+                                    data.metadata.terminal;
+                                deferred.resolve();
+                            })
+                            .error(function() {
+                                deferred.reject('The configuration could not' +
+                                    'be fetched from the server.');
+                            });
+                    })
+                    .error(function() {
+                        deferred.reject('An experiment schema could not be ' +
+                            'fetched from the server');
+                    });
+
+                return deferred.promise;
+            },
+
+            /**
+             * Reflects the current state as reported by Angular's
+             * `$stateProvider`. When the state is changing (a new 'slide'
+             * is being presented--typically after a call to {@link
+             * Angular.ExperimentManager#advanceSlide advanceSlide}, this
+             * will be set to `true`. When the change completes, this will
+             * be set to `true`.
+             *
+             * @var stateChanging
+             * @memberof Angular.ExperimentManager
+             * @instance
+             * @type {boolean}
+             */
+            stateChanging: false,
+
+            stateChangeStartListener: stateChangeStartListener,
+            stateChangeSuccessListener: stateChangeSuccessListener
+        };
+
+        return returnObject;
+    }
+]);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

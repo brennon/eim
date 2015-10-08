@@ -4,12 +4,12 @@
     describe('MediaPlaybackController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService, $timeout, ExperimentManager, $httpBackend, TrialData;
+        var mockScope, $controller, SocketIOService, $timeout, ExperimentManager, $httpBackend, TrialData, $log;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _ExperimentManager_, _$httpBackend_, _TrialData_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _ExperimentManager_, _$httpBackend_, _TrialData_, _$log_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             SocketIOService = _SocketIOService_;
@@ -17,6 +17,7 @@
             ExperimentManager = _ExperimentManager_;
             $httpBackend = _$httpBackend_;
             TrialData = _TrialData_;
+            $log = _$log_;
         }));
 
         describe('initialization', function() {
@@ -250,6 +251,63 @@
                 expect(SocketIOService.on.calls.count()).toBe(1);
                 expect(SocketIOService.on.calls.argsFor(0)[0]).toBe('oscMessageReceived');
                 expect(SocketIOService.on.calls.argsFor(0)[1]).toBe(controller.oscMessageReceivedListener);
+            });
+
+            it('should log unhandled messages', function() {
+
+                // Set a spy
+                spyOn($log, 'warn');
+
+                // Instantiate the controller
+                var controller = $controller('MediaPlaybackController',
+                    {$scope: mockScope}
+                );
+
+                // Send a message to a bad address
+                var badMessage = { address: '/badaddress' };
+                controller.oscMessageReceivedListener(badMessage);
+
+                // Check expectation
+                expect($log.warn).toHaveBeenCalled();
+                expect($log.warn.calls.argsFor(0)[0]).toEqual(
+                    'MediaPlaybackController did not handle an OSC message.'
+                );
+                expect($log.warn.calls.argsFor(0)[1]).toEqual(badMessage);
+            });
+
+            it('should log malformed messages',
+                function() {
+
+                // Set a spy
+                spyOn($log, 'warn');
+
+                // Instantiate the controller
+                var controller = $controller('MediaPlaybackController',
+                    {$scope: mockScope}
+                );
+
+                // Send bad messages
+                var badMessages = [
+                    'bad',
+                    {},
+                    [],
+                    3.14,
+                    5,
+                    function() {}
+                ];
+
+                badMessages.forEach(function(message, idx) {
+
+                    expect(function() {
+                        controller.oscMessageReceivedListener(message);
+                    }).not.toThrow();
+
+                    expect($log.warn).toHaveBeenCalled();
+                    expect($log.warn.calls.argsFor(idx)[0]).toEqual(
+                        'MediaPlaybackController did not handle an OSC message.'
+                    );
+                    expect($log.warn.calls.argsFor(idx)[1]).toEqual(message);
+                });
             });
 
             describe('playback start messages', function() {

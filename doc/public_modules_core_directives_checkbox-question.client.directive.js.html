@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/directives/checkbox-question.client.directive.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/directives/checkbox-question.client.directive.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * The `checkboxQuestion` directive is used to dynamically create a checkbox
+ * question into a view. It is used by the {@link
+ * Angular.questionnaireDirective|questionnaire} directive to build whole
+ * questionnaires.
+ *
+ * @class Angular.checkboxQuestionDirective
+ * @see Angular.questionnaireDirective
+ */
+
+angular.module('core').directive('checkboxQuestion', [
+    '$compile',
+    'TrialData',
+    '$log',
+    function($compile, TrialData, $log) {
+
+        $log.debug('Compiling checkboxQuestion directive.');
+
+        /**
+         * The data used to build the checkbox question is found in the `scope`
+         * argument passed to the directive's `#link` function. When a
+         * {@link Angular.questionnaireDirective|questionnaire} directive
+         * employs a `checkboxQuestion` directive, it passes
+         * the appropriate {@link Angular.questionnaireDirective#data~questionnaireStructureEntry|questionnaireStructureEntry}
+         * for this parameter.
+         *
+         * @name scope
+         * @memberof Angular.checkboxQuestionDirective
+         * @inner
+         * @type {{}}
+         * @see Angular.questionnaireDirective
+         */
+
+        return {
+            restrict: 'E',
+            scope: {},
+
+            link: function(scope, element, attrs) {
+                scope.someSelected = false;
+
+                scope.sendToTrialData = function(path, value) {
+
+                    //noinspection JSUnresolvedVariable
+                    if (!attrs.associatedToMedia) {
+                        TrialData.setValueForPath(path, value);
+                    } else {
+                        TrialData.setValueForPathForCurrentMedia(path, value);
+                    }
+                };
+
+                scope.updateCheckboxes = function() {
+                    var newSomeSelectedValue = false;
+
+                    var checkedOptions = [];
+                    var inputs = element.find('input');
+                    for (var i = 0; i &lt; inputs.length; i++) {
+                        var input = angular.element(inputs[i]);
+
+
+                        /* istanbul ignore else */
+                        if (input.attr('name') === attrs.questionId +
+                            'Checkbox') {
+
+                            if (input.prop('checked') === true) {
+                                newSomeSelectedValue = true;
+                                checkedOptions
+                                    .push(input.attr('value').toLowerCase());
+                            }
+                        }
+                    }
+
+                    scope.someSelected = newSomeSelectedValue;
+
+                    checkedOptions.sort();
+
+                    //noinspection JSUnresolvedVariable
+                    scope.sendToTrialData(
+                        attrs.controllerDataPath,
+                        checkedOptions
+                    );
+                };
+
+                var questionText =
+                    '&lt;div class="row well">' +
+                    '&lt;div class="col-md-12">' +
+                    '&lt;label for="' + attrs.questionId + 'Checkbox" translate>' +
+                    attrs.questionLabel +
+                    '&lt;/label>' +
+                    '&lt;div>';
+
+                var innerQuestionText = '';
+
+                if (element.data('questionOptions')) {
+
+                    // Iterate over checkbox options
+                    for (var i = 0;
+                         i &lt; element.data('questionOptions').choices.length;
+                         i++) {
+
+                        var thisOption = element.data('questionOptions').choices[i];
+
+                        innerQuestionText += '&lt;label class="checkbox-inline">';
+
+                        innerQuestionText +=
+                            '&lt;input type="checkbox" name="' + attrs.questionId +
+                            'Checkbox" id="' + attrs.questionId +
+                            'Checkbox' + thisOption.value +
+                            '" value="' + thisOption.value +
+                            '" ng-model="' + attrs.questionId +
+                            'Checkbox' + thisOption.value +
+                            '" ng-change="updateCheckboxes()"';
+
+                        if (element.data('questionRequired') !== false) {
+                            innerQuestionText += 'ng-required="!someSelected"';
+                        }
+
+                        innerQuestionText += '>{{\'' + thisOption.label +
+                            '\' | translate}}&lt;/input>';
+
+                        innerQuestionText += '&lt;/label>';
+                    }
+                }
+
+                questionText += innerQuestionText + '&lt;/div>&lt;/div>&lt;/div>';
+
+                var questionElement = angular.element(questionText);
+
+                element.append(questionElement);
+                $compile(element.contents())(scope);
+            }
+        };
+    }
+]);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

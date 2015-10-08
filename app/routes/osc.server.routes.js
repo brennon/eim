@@ -1,6 +1,9 @@
 'use strict';
 
-module.exports = function(app) {
-  var controller = require('../controllers/osc');
-  app.route('/api/osc/send/:message').get(controller.sendMessage);
-};
+/**
+ * `OSC` routes
+ *
+ * @module {function} Node.OSCServerRoutes
+ * @memberof Node
+ */
+module.exports = function(app) {};

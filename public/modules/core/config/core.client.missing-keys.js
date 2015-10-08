@@ -1,5 +1,44 @@
 'use strict';
 
+/**
+ * This **is not**, in fact, a class, but rather a file for defining those
+ * strings that
+ * [angular-gettext](https://angular-gettext.rocketeer.be/) does not
+ * automatically extract for translation using the `nggettext_extract` Grunt
+ * task. The file is located at
+ * `/public/modules/core/config/core.client.missing-keys.js`.
+ *
+ * If you've translated your text following the instructions in the README,
+ * and you still see text prepended with `[MISSING:]` when you browse to
+ * your application, you'll need to do the following:
+ *
+ * 1. Add all such strings to this file. In particular, add a separate call
+ * to `gettext('Your string here');` following those you see in this file.
+ * 2. Run the `nggettext_extract` task again.
+ * 3. Proceed with the translation instructions as given in the
+ * [README](index.html).
+ *
+ * As an example, if the following were the contents of the
+ * `core.client.missing-keys.js` file, the strings, `'No Signal'`, `'Signal
+ * OK'`, and `'Personal Details'`, would be extracted (along with all
+ * other strings that are automatically extracted) by the
+ * `nggettext_extract` Grunt task and included in the file at
+ * `/po/template.pot` for your use in creating translations.
+ *
+ * @example
+ *
+ * angular.module('core').controller(['gettext',
+ *    function (gettext) {
+ *         gettext('No Signal');
+ *         gettext('Signal OK');
+ *         gettext('Personal Details');
+ *     }
+ * ]);
+ *
+ * @class Angular.MissingKeys
+ * @memberof Angular
+ */
+
 angular.module('core').controller(['gettext',
     function (gettext) {
         gettext('No Signal');

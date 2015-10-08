@@ -4,18 +4,19 @@
     describe('StartController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, $timeout, $httpBackend, SocketIOService, TrialData;
+        var mockScope, $controller, $timeout, $httpBackend, SocketIOService, TrialData, $log;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_, _SocketIOService_, _TrialData_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_, _SocketIOService_, _TrialData_, _$log_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             $timeout = _$timeout_;
             $httpBackend = _$httpBackend_;
             SocketIOService = _SocketIOService_;
             TrialData = _TrialData_;
+            $log = _$log_;
         }));
 
         describe('initialization', function() {
@@ -111,6 +112,66 @@
                     expect(mockScope.maxReady).toBe(true);
                 });
 
+                it('should log unhandled messages', function() {
+
+                    // Set a spy
+                    spyOn($log, 'warn');
+
+                    // Instantiate the controller
+                    var controller = $controller('StartController', {
+                        $scope: mockScope
+                    });
+                    mockScope.maxReady = false;
+
+                    // Send a message to a bad address
+                    var badMessage = { address: '/badaddress' };
+                    controller.oscMessageReceivedListener(badMessage);
+
+                    // Check expectation
+                    expect(mockScope.maxReady).toBe(false);
+                    expect($log.warn).toHaveBeenCalled();
+                    expect($log.warn.calls.argsFor(0)[0]).toEqual(
+                        'StartController did not handle an OSC message.'
+                    );
+                    expect($log.warn.calls.argsFor(0)[1]).toEqual(badMessage);
+                });
+
+                it('should log malformed messages',
+                    function() {
+
+                    // Set a spy
+                    spyOn($log, 'warn');
+
+                    // Instantiate the controller
+                    var controller = $controller('StartController', {
+                        $scope: mockScope
+                    });
+                    mockScope.maxReady = false;
+
+                    // Send bad messages
+                    var badMessages = [
+                        'bad',
+                        {},
+                        [],
+                        3.14,
+                        5,
+                        function() {}
+                    ];
+
+                    badMessages.forEach(function(message, idx) {
+
+                        expect(function() {
+                            controller.oscMessageReceivedListener(message);
+                        }).not.toThrow();
+
+                        expect($log.warn).toHaveBeenCalled();
+                        expect($log.warn.calls.argsFor(idx)[0]).toEqual(
+                            'StartController did not handle an OSC message.'
+                        );
+                        expect($log.warn.calls.argsFor(idx)[1]).toEqual(message);
+                    });
+                });
+
                 it('should be attached to oscMessageReceived event', function() {
                     spyOn(SocketIOService, 'on');
 
@@ -170,7 +231,9 @@
 
                 $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
 
-                mockScope.readyToAdvance = true;
+                mockScope.readyToAdvance = function() {
+                    return true;
+                };
                 expect($timeout.flush).not.toThrow();
             });
 
@@ -183,7 +246,9 @@
                     $timeout: $timeout
                 });
 
-                mockScope.readyToAdvance = false;
+                mockScope.readyToAdvance = function() {
+                    return false;
+                };
 
                 $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
 

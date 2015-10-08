@@ -45,9 +45,9 @@
 
         describe('radio buttons', function() {
             it('should add a button for each option and wrap each in a label', function() {
-                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-label="Gender" question-id="gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
 
                 var radios = $(element).find('input[type="radio"]');
@@ -61,9 +61,9 @@
             });
 
             it('should set the correct name on each button', function() {
-                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 var radios = $(element).find('input[type="radio"]');
                 for (var i = 0; i < radios.length; i++) {
@@ -73,34 +73,61 @@
             });
 
             it('should set the correct id on each button', function() {
-                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 var radios = $(element).find('input[type="radio"]');
-                expect(radios[0].id).toBe('genderRadioYes');
-                expect(radios[1].id).toBe('genderRadioNo');
+                expect(radios[0].id).toBe('genderRadiofoo');
+                expect(radios[1].id).toBe('genderRadiobit');
             });
 
             it('should set the correct value on each button', function() {
-                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 var radios = $(element).find('input[type="radio"]');
-                expect(radios[0].value).toBe('true');
-                expect(radios[1].value).toBe('false');
+                expect(radios[0].value).toBe('bar');
+                expect(radios[1].value).toBe('baz');
             });
 
-            it('should set the required attribute on each button', function() {
-                var options = [{ label: 'Yes', value: true }, { label: 'No', value: false }];
-                element = angular.element('<radio-question question-id="gender"></radio-question>');
+            it('should set the required attribute on each button by default',
+                function() {
+
+                var options = [
+                    { label: 'Yes', value: true },
+                    { label: 'No', value: false }
+                ];
+                element = angular.element(
+                    '<radio-question question-id="gender"></radio-question>'
+                );
                 element.data('radioOptions', options);
                 $compile(element)($scope);
                 var radios = $(element).find('input[type="radio"]');
                 for (var i = 0; i < radios.length; i++) {
                     var obj = radios[i];
-                    expect(obj.required).toBe(true);
+                    expect(angular.element(obj).attr('required')).toBeTruthy();
+                }
+            });
+
+            it('should not set the required attribute on each button if the' +
+                ' question is not required', function() {
+
+                var options = [
+                    { label: 'Yes', value: true },
+                    { label: 'No', value: false }
+                ];
+                element = angular.element(
+                    '<radio-question question-id="gender"></radio-question>'
+                );
+                element.data('radioOptions', options);
+                element.data('questionRequired', false);
+                $compile(element)($scope);
+                var radios = $(element).find('input[type="radio"]');
+                for (var i = 0; i < radios.length; i++) {
+                    var obj = radios[i];
+                    expect(angular.element(obj).attr('required')).toBeFalsy();
                 }
             });
 
@@ -135,9 +162,9 @@
 
         describe('data binding', function() {
             it('should call TrialData with the correct data when an option is selected', function() {
-                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 var inputs = $(element).find('input[type="radio"]');
                 var secondInput = $(inputs[1]);
@@ -153,9 +180,9 @@
             });
 
             it('should call TrialData with the correct data when an option is selected and the question is associated to media', function() {
-                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender" associated-to-media="true"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 var inputs = $(element).find('input[type="radio"]');
                 var secondInput = $(inputs[1]);
@@ -172,9 +199,9 @@
             });
 
             it('should convert true strings to literals', function() {
-                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
                 var inputs = $(element).find('input[type="radio"]');
                 var secondInput = $(inputs[1]);
@@ -190,10 +217,11 @@
             });
 
             it('should convert false strings to literals', function() {
-                var options = [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }];
+                var options = { choices: [{ label: 'foo', value: 'bar' }, { label: 'bit', value: 'baz' }] };
                 element = angular.element('<radio-question question-id="gender" controller-data-path="data.answers.gender"></radio-question>');
-                element.data('radioOptions', options);
+                element.data('questionOptions', options);
                 $compile(element)($scope);
+
                 var inputs = $(element).find('input[type="radio"]');
                 var secondInput = $(inputs[1]);
 

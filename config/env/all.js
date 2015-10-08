@@ -31,10 +31,11 @@ module.exports = {
 				'public/lib/angular-slider/angular-slider.js',
 				'public/lib/socket.io-client/socket.io.js',
 				'public/lib/angular-socket-io/socket.js',
-				'public/lib/UUID.js/dist/uuid.core.js',
+				'public/lib/angular-uuid-service/angular-uuid-service.js',
 				'public/lib/angular-hotkeys/build/hotkeys.js',
 				'public/lib/angular-gettext/dist/angular-gettext.js',
-				'public/i18n/translations.js'
+				'public/i18n/translations.js',
+				'public/lib/angular-loggly-logger/angular-loggly-logger.js'
 			]
 		},
 		css: [
