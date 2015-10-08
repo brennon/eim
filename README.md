@@ -46,9 +46,7 @@ Complete documentation is available [here](https://brennon.github.io/eim/).
     mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production
     ```
     
-    The first of these three databases represent the databases that are used 
-    in the development, test, and production [Node environments]
-    (#environments).
+    The first of these three databases represent the databases that are used in the development, test, and production [Node environments](#environments).
 
 5. Start the Max helper project located at `EiMpatch/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
 
@@ -62,71 +60,28 @@ Complete documentation is available [here](https://brennon.github.io/eim/).
 
 # Environments
 
-Many commands described here behave differently depending on the Node 
-environment, which is set on the command line by prepending the command with 
-`NODE_ENV=environmentname`. For instance, to run the command listed in the 
-sixth step of the [Installation](#installation) sequence in the 'development'
- environment, use `NODE_ENV=development node_modules/grunt-cli/bin/grunt`.
+Many commands described here behave differently depending on the Node environment, which is set on the command line by prepending the command with `NODE_ENV=environmentname`. For instance, to run the command listed in the sixth step of the [Installation](#installation) sequence in the 'development' environment, use `NODE_ENV=development node_modules/grunt-cli/bin/grunt`.
 
-As an example of the differences that occur between environments, when the 
-above mentioned command is run in the development environment, the original 
-versions of all of the scripts in the framework are used when running the 
-server. In the production environment, however, a 'minified' version is used 
-(all 'extra' information is removed from all script files, and they are all 
-glued together to be one long file). It is much more efficient for the web 
-server to send this one minified file to a client than all of the individual 
-scripts that this application uses. This is one example of how the 
-production environment, in general, starts up a much faster, more efficient 
-server. The development environment, on the other hand, is the environment 
-you'll likely want to use when making changes to the framework. We will 
-attempt to be clear in these documents when it is important to choose one 
-environment over another.
+As an example of the differences that occur between environments, when the above mentioned command is run in the development environment, the original versions of all of the scripts in the framework are used when running the server. In the production environment, however, a 'minified' version is used (all 'extra' information is removed from all script files, and they are all glued together to be one long file). It is much more efficient for the web server to send this one minified file to a client than all of the individual scripts that this application uses. This is one example of how the production environment, in general, starts up a much faster, more efficient server. The development environment, on the other hand, is the environment you'll likely want to use when making changes to the framework. We will attempt to be clear in these documents when it is important to choose one environment over another.
 
-Of particular note here are the several database you'll see in your MongoDB 
-database after loading the demo app data. Either the `emotion-in-motion-dev`, 
-`emotion-in-motion-test`, or `emotion-in-motion-production` databases is 
-chosen for use according to the current Node environment. 
+Of particular note here are the several database you'll see in your MongoDB database after loading the demo app data. Either the `emotion-in-motion-dev`, `emotion-in-motion-test`, or `emotion-in-motion-production` databases is chosen for use according to the current Node environment. 
 
 # Custom Configuration
 
-There are a few things you'll likely want to change about your installation 
-straight away (the terminal numbers of the machines on which you install your
- app, the default language, etc.) All of these changes can be made in the 
- file at `config/custom.js`. The options for configuring this file are 
- described both in comments the file itself, as well as in the documentation 
- for the `CustomConfiguration` module.
+There are a few things you'll likely want to change about your installation straight away (the terminal numbers of the machines on which you install your app, the default language, etc.) All of these changes can be made in the file at `config/custom.js`. The options for configuring this file are described both in comments the file itself, as well as in the documentation for the `CustomConfiguration` module.
 
 # Debug Mode
 
-As you dig into customizing the framework for your own use, you should be 
-aware of debugging mode. When viewing any page in your application, pressing 
-the `'D'` key twice will toggle debugging mode. This enables two things:
+As you dig into customizing the framework for your own use, you should be aware of debugging mode. When viewing any page in your application, pressing the `'D'` key twice will toggle debugging mode. This enables two things:
 
-1. View the current [`TrialData`](#objects) document. As you'll read
- below, this document is where all information about the current experiment 
- session is stored. In debugging mode, you can see it at the bottom of the 
- page as it updates in real time.
-2. Advance through the experiment without impediment. Some sections of your 
-design may require the user to, for instance, answer questions before being 
-allowed to proceed. In debugging mode, the right arrow key will advance you 
-to the next slide irrespective of these impediments.
+1. View the current [`TrialData`](#objects) document. As you'll read below, this document is where all information about the current experiment session is stored. In debugging mode, you can see it at the bottom of the page as it updates in real time.
+2. Advance through the experiment without impediment. Some sections of your design may require the user to, for instance, answer questions before being allowed to proceed. In debugging mode, the right arrow key will advance you to the next slide irrespective of these impediments.
  
 # Study Specification Structure
  
-A study using Emotion in Motion is described by a MongoDB document (much like a 
-JSON file) stored in the MongoDB database. Specifying study structures in this 
-way essentially means that only knowledge of JSON is required in order to 
-create a new study that requires only the modification of components already 
-present in the provided demonstration study. JSON is a simple, textual format 
-for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) 
-for a gentle introduction.
+A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see [this site](http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/) for a gentle introduction.
 
-By default, the application looks in the `experimentschemas` collection in the 
-database for study specification documents. If more than one of these documents 
-are present, one is chosen at random for presenting your study to the 
-participant. (Thus, if only one of these documents is present, the structure 
-described by this document will be the structure that is always used.) The demo 
-application contains and presents only one study with the following structure:
+By default, the application looks in the `experimentschemas` collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:
 
 1. Welcome screen
 2. Consent form
@@ -140,9 +95,7 @@ application contains and presents only one study with the following structure:
 10. Emotion indices
 11. Thank you screen
 
-This structure is *completely* customizable, which we describe below. This 
-default study, like any other study, is described in a MongoDB document. This 
-MongoDB document has the following basic structure:
+This structure is *completely* customizable, which we describe below. This default study, like any other study, is described in a MongoDB document. This MongoDB document has the following basic structure:
 
 ```
 {  
@@ -275,7 +228,7 @@ Other slides in the `structure` property's array may also have a `data` property
 
 ##### Questionnaire Slides
 
-For now, we expect that most people's needs will be me with the ability to design experiments that involve presenting some static information to participants, presenting them with a number preselected or randomly selected media excerpts, and asking them questions at various times. We'll describe below how to configure [media slides](#media-slides), and we've already discussed how to edit 'static' slides (see [Adding Slides](#adding-slides) for instructions on how to add your own custom, static slides.) Here, we describe the third big piece of the puzzle, how to design questionnaires using the questionnaire slide type.
+For now, we expect that most people's needs will be met with the ability to design experiments that involve presenting some static information to participants, presenting them with a number of pre-selected or randomly selected media excerpts, and asking them questions at various times. We'll describe below how to configure [media slides](#media-slides), and we've already discussed how to edit 'static' slides (see [Adding Slides](#adding-slides) for instructions on how to add your own custom, static slides.) Here, we describe the third big piece of the puzzle, how to design questionnaires using the questionnaire slide type.
 
 As noted previously, questionnaire slide objects support an additional `data` property:
 
@@ -290,23 +243,23 @@ As noted previously, questionnaire slide objects support an additional `data` pr
 }
 ```
 
-Much like the outer JSON object describes an overall study session, the `data` property of a `questionnaire`-`name`d slide describes a questionnaire-based slide itself. The `data` property takes an object as its value, and supports three properties on this object: `title`, `introductoryText`, and `structure`.
+Much like the outer JSON object describes an overall study session, the `data` property of a slide with the a `name` of `'questionnaire'` describes a questionnaire-based slide itself. The `data` property takes an object as its value, and supports three properties on this object: `title`, `introductoryText`, and `structure`.
 
 ###### Questionnaire `title` Property
 
-The `title` property of a `questionnaire`'s `data` object takes a string that will be displayed as the title header of the screen. This property is **required**.
+The `title` property of a `questionnaire`'s `data` object takes a string that will be displayed as the title heading of the screen. This property is optional.
 
 ###### Questionnaire `introductoryText` Property
 
-The `introductoryText` property of a `questionnaire`'s `data` object takes a string that will be displayed below the title header. This property is optional.
+The `introductoryText` property of a `questionnaire`'s `data` object takes a string that will be displayed below the title heading. This property is optional.
 
 ###### Questionnaire `structure` Property
 
-The `structure` property of a `questionnaire`'s `data` object takes an array of objects that represent, in order, the individual questions presented on the questionnaire. This property is required. The allowed properties of the individual question objects are described here.
+The `structure` property of a `questionnaire`'s `data` object takes an array of objects that represent, in order, the individual questions presented on the questionnaire. This property is optional. The allowed properties of the individual question objects are described here.
 
 **`questionType`**
 
-A question object can be of one of four types: a Likert-type scale question, a group of radio buttons (from which one choice is allowed), a group of checkboxes (from which zero, one, or more choices are allowed), or a dropdown selection list. To specify the type of question, supply one of the following strings as the value for the `questionType` property: `"likert"`, `"radio"`, `"checkbox"`, or `"dropdown"`. This property is **required**.
+A question object can be of one of four types: a Likert-type scale question, a group of radio buttons (from which one choice is allowed), a group of checkboxes (from which zero, one, or more choices are allowed), or a dropdown selection list. To specify the type of question, supply one of the following strings as the value for the `questionType` property: `'likert'`, `'radio'`, `'checkbox'`, or `'dropdown'`. This property is **required**.
 
 **`questionId`**
 
@@ -314,11 +267,11 @@ The `questionId` property is used to dynamically associate the various parts of 
 
 **`questionLabel`**
 
-The `questionLabel` property takes a string that is used as the question text itself. This property is **required**.
+The `questionLabel` property takes a string that is used as the question text itself. This property is optional.
 
 **`questionLabelType`**
 
-The `questionLabelType` property is not currently used.
+If the value of `questionLabelType` is `'labelLeft'`, the label of the question will be above the question an justified left. Otherwise, the label will be set in a larger font and centered above the question. This property is optional.
 
 **`questionLikertMinimumDescription`**
 
@@ -366,46 +319,33 @@ When `"radio"` is specified as the value for the `questionType` property, the ap
 
 **`questionOptions`**
 
-This (currently poorly named) property is used for `"likert"` questions much like the `questionRadioOptions` is used for `"radio"` questions. The value, again, should be an ordered array of objects that are used to label the points along a five-point Likert-type scale. Here, only labels are required:
+The `questionOptions` property is used and **required** by all question types. In general, each question tpe requires that this be an object that has a `choices` property, the value of which is an array. Each entry in the choices array should be an object that represents a single question choice. Each of these objects should have both a `label` and a `value` property. The value of the `label` property should be a string that is used for the display of this question type. The value of the `value` property should be the value that should be stored when this choice is selected by the user for their answer.
 
 ```
-[
-    {"label": "Disagree strongly"},
-    {"label": "Disagree a little"},
-    {"label": "Neither agree nor disagree"},
-    {"label": "Agree a little"},
-    {"label": "Agree strongly"}
-]
-```
-
-**`questionCheckboxOptions` and `questionDropdownOptions`**
-
-As `questionRadioOptions` is to `"radio"` questions, `questionCheckboxOptions` is to `"checkbox"` questions, and `questionDropdownOptions` is to `"dropdown"` questions. This property takes an ordered array of strings to use as either the checkbox labels or the options available for selection in the dropdown selection list. For instance, to specify three checkboxes with the labels "Apple", "Orange", and "Banana", give `questionCheckboxOptions` the following value:
-
-```
-[ "Apple", "Orange", "Banana" ]
-```
-
-On the other hand, to provide a dropdown list with the same values, but in a different order, give `questionDropdownOptions` the following value:
-
-```
-[ "Orange", "Apple", "Banana" ]
-```
-
-**`questionDropdownOptions`**
-
-Ordered array of strings to use as dropdown list.
-
-**`questionLikertLeftImageSrc` and `questionLikertRightImageSrc`**
-
-The optional `questionLikertLeftImageSrc` and `questionLikertRightImageSrc` properties take strings as value that represent the paths to images to be displayed at the left and right sides of a Likert-type scale, respectively:
-
-```
+// questionOptions example:
 {
-    ...,
-    "questionLikertLeftImageSrc": "/modules/core/img/scale-left-engaged.png",
-    "questionLikertRightImageSrc": "/modules/core/img/scale-right-engaged.png",
-    ...
+    choices: [
+        {
+            label: 'Strongly disagree',
+            value: 1
+        },
+        {
+            label: 'Somewhat disagree',
+            value: 2
+        },
+        {
+            label: 'Neither agree nor disagree',
+            value: 3
+        },
+        {
+            label: 'Somewhat agree',
+            value: 4
+        },
+        {
+            label: 'Strongly agree',
+            value: 5
+        }
+    ]
 }
 ```
 
@@ -423,7 +363,7 @@ The optional `questionLikertSingleImageSrc` property takes a string as its value
 
 **`questionIsAssociatedToMedia`**
 
-The required `questionIsAssociatedToMedia` property specifies that a question corresponds to a particular media excerpt by taking a Boolean `true` or `false` as its value. When this value is set to `true`, multiple responses for questions with the same `questionStoragePath` property are stored in an ordered array that is used as the value for the `questionStoragePath` property in the final `trialData` document.
+The optional (default = `false`) `questionIsAssociatedToMedia` property specifies that a question corresponds to a particular media excerpt by taking a Boolean `true` or `false` as its value. When this value is set to `true`, multiple responses for questions with the same `questionStoragePath` property are stored in an ordered array that is used as the value for the `questionStoragePath` property in the final `trialData` document.
 
 For example, in the demonstration study provided with the framework, two media excerpts are played. We present the same questionnaire to the participant following each media excerpt. In order to specify that responses on the questionnaire following the first excerpt are associated with the first excerpt (and the same for the second questionnaire and excerpt), the values for `questionIsAssociatedToMedia` for all questions in these questionnaires are all set to `true`. So, for those questons with their `questionStoragePath` property set to `"data.answers.positivity"`, the corresponding section of a participant's `trialData` document might look something like this:
  
@@ -441,11 +381,11 @@ Here, the participant chose a value of `2` when responding to the positivity que
 
 **`questionRequired`**
 
-Specifying `true` as the value for the `questionRequired` property indicates that the participant *must* answer this question before being allowed to proceed. Correspondingly, specifying `false` for this value indicates that the participant may proceed without answering this question.
+Specifying `true` as the value for the `questionRequired` property indicates that the participant *must* answer this question before being allowed to proceed. Correspondingly, specifying `false` for this value indicates that the participant may proceed without answering this question. This property is optional (default = `true`).
 
 ##### Media Slides
 
-Media slides are created by giving a slide object the name `"media-playback"`. In addition to the `name` property, their objects take two more properties: `mediaType` and `media`.
+Media slides are created by giving a slide object the name `'media-playback'`. In addition to the `name` property, their objects take two more properties: `mediaType` and `media`.
 
 **`mediaType`**
 
@@ -609,7 +549,7 @@ The Max application looks for files in the `EiMpatch/media/` directory. If you a
 
 # Recorded Session Data
 
-In the demo applicaiton, two types of data are collected, recorded, and saved during a session: the data in the `trialData` document/object, and the data recorded from the sensors.  
+In the demo application, two types of data are collected, recorded, and saved during a session: the data in the `trialData` document/object, and the data recorded from the sensors.  
 
 ## `trialData` Objects
 
@@ -636,7 +576,60 @@ In the demo app, sensor data is recorded into space-delimited CSV files with a s
 
 ## The Max Patches
 
-## The Arduino Patches
+The framework uses the Max software to handle playback and data capture for the experiments. The patches are enclosed in the project named `EmotionInMotion.maxproj`. Opening this project will open the `MAIN.maxpat` and the `EiMsensors.maxpat` patches.
+
+### The MAIN Patch
+
+The `MAIN` patch is dived in three subpatches:
+
+1. `p EiM_BRAIN`: This subpatch handles OSC communications with the server, receiving instructions for playback, experiment labels, language, and sending feedback regarding the development of the expreriment. It also has settings for configuring the different folders that contain the media and sensor data files. Additionally, it is possible to configure the header labels for the sensor data columns.
+2. `p soundTest`: This subpatch checks the configuration of the sound parameters to make sure the soundcard is turned ON and that the headphones are correctly placed.
+3. `p PLAYBACK&RECORD`: This subpatch handles de playback of MEDIA and records sensor data into text files. The sensor data must be sent through an OSC message, with the label eim/sensorData followed by a list with each column representing a different channel of data.
+
+### The Sensor Patches
+
+Included in the project, there is a DEMO patch with an example of the configuration used in our experiments with Electrodermal Activity (EDA) and Pulse Oximetry (POX) sensors connected to an Arduino. In the `patchers` folder, the following patches are available:
+
+1. `ArduinoEiM_EDA.maxpat`: Patch configured to receive data from an EDA sensor connected to an Arduino (see Arduino script).
+2. `ArduinoEiM_POX.maxpat`: Patch configured to receive data from a POX sensor connected to an Arduino (see Arduino script).
+3. `EDAtool.maxpat`: Patch that processes and extracts features from an EDA signal. It also evaluates and reports the signal's status.
+4. `HRfromPOX.maxpat`: Patch that processes HR from the POX signal.  It also evaluates and reports the signal's status.
+5. `testServer.maxpat`: Demonstration patch to test communication with the server.
+
+## Arduino Script
+
+An Arduino Script is available to be used with the DEMO patches. This script configures the Arduino to capture sensor data connected to an analog channel and stream it over the serial port to Max.
+
+```
+#define SAMPLING_INTERVAL 10     // 10ms (100Hz) for EDA, 4ms (250Hz) for POX
+#define ANALOG_PIN 0            // Analog pin connected to sensor
+#define ARDUINO_HEADER 255      // Arduino Header to be identified by Max Patch. EDA=255, POX=254
+
+int analogData;
+
+// ************************************************************************
+
+void setup() {
+  Serial.begin(57600);
+}
+
+void loop() { 
+  long periodCheck = millis()%SAMPLING_INTERVAL;
+  if (periodCheck == 0)
+  {
+    SampleAndSend();
+//    Serial.println(millis()); // report time elapsed between SampleAndSend
+  }
+}
+
+void SampleAndSend() {
+  analogData = analogRead(ANALOG_PIN); // Read current analog pin value
+  Serial.write(analogData >> 7); // shift high bits into output byte
+  Serial.write(analogData % 128); // mod by 128 for the small byte
+  Serial.write(ARDUINO_HEADER); // end of packet signifier
+  delay(SAMPLING_INTERVAL*0.5); // delay to prevent multiple SampleAndSend per interval
+}
+```
 
 # Internationalization
 
@@ -707,10 +700,10 @@ Here, the string inside the parentheses should match the name of the `.po` file 
 
 ## Setting the Default Language
 
-The default language for your application is set in `public/application.js`. The demo app ships with English as the default language, as set by this line
+The default language for your application is set in `config/custom.js`. The demo app ships with English as the default language, as set by this line
 
 ```
-gettextCatalog.setCurrentLanguage('en');
+customConfiguration.defaultLanguage = 'en';
 ```
 
 To choose a new default language, change `'en'` to be the language you would like to be the default (starting) language. For instance, to change this to use our Taiwanese translation as the default language, we would change this line to
@@ -719,14 +712,14 @@ To choose a new default language, change `'en'` to be the language you would lik
 gettextCatalog.setCurrentLanguage('zh_TW');
 ```
 
-The default language only governs the language used when the first screen is initially loaded. After this point, participants are free to change the language using the dropdown menu in the header.
+The default language only governs the language used when the first screen is initially loaded. After this point, participants are free to change the language using the dropdown menu in the header. Note that the language tag you specify (in the second example, `'zh_TW'`) must have a corresponding `.po` file in the `po/` directory(for this example, `po/zh_TW.po`), and must be compiled using the `nggettext_compile` grunt task (see the above sections.) 
 
 # Building a Production Version of Your Study Application
 
 Running the application with `node_modules/grunt-cli/bin/grunt` starts a Node.js web server. By default, this runs in *development* mode, which can be considerably slower than running in *production* mode. Running in production mode requires that you have built a production-ready version of your application. To do so, run the following command from the root directory of the repository:
 
 ```
-node_modules/grunt-cli/bin/grunt build
+NODE_ENV=development node_modules/grunt-cli/bin/grunt build
 ```
 
 Once this successfully completes, use the following modification of the server startup command to run in production mode:
@@ -734,6 +727,8 @@ Once this successfully completes, use the following modification of the server s
 ```
 NODE_ENV=production node_modules/grunt-cli/bin/grunt
 ```
+
+See the [comments above](#environments) about the database that will be used based on the `NODE_ENV` you specify.
 
 # Adding Custom Directives
 
