@@ -11,14 +11,14 @@
     <div class="col-md-6">
       <div>
         <h2 translate>Skin Sensor</h2>
-        <button class="btn btn-lg" ng-class="{'btn-danger': !edaQuality, 'btn-success': edaQuality}">{{ edaQuality ? "Signal OK" : "No Signal" | translate }}</button>
+        <button class="btn btn-lg btn-signal" ng-class="{'btn-danger': !edaQuality, 'btn-success': edaQuality}">{{ edaQuality ? "Signal OK" : "No Signal" | translate }}</button>
       </div>
 
     </div>
     <div class="col-md-6">
       <div>
         <h2 translate>Heart Sensor</h2>
-        <button class="btn btn-lg" ng-class="{'btn-danger': !poxQuality, 'btn-success': poxQuality}">{{ poxQuality ? "Signal OK" : "No Signal" | translate }}</button>
+        <button class="btn btn-lg btn-signal" ng-class="{'btn-danger': !poxQuality, 'btn-success': poxQuality}">{{ poxQuality ? "Signal OK" : "No Signal" | translate }}</button>
       </div>
     </div>
   </div>
