@@ -3865,6 +3865,8 @@ angular.module('core').factory('OSC', [
             /**
              * Handles OSC messages received over socket.io. These messages are
              * then passed on to any subscribers to the message address.
+             * Messages received for which there are no subscribers are logged
+             * to the console.
              *
              * @function incomingMessageHandler
              * @param {{}} message Received OSC message
@@ -3880,6 +3882,8 @@ angular.module('core').factory('OSC', [
                     for (var i = 0; i < handlers.length; i++) {
                         handlers[i](message);
                     }
+                } else {
+                    $log.info('Unhandled OSC message.', message);
                 }
             },
 

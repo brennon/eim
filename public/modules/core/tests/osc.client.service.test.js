@@ -211,6 +211,12 @@
                         OSC.subscribe('/foo/bar', handler);
                         SocketIOService.receive('oscMessageReceived', message);
                     });
+
+                    it('should log all unhandled messages', function() {
+                        spyOn($log, 'info');
+                        SocketIOService.receive('oscMessageReceived', message);
+                        expect($log.info).toHaveBeenCalled();
+                    });
                 });
 
                 describe('outgoing messages', function() {
