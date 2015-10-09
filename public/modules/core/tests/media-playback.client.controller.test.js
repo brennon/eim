@@ -4,12 +4,15 @@
     describe('MediaPlaybackController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService, $timeout, ExperimentManager, $httpBackend, TrialData, $log;
+        var mockScope, $controller, SocketIOService, $timeout,
+            ExperimentManager, $httpBackend, TrialData, $log;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_, _$timeout_, _ExperimentManager_, _$httpBackend_, _TrialData_, _$log_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_,
+                                   _$timeout_, _ExperimentManager_,
+                                   _$httpBackend_, _TrialData_, _$log_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             SocketIOService = _SocketIOService_;
@@ -33,36 +36,48 @@
         });
 
         describe('teardown', function() {
-            it('should send a stopMedia OSC message when the scope is destroyed', function() {
-                var mockTrialData = {
-                    data: {
-                        metadata: {
-                            session_number: 42
+            it('should send a stopMedia OSC message when the scope is ' +
+                'destroyed', function() {
+                    var mockTrialData = {
+                        data: {
+                            metadata: {
+                                session_number: 42
+                            }
                         }
-                    }
-                };
-                mockScope.showBody = function() {
-                };
-                $controller('MediaPlaybackController',
-                    {$scope: mockScope, TrialData: mockTrialData}
-                );
+                    };
+                    mockScope.showBody = function() {
+                    };
 
-                SocketIOService.emits = {};
-                mockScope.$destroy();
-                var emittedMessage = SocketIOService.emits.sendOSCMessage[0][0];
-                expect(emittedMessage).toEqual({
-                    oscType: 'message',
-                    address: '/eim/control/stopMedia',
-                    args: {
-                        type: 'string',
-                        value: '' + mockTrialData.data.metadata.session_number
-                    }
-                });
-            });
+                    // Need to mock this method
+                    SocketIOService.removeListener = function() {};
+
+                    $controller('MediaPlaybackController',
+                        {$scope: mockScope, TrialData: mockTrialData}
+                    );
+
+                    SocketIOService.emits = {};
+                    mockScope.$destroy();
+                    var emittedMessage =
+                        SocketIOService.emits.sendOSCMessage[0][0];
+                    expect(emittedMessage).toEqual({
+                        oscType: 'message',
+                        address: '/eim/control/stopMedia',
+                        args: {
+                            type: 'string',
+                            value: '' + mockTrialData.data.metadata
+                                .session_number
+                        }
+                    });
+                }
+            );
 
             it('should show the body when the scope is destroyed', function() {
                 mockScope.showBody = function() {
                 };
+
+                // Need to mock this method
+                SocketIOService.removeListener = function() {};
+
                 $controller('MediaPlaybackController',
                     {$scope: mockScope}
                 );
@@ -95,7 +110,8 @@
                     {$scope: mockScope}
                 );
 
-                expect(mockScope.buttonAction).toBe(mockScope.startMediaPlayback);
+                expect(mockScope.buttonAction)
+                    .toBe(mockScope.startMediaPlayback);
             });
 
             it('should set buttonDisabled to false', function() {
@@ -108,36 +124,38 @@
         });
 
         describe('#requestEmotionIndex', function() {
-            it('should be called when stop playback message is received', function() {
-                var mockTrialData = {
-                    data: {
-                        metadata: {
-                            session_number: 42
-                        },
-                        state: {
-                            mediaPlayCount: 0
+            it('should be called when stop playback message is received',
+                function() {
+                    var mockTrialData = {
+                        data: {
+                            metadata: {
+                                session_number: 42
+                            },
+                            state: {
+                                mediaPlayCount: 0
+                            }
                         }
-                    }
-                };
-                mockScope.showBody = function() {
-                };
-                var controller = $controller('MediaPlaybackController',
-                    {$scope: mockScope, TrialData: mockTrialData}
-                );
+                    };
+                    mockScope.showBody = function() {
+                    };
+                    var controller = $controller('MediaPlaybackController',
+                        {$scope: mockScope, TrialData: mockTrialData}
+                    );
 
-                spyOn(controller, 'requestEmotionIndex');
+                    spyOn(controller, 'requestEmotionIndex');
 
-                controller.oscMessageReceivedListener({
-                    address: '/eim/status/playback',
-                    args: [
-                        {
-                            value: 0
-                        }
-                    ]
-                });
+                    controller.oscMessageReceivedListener({
+                        address: '/eim/status/playback',
+                        args: [
+                            {
+                                value: 0
+                            }
+                        ]
+                    });
 
-                expect(controller.requestEmotionIndex.calls.count()).toBe(1);
-            });
+                    expect(controller.requestEmotionIndex.calls.count()).toBe(1);
+                }
+            );
 
             it('should send the correct OSC message', function() {
                 var mockTrialData = {
@@ -163,7 +181,8 @@
                     args: [
                         {
                             type: 'string',
-                            value: '' + mockTrialData.data.metadata.session_number
+                            value: '' + mockTrialData.data.metadata
+                                .session_number
                         }
                     ]
                 });
@@ -171,49 +190,53 @@
         });
 
         describe('#startMediaPlayback', function() {
-            it('should send the correct OSC start message to the socket', function() {
+            it('should send the correct OSC start message to the socket',
+                function() {
 
-                var mockTrialData = {
-                    data: {
-                        media: [
-                            {label: 'a'},
-                            {label: 'b'},
-                            {label: 'c'},
-                            {label: 'd'}
-                        ],
-                        state: {
-                            mediaPlayCount: 3
-                        },
-                        metadata: {
-                            session_number: 42
-                        }
-                    }
-                };
-
-                $controller('MediaPlaybackController',
-                    {$scope: mockScope, TrialData: mockTrialData}
-                );
-
-                SocketIOService.emits = {};
-                mockScope.startMediaPlayback();
-                var emittedMessage = SocketIOService.emits.sendOSCMessage[0][0];
-                expect(emittedMessage).toEqual(
-                    {
-                        oscType: 'message',
-                        address: '/eim/control/mediaID',
-                        args: [
-                            {
-                                type: 'string',
-                                value: mockTrialData.data.media[mockTrialData.data.state.mediaPlayCount].label
+                    var mockTrialData = {
+                        data: {
+                            media: [
+                                {label: 'a'},
+                                {label: 'b'},
+                                {label: 'c'},
+                                {label: 'd'}
+                            ],
+                            state: {
+                                mediaPlayCount: 3
                             },
-                            {
-                                type: 'string',
-                                value: '' + mockTrialData.data.metadata.session_number
+                            metadata: {
+                                session_number: 42
                             }
-                        ]
-                    }
-                );
-            });
+                        }
+                    };
+
+                    $controller('MediaPlaybackController',
+                        {$scope: mockScope, TrialData: mockTrialData}
+                    );
+
+                    SocketIOService.emits = {};
+                    mockScope.startMediaPlayback();
+                    var emittedMessage =
+                        SocketIOService.emits.sendOSCMessage[0][0];
+                    expect(emittedMessage).toEqual(
+                        {
+                            oscType: 'message',
+                            address: '/eim/control/mediaID',
+                            args: [
+                                {
+                                    type: 'string',
+                                    value: mockTrialData.data.media[mockTrialData.data.state.mediaPlayCount].label
+                                },
+                                {
+                                    type: 'string',
+                                    value: '' + mockTrialData.data.metadata
+                                        .session_number
+                                }
+                            ]
+                        }
+                    );
+                }
+            );
 
             it('should update buttonAction to #advanceSlide', function() {
                 var mockTrialData = {
@@ -238,7 +261,8 @@
 
                 mockScope.mediaHasPlayed = false;
                 mockScope.startMediaPlayback();
-                expect(mockScope.buttonAction).toBe(ExperimentManager.advanceSlide);
+                expect(mockScope.buttonAction)
+                    .toBe(ExperimentManager.advanceSlide);
             });
         });
 
@@ -249,8 +273,10 @@
                     {$scope: mockScope}
                 );
                 expect(SocketIOService.on.calls.count()).toBe(1);
-                expect(SocketIOService.on.calls.argsFor(0)[0]).toBe('oscMessageReceived');
-                expect(SocketIOService.on.calls.argsFor(0)[1]).toBe(controller.oscMessageReceivedListener);
+                expect(SocketIOService.on.calls.argsFor(0)[0])
+                    .toBe('oscMessageReceived');
+                expect(SocketIOService.on.calls.argsFor(0)[1])
+                    .toBe(controller.oscMessageReceivedListener);
             });
 
             it('should log unhandled messages', function() {
@@ -312,7 +338,10 @@
 
             describe('playback start messages', function() {
                 it('should call $scope.hideBody', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
+                    $httpBackend.expectGET(
+                        'modules/core/views/home.client.view.html'
+                    ).respond();
+
                     mockScope.hideBody = function() {
                     };
                     $controller('MediaPlaybackController',
@@ -335,7 +364,10 @@
 
             describe('playback stop messages', function() {
                 it('should call $scope.showBody', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
+                    $httpBackend.expectGET(
+                        'modules/core/views/home.client.view.html'
+                    ).respond();
+
                     mockScope.showBody = function() {
                     };
                     $controller('MediaPlaybackController',
@@ -356,7 +388,10 @@
                 });
 
                 it('should set buttonDisabled to true', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
+                    $httpBackend.expectGET(
+                        'modules/core/views/home.client.view.html'
+                    ).respond();
+
                     mockScope.showBody = function() {
                     };
                     $controller('MediaPlaybackController',
@@ -378,61 +413,75 @@
                     expect(mockScope.buttonDisabled).toBe(true);
                 });
 
-                it('should update the button label if media has not yet played', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
-                    mockScope.showBody = function() {
-                    };
-                    $controller('MediaPlaybackController',
-                        {$scope: mockScope}
-                    );
+                it('should update the button label if media has not yet played',
+                    function() {
+                        $httpBackend.expectGET(
+                            'modules/core/views/home.client.view.html'
+                        ).respond();
 
-                    mockScope.mediaHasPlayed = false;
-                    mockScope.currentButtonLabel = '';
-                    SocketIOService.receive('oscMessageReceived',
-                        {
-                            address: '/eim/status/playback',
-                            args: [
-                                {
-                                    value: 0
-                                }
-                            ]
-                        }
-                    );
+                        mockScope.showBody = function() {
+                        };
+                        $controller('MediaPlaybackController',
+                            {$scope: mockScope}
+                        );
 
-                    $timeout.flush();
+                        mockScope.mediaHasPlayed = false;
+                        mockScope.currentButtonLabel = '';
+                        SocketIOService.receive('oscMessageReceived',
+                            {
+                                address: '/eim/status/playback',
+                                args: [
+                                    {
+                                        value: 0
+                                    }
+                                ]
+                            }
+                        );
 
-                    expect(mockScope.currentButtonLabel).toBe('Continue');
-                });
+                        $timeout.flush();
 
-                it('should set mediaHasPlayed to true if media has not yet played', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
-                    mockScope.showBody = function() {
-                    };
-                    $controller('MediaPlaybackController',
-                        {$scope: mockScope}
-                    );
+                        expect(mockScope.currentButtonLabel).toBe('Continue');
+                    }
+                );
 
-                    mockScope.mediaHasPlayed = false;
-                    SocketIOService.receive('oscMessageReceived',
-                        {
-                            address: '/eim/status/playback',
-                            args: [
-                                {
-                                    value: 0
-                                }
-                            ]
-                        }
-                    );
+                it('should set mediaHasPlayed to true if media has not yet ' +
+                    'played', function() {
 
-                    $timeout.flush();
+                        $httpBackend.expectGET(
+                            'modules/core/views/home.client.view.html'
+                        ).respond();
 
-                    expect(mockScope.mediaHasPlayed).toBe(true);
-                });
+                        mockScope.showBody = function() {
+                        };
+                        $controller('MediaPlaybackController',
+                            {$scope: mockScope}
+                        );
+
+                        mockScope.mediaHasPlayed = false;
+                        SocketIOService.receive('oscMessageReceived',
+                            {
+                                address: '/eim/status/playback',
+                                args: [
+                                    {
+                                        value: 0
+                                    }
+                                ]
+                            }
+                        );
+
+                        $timeout.flush();
+
+                        expect(mockScope.mediaHasPlayed).toBe(true);
+                    }
+                );
             });
 
             describe('emotion index messages', function() {
                 it('should set buttonDisabled to true', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
+
+                    $httpBackend.expectGET(
+                        'modules/core/views/home.client.view.html'
+                    ).respond();
 
                     mockScope.showBody = function() {
                     };
@@ -477,50 +526,64 @@
                     expect(mockScope.buttonDisabled).toBe(false);
                 });
 
-                it('should set the emotion index for the correct media', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
-                    mockScope.showBody = function() {
-                    };
-                    var mockTrialData = {
-                        data: {
-                            answers: {
-                                emotion_indices: []
-                            },
-                            state: {
-                                mediaPlayCount: 0
-                            }
-                        },
-                        setValueForPathForCurrentMedia: function() {}
-                    };
-                    spyOn(mockTrialData, 'setValueForPathForCurrentMedia');
+                it('should set the emotion index for the correct media',
+                    function() {
 
-                    var mockExperimentManager = {
-                        advanceSlide: function() {}
-                    };
+                        $httpBackend.expectGET(
+                            'modules/core/views/home.client.view.html'
+                        ).respond();
 
-                    $controller('MediaPlaybackController',
-                        {$scope: mockScope, TrialData: mockTrialData, ExperimentManager: mockExperimentManager}
-                    );
-
-                    SocketIOService.receive('oscMessageReceived',
-                        {
-                            address: '/eim/status/emotionIndex',
-                            args: [
-                                {
-                                    value: 92
+                        mockScope.showBody = function() {
+                        };
+                        var mockTrialData = {
+                            data: {
+                                answers: {
+                                    emotion_indices: []
+                                },
+                                state: {
+                                    mediaPlayCount: 0
                                 }
-                            ]
-                        }
-                    );
+                            },
+                            setValueForPathForCurrentMedia: function() {}
+                        };
+                        spyOn(mockTrialData, 'setValueForPathForCurrentMedia');
 
-                    $timeout.flush();
+                        var mockExperimentManager = {
+                            advanceSlide: function() {}
+                        };
 
-                    //expect(mockTrialData.data.answers.emotion_indices[0]).toBe(92);
-                    expect(mockTrialData.setValueForPathForCurrentMedia).toHaveBeenCalledWith('data.answers.emotion_indices', 92);
-                });
+                        $controller('MediaPlaybackController', {
+                                $scope: mockScope,
+                                TrialData: mockTrialData,
+                                ExperimentManager: mockExperimentManager
+                            }
+                        );
+
+                        SocketIOService.receive('oscMessageReceived',
+                            {
+                                address: '/eim/status/emotionIndex',
+                                args: [
+                                    {
+                                        value: 92
+                                    }
+                                ]
+                            }
+                        );
+
+                        $timeout.flush();
+
+                        expect(mockTrialData.setValueForPathForCurrentMedia)
+                            .toHaveBeenCalledWith(
+                                'data.answers.emotion_indices', 92
+                            );
+                    }
+                );
 
                 it('should increment mediaPlayCount', function() {
-                    $httpBackend.expectGET('modules/core/views/home.client.view.html').respond();
+                    $httpBackend.expectGET(
+                        'modules/core/views/home.client.view.html'
+                    ).respond();
+
                     mockScope.showBody = function() {
                     };
                     var mockTrialData = {
@@ -539,8 +602,11 @@
                         advanceSlide: function() {}
                     };
 
-                    $controller('MediaPlaybackController',
-                        {$scope: mockScope, TrialData: mockTrialData, ExperimentManager: mockExperimentManager}
+                    $controller('MediaPlaybackController', {
+                            $scope: mockScope,
+                            TrialData: mockTrialData,
+                            ExperimentManager: mockExperimentManager
+                        }
                     );
 
                     SocketIOService.receive('oscMessageReceived',
@@ -561,6 +627,10 @@
             });
 
             it('should be removed when the scope is destroyed', function() {
+
+                // Need to mock this method
+                SocketIOService.removeListener = function() {};
+
                 mockScope.showBody = function() {
                 };
                 $controller('MediaPlaybackController',

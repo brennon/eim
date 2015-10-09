@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: public/modules/core/services/osc.client.service.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: public/modules/core/services/osc.client.service.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by brennon on 10/8/15.
+ */
+
+'use strict';
+
+/**
+ * The `OSC` service exposes functionality for listening to incoming messages
+ * from the server and sending outgoing messages to the server.
+ *
+ * @class Angular.OSC
+ * @memberof Angular
+ */
+
+angular.module('core').factory('OSC', [
+    '$log',
+    'SocketIOService',
+    function($log, SocketIOService) {
+
+        // This service should:
+        //  - Listen for all incoming OSC messages from the socket
+        //  - Allow consumers to subscribe to receive messages by address
+        //  - Forwarded messages to subscribed consumers
+        //  - Log incoming messages for which no consumer is subscribed
+
+        $log.debug('Instantiating OSC service.');
+
+        var returnObject = {
+
+            /**
+             * Handles OSC messages received over socket.io. These messages are
+             * then passed on to any subscribers to the message address.
+             *
+             * @function incomingMessageHandler
+             * @param {{}} message Received OSC message
+             * @instance
+             * @memberof Angular.OSC
+             * @return {undefined}
+             */
+            incomingMessageHandler: function incomingMessageHandlerFn(message) {
+                var address = message.address;
+
+                if (returnObject.listeners.hasOwnProperty(address)) {
+                    var handlers = returnObject.listeners[address];
+                    for (var i = 0; i &lt; handlers.length; i++) {
+                        handlers[i](message);
+                    }
+                }
+            },
+
+            /**
+             * Callback that will be called when a message is received for a
+             * specified address.
+             *
+             * @callback OSCSubscriberCallback
+             * @memberof Angular.OSC
+             * @param {{}} message The OSC message that was received
+             */
+
+            /**
+             * Subscribe to receive OSC messages for a particular address.
+             *
+             * @function subscribe
+             * @param {string} address The address of messages for which the
+             * caller would like to subscribe
+             * @param {Angular.OSC.OSCSubscriberCallback} callback The callback
+             * to be called when messages with the address in `address` are
+             * received
+             * @instance
+             * @memberof Angular.OSC
+             * @return {undefined}
+             */
+            subscribe: function subscribeFn(address, callback) {
+
+                if (address === undefined || callback === undefined) {
+                    return $log.error('You must specify both an address and ' +
+                        'a callback to subscribe.');
+                }
+
+                if (typeof address !== 'string') {
+                    return $log.error('Address must be a string.');
+                }
+
+                if (typeof callback !== 'function') {
+                    return $log.error('Callback must be a function.');
+                }
+
+                $log.debug('Attaching listener for incoming OSC messages to ' +
+                    'address: ' + address);
+
+                if (!this.listeners.hasOwnProperty(address)) {
+                    this.listeners[address] = [];
+                }
+
+                this.listeners[address].push(callback);
+            },
+
+            /**
+             * Stop receiving OSC messages with a particular address.
+             *
+             * @function unsubscribe
+             * @instance
+             * @memberof Angular.OSC
+             * @param {string} address The address of messages for which the
+             * caller would like to unsubscribe
+             * @param {Angular.OSC.OSCSubscriberCallback} callback The callback
+             * that was passed with the original call to Angular.OSC#subscribe}
+             * @returns {undefined}
+             */
+            unsubscribe: function unsubscribeFn(address, callback) {
+
+                if (address === undefined || callback === undefined) {
+                    return $log.error('You must specify both an address and ' +
+                        'a callback to unsubscribe.');
+                }
+
+                if (typeof address !== 'string') {
+                    return $log.error('Address must be a string.');
+                }
+
+                if (!this.listeners.hasOwnProperty(address) ||
+                    this.listeners[address].length === 0) {
+
+                    return $log.error('There are no subscribers for OSC ' +
+                        'messages to address: \'' + address + '\'');
+                }
+
+                var index = this.listeners[address].indexOf(callback);
+
+                if (index >= 0) {
+                    this.listeners[address].splice(index, 1);
+                }
+            },
+
+            send: function sendFn(message, callback) {
+                SocketIOService.emit('sendOSCMessage', message, callback);
+            },
+
+            listeners: {}
+        };
+
+        // Listen for all oscMessageReceived events
+        SocketIOService.on(
+            'oscMessageReceived',
+            returnObject.incomingMessageHandler
+        );
+
+        return returnObject;
+    }
+]);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Fri Oct 09 2015 12:35:19 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

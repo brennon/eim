@@ -4,12 +4,15 @@
     describe('StartController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, $timeout, $httpBackend, SocketIOService, TrialData, $log;
+        var mockScope, $controller, $timeout, $httpBackend, SocketIOService,
+            TrialData, $log;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_, _$httpBackend_, _SocketIOService_, _TrialData_, _$log_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _$timeout_,
+                                   _$httpBackend_, _SocketIOService_,
+                                   _TrialData_, _$log_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             $timeout = _$timeout_;
@@ -96,21 +99,25 @@
         describe('OSC message handling', function() {
             describe('message received listener', function() {
 
-                it('should set $scope.maxReady to true on the correct message', function() {
-                    var controller = $controller('StartController', {
-                        $scope: mockScope
-                    });
+                it('should set $scope.maxReady to true on the correct message',
+                    function() {
+                        var controller = $controller('StartController', {
+                            $scope: mockScope
+                        });
 
-                    mockScope.maxReady = false;
+                        mockScope.maxReady = false;
 
-                    spyOn(mockScope, '$apply').and.callFake(function(callback) {
-                        callback();
-                    });
-                    controller.oscMessageReceivedListener({
-                        address: '/eim/status/startExperiment'
-                    });
-                    expect(mockScope.maxReady).toBe(true);
-                });
+                        spyOn(mockScope, '$apply').and.callFake(
+                            function(callback) {
+                                callback();
+                            }
+                        );
+                        controller.oscMessageReceivedListener({
+                            address: '/eim/status/startExperiment'
+                        });
+                        expect(mockScope.maxReady).toBe(true);
+                    }
+                );
 
                 it('should log unhandled messages', function() {
 
@@ -168,36 +175,47 @@
                         expect($log.warn.calls.argsFor(idx)[0]).toEqual(
                             'StartController did not handle an OSC message.'
                         );
-                        expect($log.warn.calls.argsFor(idx)[1]).toEqual(message);
+                        expect($log.warn.calls.argsFor(idx)[1])
+                            .toEqual(message);
                     });
                 });
 
-                it('should be attached to oscMessageReceived event', function() {
-                    spyOn(SocketIOService, 'on');
+                it('should be attached to oscMessageReceived event',
+                    function() {
+                        spyOn(SocketIOService, 'on');
 
-                    var controller = $controller('StartController', {
-                        $scope: mockScope
-                    });
+                        var controller = $controller('StartController', {
+                            $scope: mockScope
+                        });
 
-                    expect(SocketIOService.on.calls.argsFor(0)[0])
-                        .toBe('oscMessageReceived');
-                    expect(SocketIOService.on.calls.argsFor(0)[1])
-                        .toBe(controller.oscMessageReceivedListener);
-                });
+                        expect(SocketIOService.on.calls.argsFor(0)[0])
+                            .toBe('oscMessageReceived');
+                        expect(SocketIOService.on.calls.argsFor(0)[1])
+                            .toBe(controller.oscMessageReceivedListener);
+                    }
+                );
 
-                it('should be removed when the controller is destroyed', function() {
-                    spyOn(SocketIOService, 'removeListener');
+                it('should be removed when the controller is destroyed',
+                    function() {
 
-                    var controller = $controller('StartController', {
-                        $scope: mockScope,
-                        SocketIOService: SocketIOService
-                    });
-                    mockScope.$destroy();
-                    expect(SocketIOService.removeListener.calls.argsFor(0)[0])
-                        .toBe('oscMessageReceived');
-                    expect(SocketIOService.removeListener.calls.argsFor(0)[1])
-                        .toBe(controller.oscMessageReceivedListener);
-                });
+                        // Need to mock this method
+                        SocketIOService.removeListener = function() {};
+
+                        spyOn(SocketIOService, 'removeListener');
+
+                        var controller = $controller('StartController', {
+                            $scope: mockScope,
+                            SocketIOService: SocketIOService
+                        });
+                        mockScope.$destroy();
+                        expect(
+                            SocketIOService.removeListener.calls.argsFor(0)[0]
+                        ).toBe('oscMessageReceived');
+                        expect(
+                            SocketIOService.removeListener.calls.argsFor(0)[1]
+                        ).toBe(controller.oscMessageReceivedListener);
+                    }
+                );
             });
         });
 
@@ -211,6 +229,10 @@
             });
 
             it('should be destroyed when the scope is destroyed', function() {
+
+                // Need to mock this method
+                SocketIOService.removeListener = function() {};
+
                 var controller = $controller('StartController', {
                     $scope: mockScope,
                     $timeout: $timeout
@@ -220,27 +242,37 @@
 
                 mockScope.$destroy();
 
-                expect($timeout.cancel.calls.argsFor(0)[0]).toBe(controller.errorTimeout);
+                expect($timeout.cancel.calls.argsFor(0)[0])
+                    .toBe(controller.errorTimeout);
             });
 
-            it('should throw an error if $scope.readyToAdvance is false', function() {
-                $controller('StartController', {
-                    $scope: mockScope,
-                    $timeout: $timeout
-                });
+            it('should throw an error if $scope.readyToAdvance is false',
+                function() {
+                    $controller('StartController', {
+                        $scope: mockScope,
+                        $timeout: $timeout
+                    });
 
-                $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
+                    $httpBackend.expect(
+                        'GET',
+                        'modules/core/views/home.client.view.html'
+                    ).respond();
 
-                mockScope.readyToAdvance = function() {
-                    return true;
-                };
-                expect($timeout.flush).not.toThrow();
-            });
+                    mockScope.readyToAdvance = function() {
+                        return true;
+                    };
+                    expect($timeout.flush).not.toThrow();
+                }
+            );
 
             it('should call $scope#addGenericErrorAlert', function() {
                 mockScope.addGenericErrorAlert = function() {
                 };
                 spyOn(mockScope, 'addGenericErrorAlert');
+
+                // Need to mock this method
+                SocketIOService.removeListener = function() {};
+
                 $controller('StartController', {
                     $scope: mockScope,
                     $timeout: $timeout
@@ -250,12 +282,16 @@
                     return false;
                 };
 
-                $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
+                $httpBackend.expect(
+                    'GET',
+                    'modules/core/views/home.client.view.html'
+                ).respond();
 
                 try {
                     $timeout.flush();
                 } catch (e) {
-                    expect(mockScope.addGenericErrorAlert.calls.count()).toBe(1);
+                    expect(mockScope.addGenericErrorAlert.calls.count())
+                        .toBe(1);
                 }
             });
         });
