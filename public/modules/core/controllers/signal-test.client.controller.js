@@ -231,8 +231,8 @@ angular.module('core').controller('SignalTestController', [
          */
         this.oscMessageReceivedListener = function(data) {
 
-            console.info('SignalTesttController received an OSC message.');
-            console.info(data);
+            $log.info('SignalTestController received an OSC message.');
+            $log.info(data);
 
             var expectedMessageAddresses = [
                 '/eim/status/signalQuality/eda',

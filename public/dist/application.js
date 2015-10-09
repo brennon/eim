@@ -965,8 +965,9 @@ angular.module('core').controller(
         '$timeout',
         '$log',
         '$http',
+        'OSC',
         function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
-                 $state, $timeout, $log, $http) {
+                 $state, $timeout, $log, $http, OSC) {
 
             $log.debug('Loading MasterController.');
 
@@ -1659,7 +1660,7 @@ angular.module('core').controller('QuestionnaireController', [
     '$log',
     function($scope, TrialData, $log) {
 
-        $log.info('Loading QuestionnaireController.');
+        $log.debug('Loading QuestionnaireController.');
 
         /**
          * The `QuestionnaireController`'s `$scope` object. All properties on
@@ -1919,8 +1920,8 @@ angular.module('core').controller('SignalTestController', [
          */
         this.oscMessageReceivedListener = function(data) {
 
-            console.info('SignalTesttController received an OSC message.');
-            console.info(data);
+            $log.info('SignalTestController received an OSC message.');
+            $log.info(data);
 
             var expectedMessageAddresses = [
                 '/eim/status/signalQuality/eda',
@@ -2148,7 +2149,7 @@ angular.module('core').controller('StartController', [
     function($scope, $timeout, TrialData, ExperimentManager, SocketIOService,
              $log) {
 
-        $log.info('Loading StartController.');
+        $log.debug('Loading StartController.');
 
         /**
          * The `StartController`'s `$scope` object. All properties on `$scope`
@@ -2176,7 +2177,7 @@ angular.module('core').controller('StartController', [
 
         // Set the date on the TrialData service to now
         var now = new Date();
-        console.info('Setting time on TrialData as ' + now.toISOString());
+        $log.info('Setting time on TrialData as ' + now.toISOString());
         TrialData.data.date = now.toISOString();
 
         /**
@@ -2193,8 +2194,8 @@ angular.module('core').controller('StartController', [
          */
         this.oscMessageReceivedListener = function(data) {
 
-            console.info('StartController received an OSC message.');
-            console.info(data);
+            $log.info('StartController received an OSC message.');
+            $log.info(data);
 
             /* istanbul ignore else */
             if (typeof data === 'object' &&
@@ -2227,7 +2228,7 @@ angular.module('core').controller('StartController', [
                 thisController.oscMessageReceivedListener
             );
 
-            console.debug('Cancelling timeout on StartController.');
+            $log.debug('Cancelling timeout on StartController.');
             $timeout.cancel(thisController.errorTimeout);
         });
 
@@ -2243,7 +2244,7 @@ angular.module('core').controller('StartController', [
          */
         this.sendExperimentStartMessage = function() {
 
-            console.info('StartController sending experiment start message.');
+            $log.info('StartController sending experiment start message.');
 
             /**
              * Flag indicating whether or not the Max application is ready.

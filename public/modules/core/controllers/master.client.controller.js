@@ -30,8 +30,9 @@ angular.module('core').controller(
         '$timeout',
         '$log',
         '$http',
+        'OSC',
         function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
-                 $state, $timeout, $log, $http) {
+                 $state, $timeout, $log, $http, OSC) {
 
             $log.debug('Loading MasterController.');
 

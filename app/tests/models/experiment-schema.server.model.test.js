@@ -428,9 +428,8 @@ describe('ExperimentSchema Model', function() {
                 .exec(function(err, exp) {
 
                     for (var i = 0; i < exp.structure.length; i++) {
-                        if (exp.structure[i].name === 'media-playback' &&
-                            exp.structure[i].mediaType === 'fixed') {
-
+                        if (exp.structure[i].name == 'media-playback' &&
+                            exp.structure[i].mediaType == 'fixed') {
                             exp.structure[i].media = fixedSchema._id;
                         }
                     }
