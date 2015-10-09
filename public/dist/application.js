@@ -2020,48 +2020,17 @@ angular.module('core').controller('SignalTestController', [
 
 angular.module('core').controller('SoundTestController', [
     '$scope',
-    'SocketIOService',
     'TrialData',
     'gettextCatalog',
     '$log',
-    function($scope, SocketIOService, TrialData, gettextCatalog, $log) {
+    'OSC',
+    function($scope, TrialData, gettextCatalog, $log, OSC) {
 
         $log.debug('Loading SoundTestController.');
 
-        // Get current language
-        var currentLanguage = gettextCatalog.currentLanguage;
 
-        // Send a message to Max to start the sound test
-        $log.debug('Sending start sound test message to Max.');
-        SocketIOService.emit('sendOSCMessage', {
-            oscType: 'message',
-            address: '/eim/control/soundTest',
-            args: [
-                {
-                    type: 'integer',
-                    value: 1
-                },
-                {
-                    type: 'string',
-                    value: currentLanguage
-                },
-                {
-                    type: 'string',
-                    value: '' + TrialData.data.metadata.session_number
-                }
-            ]
-        });
+        /***** $scope *****/
 
-        /**
-         * The `SoundTestController`'s `$scope` object. All properties on
-         * `$scope` are available to the view.
-         *
-         * @name $scope
-         * @namespace
-         * @instance
-         * @memberof Angular.SoundTestController
-         * @type {{}}
-         */
 
         /**
          * Sends a message to Max to stop the sound test. This message looks
@@ -2093,20 +2062,7 @@ angular.module('core').controller('SoundTestController', [
 
             $log.debug('Sending stop sound test message to Max.');
 
-            SocketIOService.emit('sendOSCMessage', {
-                oscType: 'message',
-                address: '/eim/control/soundTest',
-                args: [
-                    {
-                        type: 'integer',
-                        value: 0
-                    },
-                    {
-                        type: 'string',
-                        value: '' + TrialData.data.metadata.session_number
-                    }
-                ]
-            });
+            OSC.send(stopTestMessage);
         };
 
         /**
@@ -2120,12 +2076,72 @@ angular.module('core').controller('SoundTestController', [
          */
         $scope.destroyed = false;
 
+
+        /***** $scope Event Handlers *****/
+
+
         // Send stop sound test message when controller is destroyed
         $scope.$on('$destroy', function() {
 
             $log.debug('SoundTestController $scope destroyed.');
             $scope.stopSoundTest();
         });
+
+
+        /***** Initialization logic *****/
+
+
+        // Get current language
+        var currentLanguage = gettextCatalog.currentLanguage;
+
+        var startTestMessage = {
+            oscType: 'message',
+            address: '/eim/control/soundTest',
+            args: [
+                {
+                    type: 'integer',
+                    value: 1
+                },
+                {
+                    type: 'string',
+                    value: currentLanguage
+                },
+                {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            ]
+        };
+
+        /**
+         * The `SoundTestController`'s `$scope` object. All properties on
+         * `$scope` are available to the view.
+         *
+         * @name $scope
+         * @namespace
+         * @instance
+         * @memberof Angular.SoundTestController
+         * @type {{}}
+         */
+
+        var stopTestMessage = {
+            oscType: 'message',
+            address: '/eim/control/soundTest',
+            args: [
+                {
+                    type: 'integer',
+                    value: 0
+                },
+                {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            ]
+        };
+
+        // Send a message to Max to start the sound test
+        $log.debug('Sending start sound test message to Max.');
+        OSC.send(startTestMessage);
     }
 ]);
 'use strict';
