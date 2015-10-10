@@ -4,19 +4,16 @@
     describe('SignalTestController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService,
-            mockTrialData, $timeout, $log;
+        var mockScope, $controller, mockTrialData, $timeout, $log, OSC;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
         beforeEach(
             inject(
-                function(_$controller_, $rootScope, _SocketIOService_,
-                         _$timeout_, _$log_) {
+                function(_$controller_, $rootScope, _$timeout_, _$log_, _OSC_) {
                     $controller = _$controller_;
                     mockScope = $rootScope.$new();
-                    SocketIOService = _SocketIOService_;
                     mockTrialData = {
                         data: {
                             metadata: {
@@ -26,6 +23,7 @@
                     };
                     $timeout = _$timeout_;
                     $log = _$log_;
+                    OSC = _OSC_;
                 }
             )
         );
@@ -107,22 +105,14 @@
                 );
 
                 describe('timeout', function () {
-                    it('should send the stop signal test message', function () {
-
+                    it('should send the stop signal test message', function() {
                         $controller('SignalTestController', {
                             $scope: mockScope,
                             TrialData: mockTrialData,
                             $timeout: $timeout
                         });
 
-                        SocketIOService.emits = {};
-
-                        $timeout.flush();
-
-                        var emittedData =
-                            SocketIOService.emits.sendOSCMessage[0][0];
-
-                        expect(emittedData).toEqual({
+                        var stopSignalTestMessage = {
                             oscType: 'message',
                             address: '/eim/control/signalTest',
                             args: [
@@ -136,28 +126,52 @@
                                         .session_number
                                 }
                             ]
-                        });
-                    });
+                        };
 
-                    it('should set EDA and POX quality to 1', function () {
-
-                        $controller('SignalTestController', {
-                            $scope: mockScope,
-                            TrialData: mockTrialData,
-                            $timeout: $timeout
-                        });
-
-                        SocketIOService.emits = {};
+                        spyOn(OSC, 'send');
 
                         $timeout.flush();
-                        $timeout.flush();
 
-                        var emittedData =
-                            SocketIOService.emits.sendOSCMessage[0][0];
-
-                        expect(mockScope.edaQuality).toBeTruthy();
-                        expect(mockScope.poxQuality).toBeTruthy();
+                        expect(OSC.send.calls.argsFor(0)[0])
+                            .toEqual(stopSignalTestMessage);
                     });
+
+
+                    it('should set EDA and POX quality to 1 on timeout',
+                        function () {
+
+                            $controller('SignalTestController', {
+                                $scope: mockScope,
+                                TrialData: mockTrialData,
+                                $timeout: $timeout
+                            });
+
+                            $timeout.flush();
+                            $timeout.flush();
+
+                            expect(mockScope.edaQuality).toBeTruthy();
+                            expect(mockScope.poxQuality).toBeTruthy();
+                        }
+                    );
+
+                    it('should set stop the test on timeout',
+                        function () {
+
+                            var ctrl = $controller('SignalTestController', {
+                                $scope: mockScope,
+                                TrialData: mockTrialData,
+                                $timeout: $timeout
+                            });
+
+                            spyOn(ctrl, 'sendStopSignalTestMessage');
+
+                            $timeout.flush();
+                            $timeout.flush();
+
+                            expect(ctrl.sendStopSignalTestMessage)
+                                .toHaveBeenCalled();
+                        }
+                    );
                 });
             });
 
@@ -200,18 +214,16 @@
         });
 
         describe('OSC messages', function() {
-            it('should emit the correct OSC message on init', function() {
+            it('should send the correct OSC message on init', function() {
                 var controller = $controller('SignalTestController',
                     { $scope: mockScope, TrialData: mockTrialData }
                 );
 
-                SocketIOService.emits = {};
+                spyOn(OSC, 'send');
 
                 controller.sendStartSignalTestMessage();
 
-                var emittedData = SocketIOService.emits.sendOSCMessage[0][0];
-
-                expect(emittedData).toEqual({
+                expect(OSC.send.calls.argsFor(0)[0]).toEqual({
                     oscType: 'message',
                     address: '/eim/control/signalTest',
                     args: [
@@ -228,52 +240,18 @@
                 });
             });
 
-            it('should call sendStartSignalTestMessage when the controller ' +
-                'is created', function() {
-                    SocketIOService.emits = {};
-
-                    $controller('SignalTestController',
-                        { $scope: mockScope, TrialData: mockTrialData }
-                    );
-
-                    var emittedData =
-                        SocketIOService.emits.sendOSCMessage[0][0];
-
-                    expect(emittedData).toEqual({
-                        oscType: 'message',
-                        address: '/eim/control/signalTest',
-                        args: [
-                            {
-                                type: 'integer',
-                                value: 1
-                            },
-                            {
-                                type: 'string',
-                                value: '' + mockTrialData.data.metadata
-                                    .session_number
-                            }
-                        ]
-                    });
-                }
-            );
-
             it('#sendStopSignalTestMessage should send the correct OSC message',
                 function() {
-
-                    // Need to mock this method
-                    SocketIOService.removeListener = function() {};
 
                     var controller = $controller('SignalTestController',
                         { $scope: mockScope, TrialData: mockTrialData }
                     );
 
-                    SocketIOService.emits = {};
+                    spyOn(OSC, 'send');
+
                     controller.sendStopSignalTestMessage();
 
-                    var emittedData =
-                        SocketIOService.emits.sendOSCMessage[0][0];
-
-                    expect(emittedData).toEqual({
+                    var stopMessage = {
                         oscType: 'message',
                         address: '/eim/control/signalTest',
                         args: [
@@ -287,15 +265,15 @@
                                     .session_number
                             }
                         ]
-                    });
+                    };
+
+                    expect(OSC.send.calls.argsFor(0)[0])
+                        .toEqual(stopMessage);
                 }
             );
 
             it('should call sendStopSignalTestMessage when the scope is ' +
                 'destroyed', function() {
-
-                // Need to mock this method
-                SocketIOService.removeListener = function() {};
 
                 var controller = $controller('SignalTestController',
                     { $scope: mockScope, TrialData: mockTrialData }
@@ -309,93 +287,56 @@
                     .toBe(1);
             });
 
-            describe('message received listener', function() {
+            describe('message received listeners', function() {
                 it('should be added on initialization', function() {
-                    spyOn(SocketIOService, 'on');
+                    spyOn(OSC, 'subscribe');
 
                     var controller = $controller('SignalTestController',
                         { $scope: mockScope }
                     );
 
-                    var callArgs = SocketIOService.on.calls.argsFor(0);
-                    expect(callArgs[1])
-                        .toBe(controller.oscMessageReceivedListener);
+                    var firstCallArgs = OSC.subscribe.calls.argsFor(0);
+                    expect(firstCallArgs[0])
+                        .toEqual('/eim/status/signalQuality/eda');
+                    expect(firstCallArgs[1])
+                        .toBe(controller.edaQualityMessageListener);
+
+                    var secondCallArgs = OSC.subscribe.calls.argsFor(1);
+                    expect(secondCallArgs[0])
+                        .toEqual('/eim/status/signalQuality/pox');
+                    expect(secondCallArgs[1])
+                        .toBe(controller.poxQualityMessageListener);
+
+                    var thirdCallArgs = OSC.subscribe.calls.argsFor(2);
+                    expect(thirdCallArgs[0])
+                        .toEqual(
+                            '/eim/status/testRecordingComplete'
+                        );
+                    expect(thirdCallArgs[1])
+                        .toBe(controller.recordingCompleteMessageListener);
                 });
 
                 it('should be removed on destruction', function() {
+                    spyOn(OSC, 'unsubscribe');
 
-                    // Need to mock this method
-                    SocketIOService.removeListener = function() {};
-
-                    spyOn(SocketIOService, 'removeListener');
-
-                    var controller = $controller('SignalTestController',
+                    var ctrl = $controller('SignalTestController',
                         { $scope: mockScope }
                     );
 
                     mockScope.$destroy();
 
-                    expect(SocketIOService.removeListener.calls.argsFor(0)[1])
-                        .toBe(controller.oscMessageReceivedListener);
-                });
-
-                it('should log unhandled messages', function() {
-
-                    // Set a spy
-                    spyOn($log, 'warn');
-
-                    // Instantiate the controller
-                    var controller = $controller('SignalTestController',
-                        { $scope: mockScope }
-                    );
-
-                    // Send a message to a bad address
-                    var badMessage = { address: '/badaddress' };
-                    controller.oscMessageReceivedListener(badMessage);
-
-                    // Check expectations
-                    expect($log.warn).toHaveBeenCalled();
-                    expect($log.warn.calls.argsFor(0)[0]).toEqual(
-                        'SignalTestController did not handle an OSC message.'
-                    );
-                    expect($log.warn.calls.argsFor(0)[1]).toEqual(badMessage);
-                });
-
-                it('should log malformed messages',
-                    function() {
-
-                    // Set a spy
-                    spyOn($log, 'warn');
-
-                    // Instantiate the controller
-                    var controller = $controller('SignalTestController',
-                        { $scope: mockScope }
-                    );
-
-                    // Send bad messages
-                    var badMessages = [
-                        'bad',
-                        {},
-                        [],
-                        3.14,
-                        5,
-                        function() {}
-                    ];
-
-                    badMessages.forEach(function(message, idx) {
-
-                        expect(function() {
-                            controller.oscMessageReceivedListener(message);
-                        }).not.toThrow();
-
-                        expect($log.warn).toHaveBeenCalled();
-                        expect($log.warn.calls.argsFor(idx)[0]).toEqual(
-                            'SignalTestController did not handle an OSC' +
-                            ' message.'
-                        );
-                        expect($log.warn.calls.argsFor(idx)[1])
-                            .toEqual(message);
-                    });
+                    expect(OSC.unsubscribe.calls.argsFor(0)[0])
+                        .toEqual('/eim/status/signalQuality/eda');
+                    expect(OSC.unsubscribe.calls.argsFor(0)[1])
+                        .toEqual(ctrl.edaQualityMessageListener);
+                    expect(OSC.unsubscribe.calls.argsFor(1)[0])
+                        .toEqual('/eim/status/signalQuality/pox');
+                    expect(OSC.unsubscribe.calls.argsFor(1)[1])
+                        .toEqual(ctrl.poxQualityMessageListener);
+                    expect(OSC.unsubscribe.calls.argsFor(2)[0])
+                        .toEqual('/eim/status/testRecordingComplete');
+                    expect(OSC.unsubscribe.calls.argsFor(2)[1])
+                        .toEqual(ctrl.recordingCompleteMessageListener);
                 });
 
                 it('should set edaQuality to 1 with the correct OSC message',
@@ -415,7 +356,7 @@
 
                         mockScope.edaQuality = 1;
 
-                        controller.oscMessageReceivedListener(mockMessage);
+                        controller.edaQualityMessageListener(mockMessage);
 
                         expect(mockScope.edaQuality).toBe(0);
                     }
@@ -438,7 +379,7 @@
 
                         mockScope.edaQuality = 0;
 
-                        controller.oscMessageReceivedListener(mockMessage);
+                        controller.edaQualityMessageListener(mockMessage);
 
                         expect(mockScope.edaQuality).toBe(1);
                     }
@@ -464,7 +405,7 @@
                             }
                         ]
                     };
-                    controller.oscMessageReceivedListener(mockMessage);
+                    controller.edaQualityMessageListener(mockMessage);
 
                     // Check expectation
                     expect($log.warn).toHaveBeenCalledWith('Bad EDA signal' +
@@ -488,7 +429,7 @@
 
                         mockScope.poxQuality = 1;
 
-                        controller.oscMessageReceivedListener(mockMessage);
+                        controller.poxQualityMessageListener(mockMessage);
 
                         expect(mockScope.poxQuality).toBe(0);
                     }
@@ -514,7 +455,7 @@
                             }
                         ]
                     };
-                    controller.oscMessageReceivedListener(mockMessage);
+                    controller.poxQualityMessageListener(mockMessage);
 
                     // Check expectation
                     expect($log.warn).toHaveBeenCalledWith('Bad POX signal' +
@@ -538,7 +479,7 @@
 
                         mockScope.poxQuality = 0;
 
-                        controller.oscMessageReceivedListener(mockMessage);
+                        controller.poxQualityMessageListener(mockMessage);
 
                         expect(mockScope.poxQuality).toBe(1);
                     }
@@ -556,7 +497,8 @@
 
                         mockScope.testRecordingComplete = false;
 
-                        controller.oscMessageReceivedListener(mockMessage);
+                        controller
+                            .recordingCompleteMessageListener(mockMessage);
 
                         expect(mockScope.testRecordingComplete).toBe(true);
                     }
@@ -574,7 +516,8 @@
 
                         spyOn(controller, 'sendStopSignalTestMessage');
 
-                        controller.oscMessageReceivedListener(mockMessage);
+                        controller
+                            .recordingCompleteMessageListener(mockMessage);
 
                         expect(
                             controller.sendStopSignalTestMessage.calls.count()
