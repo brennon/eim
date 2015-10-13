@@ -38,16 +38,18 @@
 angular.module('core').controller('MediaPlaybackController', [
     '$scope',
     'TrialData',
-    'SocketIOService',
     '$timeout',
     'ExperimentManager',
     '$log',
-    function($scope, TrialData, SocketIOService, $timeout,
-             ExperimentManager, $log) {
+    'OSC',
+    function($scope, TrialData, $timeout, ExperimentManager, $log, OSC) {
 
         $log.debug('Loading MediaPlaybackController.');
 
         var thisController = this;
+
+        /***** $scope *****/
+
 
         /**
          * The `MediaPlaybackController`'s `$scope` object. All properties on
@@ -132,7 +134,7 @@ angular.module('core').controller('MediaPlaybackController', [
 
             $log.debug('Requesting playback of \'' + mediaLabel + '\'.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/mediaID',
                 args: [
@@ -165,6 +167,43 @@ angular.module('core').controller('MediaPlaybackController', [
          */
         $scope.buttonAction = $scope.startMediaPlayback;
 
+
+        /***** $scope Event Handlers *****/
+
+
+            // Send a message to stop media playback when this controller is
+            // destroyed. Also, remove OSC message event listeners.
+        $scope.$on('$destroy', function stopMediaPlayback() {
+
+            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
+                ' playback, removing OSC listener, and showing body.');
+
+            OSC.send({
+                oscType: 'message',
+                address: '/eim/control/stopMedia',
+                args: {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            });
+
+            OSC.unsubscribe(
+                '/eim/status/playback',
+                thisController.playbackMessageListener
+            );
+
+            OSC.unsubscribe(
+                '/eim/status/emotionIndex',
+                thisController.emotionIndexMessageListener
+            );
+
+            $scope.showBody();
+        });
+
+
+        /***** Inner Members *****/
+
+
         /**
          * Requests the most recently recorded emotion index from the server
          * over OSC. The message used to retrieve this value is like the
@@ -188,11 +227,11 @@ angular.module('core').controller('MediaPlaybackController', [
          * @instance
          * @return {undefined}
          */
-        this.requestEmotionIndex = function() {
+        this.requestEmotionIndex = function requestEmotionIndexFn() {
 
             $log.debug('Requesting emotion index.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/emotionIndex',
                 args: [
@@ -205,145 +244,104 @@ angular.module('core').controller('MediaPlaybackController', [
         };
 
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected.
+         * This method is called when the server fires the controller receives
+         * a message with the address `/eim/status/playback`. When this
+         * occurs, if the message indicates that playback has begun, the page
+         * is blacked out. If the message indicates that playback has ended,
+         * the blackout is removed, the emotion index is requested, {@link
+         * Angular.MediaPlaybackController#$scope#currentButtonLabel|$scope#currentButtonLabel}
+         *  is set to `'Continue'`, {@link
+         *  Angular.MediaPlaybackController#$scope#mediaHasPlayed|$scope#mediaHasPlayed}
+         *  is set to `true`, and {@link
+         *  Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
+         *  is set to `true`.
          *
-         * The message may indicate one of three things:
-         *
-         * 1. Playback has begun
-         *  - In this case, the page is simply blacked out.
-         * 2. Playback has ended
-         *  - Here, the blackout is removed, the emotion index is requestd,
-         *  {@link Angular.MediaPlaybackController#$scope#currentButtonLabel|$scope#currentButtonLabel}
-         *  is set to `'Continue'`, {@link Angular.MediaPlaybackController#$scope#mediaHasPlayed|$scope#mediaHasPlayed}
-         *  is set to `true`, and {@link Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled} is set to `true`.
-         * 3. The emotion index has been received
-         *  - In this last case, {@link Angular.TrialData|TrialData} is
-         *  updated with the received emotion index, {@link Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
-         *  is set to `false`, and the slide is advanced by calling
-         *  {@link Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
-         *
-         * The receipt of unexpected or malformed messages will result in a
-         * warning on the console.
-         *
-         * @function oscMessageReceivedListener
+         * @function playbackMessageListener
          * @memberof Angular.MediaPlaybackController
          * @instance
-         * @param {{}} data The data sent with the event
+         * @param {{}} msg The OSC message
          * @return {undefined}
-         * @see Node.module:SocketServerController
          */
-        this.oscMessageReceivedListener = function(data) {
+        this.playbackMessageListener = function playbackMessageListenerFn(msg) {
+            switch (parseInt(msg.args[0].value)) {
 
-            $log.debug('OSC message received.');
-            $log.debug(data);
+                // If it was a stop message
+                case 0:
 
-            var expectedMessageAddresses = [
-                '/eim/status/playback',
-                '/eim/status/emotionIndex'
-            ];
+                    // Request emotion index from Max
+                    thisController.requestEmotionIndex();
 
-            // Make sure data is an object with an address property, and that
-            // we expect the message
-            if (typeof data === 'object' &amp;&amp;
-                !Array.isArray(data) &amp;&amp;
-                data.hasOwnProperty('address') &amp;&amp;
-                expectedMessageAddresses.indexOf(data.address) >= 0) {
-
-                // If it was a media playback message
-                if (data.address === '/eim/status/playback') {
-
-                    // Check for start or stop message
-                    switch (parseInt(data.args[0].value)) {
-
-                        // If it was a stop message
-                        case 0:
-
-                            // Request emotion index from Max
-                            thisController.requestEmotionIndex();
-
-                            // Fade in screen
-                            $scope.showBody();
-
-                            // Update state
-                            $timeout(function() {
-                                $scope.$apply(function() {
-                                    $scope.currentButtonLabel = 'Continue';
-                                    $scope.mediaHasPlayed = true;
-                                    $scope.buttonDisabled = true;
-                                });
-                            });
-                            break;
-
-                        // If it was a start message
-                        case 1:
-
-                            // Fade out screen
-                            $scope.hideBody();
-                            break;
-                    }
-                }
-
-                // If it was an emotion index message
-                if (data.address === '/eim/status/emotionIndex') {
-
-                    var emotionIndex = parseInt(data.args[0].value);
-
-                    // Increment media play count
-                    TrialData.data.state.mediaPlayCount++;
-
-                    // Set emotion index in TrialData
-                    TrialData.setValueForPathForCurrentMedia(
-                        'data.answers.emotion_indices',
-                        emotionIndex
-                    );
+                    // Fade in screen
+                    $scope.showBody();
 
                     // Update state
                     $timeout(function() {
                         $scope.$apply(function() {
-                            $scope.buttonDisabled = false;
-                            ExperimentManager.advanceSlide();
+                            $scope.currentButtonLabel = 'Continue';
+                            $scope.mediaHasPlayed = true;
+                            $scope.buttonDisabled = true;
                         });
                     });
-                }
-            } else {
-                $log.warn(
-                    'MediaPlaybackController did not handle an OSC message.',
-                    data
-                );
+                    break;
+
+                // If it was a start message
+                case 1:
+
+                    // Fade out screen
+                    $scope.hideBody();
+                    break;
             }
         };
 
-        // Attach OSC message received listener
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
+        /**
+         * This method is called when the server fires the controller receives
+         * a message with the address `/eim/status/emotionIndex`. When this
+         * occurs, {@link Angular.TrialData|TrialData} is updated with the
+         * received emotion index, {@link
+         * Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
+         *  is set to `false`, and the slide is advanced by calling
+         *  {@link
+         *  Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
+         *
+         * @function emotionIndexMessageListener
+         * @memberof Angular.MediaPlaybackController
+         * @instance
+         * @param {{}} msg The OSC message
+         * @return {undefined}
+         */
+        this.emotionIndexMessageListener =
+            function emotionIndexMessageListenerFn(msg) {
+
+                var emotionIndex = parseInt(msg.args[0].value);
+
+                // Increment media play count
+                TrialData.data.state.mediaPlayCount++;
+
+                // Set emotion index in TrialData
+                TrialData.setValueForPathForCurrentMedia(
+                    'data.answers.emotion_indices',
+                    emotionIndex
+                );
+
+                // Update state
+                $timeout(function() {
+                    $scope.$apply(function() {
+                        $scope.buttonDisabled = false;
+                        ExperimentManager.advanceSlide();
+                    });
+                });
+            };
+
+
+        /***** Initialization Logic *****/
+
+
+        // Attach OSC message received listeners
+        OSC.subscribe('/eim/status/playback', this.playbackMessageListener);
+        OSC.subscribe(
+            '/eim/status/emotionIndex',
+            this.emotionIndexMessageListener
         );
-
-        // Send a message to stop media playback when this controller is
-        // destroyed. Also, remove OSC message event listeners.
-        $scope.$on('$destroy', function stopMediaPlayback() {
-
-            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
-                ' playback, removing OSC listener, and showing body.');
-
-            SocketIOService.emit('sendOSCMessage', {
-                oscType: 'message',
-                address: '/eim/control/stopMedia',
-                args: {
-                    type: 'string',
-                    value: '' + TrialData.data.metadata.session_number
-                }
-            });
-
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                thisController.oscMessageReceivedListener
-            );
-
-            $scope.showBody();
-        });
     }
 ]);
 </code></pre>
@@ -356,13 +354,13 @@ angular.module('core').controller('MediaPlaybackController', [
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Fri Oct 09 2015 23:48:02 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 13 2015 13:33:28 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

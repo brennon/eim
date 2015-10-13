@@ -10,16 +10,19 @@
 angular.module('core').controller('MediaPlaybackController', [
     '$scope',
     'TrialData',
-    'SocketIOService',
     '$timeout',
     'ExperimentManager',
     '$log',
-    function($scope, TrialData, SocketIOService, $timeout,
-             ExperimentManager, $log) {
+    'OSC',
+    function($scope, TrialData, $timeout, ExperimentManager, $log, OSC) {
 
         $log.debug('Loading MediaPlaybackController.');
 
         var thisController = this;
+
+
+        /***** $scope *****/
+
 
         /**
          * The `MediaPlaybackController`'s `$scope` object. All properties on
@@ -62,7 +65,6 @@ angular.module('core').controller('MediaPlaybackController', [
          */
         $scope.buttonDisabled = false;
 
-        // Send media playback message to Max
         /**
          * Sends a message to the Max helper application to initiate media
          * playback. The message includes the current session number and the
@@ -104,7 +106,7 @@ angular.module('core').controller('MediaPlaybackController', [
 
             $log.debug('Requesting playback of \'' + mediaLabel + '\'.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/mediaID',
                 args: [
@@ -137,6 +139,43 @@ angular.module('core').controller('MediaPlaybackController', [
          */
         $scope.buttonAction = $scope.startMediaPlayback;
 
+
+        /***** $scope Event Handlers *****/
+
+
+        // Send a message to stop media playback when this controller is
+        // destroyed. Also, remove OSC message event listeners.
+        $scope.$on('$destroy', function stopMediaPlayback() {
+
+            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
+                ' playback, removing OSC listener, and showing body.');
+
+            OSC.send({
+                oscType: 'message',
+                address: '/eim/control/stopMedia',
+                args: {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            });
+
+            OSC.unsubscribe(
+                '/eim/status/playback',
+                thisController.playbackMessageListener
+            );
+
+            OSC.unsubscribe(
+                '/eim/status/emotionIndex',
+                thisController.emotionIndexMessageListener
+            );
+
+            $scope.showBody();
+        });
+
+
+        /***** Inner Members *****/
+
+
         /**
          * Requests the most recently recorded emotion index from the server
          * over OSC. The message used to retrieve this value is like the
@@ -160,11 +199,11 @@ angular.module('core').controller('MediaPlaybackController', [
          * @instance
          * @return {undefined}
          */
-        this.requestEmotionIndex = function() {
+        this.requestEmotionIndex = function requestEmotionIndexFn() {
 
             $log.debug('Requesting emotion index.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/emotionIndex',
                 args: [
@@ -177,144 +216,103 @@ angular.module('core').controller('MediaPlaybackController', [
         };
 
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected.
+         * This method is called when the server fires the controller receives
+         * a message with the address `/eim/status/playback`. When this
+         * occurs, if the message indicates that playback has begun, the page
+         * is blacked out. If the message indicates that playback has ended,
+         * the blackout is removed, the emotion index is requested, {@link
+         * Angular.MediaPlaybackController#$scope#currentButtonLabel|$scope#currentButtonLabel}
+         *  is set to `'Continue'`, {@link
+         *  Angular.MediaPlaybackController#$scope#mediaHasPlayed|$scope#mediaHasPlayed}
+         *  is set to `true`, and {@link
+         *  Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
+         *  is set to `true`.
          *
-         * The message may indicate one of three things:
-         *
-         * 1. Playback has begun
-         *  - In this case, the page is simply blacked out.
-         * 2. Playback has ended
-         *  - Here, the blackout is removed, the emotion index is requestd,
-         *  {@link Angular.MediaPlaybackController#$scope#currentButtonLabel|$scope#currentButtonLabel}
-         *  is set to `'Continue'`, {@link Angular.MediaPlaybackController#$scope#mediaHasPlayed|$scope#mediaHasPlayed}
-         *  is set to `true`, and {@link Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled} is set to `true`.
-         * 3. The emotion index has been received
-         *  - In this last case, {@link Angular.TrialData|TrialData} is
-         *  updated with the received emotion index, {@link Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
-         *  is set to `false`, and the slide is advanced by calling
-         *  {@link Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
-         *
-         * The receipt of unexpected or malformed messages will result in a
-         * warning on the console.
-         *
-         * @function oscMessageReceivedListener
+         * @function playbackMessageListener
          * @memberof Angular.MediaPlaybackController
          * @instance
-         * @param {{}} data The data sent with the event
+         * @param {{}} msg The OSC message
          * @return {undefined}
-         * @see Node.module:SocketServerController
          */
-        this.oscMessageReceivedListener = function(data) {
+        this.playbackMessageListener = function playbackMessageListenerFn(msg) {
+            switch (parseInt(msg.args[0].value)) {
 
-            $log.debug('OSC message received.');
-            $log.debug(data);
+                // If it was a stop message
+                case 0:
 
-            var expectedMessageAddresses = [
-                '/eim/status/playback',
-                '/eim/status/emotionIndex'
-            ];
+                    // Request emotion index from Max
+                    thisController.requestEmotionIndex();
 
-            // Make sure data is an object with an address property, and that
-            // we expect the message
-            if (typeof data === 'object' &&
-                !Array.isArray(data) &&
-                data.hasOwnProperty('address') &&
-                expectedMessageAddresses.indexOf(data.address) >= 0) {
-
-                // If it was a media playback message
-                if (data.address === '/eim/status/playback') {
-
-                    // Check for start or stop message
-                    switch (parseInt(data.args[0].value)) {
-
-                        // If it was a stop message
-                        case 0:
-
-                            // Request emotion index from Max
-                            thisController.requestEmotionIndex();
-
-                            // Fade in screen
-                            $scope.showBody();
-
-                            // Update state
-                            $timeout(function() {
-                                $scope.$apply(function() {
-                                    $scope.currentButtonLabel = 'Continue';
-                                    $scope.mediaHasPlayed = true;
-                                    $scope.buttonDisabled = true;
-                                });
-                            });
-                            break;
-
-                        // If it was a start message
-                        case 1:
-
-                            // Fade out screen
-                            $scope.hideBody();
-                            break;
-                    }
-                }
-
-                // If it was an emotion index message
-                if (data.address === '/eim/status/emotionIndex') {
-
-                    var emotionIndex = parseInt(data.args[0].value);
-
-                    // Increment media play count
-                    TrialData.data.state.mediaPlayCount++;
-
-                    // Set emotion index in TrialData
-                    TrialData.setValueForPathForCurrentMedia(
-                        'data.answers.emotion_indices',
-                        emotionIndex
-                    );
+                    // Fade in screen
+                    $scope.showBody();
 
                     // Update state
                     $timeout(function() {
                         $scope.$apply(function() {
-                            $scope.buttonDisabled = false;
-                            ExperimentManager.advanceSlide();
+                            $scope.currentButtonLabel = 'Continue';
+                            $scope.mediaHasPlayed = true;
+                            $scope.buttonDisabled = true;
                         });
                     });
-                }
-            } else {
-                $log.warn(
-                    'MediaPlaybackController did not handle an OSC message.',
-                    data
-                );
+                    break;
+
+                // If it was a start message
+                case 1:
+
+                    // Fade out screen
+                    $scope.hideBody();
+                    break;
             }
         };
 
-        // Attach OSC message received listener
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
+        /**
+         * This method is called when the server fires the controller receives
+         * a message with the address `/eim/status/emotionIndex`. When this
+         * occurs, {@link Angular.TrialData|TrialData} is updated with the
+         * received emotion index, {@link
+         * Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
+         *  is set to `false`, and the slide is advanced by calling
+         *  {@link
+         *  Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
+         *
+         * @function emotionIndexMessageListener
+         * @memberof Angular.MediaPlaybackController
+         * @instance
+         * @param {{}} msg The OSC message
+         * @return {undefined}
+         */
+        this.emotionIndexMessageListener =
+            function emotionIndexMessageListenerFn(msg) {
+
+                var emotionIndex = parseInt(msg.args[0].value);
+
+                // Increment media play count
+                TrialData.data.state.mediaPlayCount++;
+
+                // Set emotion index in TrialData
+                TrialData.setValueForPathForCurrentMedia(
+                    'data.answers.emotion_indices',
+                    emotionIndex
+                );
+
+                // Update state
+                $timeout(function() {
+                    $scope.$apply(function() {
+                        $scope.buttonDisabled = false;
+                        ExperimentManager.advanceSlide();
+                    });
+                });
+            };
+
+
+        /***** Initialization Logic *****/
+
+
+        // Attach OSC message received listeners
+        OSC.subscribe('/eim/status/playback', this.playbackMessageListener);
+        OSC.subscribe(
+            '/eim/status/emotionIndex',
+            this.emotionIndexMessageListener
         );
-
-        // Send a message to stop media playback when this controller is
-        // destroyed. Also, remove OSC message event listeners.
-        $scope.$on('$destroy', function stopMediaPlayback() {
-
-            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
-                ' playback, removing OSC listener, and showing body.');
-
-            SocketIOService.emit('sendOSCMessage', {
-                oscType: 'message',
-                address: '/eim/control/stopMedia',
-                args: {
-                    type: 'string',
-                    value: '' + TrialData.data.metadata.session_number
-                }
-            });
-
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                thisController.oscMessageReceivedListener
-            );
-
-            $scope.showBody();
-        });
     }
 ]);
