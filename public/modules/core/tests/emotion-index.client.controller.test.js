@@ -25,7 +25,7 @@
             expect(createController).not.toThrow();
         });
 
-        it('should max the emotion index available on the $scope', function() {
+        it('should make the emotion index available on the $scope', function() {
             var mockTrialData = {
                 data: {
                     answers: {

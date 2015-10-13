@@ -158,3 +158,20 @@ angular.module('app')
 * Mocking responses
 
 *Note* Please see https://github.com/btford/angular-socket-io for library usage.
+
+## Changelog
+
+### 1.1.0
+
+* .receive will acknowledge any .emit events with a callback as the last parameter
+
+### 1.0.0
+* Upgraded to work with latest angular.
+* Use 0.1.0 with older versions of angularjs.
+* Add `once` support
+
+### 0.1.0
+* Fixed issue interface with the latest angular package.
+
+### 0.0.1
+* Initial Release

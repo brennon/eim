@@ -14,7 +14,7 @@
     "angular-resource": "~1.2",
     "angular-sanitize": "~1.2",
     "angular-socket-io": "latest",
-    "angular-socket.io-mock": "brennon/angular-socket.io-mock",
+    "angular-socket.io-mock": "latest",
     "angular-touch": "~1.2",
     "angular-ui-router": "~0.2.10",
     "angular-ui-utils": "~0.1.1",

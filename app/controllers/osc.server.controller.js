@@ -80,20 +80,20 @@ function incomingMessageHandler(msg) {
         // Log the message
         buildLogMessageFromMessage(oscFromBuffer.args);
 
-    } else {
-
-        /**
-         * This event is fired when the server receives an OSC message.
-         *
-         * The object sent with this event is a JavaScript object
-         * representation of the OSC message.
-         *
-         * @event oscMessageReceived
-         * @type {{}}
-         */
-
-        exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
     }
+
+    /**
+     * This event is fired when the server receives an OSC message.
+     *
+     * The object sent with this event is a JavaScript object
+     * representation of the OSC message.
+     *
+     * @event oscMessageReceived
+     * @type {{}}
+     */
+
+    // Pass the message on to the socket
+    exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
 }
 
 // Create listener socket

@@ -64,6 +64,13 @@ module.exports = function(config) {
 		coverageReporter: {
 			type: 'lcov',
 			dir: 'coverage/client'
-		}
+		},
+
+		// Don't show a pile of console.log junk...
+		//client: {
+		//	captureConsole: false
+		//},
+
+		reportSlowerThan: 100
 	});
 };

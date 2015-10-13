@@ -277,8 +277,11 @@
 
                 addSpy = sinon.spy(mockHotkeys, 'add');
 
-                $controllerConstructor('MasterController',
-                    { $scope: {}, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: {},
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
             });
 
             it('should add a hotkey for d-d', function() {
@@ -336,6 +339,48 @@
             //    advanceCallback();
             //    expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
             //});
+
+            describe('$scope#handleRightArrow', function() {
+                it('should not call #advanceSlide if debug mode is not enabled',
+                    function () {
+                        $controllerConstructor('MasterController', {
+                            $scope: mockScope,
+                            TrialData: {
+                                data: {
+                                    schema: []
+                                }
+                            },
+                            hotkeys: mockHotkeys
+                        });
+
+                        spyOn(mockScope, 'advanceSlide');
+                        mockScope.debugMode = false;
+                        mockScope.handleRightArrow();
+                        expect(mockScope.advanceSlide)
+                            .not.toHaveBeenCalled();
+                    }
+                );
+
+                it('should call #advanceSlide if debug mode is enabled',
+                    function () {
+                        $controllerConstructor('MasterController', {
+                            $scope: mockScope,
+                            TrialData: {
+                                data: {
+                                    schema: []
+                                }
+                            },
+                            hotkeys: mockHotkeys
+                        });
+
+                        spyOn(mockScope, 'advanceSlide');
+                        mockScope.debugMode = true;
+                        mockScope.handleRightArrow();
+                        expect(mockScope.advanceSlide)
+                            .toHaveBeenCalled();
+                    }
+                );
+            });
         });
 
         describe('inactivity timeout', function() {

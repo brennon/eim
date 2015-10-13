@@ -14,12 +14,11 @@ angular.module('core').controller('StartController', [
     '$timeout',
     'TrialData',
     'ExperimentManager',
-    'SocketIOService',
     '$log',
-    function($scope, $timeout, TrialData, ExperimentManager, SocketIOService,
-             $log) {
+    'OSC',
+    function($scope, $timeout, TrialData, ExperimentManager, $log, OSC) {
 
-        $log.info('Loading StartController.');
+        $log.debug('Loading StartController.');
 
         /**
          * The `StartController`'s `$scope` object. All properties on `$scope`
@@ -31,6 +30,8 @@ angular.module('core').controller('StartController', [
          * @memberof Angular.StartController
          * @type {{}}
          */
+
+        /***** $scope *****/
 
         /**
          * Ready to advance method. Returns try if the Max helper
@@ -45,68 +46,61 @@ angular.module('core').controller('StartController', [
             return $scope.maxReady || $scope.debugMode;
         };
 
-        // Set the date on the TrialData service to now
-        var now = new Date();
-        console.info('Setting time on TrialData as ' + now.toISOString());
-        TrialData.data.date = now.toISOString();
-
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected. The receipt of unexpected or malformed
-         * messages will result in a warning on the console.
+         * Flag indicating whether or not the Max application is ready.
          *
-         * @function oscMessageReceivedListener
-         * @memberof Angular.StartController#
-         * @param {{}} data The data sent with the event
-         * @return {undefined}
-         * @see Node.module:SocketServerController
+         * @name maxReady
+         * @memberof Angular.StartController#$scope
+         * @instance
+         * @type {boolean}
          */
-        this.oscMessageReceivedListener = function(data) {
+        $scope.maxReady = false;
 
-            console.info('StartController received an OSC message.');
-            console.info(data);
 
-            /* istanbul ignore else */
-            if (typeof data === 'object' &&
-                !Array.isArray(data) &&
-                data.hasOwnProperty('address') &&
-                data.address === '/eim/status/startExperiment') {
-                $scope.$apply(function() {
-                    $scope.maxReady = true;
-                });
-            } else {
-                $log.warn(
-                    'StartController did not handle an OSC message.',
-                    data
-                );
-            }
-        };
-
-        // Attach handler for incoming OSC messages
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
-        );
+        /***** $scope Events *****/
 
         // Destroy handler for incoming OSC messages and remove error
         // timeout when $scope is destroyed
         var thisController = this;
         $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                thisController.oscMessageReceivedListener
+            OSC.unsubscribe(
+                '/eim/status/startExperiment',
+                thisController.startMessageListener
             );
 
-            console.debug('Cancelling timeout on StartController.');
+            $log.debug('Cancelling timeout on StartController.');
             $timeout.cancel(thisController.errorTimeout);
         });
+
+
+        /***** Inner members *****/
+
+        /**
+         * This method is called when the server fires the
+         * `OSC` service receives a message with the address
+         * /eim/status/startExperiment
+         *
+         * @function startMessageListener
+         * @memberof Angular.StartController#
+         * @param {{}} msg The data sent with the event
+         * @return {undefined}
+         * @see Node.module:SocketServerController
+         */
+        this.startMessageListener = function startMessageListenerFn(msg) {
+
+            $log.info('StartController received an OSC message.');
+            $log.info(msg);
+
+            $scope.$apply(function() {
+                $scope.maxReady = true;
+            });
+        };
 
         /**
          * Send a message to the server indicating that the client is ready
          * to start the experiment. This method sets {@link
-            * Angular.StartController#$scope.maxReady} to `false` before
-         * sending the message.
+         * Angular.StartController#$scope.maxReady} to `false` before sending
+         * the message.
          *
          * @function sendExperimentStartMessage
          * @memberof Angular.StartController#
@@ -114,18 +108,12 @@ angular.module('core').controller('StartController', [
          */
         this.sendExperimentStartMessage = function() {
 
-            console.info('StartController sending experiment start message.');
+            $log.info('StartController sending experiment start message.');
 
-            /**
-             * Flag indicating whether or not the Max application is ready.
-             *
-             * @name maxReady
-             * @memberof Angular.StartController#$scope
-             * @instance
-             * @type {boolean}
-             */
+            // Sanity check
             $scope.maxReady = false;
-            SocketIOService.emit('sendOSCMessage', {
+
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/startExperiment',
                 args: {
@@ -134,8 +122,6 @@ angular.module('core').controller('StartController', [
                 }
             });
         };
-
-        this.sendExperimentStartMessage();
 
         /**
          * When the controller is instantiated, this timeout is set. The
@@ -146,8 +132,7 @@ angular.module('core').controller('StartController', [
          * @type {$q.Promise}
          * @memberof Angular.StartController#
          */
-        this.errorTimeout = $timeout(function() {
-        }, 10000);
+        this.errorTimeout = $timeout(function() {}, 10000);
 
         this.errorTimeout.then(function() {
             if (!$scope.readyToAdvance()) {
@@ -157,5 +142,22 @@ angular.module('core').controller('StartController', [
                     'startExperiment message within 10 seconds.');
             }
         });
+
+
+        /***** Initialization logic *****/
+
+        // Listen for OSC messages sent to /eim/status/startExperiment
+        OSC.subscribe(
+            '/eim/status/startExperiment',
+            this.startMessageListener
+        );
+
+        // Set the date on the TrialData service to now
+        var now = new Date();
+        $log.info('Setting time on TrialData as ' + now.toISOString());
+        TrialData.data.date = now.toISOString();
+
+        // Tell Max to start the experiment
+        this.sendExperimentStartMessage();
     }
 ]);
