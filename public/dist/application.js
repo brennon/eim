@@ -1119,10 +1119,27 @@ angular.module('core').controller(
             };
 
             /**
+             * Calls {@link
+             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}
+             * if {@link Angular.ExperimentMaanger#$scope#debugMode} is `true`.
+             *
+             * @function handleRightArrow
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.handleRightArrow = function handleRightArrowFn() {
+                if ($scope.debugMode) {
+                    $scope.advanceSlide();
+                }
+            };
+
+            /**
              * Indicates whether or not debugging mode is enabled.
              *
              * @name debugMode
              * @memberof Angular.MasterController#$scope
+             * @instance
              * @type {boolean}
              */
             $scope.debugMode = false;
@@ -1162,7 +1179,7 @@ angular.module('core').controller(
             hotkeys.add({
                 combo: 'right',
                 description: 'Advance slide',
-                callback: $scope.advanceSlide
+                callback: $scope.handleRightArrow
             });
 
             /**
