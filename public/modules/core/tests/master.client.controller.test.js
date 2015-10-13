@@ -202,6 +202,21 @@
             }
         );
 
+        describe('$scope#advanceSlide', function () {
+            it('should clear the alerts array', function() {
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    ExperimentManager: {
+                        advanceSlide: function() {}
+                    }
+                });
+
+                mockScope.alerts.push('foo');
+                mockScope.advanceSlide();
+                expect(mockScope.alerts).toEqual([]);
+            });
+        });
+
         describe('$scope#selectLanguage', function() {
 
             beforeEach(function() {

@@ -1,3 +1,9 @@
+<div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}"
+           close="closeAlert($index)">{{alert.msg | translate}}
+    </alert>
+</div>
+
 <div class="row" data-ng-controller="LastScreenController">
     <div class="col-md-12">
 
@@ -5,13 +11,16 @@
 
         <p translate>You can now remove the sensors from your hand.</p>
 
-        <p translate>For more information about this experiment, please visit us at: www.musicsensorsemotion.com</p>
+        <p translate>For more information about this experiment, please visit us
+            at: www.musicsensorsemotion.com</p>
 
-        <p translate>Or, contact us at: emotion.in.motion@musicsensorsemotion.com</p>
+        <p translate>Or, contact us at:
+            emotion.in.motion@musicsensorsemotion.com</p>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <p><a class="btn btn-primary btn-lg" data-ng-click="advanceSlide()" translate>Complete Experiment</a></p>
+        <p><a class="btn btn-primary btn-lg" data-ng-click="advanceSlide()"
+              translate>Complete Experiment</a></p>
     </div>
 </div>

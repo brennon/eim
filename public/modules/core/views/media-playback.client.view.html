@@ -1,19 +1,32 @@
+<div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}"
+           close="closeAlert($index)">{{alert.msg | translate}}
+    </alert>
+</div>
+
 <div data-ng-controller="MediaPlaybackController">
-  <div class="row">
-    <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
 
-      <h1 translate>Media Playback</h1>
+            <h1 translate>Media Playback</h1>
 
-      <p translate>In a moment, a media excerpt will be played. Please make sure you are comfortable, and try to keep your left hand still during listening. When you are ready click the Begin Playback button.</p>
+            <p translate>In a moment, a media excerpt will be played. Please
+                make sure you are comfortable, and try to keep your left hand
+                still during listening. When you are ready click the Begin
+                Playback button.</p>
 
-      <p translate>After the excerpt has played, click the button to Continue.</p>
+            <p translate>After the excerpt has played, click the button to
+                Continue.</p>
 
+        </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary btn-lg" ng-click="buttonAction()" ng-disabled="buttonDisabled">{{currentButtonLabel | translate}}</button>
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary btn-lg" ng-click="buttonAction()"
+                    ng-disabled="buttonDisabled">{{currentButtonLabel |
+                translate}}
+            </button>
+        </div>
     </div>
-  </div>
 </div>

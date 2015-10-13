@@ -1057,7 +1057,7 @@ angular.module('core').controller(
 
             /**
              * Adds an alert to {@link
-                * Angular.MasterController#$scope#alerts|$scope#alerts}, unless
+             * Angular.MasterController#$scope#alerts|$scope#alerts}, unless
              * it is already present.
              *
              * @function addAlert
@@ -1094,7 +1094,7 @@ angular.module('core').controller(
 
             /**
              * Closes the alert in {@link
-                * Angular.MasterController#$scope#alerts|$scope#alerts} at the
+             * Angular.MasterController#$scope#alerts|$scope#alerts} at the
              * specified index.
              *
              * @function closeAlert
@@ -1113,7 +1113,7 @@ angular.module('core').controller(
 
             /**
              * Adds a generic error alert to {@link
-                * Angular.MasterController#$scope#alerts|$scope#alerts}. The
+             * Angular.MasterController#$scope#alerts|$scope#alerts}. The
              * alert is a `'danger'`-type alert, and in the demo app
              * displays the message `'There seems to be a problem. Please
              * contact a mediator for assistance.'`
@@ -1146,7 +1146,7 @@ angular.module('core').controller(
 
             /**
              * A convenience method for setting {@link
-                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
+             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
              * to `true` (and blacking out the page).
              *
              * @function hideBody
@@ -1161,7 +1161,7 @@ angular.module('core').controller(
 
             /**
              * A convenience method for setting {@link
-                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
+             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
              * to `false` (and reversing the blacking out of the page).
              *
              * @function showBody
@@ -1176,7 +1176,7 @@ angular.module('core').controller(
 
             /**
              * A convenience method for toggling the value of {@link
-                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}.
+             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}.
              *
              * @function toggleBodyVisibility
              * @memberof Angular.MasterController#$scope
@@ -1189,9 +1189,10 @@ angular.module('core').controller(
             };
 
             /**
-             * Resets the inactivity timeout and Advances the slide by calling
+             * Resets the inactivity timeout, advance the slide by calling
              * {@link
-                * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
+             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.,
+             * and clear all current alerts.
              *
              * @function advanceSlide
              * @memberof Angular.MasterController#$scope
@@ -1205,13 +1206,16 @@ angular.module('core').controller(
                 // Reset the inactivity timeout
                 thisController.resetInactivityTimeout();
 
+                // Clear all current alerts
+                $scope.alerts = [];
+
                 // Wrap ExperimentManager's advance slide
                 ExperimentManager.advanceSlide();
             };
 
             /**
              * Calls {@link
-                * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}
+             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}
              * if {@link Angular.ExperimentManager#$scope#debugMode} is `true`.
              *
              * @function handleRightArrow
