@@ -177,7 +177,7 @@
                     .not.toBeNull();
             });
 
-            it('should get the terminal number from the backend',
+            it('should get the metadata from the backend',
                 function(done) {
 
                     $httpBackend
@@ -188,12 +188,14 @@
                         .respond();
                     $httpBackend
                         .whenGET('/api/config')
-                        .respond({metadata: {terminal: 42}});
+                        .respond({metadata: {terminal: 42, foo: 'bar'}});
 
                     ExperimentManager.masterReset()
                         .then(function() {
                             expect(mockTrialData.data.metadata.terminal)
                                 .toEqual(42);
+                            expect(mockTrialData.data.metadata.foo)
+                                .toEqual('bar');
                             done();
                         })
                         .catch(function(err) {

@@ -33,9 +33,9 @@
  * an experiment session and provides a number of 'session-wide' facilities.
  * These include restarting a session, exposing the {@link
  * Angular.TrialData|TrialData} service, changing the language, configuring
- * hotkeys, showing alerts, and blacking out the screen.
+ * hot keys, showing alerts, and blacking out the screen.
  *
- * The hotkeys are configured using the
+ * The hot keys are configured using the
  * [angular-hotkeys](https://github.com/chieffancypants/angular-hotkeys)
  * module. In particular, pressing `'d'` twice will toggle debugging mode. When
  * in debugging mode, the right arrow key will allow the user to advance to
@@ -58,11 +58,19 @@ angular.module('core').controller(
         '$timeout',
         '$log',
         '$http',
-        'OSC',
+        'OSC',  // Note that though OSC is not used here, requiring it is
+                // necessary in order to globally handle messages to which no
+                // one is subscribed
         function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
                  $state, $timeout, $log, $http, OSC) {
 
             $log.debug('Loading MasterController.');
+
+            var thisController = this;
+
+
+            /***** $scope Members *****/
+
 
             /**
              * The `MasterController`'s `$scope` object. All properties on
@@ -74,39 +82,6 @@ angular.module('core').controller(
              * @memberof Angular.MasterController
              * @type {{}}
              */
-            var thisController = this;
-
-            /**
-             * Sets the language to the default language as specified in the
-             * {@link Node.module:CustomConfiguration~customConfiguration~defaultLanguage|CustomConfiguration}
-             * module.
-             *
-             * @function setLanguageToDefault
-             * @memberof Angular.MasterController
-             * @instance
-             * @return {undefined}
-             */
-            this.setLanguageToDefault = function() {
-                $http.get('/api/config')
-                    .then(function(response) {
-
-                        if (response.data.hasOwnProperty('defaultLanguage')) {
-                            $scope.setLanguage(response.data.defaultLanguage);
-                        } else {
-                            var message = 'A default language was not ' +
-                                'provided by the server.';
-                            $log.error(message, response);
-                            throw new Error(message);
-                        }
-                    })
-                    .catch(function(response) {
-                        var message = 'There was a problem retrieving the' +
-                            ' configuration from the server.';
-                        $log.error(message, response);
-                        throw new Error(message);
-                    });
-            };
-            this.setLanguageToDefault();
 
             /**
              * Expose {@link Angular.TrialData#toJson|TrialData#toJson} on
@@ -164,101 +139,6 @@ angular.module('core').controller(
             };
 
             /**
-             * Resets the inactivity timeout.
-             *
-             * The demo application ships with an inactivity timeout. If
-             * after five minutes no interaction with the experiment has
-             * occurred, this timeout fires and calls {@link
-             * Angular.MasterController#$scope#startOver|$scope#startOver}
-             * method.
-             *
-             * @function resetInactivityTimeout
-             * @memberof Angular.MasterController
-             * @instance
-             * @return {undefined}
-             */
-            // Reset inactivity timeout with a new five-minute timer
-            this.resetInactivityTimeout = function() {
-
-                $log.debug('MasterController resetting inactivity timeout.');
-
-                $timeout.cancel(thisController.inactivityTimeout);
-                thisController.inactivityTimeout = $timeout(
-                    thisController.startOver,
-                    5 * 60 * 1000
-                );
-            };
-            this.resetInactivityTimeout();
-
-            /**
-             * Resets the inactivity timeout and Advances the slide by calling
-             * {@link
-             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
-             *
-             * @function advanceSlide
-             * @memberof Angular.MasterController#$scope
-             * @instance
-             * @return {undefined}
-             */
-            $scope.advanceSlide = function() {
-
-                $log.debug('MasterController advancing slide.');
-
-                // Reset the inactivity timeout
-                thisController.resetInactivityTimeout();
-
-                // Wrap ExperimentManager's advance slide
-                ExperimentManager.advanceSlide();
-            };
-
-            /**
-             * Indicates whether or not debugging mode is enabled.
-             *
-             * @name debugMode
-             * @memberof Angular.MasterController#$scope
-             * @type {boolean}
-             */
-            $scope.debugMode = false;
-
-            /**
-             * Toggles debugging mode. If debugging mode is enabled, an
-             * alert is posted to the view.
-             *
-             * @function toggleDebugMode
-             * @instance
-             * @memberof Angular.MasterController#$scope
-             * @return {undefined}
-             */
-            $scope.toggleDebugMode = function() {
-
-                $scope.debugMode = !$scope.debugMode;
-                var alertMessage = 'Debug mode has been ';
-                if ($scope.debugMode) {
-                    $log.info('Debug mode enabled.');
-                    alertMessage += 'enabled.';
-                } else {
-                    $log.info('Debug mode disabled.');
-                    alertMessage += 'disabled.';
-                }
-
-                $scope.addAlert({type: 'info', msg: alertMessage});
-            };
-
-            // Setup hotkeys
-            $log.debug('Setting up hotkeys.');
-            hotkeys.add({
-                combo: 'd d',
-                description: 'Toggle debug mode',
-                callback: $scope.toggleDebugMode
-            });
-
-            hotkeys.add({
-                combo: 'right',
-                description: 'Advance slide',
-                callback: $scope.advanceSlide
-            });
-
-            /**
              * Array for holding alert messages.
              *
              * @name alerts
@@ -270,7 +150,7 @@ angular.module('core').controller(
 
             /**
              * Adds an alert to {@link
-             * Angular.MasterController#$scope#alerts|$scope#alerts}, unless
+                * Angular.MasterController#$scope#alerts|$scope#alerts}, unless
              * it is already present.
              *
              * @function addAlert
@@ -280,7 +160,7 @@ angular.module('core').controller(
              * `msg` and `type`. The value of the `msg` property should be
              * the alert `string`, and the value of the `type` property should
              * be a `string` indicating the alert type. Acceptable values
-             * for alerty types are: `'success'`, `'info'`, `'warning'`, and
+             * for alert types are: `'success'`, `'info'`, `'warning'`, and
              * `'danger'`.
              * @return {undefined}
              */
@@ -307,14 +187,14 @@ angular.module('core').controller(
 
             /**
              * Closes the alert in {@link
-             * Angular.MasterController#$scope#alerts|$scope#alerts} at the
+                * Angular.MasterController#$scope#alerts|$scope#alerts} at the
              * specified index.
              *
              * @function closeAlert
              * @memberof Angular.MasterController#$scope
              * @instance
              * @param {number} index The index in the {@link
-             * Angular.MasterController#$scope#alerts|$scope#alerts} array
+                * Angular.MasterController#$scope#alerts|$scope#alerts} array
              * of the alert to close
              * @return {undefined}
              */
@@ -326,7 +206,7 @@ angular.module('core').controller(
 
             /**
              * Adds a generic error alert to {@link
-             * Angular.MasterController#$scope#alerts|$scope#alerts}. The
+                * Angular.MasterController#$scope#alerts|$scope#alerts}. The
              * alert is a `'danger'`-type alert, and in the demo app
              * displays the message `'There seems to be a problem. Please
              * contact a mediator for assistance.'`
@@ -341,7 +221,7 @@ angular.module('core').controller(
                 $scope.addAlert({
                     type: 'danger',
                     msg: 'There seems to be a problem. Please contact a ' +
-                        'mediator for assistance.'
+                    'mediator for assistance.'
                 });
             };
 
@@ -359,7 +239,7 @@ angular.module('core').controller(
 
             /**
              * A convenience method for setting {@link
-             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
+                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
              * to `true` (and blacking out the page).
              *
              * @function hideBody
@@ -400,6 +280,159 @@ angular.module('core').controller(
                 $log.debug('Toggling body visibility.');
                 $scope.blackoutClass = !$scope.blackoutClass;
             };
+
+            /**
+             * Resets the inactivity timeout and Advances the slide by calling
+             * {@link
+                * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
+             *
+             * @function advanceSlide
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.advanceSlide = function() {
+
+                $log.debug('MasterController advancing slide.');
+
+                // Reset the inactivity timeout
+                thisController.resetInactivityTimeout();
+
+                // Wrap ExperimentManager's advance slide
+                ExperimentManager.advanceSlide();
+            };
+
+            /**
+             * Calls {@link
+                * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}
+             * if {@link Angular.ExperimentManager#$scope#debugMode} is `true`.
+             *
+             * @function handleRightArrow
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.handleRightArrow = function handleRightArrowFn() {
+                if ($scope.debugMode) {
+                    $scope.advanceSlide();
+                }
+            };
+
+            /**
+             * Indicates whether or not debugging mode is enabled.
+             *
+             * @name debugMode
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @type {boolean}
+             */
+            $scope.debugMode = false;
+
+            /**
+             * Toggles debugging mode. If debugging mode is enabled, an
+             * alert is posted to the view.
+             *
+             * @function toggleDebugMode
+             * @instance
+             * @memberof Angular.MasterController#$scope
+             * @return {undefined}
+             */
+            $scope.toggleDebugMode = function() {
+
+                $scope.debugMode = !$scope.debugMode;
+                var alertMessage = 'Debug mode has been ';
+                if ($scope.debugMode) {
+                    $log.info('Debug mode enabled.');
+                    alertMessage += 'enabled.';
+                } else {
+                    $log.info('Debug mode disabled.');
+                    alertMessage += 'disabled.';
+                }
+
+                $scope.addAlert({type: 'info', msg: alertMessage});
+            };
+
+
+            /***** Inner Members *****/
+
+
+            /**
+             * Sets the language to the default language as specified in the
+             * {@link Node.module:CustomConfiguration~customConfiguration~defaultLanguage|CustomConfiguration}
+             * module.
+             *
+             * @function setLanguageToDefault
+             * @memberof Angular.MasterController
+             * @instance
+             * @return {undefined}
+             */
+            this.setLanguageToDefault = function() {
+                $http.get('/api/config')
+                    .then(function(response) {
+
+                        if (response.data.hasOwnProperty('defaultLanguage')) {
+                            $scope.setLanguage(response.data.defaultLanguage);
+                        } else {
+                            var message = 'A default language was not ' +
+                                'provided by the server.';
+                            $log.error(message, response);
+                            throw new Error(message);
+                        }
+                    })
+                    .catch(function(response) {
+                        var message = 'There was a problem retrieving the' +
+                            ' configuration from the server.';
+                        $log.error(message, response);
+                        throw new Error(message);
+                    });
+            };
+
+            /**
+             * Resets the inactivity timeout.
+             *
+             * The demo application ships with an inactivity timeout. If
+             * after five minutes no interaction with the experiment has
+             * occurred, this timeout fires and calls {@link
+             * Angular.MasterController#$scope#startOver|$scope#startOver}
+             * method.
+             *
+             * @function resetInactivityTimeout
+             * @memberof Angular.MasterController
+             * @instance
+             * @return {undefined}
+             */
+            this.resetInactivityTimeout = function() {
+
+                $log.debug('MasterController resetting inactivity timeout.');
+
+                $timeout.cancel(thisController.inactivityTimeout);
+                thisController.inactivityTimeout = $timeout(
+                    thisController.startOver,
+                    5 * 60 * 1000
+                );
+            };
+
+
+            /***** Initialization Logic *****/
+
+
+            // Setup hot keys
+            $log.debug('Setting up hot keys.');
+
+            hotkeys.add({
+                combo: 'd d',
+                description: 'Toggle debug mode',
+                callback: $scope.toggleDebugMode
+            });
+
+            hotkeys.add({
+                combo: 'right',
+                description: 'Advance slide',
+                callback: $scope.handleRightArrow
+            });
+
+            this.setLanguageToDefault();
+            this.resetInactivityTimeout();
         }
     ]);</code></pre>
         </article>
@@ -411,13 +444,13 @@ angular.module('core').controller(
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 13 2015 13:33:28 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 13 2015 15:18:16 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -76,8 +76,8 @@ angular.module('core').factory('ExperimentManager', [
              *
              *  - Generates a new UUID for the session number
              *  - Fetches a random experiment schema from the backend
-             *  - Gets the terminal number (as specified in
-             *  `config/custom.js` for this specific machine
+             *  - Gets the custom metadata (as specified in
+             *  `config/custom.js`
              *
              *  The {@link Angular.TrialData|TrialData} service is then updated
              *  with these new data.
@@ -112,8 +112,7 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata.terminal =
-                                    data.metadata.terminal;
+                                TrialData.data.metadata = data.metadata;
                                 deferred.resolve();
                             })
                             .error(function() {

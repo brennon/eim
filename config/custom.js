@@ -37,6 +37,7 @@ var customConfiguration = {};
  */
 customConfiguration.metadata = {};
 customConfiguration.metadata.terminal = 1;
+customConfiguration.metadata.location = 'taichung';
 
 /**
  * The default language for your installation
