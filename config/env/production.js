@@ -27,7 +27,8 @@ module.exports = {
         		'public/lib/angular-hotkeys/build/hotkeys.min.js',
 				'public/lib/angular-gettext/dist/angular-gettext.min.js',
 				'public/i18n/translations.js',
-				'public/lib/angular-loggly-logger/angular-loggly-logger.min.js'
+				'public/lib/angular-loggly-logger/angular-loggly-logger.min.js',
+				'public/lib/validate/validate.min.js'
 			]
 		},
 		css: 'public/dist/application.min.css',

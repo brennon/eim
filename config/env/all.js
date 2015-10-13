@@ -35,7 +35,8 @@ module.exports = {
 				'public/lib/angular-hotkeys/build/hotkeys.js',
 				'public/lib/angular-gettext/dist/angular-gettext.js',
 				'public/i18n/translations.js',
-				'public/lib/angular-loggly-logger/angular-loggly-logger.js'
+				'public/lib/angular-loggly-logger/angular-loggly-logger.js',
+				'public/lib/validate/validate.js'
 			]
 		},
 		css: [

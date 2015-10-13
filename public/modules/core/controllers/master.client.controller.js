@@ -30,11 +30,12 @@ angular.module('core').controller(
         '$timeout',
         '$log',
         '$http',
+        '$rootScope',
         'OSC',  // Note that though OSC is not used here, requiring it is
                 // necessary in order to globally handle messages to which no
                 // one is subscribed
         function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
-                 $state, $timeout, $log, $http, OSC) {
+                 $state, $timeout, $log, $http, $rootScope, OSC) {
 
             $log.debug('Loading MasterController.');
 
@@ -405,6 +406,12 @@ angular.module('core').controller(
                 combo: 'right',
                 description: 'Advance slide',
                 callback: $scope.handleRightArrow
+            });
+
+            // Scroll to the top of the page on new state
+            $rootScope.$on('$stateChangeSuccess', function() {
+                document.body.scrollTop =
+                    document.documentElement.scrollTop = 0;
             });
 
             this.setLanguageToDefault();
