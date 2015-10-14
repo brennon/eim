@@ -88,11 +88,55 @@
                 expect(typeof TrialData.toJson).toBe('function');
             });
 
-            it('should return a JSON representation of the data property', function() {
-                var mockData = {foo: 'bar'};
-                TrialData.data = mockData;
-                expect(TrialData.toJson()).toEqual(angular.toJson(mockData, true));
-            });
+            it('should return a JSON representation of the data property',
+                function() {
+                    var mockData = {foo: 'bar'};
+                    TrialData.data = mockData;
+                    expect(TrialData.toJson()).toEqual(angular.toJson(mockData, true));
+                }
+            );
+        });
+
+        describe('#toJsonCompact', function() {
+            it('should return a compact JSON representation of the data ' +
+                'property', function() {
+                    TrialData.data = {
+                        foo: 'bar',
+                        numbers: {
+                            un: 'one',
+                            deux: 'two,'
+                        },
+                        bad: 'property'
+                    };
+                    TrialData.exportedProperties = ['foo', 'numbers'];
+
+                    expect(TrialData.toJsonCompact())
+                        .toEqual(angular.toJson({
+                            foo: 'bar',
+                            numbers: {
+                                un: 'one',
+                                deux: 'two,'
+                            }
+                        }, true));
+                }
+            );
+
+            it('should return toJson if no exported properties are set',
+                function() {
+                    TrialData.data = {
+                        foo: 'bar',
+                        numbers: {
+                            un: 'one',
+                            deux: 'two,'
+                        },
+                        bad: 'property'
+                    };
+                    TrialData.exportedProperties = [];
+
+                    expect(TrialData.toJsonCompact())
+                        .toEqual(TrialData.toJson());
+                }
+            );
         });
 
         describe('#reset', function() {

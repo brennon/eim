@@ -8,8 +8,10 @@
  * @memberof Angular
  */
 
-angular.module('core').factory('TrialData', ['$log',
-    function($log) {
+angular.module('core').factory('TrialData', [
+    '$log',
+    'lodash',
+    function($log, lodash) {
 
         $log.info('Instantiating TrialData service.');
 
@@ -92,6 +94,50 @@ angular.module('core').factory('TrialData', ['$log',
                 $log.debug('TrialData service returning data as JSON.');
                 return angular.toJson(this.data, true);
             },
+
+            /**
+             * Converts the object in {@link Angular.TrialData#data|data},
+             * keeping only those properties specified in {@link
+             * Angular.TrialData#exportedProperties|exportedProperties},
+             * to JSON and returns it. If {@link
+             * Angular.TrialData#exportedProperties|exportedProperties} is an
+             * empty array, this method delegates to {@link
+             * Angular.TrialData#toJson|toJson}.
+             *
+             * @function toJsonCompact
+             * @memberof Angular.TrialData#
+             * @returns {string}
+             */
+            toJsonCompact: function() {
+                $log.debug('TrialData service returning data as compact JSON.');
+
+                if (this.exportedProperties.length === 0) {
+                    return this.toJson();
+                }
+
+                var pruned = {};
+                var that = this;
+
+                this.exportedProperties.forEach(function(prop) {
+                    lodash.set(pruned, prop, lodash.get(that.data, prop));
+                });
+
+                return angular.toJson(pruned, true);
+            },
+
+            /**
+             * The properties beneath {@link Angular.TrialData#data|data} that
+             * {@link Angular.TrialData#toJsonCompact|toJsonCompact} should
+             * include in the JSON it outputs. This should be an array of
+             * strings, each of which represent an individual property that
+             * should be exported. The strings should be dot-delimited paths.
+             * Wildcards are not supported.
+             *
+             * @var exportedProperties
+             * @type {string[]}
+             * @memberof Angular.TrialData#
+             */
+            exportedProperties: [],
 
             /**
              * Sets {@link Angular.TrialData#data|data} to a new

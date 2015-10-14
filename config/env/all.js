@@ -36,7 +36,8 @@ module.exports = {
 				'public/lib/angular-gettext/dist/angular-gettext.js',
 				'public/i18n/translations.js',
 				'public/lib/angular-loggly-logger/angular-loggly-logger.js',
-				'public/lib/validate/validate.js'
+				'public/lib/validate/validate.js',
+				'public/lib/ng-lodash/build/ng-lodash.js'
 			]
 		},
 		css: [
