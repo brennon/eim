@@ -17,7 +17,8 @@ angular.module('core').factory('ExperimentManager', [
     '$log',
     'rfc4122',
     '$rootScope',
-    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
+    'lodash',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope, lodash) {
 
         $log.debug('Instantiating ExperimentManager service.');
 
@@ -95,9 +96,6 @@ angular.module('core').factory('ExperimentManager', [
                 // Reset TrialData
                 TrialData.reset();
 
-                // Generate new session identifier and store it in TrialData
-                TrialData.data.metadata.session_number = rfc4122.v4();
-
                 // Get a new experiment setup from the backend
                 $http.get('/api/experiment-schemas/random')
                     .success(function(data) {
@@ -112,7 +110,24 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata = data.metadata;
+                                TrialData.data.metadata =
+                                    lodash.merge(
+                                        TrialData.data.metadata,
+                                        data.metadata
+                                    );
+
+                                // Generate new session identifier and store it
+                                // in TrialData
+                                TrialData.data.metadata.session_number =
+                                    rfc4122.v4();
+
+                                if (data.hasOwnProperty('exportedProperties') &&
+                                    Array.isArray(data.exportedProperties)) {
+
+                                    TrialData.exportedProperties =
+                                        data.exportedProperties;
+                                }
+
                                 deferred.resolve();
                             })
                             .error(function() {

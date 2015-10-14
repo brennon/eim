@@ -104,7 +104,7 @@
                         foo: 'bar',
                         numbers: {
                             un: 'one',
-                            deux: 'two,'
+                            deux: 'two'
                         },
                         bad: 'property'
                     };
@@ -115,7 +115,7 @@
                             foo: 'bar',
                             numbers: {
                                 un: 'one',
-                                deux: 'two,'
+                                deux: 'two'
                             }
                         }, true));
                 }
@@ -137,6 +137,44 @@
                         .toEqual(TrialData.toJson());
                 }
             );
+        });
+
+        describe('#toJsonCompact', function() {
+            it('should return a compact copy of the data property', function() {
+                    TrialData.data = {
+                        foo: 'bar',
+                        numbers: {
+                            un: 'one',
+                            deux: 'two,'
+                        },
+                        bad: 'property'
+                    };
+                    TrialData.exportedProperties = ['foo', 'numbers'];
+
+                    expect(TrialData.toCompact())
+                        .toEqual({
+                            foo: 'bar',
+                            numbers: {
+                                un: 'one',
+                                deux: 'two,'
+                            }
+                        });
+            });
+
+            it('should return a compact copy of the data property', function() {
+                TrialData.data = {
+                    foo: 'bar',
+                    numbers: {
+                        un: 'one',
+                        deux: 'two,'
+                    },
+                    bad: 'property'
+                };
+                TrialData.exportedProperties = [];
+
+                expect(TrialData.toCompact())
+                    .toEqual(TrialData.data);
+            });
         });
 
         describe('#reset', function() {

@@ -924,7 +924,7 @@ angular.module('core').controller(
 
             // Send TrialData.data to the backend
             $http
-                .post('/api/trials', TrialData.data)
+                .post('/api/trials', TrialData.toCompact())
                 .catch(function(response) {
                     var errorMessage = 'The POST to /api/trials failed.';
                     $log.error(errorMessage, response);
@@ -3777,7 +3777,8 @@ angular.module('core').factory('ExperimentManager', [
     '$log',
     'rfc4122',
     '$rootScope',
-    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
+    'lodash',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope, lodash) {
 
         $log.debug('Instantiating ExperimentManager service.');
 
@@ -3855,9 +3856,6 @@ angular.module('core').factory('ExperimentManager', [
                 // Reset TrialData
                 TrialData.reset();
 
-                // Generate new session identifier and store it in TrialData
-                TrialData.data.metadata.session_number = rfc4122.v4();
-
                 // Get a new experiment setup from the backend
                 $http.get('/api/experiment-schemas/random')
                     .success(function(data) {
@@ -3872,7 +3870,24 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata = data.metadata;
+                                TrialData.data.metadata =
+                                    lodash.merge(
+                                        TrialData.data.metadata,
+                                        data.metadata
+                                    );
+
+                                // Generate new session identifier and store it
+                                // in TrialData
+                                TrialData.data.metadata.session_number =
+                                    rfc4122.v4();
+
+                                if (data.hasOwnProperty('exportedProperties') &&
+                                    Array.isArray(data.exportedProperties)) {
+
+                                    TrialData.exportedProperties =
+                                        data.exportedProperties;
+                                }
+
                                 deferred.resolve();
                             })
                             .error(function() {
@@ -4292,7 +4307,7 @@ angular.module('core').factory('TrialData', [
              * @memberof Angular.TrialData#
              * @returns {string}
              */
-            toJson: function() {
+            toJson: function toJsonFn() {
                 $log.debug('TrialData service returning data as JSON.');
                 return angular.toJson(this.data, true);
             },
@@ -4310,11 +4325,31 @@ angular.module('core').factory('TrialData', [
              * @memberof Angular.TrialData#
              * @returns {string}
              */
-            toJsonCompact: function() {
+            toJsonCompact: function toJsonCompactFn() {
                 $log.debug('TrialData service returning data as compact JSON.');
 
+                return angular.toJson(this.toCompact(), true);
+            },
+
+            /**
+             * Returns a copy of the object in {@link
+             * Angular.TrialData#data|data}, keeping only those properties
+             * specified in {@link
+             * Angular.TrialData#exportedProperties|exportedProperties},
+             * If {@link
+             * Angular.TrialData#exportedProperties|exportedProperties} is an
+             * empty array, this method returns {@link
+             * Angular.TrialData#data|data}.
+             *
+             * @function toCompact
+             * @memberof Angular.TrialData#
+             * @returns {{}}
+             */
+            toCompact: function toCompactFn() {
+                $log.debug('TrialData service returning compacted data.');
+
                 if (this.exportedProperties.length === 0) {
-                    return this.toJson();
+                    return this.data;
                 }
 
                 var pruned = {};
@@ -4324,7 +4359,7 @@ angular.module('core').factory('TrialData', [
                     lodash.set(pruned, prop, lodash.get(that.data, prop));
                 });
 
-                return angular.toJson(pruned, true);
+                return pruned;
             },
 
             /**
@@ -4350,7 +4385,7 @@ angular.module('core').factory('TrialData', [
              * @memberof Angular.TrialData#
              * @return {undefined}
              */
-            reset: function() {
+            reset: function resetFn() {
                 $log.info('Resetting TrialData service.');
                 this.data = new BlankDataObject();
             },
@@ -4385,7 +4420,7 @@ angular.module('core').factory('TrialData', [
              * array to `value`.
              * @return {undefined}
              */
-            setValueForPath: function(path, value, options) {
+            setValueForPath: function setValueForPathFn(path, value, options) {
 
                 $log.debug('Setting ' + path + ' in TrialData to: ' +
                     value, options);
@@ -4464,21 +4499,22 @@ angular.module('core').factory('TrialData', [
              * @param {*} value The value that this keypath should hold
              * @return {undefined}
              */
-            setValueForPathForCurrentMedia: function(path, value) {
+            setValueForPathForCurrentMedia:
+                function setValueForPathForCurrentMediaFn(path, value) {
 
-                $log.debug('Setting ' + path + ' in TrialData for current' +
-                    ' media to: ' + value + '.');
+                    $log.debug('Setting ' + path + ' in TrialData for current' +
+                        ' media to: ' + value + '.');
 
-                var index;
+                    var index;
 
-                // If no media have played (we're likely debugging)
-                if (this.data.state.mediaPlayCount <= 0) {
-                    index = 0;
-                } else {
-                    index = this.data.state.mediaPlayCount - 1;
-                }
+                    // If no media have played (we're likely debugging)
+                    if (this.data.state.mediaPlayCount <= 0) {
+                        index = 0;
+                    } else {
+                        index = this.data.state.mediaPlayCount - 1;
+                    }
 
-                this.setValueForPath(path, value, {array_index: index});
+                    this.setValueForPath(path, value, {array_index: index});
             },
 
             /**
@@ -4493,7 +4529,7 @@ angular.module('core').factory('TrialData', [
              * Angular.TrialData#data|data} is set after the call to this
              * method.
              */
-            language: function(newLanguage) {
+            language: function languageFn(newLanguage) {
 
                 if (typeof newLanguage === 'string') {
 

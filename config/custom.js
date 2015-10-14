@@ -40,6 +40,23 @@ customConfiguration.metadata.terminal = 1;
 customConfiguration.metadata.location = 'taichung';
 
 /**
+ * The strings in this array specify those inner properties on {@link
+ * Angular.TrialData#data|TrialData.data} that will be converted to JSON using
+ * {@link
+ * Angular.TrialData#toJsonCompact|TrialData.toJsonCompact} of provided on the
+ * object returned by {@link Angular.TrialData#toCompact|TrialData.toCompact}.
+ * In the default configuration, this means that only the properties specified
+ * here will be written to file at the end of a session.
+ *
+ * @name exportedProperties
+ * @memberof Node.module:CustomConfiguration~customConfiguration
+ * @inner
+ * @type {string[]}
+ */
+customConfiguration.exportedProperties =
+    ['answers', 'date', 'media', 'metadata'];
+
+/**
  * The default language for your installation
  *
  * @name defaultLanguage
@@ -57,7 +74,7 @@ customConfiguration.defaultLanguage = 'en';
  * @inner
  * @type {string}
  */
-customConfiguration.logglyToken = '';
+customConfiguration.logglyToken = '81009487-63da-400f-af48-4b3f91d3bbd5';
 
 module.exports = {
     customConfiguration: customConfiguration

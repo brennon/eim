@@ -23,7 +23,7 @@ angular.module('core').controller(
 
             // Send TrialData.data to the backend
             $http
-                .post('/api/trials', TrialData.data)
+                .post('/api/trials', TrialData.toCompact())
                 .catch(function(response) {
                     var errorMessage = 'The POST to /api/trials failed.';
                     $log.error(errorMessage, response);
