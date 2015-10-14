@@ -45,7 +45,8 @@ angular.module('core').factory('ExperimentManager', [
     '$log',
     'rfc4122',
     '$rootScope',
-    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
+    'lodash',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope, lodash) {
 
         $log.debug('Instantiating ExperimentManager service.');
 
@@ -104,8 +105,8 @@ angular.module('core').factory('ExperimentManager', [
              *
              *  - Generates a new UUID for the session number
              *  - Fetches a random experiment schema from the backend
-             *  - Gets the terminal number (as specified in
-             *  `config/custom.js` for this specific machine
+             *  - Gets the custom metadata (as specified in
+             *  `config/custom.js`
              *
              *  The {@link Angular.TrialData|TrialData} service is then updated
              *  with these new data.
@@ -123,9 +124,6 @@ angular.module('core').factory('ExperimentManager', [
                 // Reset TrialData
                 TrialData.reset();
 
-                // Generate new session identifier and store it in TrialData
-                TrialData.data.metadata.session_number = rfc4122.v4();
-
                 // Get a new experiment setup from the backend
                 $http.get('/api/experiment-schemas/random')
                     .success(function(data) {
@@ -140,8 +138,33 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata.terminal =
-                                    data.metadata.terminal;
+                                TrialData.data.metadata =
+                                    lodash.merge(
+                                        TrialData.data.metadata,
+                                        data.metadata
+                                    );
+
+                                // Generate new session identifier and store it
+                                // in TrialData
+                                TrialData.data.metadata.session_number =
+                                    rfc4122.v4();
+
+                                // Get default language and set on TrialData
+                                if (data.hasOwnProperty('defaultLanguage') &amp;&amp;
+                                    typeof data.defaultLanguage === 'string' &amp;&amp;
+                                    data.defaultLanguage.length > 0) {
+
+                                    TrialData.data.metadata.language =
+                                        data.defaultLanguage;
+                                }
+
+                                if (data.hasOwnProperty('exportedProperties') &amp;&amp;
+                                    Array.isArray(data.exportedProperties)) {
+
+                                    TrialData.exportedProperties =
+                                        data.exportedProperties;
+                                }
+
                                 deferred.resolve();
                             })
                             .error(function() {
@@ -189,13 +212,13 @@ angular.module('core').factory('ExperimentManager', [
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.ExperimentValidator.html">ExperimentValidator</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Tue Oct 06 2015 09:56:31 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 14 2015 21:29:13 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

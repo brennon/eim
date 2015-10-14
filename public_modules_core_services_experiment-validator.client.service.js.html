@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: app/controllers/socket.server.controller.js</title>
+    <title>JSDoc: Source: public/modules/core/services/experiment-validator.client.service.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: app/controllers/socket.server.controller.js</h1>
+    <h1 class="page-title">Source: public/modules/core/services/experiment-validator.client.service.js</h1>
 
     
 
@@ -26,111 +26,130 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
-
-/**
- * Socket Controller module
- *
- * This module provides functionality for allowing clients to send and
- * receive [Open Sound Control](http://opensoundcontrol.org/) (OSC) messages
- * through a [socket.io](http://socket.io/) connection.
- *
- * In general, the OSC message flow is as follows:
- *
- * - Outgoing messages:
- *
- *  1. A client connects to the server over socket.io
- *  2. Client emits the 'sendOSCMessage' event
- *  2. SocketServerController module sends message
- *  3. After sending the message, SocketServerController emits the
- *  'oscMessageSent' event on the client socket
- *
- * - Incoming messages:
- *
- *  1. SocketServerController module listens for `oscMessageReceived` events
- *  emitted by the {@link Node.module:OSCServerController|OSCServerController}
- *  module
- *  2. SocketServerController module emits its own
- *  `oscMessageReceived` event on client sockets with the same data
- *
- * @module {{}} Node.SocketServerController
- * @memberof Node
+            <pre class="prettyprint source linenums"><code>/**
+ * Created by brennon on 10/13/15.
  */
 
-// Module dependencies
-var osc = require('./osc.server.controller.js');
-var util = require('util');
-
-var io;
-
-// Logging function for incoming events
-function logEventReceived(event, data) {
-    console.log(event + ' event received from client.', data);
-}
+'use strict';
 
 /**
- * Initializes the module. Once initialized, clients that connect over
- * socket.io receive the messages this module emits, as described above. The
- * server then also listens on each client connection for OSC messages to be
- * sent using the {@link Node.module:OSCServerController|OSCServerController}
- * module, also as described above.
+ * The `ExperimentValidator` service checks the validity of an
+ * `ExperimentSchema`.
  *
- * @param {http.Server} httpServer A Node.js HTTP server
- * @return {undefined}
+ * @class Angular.ExperimentValidator
+ * @memberof Angular
  */
-exports.init = function(httpServer) {
 
-    // Require Socket.IO and start listening
-    io = require('socket.io')(httpServer);
+angular.module('core').factory('ExperimentValidator', [
+    '$log',
+    function($log) {
 
-    // Setup event handlers
-    io.on('connection', function(socket) {
+        $log.debug('Instantiating ExperimentValidator service.');
 
-        // Attach sendOSCMessage event handler
-        socket.on('sendOSCMessage', function(data) {
-
-            logEventReceived('sendOSCMessage', data);
-
-            // Send OSC message
-            osc.sendJSONMessage(data, function() {
-
-                /**
-                 * This event is fired when the module sends an OSC message
-                 * using the
-                 * {@link Node.module:OSCServerController|OSCServerController}
-                 * module.
-                 *
-                 * The object sent with this event is a JavaScript object
-                 * representation of the OSC message.
-                 *
-                 * @event oscMessageSent
-                 * @type {{}}
-                 */
-                socket.emit('oscMessageSent', data);
-            });
-        });
-
-        // Listen for OSC module's 'oscMessageReceived' events
-        osc.eventEmitter.on('oscMessageReceived', function(data) {
+        var returnObject = {
 
             /**
-             * This event is fired when the module receives an OSC message from
-             * the {@link Node.module:OSCServerController|OSCServerController}
-             * module.
+             * Advances the state to the next state as defined in the study
+             * specification document (see the [README](index.html)).
              *
-             * The object sent with this event is a JavaScript object
-             * representation of the OSC message.
-             *
-             * @event oscMessageReceived
-             * @type {{}}
+             * @function advanceSlide
+             * @instance
+             * @memberof Angular.ExperimentValidator
+             * @return {*}
              */
+            validateSchema: function(schema) {
 
-            // Just pass the data on to the socket
-            socket.emit('oscMessageReceived', data);
-        });
-    });
-};
+                var constraints = {
+                    structure: {
+                        presence: true
+                    },
+                    media: {
+                        presence: true
+                    }
+                };
 
+                // Initial validation
+                var isValid = validate(schema, constraints);
+                if (isValid !== undefined) {
+                    return isValid;
+                }
+
+                // Structure must be an array
+                isValid = validate.isArray(schema.structure);
+                if (isValid === false) {
+                    return isValid;
+                }
+
+                // Iterate over media array
+                for (var i = 0; i &lt; schema.media.length; i++) {
+                    var item = schema.media[i];
+                    var itemIsValid = this.validateMediaEntry(item);
+                    if (itemIsValid !== undefined) {
+                        return itemIsValid;
+                    }
+                }
+
+                // Iterate over
+
+                return undefined;
+            },
+
+            validateMediaEntry: function validateMediaEntryFn(entry) {
+                var constraints = {
+                    artist: {
+                        presence: true
+                    },
+                    title: {
+                        presence: true
+                    },
+                    label: {
+                        presence: true
+                    }
+                };
+
+                var isValid = validate(entry, constraints);
+                if (isValid !== undefined) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.artist);
+                if (isValid === false) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.title);
+                if (isValid === false) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.label);
+                if (isValid === false) {
+                    return isValid;
+                }
+            },
+
+            validateStructureEntry: function validateStructureEntryFn(entry) {
+                var constraints = {
+                    name: {
+                        presence: true
+                    }
+                };
+
+                var isValid = validate(entry, constraints);
+                if (isValid !== undefined) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.name);
+                if (isValid === false) {
+                    return isValid;
+                }
+            }
+        };
+
+        return returnObject;
+    }
+]);
 </code></pre>
         </article>
     </section>

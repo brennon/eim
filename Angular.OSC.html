@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: MediaPlaybackController</title>
+    <title>JSDoc: Class: OSC</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: MediaPlaybackController</h1>
+    <h1 class="page-title">Class: OSC</h1>
 
     
 
@@ -31,7 +31,7 @@
         <h2>
             <span class="ancestors"><a href="Angular.html">Angular</a>.</span>
         
-        MediaPlaybackController
+        OSC
         </h2>
         
     
@@ -44,15 +44,15 @@
 
     
 
-    <h4 class="name" id="MediaPlaybackController"><span class="type-signature"></span>new MediaPlaybackController<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="OSC"><span class="type-signature"></span>new OSC<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    <p>In the demo application, the <code>MediaPlaybackController</code> is responsible for
-initiating the playback of media excerpts.</p>
+    <p>The <code>OSC</code> service exposes functionality for listening to incoming messages
+from the server and sending outgoing messages to the server.</p>
 </div>
 
 
@@ -96,7 +96,7 @@ initiating the playback of media excerpts.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line3">line 3</a>
+        <a href="public_modules_core_services_osc.client.service.js.html">public/modules/core/services/osc.client.service.js</a>, <a href="public_modules_core_services_osc.client.service.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -134,13 +134,6 @@ initiating the playback of media excerpts.</p>
      
 
     
-        <h3 class="subsection-title">Namespaces</h3>
-
-        <dl>
-            <dt><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></dt>
-            <dd></dd>
-        </dl>
-    
 
     
 
@@ -152,19 +145,17 @@ initiating the playback of media excerpts.</p>
 
     
 
-    <h4 class="name" id="emotionIndexMessageListener"><span class="type-signature"></span>emotionIndexMessageListener<span class="signature">(msg)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="incomingMessageHandler"><span class="type-signature"></span>incomingMessageHandler<span class="signature">(message)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>This method is called when the server fires the controller receives
-a message with the address <code>/eim/status/emotionIndex</code>. When this
-occurs, <a href="Angular.TrialData.html">TrialData</a> is updated with the
-received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a>
- is set to <code>false</code>, and the slide is advanced by calling
- <a href="Angular.ExperimentManager.html#advanceSlide">ExperimentManager#advanceSlide</a>.</p>
+    <p>Handles OSC messages received over socket.io. These messages are
+then passed on to any subscribers to the message address.
+Messages received for which there are no subscribers are logged
+to the console.</p>
 </div>
 
 
@@ -200,7 +191,7 @@ received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#but
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -216,7 +207,7 @@ received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#but
 
             
 
-            <td class="description last"><p>The OSC message</p></td>
+            <td class="description last"><p>Received OSC message</p></td>
         </tr>
 
     
@@ -257,7 +248,7 @@ received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#but
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line268">line 268</a>
+        <a href="public_modules_core_services_osc.client.service.js.html">public/modules/core/services/osc.client.service.js</a>, <a href="public_modules_core_services_osc.client.service.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -306,21 +297,14 @@ received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#but
 
     
 
-    <h4 class="name" id="playbackMessageListener"><span class="type-signature"></span>playbackMessageListener<span class="signature">(msg)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe<span class="signature">(address, callback)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>This method is called when the server fires the controller receives
-a message with the address <code>/eim/status/playback</code>. When this
-occurs, if the message indicates that playback has begun, the page
-is blacked out. If the message indicates that playback has ended,
-the blackout is removed, the emotion index is requested, <a href="Angular.MediaPlaybackController_$scope.html#currentButtonLabel">$scope#currentButtonLabel</a>
- is set to <code>'Continue'</code>, <a href="Angular.MediaPlaybackController_$scope.html#mediaHasPlayed">$scope#mediaHasPlayed</a>
- is set to <code>true</code>, and <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a>
- is set to <code>true</code>.</p>
+    <p>Subscribe to receive OSC messages for a particular address.</p>
 </div>
 
 
@@ -356,13 +340,13 @@ the blackout is removed, the emotion index is requested, <a href="Angular.MediaP
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>address</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">string</span>
 
 
             
@@ -372,7 +356,33 @@ the blackout is removed, the emotion index is requested, <a href="Angular.MediaP
 
             
 
-            <td class="description last"><p>The OSC message</p></td>
+            <td class="description last"><p>The address of messages for which the
+caller would like to subscribe</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Angular.OSC.html#.OSCSubscriberCallback">Angular.OSC.OSCSubscriberCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callback
+to be called when messages with the address in <code>address</code> are
+received</p></td>
         </tr>
 
     
@@ -413,7 +423,7 @@ the blackout is removed, the emotion index is requested, <a href="Angular.MediaP
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line218">line 218</a>
+        <a href="public_modules_core_services_osc.client.service.js.html">public/modules/core/services/osc.client.service.js</a>, <a href="public_modules_core_services_osc.client.service.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -462,26 +472,14 @@ the blackout is removed, the emotion index is requested, <a href="Angular.MediaP
 
     
 
-    <h4 class="name" id="requestEmotionIndex"><span class="type-signature"></span>requestEmotionIndex<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="unsubscribe"><span class="type-signature"></span>unsubscribe<span class="signature">(address, callback)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Requests the most recently recorded emotion index from the server
-over OSC. The message used to retrieve this value is like the
-following:</p>
-<pre class="prettyprint source"><code>{
-    oscType: 'message',
-    address: '/eim/control/emotionIndex',
-    args: [
-        {
-            type: 'string',
-            value: &lt;SESSIONNUMBER>
-        }
-    ]
-}</code></pre>
+    <p>Stop receiving OSC messages with a particular address.</p>
 </div>
 
 
@@ -490,6 +488,80 @@ following:</p>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The address of messages for which the
+caller would like to unsubscribe</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Angular.OSC.html#.OSCSubscriberCallback">Angular.OSC.OSCSubscriberCallback</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The callback
+that was passed with the original call to Angular.OSC#subscribe}</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -525,7 +597,7 @@ following:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line179">line 179</a>
+        <a href="public_modules_core_services_osc.client.service.js.html">public/modules/core/services/osc.client.service.js</a>, <a href="public_modules_core_services_osc.client.service.js.html#line102">line 102</a>
     </li></ul></dd>
     
 
@@ -572,6 +644,142 @@ following:</p>
         
     
 
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+
+    
+
+    <h4 class="name" id=".OSCSubscriberCallback"><span class="type-signature"></span>OSCSubscriberCallback<span class="signature">(message)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Callback that will be called when a message is received for a
+specified address.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The OSC message that was received</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_services_osc.client.service.js.html">public/modules/core/services/osc.client.service.js</a>, <a href="public_modules_core_services_osc.client.service.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
     
 
     
