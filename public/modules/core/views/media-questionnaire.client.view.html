@@ -1,13 +1,23 @@
+<div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}"
+           close="closeAlert($index)">{{alert.msg | translate}}
+    </alert>
+</div>
+
 <div data-ng-controller="QuestionnaireController">
 
-  <questionnaire questionnaire-data="questionnaireData" questionnaire-form="questionnaireForm"></questionnaire>
+    <questionnaire questionnaire-data="questionnaireData"
+                   questionnaire-form="questionnaireForm"></questionnaire>
 
-  <div class="row">
-    <div class="col-md-12">
-      <p>
-        <button class="btn btn-primary btn-lg" ng-disabled="!debugMode && questionnaireForm.$invalid" data-ng-click="advanceSlide()" translate>Continue</button>
-      </p>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <button class="btn btn-primary btn-lg"
+                        ng-disabled="!debugMode && questionnaireForm.$invalid"
+                        data-ng-click="advanceSlide()" translate>Continue
+                </button>
+            </p>
+        </div>
     </div>
-  </div>
 </div>
 

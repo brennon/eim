@@ -20,7 +20,8 @@
                     $controllerConstructor = $controller;
                     mockScope = $rootScope.$new();
                     mockHotkeys = {
-                        add: function() {}
+                        add: function() {
+                        }
                     };
                     ExperimentManager = _ExperimentManager_;
                     $httpBackend = _$httpBackend_;
@@ -28,7 +29,8 @@
                     $timeout = _$timeout_;
                     TrialData = _TrialData_;
                     mockTrialData = {
-                        language: function() {}
+                        language: function() {
+                        }
                     };
                 }));
 
@@ -39,6 +41,7 @@
                 // Setup HTTP expectation
                 $httpBackend.whenGET('modules/core/views/home.client.view.html')
                     .respond(200);
+                $httpBackend.expectGET('/api/config').respond();
                 $httpBackend.expectGET('/api/config').respond();
 
                 // Instantiate controller
@@ -115,67 +118,104 @@
 
             it('should initialize $scope.debugMode to false', function() {
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
 
                 expect(mockScope.debugMode).toBeDefined();
                 expect(mockScope.debugMode).toBe(false);
             });
 
-            it('should initialize the alerts array to an empty array', function() {
+            it('should initialize the alerts array to an empty array',
+                function() {
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                    $controllerConstructor('MasterController', {
+                        $scope: mockScope,
+                        TrialData: mockTrialData,
+                        hotkeys: mockHotkeys
+                    });
 
-                expect(mockScope.alerts).toBeDefined();
-                expect(Array.isArray(mockScope.alerts)).toBe(true);
-                expect(mockScope.alerts.length).toBe(0);
-            });
+                    expect(mockScope.alerts).toBeDefined();
+                    expect(Array.isArray(mockScope.alerts)).toBe(true);
+                    expect(mockScope.alerts.length).toBe(0);
+                }
+            );
 
             it('should initialize blackoutClass to false', function() {
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
 
                 expect(mockScope.blackoutClass).toBe(false);
             });
 
-            it('should call ExperimentManager#advanceSlide through $scope#advanceSlide', function() {
-                var mockExperimentManager = {
-                    advanceSlide: function() {}
+            it('should call ExperimentManager#advanceSlide through ' +
+                '$scope#advanceSlide', function() {
+
+                    var mockExperimentManager = {
+                        advanceSlide: function() {
+                        }
+                    };
+
+                    $controllerConstructor('MasterController', {
+                        $scope: mockScope,
+                        TrialData: mockTrialData,
+                        hotkeys: mockHotkeys,
+                        ExperimentManager: mockExperimentManager
+                    });
+
+                    // Spy on ExperimentManager#advanceSlide and call
+                    // our own #advanceSlide
+                    spyOn(mockExperimentManager, 'advanceSlide');
+                    mockScope.advanceSlide();
+
+                    // Ensure that EM's was called
+                    expect(mockExperimentManager.advanceSlide.calls.count())
+                        .toBe(1);
+                }
+            );
+        });
+
+        it('#$scope.trialDataJson should return TrialData.toJson()',
+            function() {
+
+                var mockTrialData = {
+                    toJson: function() {
+                        return 'trial-data';
+                    },
+
+                    language: function() {
+                    }
                 };
 
                 $controllerConstructor('MasterController', {
                     $scope: mockScope,
                     TrialData: mockTrialData,
-                    hotkeys: mockHotkeys,
-                    ExperimentManager: mockExperimentManager
+                    hotkeys: mockHotkeys
                 });
 
-                // Spy on ExperimentManager#advanceSlide and call
-                // our own #advanceSlide
-                spyOn(mockExperimentManager, 'advanceSlide');
+                expect(mockScope.trialDataJson()).toBe('trial-data');
+            }
+        );
+
+        describe('$scope#advanceSlide', function () {
+            it('should clear the alerts array', function() {
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    ExperimentManager: {
+                        advanceSlide: function() {}
+                    }
+                });
+
+                mockScope.alerts.push('foo');
                 mockScope.advanceSlide();
-
-                // Ensure that EM's was called
-                expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
+                expect(mockScope.alerts).toEqual([]);
             });
-        });
-
-        it('#$scope.trialDataJson should return TrialData.toJson()', function() {
-
-            var mockTrialData = {
-                toJson: function() {
-                    return 'trial-data';
-                },
-
-                language: function() {}
-            };
-
-            $controllerConstructor('MasterController',
-                { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
-
-            expect(mockScope.trialDataJson()).toBe('trial-data');
         });
 
         describe('$scope#selectLanguage', function() {
@@ -185,18 +225,19 @@
                 spyOn(gettextCatalog, 'setCurrentLanguage');
                 spyOn(TrialData, 'language');
 
-                $controllerConstructor('MasterController', { $scope: mockScope });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope
+                });
 
                 mockScope.setLanguage('zh_TW');
             });
 
             it('should call gettext with the correct parameter', function() {
-
-                expect(gettextCatalog.setCurrentLanguage.calls.argsFor(0)[0]).toBe('zh_TW');
+                expect(gettextCatalog.setCurrentLanguage.calls.argsFor(0)[0])
+                    .toBe('zh_TW');
             });
 
             it('should set the new language on TrialData', function() {
-
                 expect(TrialData.language.calls.argsFor(0)[0]).toBe('zh_TW');
             });
         });
@@ -205,8 +246,11 @@
 
             beforeEach(function() {
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
             });
 
             it('should toggle debugMode', function() {
@@ -228,8 +272,11 @@
 
             beforeEach(function() {
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
 
                 mockScope.alerts = [];
             });
@@ -242,13 +289,18 @@
                     expect(mockScope.alerts.length).toBe(1);
                 });
 
-                it('should not add duplicate alerts to the alerts array', function() {
+                it('should not add duplicate alerts to the alerts array',
+                    function() {
 
-                    mockScope.addAlert({type: 'info', msg: 'Info alert'});
-                    mockScope.addAlert({type: 'warn', msg: 'Warning alert'});
-                    mockScope.addAlert({type: 'info', msg: 'Info alert'});
-                    expect(mockScope.alerts.length).toBe(2);
-                });
+                        mockScope.addAlert({type: 'info', msg: 'Info alert'});
+                        mockScope.addAlert({
+                            type: 'warn',
+                            msg: 'Warning alert'
+                        });
+                        mockScope.addAlert({type: 'info', msg: 'Info alert'});
+                        expect(mockScope.alerts.length).toBe(2);
+                    }
+                );
             });
 
             describe('#$scope.closeAlert()', function() {
@@ -269,7 +321,7 @@
             });
         });
 
-        describe('hotkeys', function() {
+        describe('hot keys', function() {
 
             var addSpy;
 
@@ -277,17 +329,20 @@
 
                 addSpy = sinon.spy(mockHotkeys, 'add');
 
-                $controllerConstructor('MasterController',
-                    { $scope: {}, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: {},
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
             });
 
-            it('should add a hotkey for d-d', function() {
+            it('should add a hot key for d-d', function() {
 
                 expect(addSpy.calledTwice).toBe(true);
                 expect(addSpy.args[0][0].combo).toBe('d d');
             });
 
-            it('should add a hotkey for the right arrow key', function() {
+            it('should add a hot key for the right arrow key', function() {
 
                 expect(addSpy.calledTwice).toBe(true);
                 expect(addSpy.args[1][0].combo).toBe('right');
@@ -336,6 +391,48 @@
             //    advanceCallback();
             //    expect(mockExperimentManager.advanceSlide.calls.count()).toBe(1);
             //});
+
+            describe('$scope#handleRightArrow', function() {
+                it('should not call #advanceSlide if debug mode is not enabled',
+                    function() {
+                        $controllerConstructor('MasterController', {
+                            $scope: mockScope,
+                            TrialData: {
+                                data: {
+                                    schema: []
+                                }
+                            },
+                            hotkeys: mockHotkeys
+                        });
+
+                        spyOn(mockScope, 'advanceSlide');
+                        mockScope.debugMode = false;
+                        mockScope.handleRightArrow();
+                        expect(mockScope.advanceSlide)
+                            .not.toHaveBeenCalled();
+                    }
+                );
+
+                it('should call #advanceSlide if debug mode is enabled',
+                    function() {
+                        $controllerConstructor('MasterController', {
+                            $scope: mockScope,
+                            TrialData: {
+                                data: {
+                                    schema: []
+                                }
+                            },
+                            hotkeys: mockHotkeys
+                        });
+
+                        spyOn(mockScope, 'advanceSlide');
+                        mockScope.debugMode = true;
+                        mockScope.handleRightArrow();
+                        expect(mockScope.advanceSlide)
+                            .toHaveBeenCalled();
+                    }
+                );
+            });
         });
 
         describe('inactivity timeout', function() {
@@ -345,7 +442,8 @@
             beforeEach(function() {
 
                 mockState = {
-                    go: function () {}
+                    go: function() {
+                    }
                 };
 
                 ctrl = $controllerConstructor('MasterController', {
@@ -356,17 +454,18 @@
                 });
             });
 
-            describe('#startOver', function () {
-                it('should return to the main screen', function () {
+            describe('#startOver', function() {
+                it('should return to the main screen', function() {
                     spyOn(mockState, 'go');
                     mockScope.startOver();
                     expect(mockState.go.calls.count()).toBe(1);
                 });
 
-                it('should force a reload', function () {
+                it('should force a reload', function() {
                     spyOn(mockState, 'go');
                     mockScope.startOver();
-                    expect(mockState.go.calls.argsFor(0)[2]).toEqual({reload: true});
+                    expect(mockState.go.calls.argsFor(0)[2])
+                        .toEqual({reload: true});
                 });
 
                 it('should request the default language again', function() {
@@ -382,29 +481,34 @@
                 });
 
                 it('should clear any error messages', function() {
-                    mockScope.alerts.push({type: 'info', msg: 'Debug mode' +
-                    ' enabled'});
+                    mockScope.alerts.push({
+                        type: 'info', msg: 'Debug mode' +
+                        ' enabled'
+                    });
                     mockScope.startOver();
                     expect(mockScope.alerts).toEqual([]);
                 });
             });
 
-            it('#resetInactivityTimeout should cancel the existing timeout', function () {
+            it('#resetInactivityTimeout should cancel the existing timeout',
+                function() {
 
-                spyOn($timeout, 'cancel');
+                    spyOn($timeout, 'cancel');
 
-                ctrl.resetInactivityTimeout();
+                    ctrl.resetInactivityTimeout();
 
-                expect($timeout.cancel.calls.count()).toBe(1);
-                expect($timeout.cancel.calls.argsFor(0)[0].$$timeoutId).toBe(1);
-            });
+                    expect($timeout.cancel.calls.count()).toBe(1);
+                    expect($timeout.cancel.calls.argsFor(0)[0].$$timeoutId)
+                        .toBe(1);
+                }
+            );
 
-            it('should exist', function () {
+            it('should exist', function() {
 
                 expect(ctrl.inactivityTimeout).toBeDefined();
             });
 
-            it('should be a promise', function () {
+            it('should be a promise', function() {
 
                 expect(ctrl.inactivityTimeout.then).toBeDefined();
                 expect(ctrl.inactivityTimeout.catch).toBeDefined();
@@ -416,37 +520,49 @@
 
             beforeEach(function() {
 
-                $controllerConstructor('MasterController',
-                    { $scope: mockScope, TrialData: mockTrialData, hotkeys: mockHotkeys });
+                $controllerConstructor('MasterController', {
+                    $scope: mockScope,
+                    TrialData: mockTrialData,
+                    hotkeys: mockHotkeys
+                });
 
-                $httpBackend.expect('GET', 'modules/core/views/home.client.view.html').respond();
+                $httpBackend.expect(
+                    'GET',
+                    'modules/core/views/home.client.view.html'
+                ).respond();
             });
 
-           it('#$scope.hideBody() should set blackoutClass to true', function() {
+            it('#$scope.hideBody() should set blackoutClass to true',
+                function() {
 
-               mockScope.blackoutClass = false;
+                    mockScope.blackoutClass = false;
 
-               mockScope.hideBody();
-               expect(mockScope.blackoutClass).toBe(true);
-           });
+                    mockScope.hideBody();
+                    expect(mockScope.blackoutClass).toBe(true);
+                }
+            );
 
-            it('#$scope.showBody() should set blackoutClass to false', function() {
+            it('#$scope.showBody() should set blackoutClass to false',
+                function() {
 
-                mockScope.blackoutClass = true;
+                    mockScope.blackoutClass = true;
 
-                mockScope.showBody();
-                expect(mockScope.blackoutClass).toBe(false);
-            });
+                    mockScope.showBody();
+                    expect(mockScope.blackoutClass).toBe(false);
+                }
+            );
 
-            it('#$scope.toggleBodyVisibility() should toggle blackoutClass between true and false', function() {
+            it('#$scope.toggleBodyVisibility() should toggle blackoutClass ' +
+                'between true and false', function() {
 
-                mockScope.blackoutClass = true;
+                    mockScope.blackoutClass = true;
 
-                mockScope.toggleBodyVisibility();
-                expect(mockScope.blackoutClass).toBe(false);
-                mockScope.toggleBodyVisibility();
-                expect(mockScope.blackoutClass).toBe(true);
-            });
+                    mockScope.toggleBodyVisibility();
+                    expect(mockScope.blackoutClass).toBe(false);
+                    mockScope.toggleBodyVisibility();
+                    expect(mockScope.blackoutClass).toBe(true);
+                }
+            );
         });
     });
 })();

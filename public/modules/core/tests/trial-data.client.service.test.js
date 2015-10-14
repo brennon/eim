@@ -17,9 +17,9 @@
                 end: null
             },
             metadata: {
-                language: 'en',
+                language: null,
                 session_number: null,
-                location: 'taipei_city',
+                location: null,
                 terminal: null
             },
             state: {
@@ -56,7 +56,7 @@
                 expect(TrialData.data.timestamps.media).toBeDefined();
                 expect(TrialData.data.timestamps.media.length).toBe(0);
                 expect(TrialData.data.metadata.session_number).toBeNull();
-                expect(TrialData.data.metadata.location).toBe('taipei_city');
+                expect(TrialData.data.metadata.location).toBeNull();
                 expect(TrialData.data.metadata.terminal).toBeNull();
                 expect(TrialData.data.state.currentSlideIndex).toBe(-1);
                 expect(TrialData.data.state.mediaPlayCount).toBe(0);
@@ -88,10 +88,92 @@
                 expect(typeof TrialData.toJson).toBe('function');
             });
 
-            it('should return a JSON representation of the data property', function() {
-                var mockData = {foo: 'bar'};
-                TrialData.data = mockData;
-                expect(TrialData.toJson()).toEqual(angular.toJson(mockData, true));
+            it('should return a JSON representation of the data property',
+                function() {
+                    var mockData = {foo: 'bar'};
+                    TrialData.data = mockData;
+                    expect(TrialData.toJson()).toEqual(angular.toJson(mockData, true));
+                }
+            );
+        });
+
+        describe('#toJsonCompact', function() {
+            it('should return a compact JSON representation of the data ' +
+                'property', function() {
+                    TrialData.data = {
+                        foo: 'bar',
+                        numbers: {
+                            un: 'one',
+                            deux: 'two'
+                        },
+                        bad: 'property'
+                    };
+                    TrialData.exportedProperties = ['foo', 'numbers'];
+
+                    expect(TrialData.toJsonCompact())
+                        .toEqual(angular.toJson({
+                            foo: 'bar',
+                            numbers: {
+                                un: 'one',
+                                deux: 'two'
+                            }
+                        }, true));
+                }
+            );
+
+            it('should return toJson if no exported properties are set',
+                function() {
+                    TrialData.data = {
+                        foo: 'bar',
+                        numbers: {
+                            un: 'one',
+                            deux: 'two,'
+                        },
+                        bad: 'property'
+                    };
+                    TrialData.exportedProperties = [];
+
+                    expect(TrialData.toJsonCompact())
+                        .toEqual(TrialData.toJson());
+                }
+            );
+        });
+
+        describe('#toJsonCompact', function() {
+            it('should return a compact copy of the data property', function() {
+                    TrialData.data = {
+                        foo: 'bar',
+                        numbers: {
+                            un: 'one',
+                            deux: 'two,'
+                        },
+                        bad: 'property'
+                    };
+                    TrialData.exportedProperties = ['foo', 'numbers'];
+
+                    expect(TrialData.toCompact())
+                        .toEqual({
+                            foo: 'bar',
+                            numbers: {
+                                un: 'one',
+                                deux: 'two,'
+                            }
+                        });
+            });
+
+            it('should return a compact copy of the data property', function() {
+                TrialData.data = {
+                    foo: 'bar',
+                    numbers: {
+                        un: 'one',
+                        deux: 'two,'
+                    },
+                    bad: 'property'
+                };
+                TrialData.exportedProperties = [];
+
+                expect(TrialData.toCompact())
+                    .toEqual(TrialData.data);
             });
         });
 

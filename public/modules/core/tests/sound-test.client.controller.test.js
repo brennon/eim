@@ -4,15 +4,15 @@
     describe('SoundTestController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, SocketIOService, mockTrialData;
+        var mockScope, $controller, mockTrialData, OSC;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _SocketIOService_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _OSC_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
-            SocketIOService = _SocketIOService_;
+            OSC = _OSC_;
             mockTrialData = {
                 data: {
                     metadata: {
@@ -23,18 +23,12 @@
         }));
 
         describe('OSC messages', function() {
-            it('should emit the correct OSC message on init', function() {
-                SocketIOService.emits = {};
+            it('should send the correct OSC message on init', function() {
+                spyOn(OSC, 'send');
 
                 mockTrialData.data.metadata.language = 'en';
 
-                $controller('SoundTestController',
-                    { $scope: mockScope, TrialData: mockTrialData }
-                );
-
-                var emittedData = SocketIOService.emits.sendOSCMessage[0][0];
-
-                expect(emittedData).toEqual({
+                var startMessage = {
                     oscType: 'message',
                     address: '/eim/control/soundTest',
                     args: [
@@ -48,48 +42,64 @@
                         },
                         {
                             type: 'string',
-                            value: '' + mockTrialData.data.metadata.session_number
+                            value: '' + mockTrialData.data.metadata
+                                .session_number
                         }
                     ]
-                });
-            });
+                };
 
-            it('$scope.stopSoundTest should send the correct OSC message', function() {
                 $controller('SoundTestController',
                     { $scope: mockScope, TrialData: mockTrialData }
                 );
 
-                SocketIOService.emits = {};
-
-                mockScope.stopSoundTest();
-
-                var emittedData = SocketIOService.emits.sendOSCMessage[0][0];
-
-                expect(emittedData).toEqual({
-                    oscType: 'message',
-                    address: '/eim/control/soundTest',
-                    args: [
-                        {
-                            type: 'integer',
-                            value: 0
-                        },
-                        {
-                            type: 'string',
-                            value: '' + mockTrialData.data.metadata.session_number
-                        }
-                    ]
-                });
+                expect(OSC.send.calls.argsFor(0)[0]).toEqual(startMessage);
             });
 
-            it('should send the stopSoundTest message when the scope is destroyed', function() {
-                $controller('SoundTestController',
-                    { $scope: mockScope, TrialData: mockTrialData }
-                );
+            it('$scope.stopSoundTest should send the correct OSC message',
+                function() {
 
-                spyOn(mockScope, 'stopSoundTest');
-                mockScope.$destroy();
-                expect(mockScope.stopSoundTest.calls.count()).toBe(1);
-            });
+                    $controller('SoundTestController',
+                        { $scope: mockScope, TrialData: mockTrialData }
+                    );
+
+                    //SocketIOService.emits = {};
+
+                    spyOn(OSC, 'send');
+                    mockScope.stopSoundTest();
+
+                    //var emittedData =
+                    //    SocketIOService.emits.sendOSCMessage[0][0];
+
+                    expect(OSC.send.calls.argsFor(0)[0]).toEqual({
+                        oscType: 'message',
+                        address: '/eim/control/soundTest',
+                        args: [
+                            {
+                                type: 'integer',
+                                value: 0
+                            },
+                            {
+                                type: 'string',
+                                value: '' + mockTrialData.data.metadata
+                                    .session_number
+                            }
+                        ]
+                    });
+                }
+            );
+
+            it('should send the stopSoundTest message when the scope is ' +
+                'destroyed', function() {
+
+                    $controller('SoundTestController',
+                        { $scope: mockScope, TrialData: mockTrialData }
+                    );
+
+                    spyOn(mockScope, 'stopSoundTest');
+                    mockScope.$destroy();
+                    expect(mockScope.stopSoundTest.calls.count()).toBe(1);
+                }
+            );
         });
     });
 })();

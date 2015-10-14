@@ -53,7 +53,7 @@ function buildLogMessageFromMessage(msg) {
 
     var logMessageParts = msg.splice(1);
 
-    var logMessage = '';
+    var logMessage = 'MaxMSP: ';
 
     for (var i = 0; i < logMessageParts.length; i++) {
         logMessage += logMessageParts[i].value;
@@ -63,10 +63,12 @@ function buildLogMessageFromMessage(msg) {
     }
 
     if (level === 'INFO') {
-        console.info('MaxMSP: ' + logMessage);
+        console.info(logMessage);
     } else if (level === 'ERROR') {
-        console.error('MaxMSP: ' + logMessage);
+        console.error(logMessage);
     }
+
+    return logMessage;
 }
 
 // Incoming message handler
@@ -78,8 +80,10 @@ function incomingMessageHandler(msg) {
     if (oscFromBuffer.address === '/eim/status/log') {
 
         // Log the message
-        buildLogMessageFromMessage(oscFromBuffer.args);
-
+        exports.eventEmitter.emit(
+            'oscMessageReceived',
+            buildLogMessageFromMessage(oscFromBuffer.args)
+        );
     } else {
 
         /**
@@ -92,6 +96,7 @@ function incomingMessageHandler(msg) {
          * @type {{}}
          */
 
+            // Pass the message on to the socket
         exports.eventEmitter.emit('oscMessageReceived', oscFromBuffer);
     }
 }

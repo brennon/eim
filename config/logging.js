@@ -6,8 +6,17 @@ var util = require('util'),
     production = (process.env.NODE_ENV || '').toLowerCase() === 'production',
     customConfig = require('./custom').customConfiguration;
 
-// Add winston-loggly
-require('winston-loggly');
+// Check if a Loggly key was provided
+var useLoggly = false;
+if (customConfig.hasOwnProperty('logglyToken') &&
+    typeof customConfig.logglyToken === 'string' &&
+    customConfig.logglyToken.length > 0) {
+
+    useLoggly = true;
+
+    // Add winston-loggly
+    require('winston-loggly');
+}
 
 module.exports = {
     middleware: function(req, res, next) {
@@ -32,13 +41,15 @@ switch ((process.env.NODE_ENV || '').toLowerCase()) {
             exitOnError: false,
             level: 'debug'
         });
-        logger.add(winston.transports.Loggly, {
-            level: 'info',
-            subdomain: 'brennon',
-            inputToken: customConfig.logglyToken,
-            json: true,
-            tags: ['Node.js']
-        });
+        if (useLoggly) {
+            logger.add(winston.transports.Loggly, {
+                level: 'info',
+                subdomain: 'brennon',
+                inputToken: customConfig.logglyToken,
+                json: true,
+                tags: ['Node.js']
+            });
+        }
         break;
     case 'test':
         logger.add(winston.transports.Console, {
@@ -53,13 +64,15 @@ switch ((process.env.NODE_ENV || '').toLowerCase()) {
             timestamp: true,
             level: 'debug'
         });
-        logger.add(winston.transports.Loggly, {
-            level: 'info',
-            subdomain: 'brennon',
-            inputToken: customConfig.logglyToken,
-            json: true,
-            tags: ['Node.js']
-        });
+        if (useLoggly) {
+            logger.add(winston.transports.Loggly, {
+                level: 'info',
+                subdomain: 'brennon',
+                inputToken: customConfig.logglyToken,
+                json: true,
+                tags: ['Node.js']
+            });
+        }
         break;
 }
 

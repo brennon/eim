@@ -200,3 +200,15 @@ button {
     /*-moz-transform:translate3d(100px, 0, 0);*/
     /*transform:translate3d(100px, 0, 0);*/
 }
+
+img.photo {
+    border-width: 5px;
+    border-color: whitesmoke;
+    border-style: solid;
+    box-shadow: 4px 4px 20px 7px #aaa;
+    margin-bottom: 20px;
+}
+
+.btn-signal {
+    margin-bottom: 10px;
+}

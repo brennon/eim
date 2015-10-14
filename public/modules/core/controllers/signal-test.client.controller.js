@@ -9,15 +9,17 @@
 
 angular.module('core').controller('SignalTestController', [
     '$scope',
-    'SocketIOService',
     'TrialData',
     '$timeout',
     '$log',
-    function($scope, SocketIOService, TrialData, $timeout, $log) {
+    'OSC',
+    function($scope, TrialData, $timeout, $log, OSC) {
 
         $log.debug('Loading SignalTestController.');
 
-        var thisController = this;
+
+        /***** $scope *****/
+
 
         /**
          * The `SignalTestController`'s `$scope` object. All properties on
@@ -96,20 +98,9 @@ angular.module('core').controller('SignalTestController', [
             return $scope.edaQuality && $scope.poxQuality;
         };
 
-        // Set a timeout to fire after 15 seconds
-        $timeout(
-            function() {
-                thisController.sendStopSignalTestMessage();
-                $timeout(
-                    function() {
-                        $scope.edaQuality = 1;
-                        $scope.poxQuality = 1;
-                    },
-                    2.5 * 1000
-                );
-            },
-            12.5 * 1000
-        );
+
+        /***** Inner members *****/
+
 
         /**
          * Sends a message to Max to start the signal quality test. This
@@ -141,7 +132,7 @@ angular.module('core').controller('SignalTestController', [
 
             $log.debug('Sending start signal test message to Max.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/signalTest',
                 args: [
@@ -187,7 +178,7 @@ angular.module('core').controller('SignalTestController', [
 
             $log.debug('Sending stop signal test message to Max.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            var stopMessage = {
                 oscType: 'message',
                 address: '/eim/control/signalTest',
                 args: [
@@ -200,118 +191,145 @@ angular.module('core').controller('SignalTestController', [
                         value: '' + TrialData.data.metadata.session_number
                     }
                 ]
-            });
+            };
+
+            OSC.send(stopMessage);
         };
 
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected.
+         * This method is called when an EDA quality OSC message is received.
+         * {@link
+         * Angular.SignalTestController#$scope#edaQuality|$scope#edaQuality}
+         * is updated accordingly.
          *
-         * If the message is a signal quality message, {@link
-         * Angular.SignalTestController#$scope#edaQuality|$scope#edaQuality} or
+         * @function edaQualityMessageListener
+         * @memberof Angular.SignalTestController
+         * @instance
+         * @param {{}} msg The message sent with the event
+         * @return {undefined}
+         */
+        this.edaQualityMessageListener =
+            function edaQualityMessageListenerFn(msg) {
+                var edaQuality = msg.args[0].value;
+                if (edaQuality === 0) {
+                    $log.warn(
+                        'Bad EDA signal detected on terminal ' +
+                        TrialData.data.metadata.terminal +
+                        '.'
+                    );
+                }
+
+                // Update EDA signal quality
+                $scope.$apply(function updateEDAQuality() {
+                    $scope.edaQuality = edaQuality;
+                });
+            };
+
+        /**
+         * This method is called when a POX quality OSC message is received.
          * {@link
          * Angular.SignalTestController#$scope#poxQuality|$scope#poxQuality}
-         * is updated accordingly. If the message indicates that the test
-         * recording is complete, {@link
+         * is updated accordingly.
+         *
+         * @function poxQualityMessageListener
+         * @memberof Angular.SignalTestController
+         * @instance
+         * @param {{}} msg The data sent with the event
+         * @return {undefined}
+         */
+        this.poxQualityMessageListener =
+            function poxQualityMessageListenerFn(msg) {
+                var poxQuality = msg.args[0].value;
+                if (poxQuality === 0) {
+                    $log.warn(
+                        'Bad POX signal detected on terminal ' +
+                        TrialData.data.metadata.terminal +
+                        '.'
+                    );
+                }
+
+                // Update POX signal quality
+                $scope.$apply(function updatePOXQuality() {
+                    $scope.poxQuality = poxQuality;
+                });
+            };
+
+        /**
+         * This method is called when an OSC message indicating that the signal
+         * test recording is complete is received. {@link
          * Angular.SignalTestController#$scope#testRecordingComplete|$scope#testRecordingComplete}
          * is updated accordingly and {@link
          * Angular.SignalTestController#sendStopSignalTestMessage|sendStopSignalTestMessage}
          * is called.
          *
-         * The receipt of unexpected or malformed messages will result in a
-         * warning on the console.
-         *
-         * @function oscMessageReceivedListener
+         * @function recordingCompleteMessageListener
          * @memberof Angular.SignalTestController
          * @instance
-         * @param {{}} data The data sent with the event
          * @return {undefined}
-         * @see Node.module:SocketServerController
          */
-        this.oscMessageReceivedListener = function(data) {
+        this.recordingCompleteMessageListener =
+            function recordingCompleteMessageListenerFn() {
 
-            console.info('SignalTesttController received an OSC message.');
-            console.info(data);
+                // Update continue button
+                $scope.$apply(function() {
+                    $scope.testRecordingComplete = true;
+                });
 
-            var expectedMessageAddresses = [
-                '/eim/status/signalQuality/eda',
-                '/eim/status/signalQuality/pox',
-                '/eim/status/testRecordingComplete'
-            ];
+                this.sendStopSignalTestMessage();
+            };
 
-            // Make sure data is an object with an address property, and that
-            // we expect the message
-            if (typeof data === 'object' &&
-                !Array.isArray(data) &&
-                data.hasOwnProperty('address') &&
-                expectedMessageAddresses.indexOf(data.address) >= 0) {
 
-                // If it was an EDA signal quality message
-                if (data.address === '/eim/status/signalQuality/eda') {
+        /***** Initialization logic *****/
 
-                    var edaQuality = data.args[0].value;
-                    if (edaQuality === 0) {
-                        $log.warn(
-                            'Bad EDA signal detected on terminal ' +
-                            TrialData.data.metadata.terminal +
-                            '.'
-                        );
-                    }
 
-                    // Update EDA signal quality
-                    $scope.$apply(function updateEDAQuality() {
-                        $scope.edaQuality = edaQuality;
-                    });
-                }
+        var thisController = this;
 
-                // If it was a POX signal quality message
-                if (data.address === '/eim/status/signalQuality/pox') {
+        // Set a timeout to fire after 15 seconds
+        $timeout(
+            function() {
+                thisController.sendStopSignalTestMessage();
+                $timeout(
+                    function() {
+                        $scope.edaQuality = 1;
+                        $scope.poxQuality = 1;
+                    },
+                    2.5 * 1000
+                );
+            },
+            12.5 * 1000
+        );
 
-                    var poxQuality = data.args[0].value;
-                    if (poxQuality === 0) {
-                        $log.warn(
-                            'Bad POX signal detected on terminal ' +
-                            TrialData.data.metadata.terminal +
-                            '.'
-                        );
-                    }
-
-                    // Update POX signal quality
-                    $scope.$apply(function updatePOXQuality() {
-                        $scope.poxQuality = poxQuality;
-                    });
-                }
-
-                // If the test recording has complete
-                if (data.address === '/eim/status/testRecordingComplete') {
-
-                    // Update continue button
-                    $scope.$apply(function() {
-                        $scope.testRecordingComplete = true;
-                    });
-
-                    this.sendStopSignalTestMessage();
-                }
-            } else {
-                $log.warn('SignalTestController did not handle an OSC message.', data);
-            }
-        };
-
-        // Attach handler for incoming OSC messages
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
+        // Attach handlers for incoming OSC messages
+        OSC.subscribe(
+            '/eim/status/signalQuality/eda',
+            this.edaQualityMessageListener
+        );
+        OSC.subscribe(
+            '/eim/status/signalQuality/pox',
+            this.poxQualityMessageListener
+        );
+        OSC.subscribe(
+            '/eim/status/testRecordingComplete',
+            this.recordingCompleteMessageListener
         );
 
         // Destroy handler for incoming OSC messages when $scope is destroyed,
         // and send stop signal test message
         var controller = this;
         $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                controller.oscMessageReceivedListener
+            OSC.unsubscribe(
+                '/eim/status/signalQuality/eda',
+                controller.edaQualityMessageListener
             );
+            OSC.unsubscribe(
+                '/eim/status/signalQuality/pox',
+                controller.poxQualityMessageListener
+            );
+            OSC.unsubscribe(
+                '/eim/status/testRecordingComplete',
+                controller.recordingCompleteMessageListener
+            );
+
             controller.sendStopSignalTestMessage();
         });
 

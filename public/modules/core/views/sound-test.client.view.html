@@ -1,23 +1,34 @@
+<div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}"
+           close="closeAlert($index)">{{alert.msg | translate}}
+    </alert>
+</div>
+
 <div data-ng-controller="SoundTestController">
-  <div class="row">
-    <div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
 
-      <h1 translate>Sound Test</h1>
+            <h1 translate>Sound Test</h1>
 
-      <p translate>Please put on the provided headphones. <b>Left</b> and
-        <b>right</b>
-                                                                ears are indicated on the headset.</p>
+            <p translate>Please put on the provided headphones. <span
+                    class="text-danger">Left</span> and
+                <span class="text-danger">right</span> ears are indicated on the
+                headset.</p>
 
-      <p translate>If you can’t hear any sound through the headphones, please ask a staff member for assistance.</p>
+            <p translate>If you can’t hear any sound through the headphones,
+                please ask a staff member for assistance.</p>
 
-      <p translate>If you can hear sound through the headphones, please click 'Continue' to proceed.</p>
+            <p translate>If you can hear sound through the headphones, please
+                click 'Continue' to proceed.</p>
 
+        </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary btn-lg" ng-click="advanceSlide()" translate>Continue</button>
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary btn-lg" ng-click="advanceSlide()"
+                    translate>Continue
+            </button>
+        </div>
     </div>
-  </div>
 </div>

@@ -164,36 +164,64 @@
                 expect(mockTrialData.reset.calls.count()).toBe(1);
             });
 
-            it('should generate a session ID', function() {
+            it('should generate a session ID', function(done) {
+                $httpBackend.whenGET('/api/experiment-schemas/random')
+                    .respond({media: 'foo', structure: []});
+                $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                    .respond();
+                $httpBackend.whenGET('/api/config')
+                    .respond({metadata:{}});
+
                 spyOn(rfc4122, 'v4');
-                ExperimentManager.masterReset();
-                expect(rfc4122.v4.calls.count()).toBe(1);
+
+                ExperimentManager.masterReset()
+                    .then(function() {
+                        expect(rfc4122.v4.calls.count()).toBe(1);
+                        done();
+                    });
+
+                $httpBackend.flush();
             });
 
-            it('should set the session ID on TrialData', function() {
+            it('should set the session ID on TrialData', function(done) {
+                $httpBackend.whenGET('/api/experiment-schemas/random')
+                    .respond({media: 'foo', structure: []});
+                $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                    .respond();
+                $httpBackend.whenGET('/api/config')
+                    .respond({metadata:{}});
+
                 mockTrialData.data.metadata.session_number = null;
-                ExperimentManager.masterReset();
-                expect(mockTrialData.data.metadata.session_number)
-                    .not.toBeNull();
+
+                ExperimentManager.masterReset()
+                    .then(function() {
+                        expect(mockTrialData.data.metadata.session_number)
+                            .not.toBeNull();
+                        done();
+                    });
+
+                $httpBackend.flush();
             });
 
-            it('should get the terminal number from the backend',
+            it('should get the metadata from the backend',
                 function(done) {
 
                     $httpBackend
                         .whenGET('/api/experiment-schemas/random')
-                        .respond(200, {media: 'foo', structure: []});
+                        .respond({media: 'foo', structure: []});
                     $httpBackend
                         .whenGET('modules/core/views/home.client.view.html')
                         .respond();
                     $httpBackend
                         .whenGET('/api/config')
-                        .respond({metadata: {terminal: 42}});
+                        .respond({metadata: {terminal: 42, foo: 'bar'}});
 
                     ExperimentManager.masterReset()
                         .then(function() {
                             expect(mockTrialData.data.metadata.terminal)
                                 .toEqual(42);
+                            expect(mockTrialData.data.metadata.foo)
+                                .toEqual('bar');
                             done();
                         })
                         .catch(function(err) {
@@ -202,6 +230,33 @@
                     $httpBackend.flush();
                 }
             );
+
+            it('should set exported items on TrialData', function(done) {
+                var props = ['foo', 'one.two'];
+                $httpBackend
+                    .whenGET('/api/config')
+                    .respond({
+                        exportedProperties: props
+                    });
+
+                $httpBackend.whenGET('/api/experiment-schemas/random')
+                    .respond({
+                        media: 'foo',
+                        structure: []
+                    });
+                $httpBackend.whenGET(
+                    'modules/core/views/home.client.view.html'
+                ).respond();
+
+                ExperimentManager.masterReset()
+                    .then(function() {
+                        expect(mockTrialData.exportedProperties)
+                            .toEqual(props);
+                        done();
+                    });
+
+                $httpBackend.flush();
+            });
 
             it('should reject the promise if a terminal number was not ' +
                 'returned', function(done) {
@@ -314,6 +369,7 @@
 
                 describe('on failure', function() {
                     it('should reject the promise', function(done) {
+                        $httpBackend.expectGET('/api/config').respond({});
                         $httpBackend
                             .expectGET(
                                 'modules/core/views/home.client.view.html'

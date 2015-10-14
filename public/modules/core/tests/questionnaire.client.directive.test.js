@@ -4,15 +4,18 @@
     describe('questionnaire directive', function () {
 
         //Initialize global variables
-        var $scope, $compile, element;
+        var $scope, $compile, element, $httpBackend;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function (_$rootScope_, _$compile_) {
+        beforeEach(inject(function (_$rootScope_, _$compile_, _$httpBackend_) {
             $scope = _$rootScope_.$new();
             $compile = _$compile_;
             element = angular.element('<questionnaire questionnaire-data="questionnaireData" questionnaire-form="questionnaireForm"></questionnaire>');
+
+            $httpBackend = _$httpBackend_;
+            $httpBackend.whenGET('/api/config').respond();
         }));
 
         it('should add a header for the page title', function () {

@@ -152,39 +152,19 @@ initiating the playback of media excerpts.</p>
 
     
 
-    <h4 class="name" id="oscMessageReceivedListener"><span class="type-signature"></span>oscMessageReceivedListener<span class="signature">(data)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="emotionIndexMessageListener"><span class="type-signature"></span>emotionIndexMessageListener<span class="signature">(msg)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>This method is called when the server fires the
-<code>oscMessageReceived</code> event on the socket.io socket to which the
-client is connected.</p>
-<p>The message may indicate one of three things:</p>
-<ol>
-<li>Playback has begun<ul>
-<li>In this case, the page is simply blacked out.</li>
-</ul>
-</li>
-<li>Playback has ended<ul>
-<li>Here, the blackout is removed, the emotion index is requestd,
-<a href="Angular.MediaPlaybackController_$scope.html#currentButtonLabel">$scope#currentButtonLabel</a>
-is set to <code>'Continue'</code>, <a href="Angular.MediaPlaybackController_$scope.html#mediaHasPlayed">$scope#mediaHasPlayed</a>
-is set to <code>true</code>, and <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a> is set to <code>true</code>.</li>
-</ul>
-</li>
-<li>The emotion index has been received<ul>
-<li>In this last case, <a href="Angular.TrialData.html">TrialData</a> is
-updated with the received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a>
-is set to <code>false</code>, and the slide is advanced by calling
-<a href="Angular.ExperimentManager.html#advanceSlide">ExperimentManager#advanceSlide</a>.</li>
-</ul>
-</li>
-</ol>
-<p>The receipt of unexpected or malformed messages will result in a
-warning on the console.</p>
+    <p>This method is called when the server fires the controller receives
+a message with the address <code>/eim/status/emotionIndex</code>. When this
+occurs, <a href="Angular.TrialData.html">TrialData</a> is updated with the
+received emotion index, <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a>
+ is set to <code>false</code>, and the slide is advanced by calling
+ <a href="Angular.ExperimentManager.html#advanceSlide">ExperimentManager#advanceSlide</a>.</p>
 </div>
 
 
@@ -220,7 +200,7 @@ warning on the console.</p>
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>msg</code></td>
             
 
             <td class="type">
@@ -236,7 +216,7 @@ warning on the console.</p>
 
             
 
-            <td class="description last"><p>The data sent with the event</p></td>
+            <td class="description last"><p>The OSC message</p></td>
         </tr>
 
     
@@ -277,19 +257,168 @@ warning on the console.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line179">line 179</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line268">line 268</a>
     </li></ul></dd>
     
 
     
 
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="Node.module_SocketServerController.html">Node.module:SocketServerController</a></li>
-        </ul>
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">undefined</span>
+
+
     </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="playbackMessageListener"><span class="type-signature"></span>playbackMessageListener<span class="signature">(msg)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>This method is called when the server fires the controller receives
+a message with the address <code>/eim/status/playback</code>. When this
+occurs, if the message indicates that playback has begun, the page
+is blacked out. If the message indicates that playback has ended,
+the blackout is removed, the emotion index is requested, <a href="Angular.MediaPlaybackController_$scope.html#currentButtonLabel">$scope#currentButtonLabel</a>
+ is set to <code>'Continue'</code>, <a href="Angular.MediaPlaybackController_$scope.html#mediaHasPlayed">$scope#mediaHasPlayed</a>
+ is set to <code>true</code>, and <a href="Angular.MediaPlaybackController_$scope.html#buttonDisabled">$scope#buttonDisabled</a>
+ is set to <code>true</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>msg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The OSC message</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line218">line 218</a>
+    </li></ul></dd>
+    
+
+    
+
     
 
     
@@ -396,7 +525,7 @@ following:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line140">line 140</a>
+        <a href="public_modules_core_controllers_media-playback.client.controller.js.html">public/modules/core/controllers/media-playback.client.controller.js</a>, <a href="public_modules_core_controllers_media-playback.client.controller.js.html#line179">line 179</a>
     </li></ul></dd>
     
 
@@ -456,13 +585,13 @@ following:</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.ExperimentValidator.html">ExperimentValidator</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 14 2015 21:29:13 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

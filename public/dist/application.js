@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'emotion-in-motion';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'cfp.hotkeys', 'btford.socket-io', 'gettext', 'logglyLogger', 'uuid'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'cfp.hotkeys', 'btford.socket-io', 'gettext', 'logglyLogger', 'uuid', 'ngLodash'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName) {
@@ -44,11 +44,32 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 angular.module(ApplicationConfiguration.applicationModuleName)
     .config(['LogglyLoggerProvider', function(LogglyLoggerProvider) {
         LogglyLoggerProvider
-            .inputToken('81009487-63da-400f-af48-4b3f91d3bbd5')
             .includeUrl(true)
             .includeTimestamp(true)
             .sendConsoleErrors(true)
             .inputTag('AngularJS');
+    }]);
+
+angular.module(ApplicationConfiguration.applicationModuleName)
+    .run(['LogglyLogger', '$http', '$log', function(LogglyLogger, $http, $log) {
+
+        // Get custom configuration information from the backend
+        $http.get('/api/config')
+            .success(function(data) {
+
+                if (data.hasOwnProperty('logglyToken') &&
+                    typeof data.logglyToken === 'string' &&
+                    data.logglyToken.length > 0) {
+
+                    LogglyLogger.inputToken(data.logglyToken);
+
+                    $log.debug('Loggly input token retrieved from server.');
+                }
+            })
+            .error(function() {
+                $log.error('The configuration could not be fetched from the ' +
+                    'server.');
+            });
     }]);
 
 // Configure nggettext
@@ -924,7 +945,7 @@ angular.module('core').controller(
 
             // Send TrialData.data to the backend
             $http
-                .post('/api/trials', TrialData.data)
+                .post('/api/trials', TrialData.toCompact())
                 .catch(function(response) {
                     var errorMessage = 'The POST to /api/trials failed.';
                     $log.error(errorMessage, response);
@@ -940,9 +961,9 @@ angular.module('core').controller(
  * an experiment session and provides a number of 'session-wide' facilities.
  * These include restarting a session, exposing the {@link
  * Angular.TrialData|TrialData} service, changing the language, configuring
- * hotkeys, showing alerts, and blacking out the screen.
+ * hot keys, showing alerts, and blacking out the screen.
  *
- * The hotkeys are configured using the
+ * The hot keys are configured using the
  * [angular-hotkeys](https://github.com/chieffancypants/angular-hotkeys)
  * module. In particular, pressing `'d'` twice will toggle debugging mode. When
  * in debugging mode, the right arrow key will allow the user to advance to
@@ -965,10 +986,20 @@ angular.module('core').controller(
         '$timeout',
         '$log',
         '$http',
+        '$rootScope',
+        'OSC',  // Note that though OSC is not used here, requiring it is
+                // necessary in order to globally handle messages to which no
+                // one is subscribed
         function($scope, TrialData, hotkeys, ExperimentManager, gettextCatalog,
-                 $state, $timeout, $log, $http) {
+                 $state, $timeout, $log, $http, $rootScope, OSC) {
 
             $log.debug('Loading MasterController.');
+
+            var thisController = this;
+
+
+            /***** $scope Members *****/
+
 
             /**
              * The `MasterController`'s `$scope` object. All properties on
@@ -980,39 +1011,6 @@ angular.module('core').controller(
              * @memberof Angular.MasterController
              * @type {{}}
              */
-            var thisController = this;
-
-            /**
-             * Sets the language to the default language as specified in the
-             * {@link Node.module:CustomConfiguration~customConfiguration~defaultLanguage|CustomConfiguration}
-             * module.
-             *
-             * @function setLanguageToDefault
-             * @memberof Angular.MasterController
-             * @instance
-             * @return {undefined}
-             */
-            this.setLanguageToDefault = function() {
-                $http.get('/api/config')
-                    .then(function(response) {
-
-                        if (response.data.hasOwnProperty('defaultLanguage')) {
-                            $scope.setLanguage(response.data.defaultLanguage);
-                        } else {
-                            var message = 'A default language was not ' +
-                                'provided by the server.';
-                            $log.error(message, response);
-                            throw new Error(message);
-                        }
-                    })
-                    .catch(function(response) {
-                        var message = 'There was a problem retrieving the' +
-                            ' configuration from the server.';
-                        $log.error(message, response);
-                        throw new Error(message);
-                    });
-            };
-            this.setLanguageToDefault();
 
             /**
              * Expose {@link Angular.TrialData#toJson|TrialData#toJson} on
@@ -1070,101 +1068,6 @@ angular.module('core').controller(
             };
 
             /**
-             * Resets the inactivity timeout.
-             *
-             * The demo application ships with an inactivity timeout. If
-             * after five minutes no interaction with the experiment has
-             * occurred, this timeout fires and calls {@link
-             * Angular.MasterController#$scope#startOver|$scope#startOver}
-             * method.
-             *
-             * @function resetInactivityTimeout
-             * @memberof Angular.MasterController
-             * @instance
-             * @return {undefined}
-             */
-            // Reset inactivity timeout with a new five-minute timer
-            this.resetInactivityTimeout = function() {
-
-                $log.debug('MasterController resetting inactivity timeout.');
-
-                $timeout.cancel(thisController.inactivityTimeout);
-                thisController.inactivityTimeout = $timeout(
-                    thisController.startOver,
-                    5 * 60 * 1000
-                );
-            };
-            this.resetInactivityTimeout();
-
-            /**
-             * Resets the inactivity timeout and Advances the slide by calling
-             * {@link
-             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
-             *
-             * @function advanceSlide
-             * @memberof Angular.MasterController#$scope
-             * @instance
-             * @return {undefined}
-             */
-            $scope.advanceSlide = function() {
-
-                $log.debug('MasterController advancing slide.');
-
-                // Reset the inactivity timeout
-                thisController.resetInactivityTimeout();
-
-                // Wrap ExperimentManager's advance slide
-                ExperimentManager.advanceSlide();
-            };
-
-            /**
-             * Indicates whether or not debugging mode is enabled.
-             *
-             * @name debugMode
-             * @memberof Angular.MasterController#$scope
-             * @type {boolean}
-             */
-            $scope.debugMode = false;
-
-            /**
-             * Toggles debugging mode. If debugging mode is enabled, an
-             * alert is posted to the view.
-             *
-             * @function toggleDebugMode
-             * @instance
-             * @memberof Angular.MasterController#$scope
-             * @return {undefined}
-             */
-            $scope.toggleDebugMode = function() {
-
-                $scope.debugMode = !$scope.debugMode;
-                var alertMessage = 'Debug mode has been ';
-                if ($scope.debugMode) {
-                    $log.info('Debug mode enabled.');
-                    alertMessage += 'enabled.';
-                } else {
-                    $log.info('Debug mode disabled.');
-                    alertMessage += 'disabled.';
-                }
-
-                $scope.addAlert({type: 'info', msg: alertMessage});
-            };
-
-            // Setup hotkeys
-            $log.debug('Setting up hotkeys.');
-            hotkeys.add({
-                combo: 'd d',
-                description: 'Toggle debug mode',
-                callback: $scope.toggleDebugMode
-            });
-
-            hotkeys.add({
-                combo: 'right',
-                description: 'Advance slide',
-                callback: $scope.advanceSlide
-            });
-
-            /**
              * Array for holding alert messages.
              *
              * @name alerts
@@ -1186,7 +1089,7 @@ angular.module('core').controller(
              * `msg` and `type`. The value of the `msg` property should be
              * the alert `string`, and the value of the `type` property should
              * be a `string` indicating the alert type. Acceptable values
-             * for alerty types are: `'success'`, `'info'`, `'warning'`, and
+             * for alert types are: `'success'`, `'info'`, `'warning'`, and
              * `'danger'`.
              * @return {undefined}
              */
@@ -1220,7 +1123,7 @@ angular.module('core').controller(
              * @memberof Angular.MasterController#$scope
              * @instance
              * @param {number} index The index in the {@link
-             * Angular.MasterController#$scope#alerts|$scope#alerts} array
+                * Angular.MasterController#$scope#alerts|$scope#alerts} array
              * of the alert to close
              * @return {undefined}
              */
@@ -1247,7 +1150,7 @@ angular.module('core').controller(
                 $scope.addAlert({
                     type: 'danger',
                     msg: 'There seems to be a problem. Please contact a ' +
-                        'mediator for assistance.'
+                    'mediator for assistance.'
                 });
             };
 
@@ -1280,7 +1183,7 @@ angular.module('core').controller(
 
             /**
              * A convenience method for setting {@link
-                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
+             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}
              * to `false` (and reversing the blacking out of the page).
              *
              * @function showBody
@@ -1295,7 +1198,7 @@ angular.module('core').controller(
 
             /**
              * A convenience method for toggling the value of {@link
-                * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}.
+             * Angular.MasterController#$scope#blackoutClass|$scope#blackoutClass}.
              *
              * @function toggleBodyVisibility
              * @memberof Angular.MasterController#$scope
@@ -1306,6 +1209,169 @@ angular.module('core').controller(
                 $log.debug('Toggling body visibility.');
                 $scope.blackoutClass = !$scope.blackoutClass;
             };
+
+            /**
+             * Resets the inactivity timeout, advance the slide by calling
+             * {@link
+             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.,
+             * and clear all current alerts.
+             *
+             * @function advanceSlide
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.advanceSlide = function() {
+
+                $log.debug('MasterController advancing slide.');
+
+                // Reset the inactivity timeout
+                thisController.resetInactivityTimeout();
+
+                // Clear all current alerts
+                $scope.alerts = [];
+
+                // Wrap ExperimentManager's advance slide
+                ExperimentManager.advanceSlide();
+            };
+
+            /**
+             * Calls {@link
+             * Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}
+             * if {@link Angular.ExperimentManager#$scope#debugMode} is `true`.
+             *
+             * @function handleRightArrow
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @return {undefined}
+             */
+            $scope.handleRightArrow = function handleRightArrowFn() {
+                if ($scope.debugMode) {
+                    $scope.advanceSlide();
+                }
+            };
+
+            /**
+             * Indicates whether or not debugging mode is enabled.
+             *
+             * @name debugMode
+             * @memberof Angular.MasterController#$scope
+             * @instance
+             * @type {boolean}
+             */
+            $scope.debugMode = false;
+
+            /**
+             * Toggles debugging mode. If debugging mode is enabled, an
+             * alert is posted to the view.
+             *
+             * @function toggleDebugMode
+             * @instance
+             * @memberof Angular.MasterController#$scope
+             * @return {undefined}
+             */
+            $scope.toggleDebugMode = function() {
+
+                $scope.debugMode = !$scope.debugMode;
+                var alertMessage = 'Debug mode has been ';
+                if ($scope.debugMode) {
+                    $log.info('Debug mode enabled.');
+                    alertMessage += 'enabled.';
+                } else {
+                    $log.info('Debug mode disabled.');
+                    alertMessage += 'disabled.';
+                }
+
+                $scope.addAlert({type: 'info', msg: alertMessage});
+            };
+
+
+            /***** Inner Members *****/
+
+
+            /**
+             * Sets the language to the default language as specified in the
+             * {@link Node.module:CustomConfiguration~customConfiguration~defaultLanguage|CustomConfiguration}
+             * module.
+             *
+             * @function setLanguageToDefault
+             * @memberof Angular.MasterController
+             * @instance
+             * @return {undefined}
+             */
+            this.setLanguageToDefault = function() {
+                $http.get('/api/config')
+                    .then(function(response) {
+
+                        if (response.data.hasOwnProperty('defaultLanguage')) {
+                            $scope.setLanguage(response.data.defaultLanguage);
+                        } else {
+                            var message = 'A default language was not ' +
+                                'provided by the server.';
+                            $log.error(message, response);
+                            throw new Error(message);
+                        }
+                    })
+                    .catch(function(response) {
+                        var message = 'There was a problem retrieving the' +
+                            ' configuration from the server.';
+                        $log.error(message, response);
+                        throw new Error(message);
+                    });
+            };
+
+            /**
+             * Resets the inactivity timeout.
+             *
+             * The demo application ships with an inactivity timeout. If
+             * after five minutes no interaction with the experiment has
+             * occurred, this timeout fires and calls {@link
+             * Angular.MasterController#$scope#startOver|$scope#startOver}
+             * method.
+             *
+             * @function resetInactivityTimeout
+             * @memberof Angular.MasterController
+             * @instance
+             * @return {undefined}
+             */
+            this.resetInactivityTimeout = function() {
+
+                $log.debug('MasterController resetting inactivity timeout.');
+
+                $timeout.cancel(thisController.inactivityTimeout);
+                thisController.inactivityTimeout = $timeout(
+                    thisController.startOver,
+                    5 * 60 * 1000
+                );
+            };
+
+
+            /***** Initialization Logic *****/
+
+
+            // Setup hot keys
+            $log.debug('Setting up hot keys.');
+
+            hotkeys.add({
+                combo: 'd d',
+                description: 'Toggle debug mode',
+                callback: $scope.toggleDebugMode
+            });
+
+            hotkeys.add({
+                combo: 'right',
+                description: 'Advance slide',
+                callback: $scope.handleRightArrow
+            });
+
+            // Scroll to the top of the page on new state
+            $rootScope.$on('$stateChangeSuccess', function() {
+                document.body.scrollTop =
+                    document.documentElement.scrollTop = 0;
+            });
+
+            this.setLanguageToDefault();
+            this.resetInactivityTimeout();
         }
     ]);
 'use strict';
@@ -1320,16 +1386,19 @@ angular.module('core').controller(
 angular.module('core').controller('MediaPlaybackController', [
     '$scope',
     'TrialData',
-    'SocketIOService',
     '$timeout',
     'ExperimentManager',
     '$log',
-    function($scope, TrialData, SocketIOService, $timeout,
-             ExperimentManager, $log) {
+    'OSC',
+    function($scope, TrialData, $timeout, ExperimentManager, $log, OSC) {
 
         $log.debug('Loading MediaPlaybackController.');
 
         var thisController = this;
+
+
+        /***** $scope *****/
+
 
         /**
          * The `MediaPlaybackController`'s `$scope` object. All properties on
@@ -1372,7 +1441,6 @@ angular.module('core').controller('MediaPlaybackController', [
          */
         $scope.buttonDisabled = false;
 
-        // Send media playback message to Max
         /**
          * Sends a message to the Max helper application to initiate media
          * playback. The message includes the current session number and the
@@ -1414,7 +1482,7 @@ angular.module('core').controller('MediaPlaybackController', [
 
             $log.debug('Requesting playback of \'' + mediaLabel + '\'.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/mediaID',
                 args: [
@@ -1447,6 +1515,43 @@ angular.module('core').controller('MediaPlaybackController', [
          */
         $scope.buttonAction = $scope.startMediaPlayback;
 
+
+        /***** $scope Event Handlers *****/
+
+
+        // Send a message to stop media playback when this controller is
+        // destroyed. Also, remove OSC message event listeners.
+        $scope.$on('$destroy', function stopMediaPlayback() {
+
+            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
+                ' playback, removing OSC listener, and showing body.');
+
+            OSC.send({
+                oscType: 'message',
+                address: '/eim/control/stopMedia',
+                args: {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            });
+
+            OSC.unsubscribe(
+                '/eim/status/playback',
+                thisController.playbackMessageListener
+            );
+
+            OSC.unsubscribe(
+                '/eim/status/emotionIndex',
+                thisController.emotionIndexMessageListener
+            );
+
+            $scope.showBody();
+        });
+
+
+        /***** Inner Members *****/
+
+
         /**
          * Requests the most recently recorded emotion index from the server
          * over OSC. The message used to retrieve this value is like the
@@ -1470,11 +1575,11 @@ angular.module('core').controller('MediaPlaybackController', [
          * @instance
          * @return {undefined}
          */
-        this.requestEmotionIndex = function() {
+        this.requestEmotionIndex = function requestEmotionIndexFn() {
 
             $log.debug('Requesting emotion index.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/emotionIndex',
                 args: [
@@ -1487,145 +1592,104 @@ angular.module('core').controller('MediaPlaybackController', [
         };
 
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected.
+         * This method is called when the server fires the controller receives
+         * a message with the address `/eim/status/playback`. When this
+         * occurs, if the message indicates that playback has begun, the page
+         * is blacked out. If the message indicates that playback has ended,
+         * the blackout is removed, the emotion index is requested, {@link
+         * Angular.MediaPlaybackController#$scope#currentButtonLabel|$scope#currentButtonLabel}
+         *  is set to `'Continue'`, {@link
+         *  Angular.MediaPlaybackController#$scope#mediaHasPlayed|$scope#mediaHasPlayed}
+         *  is set to `true`, and {@link
+         *  Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
+         *  is set to `true`.
          *
-         * The message may indicate one of three things:
-         *
-         * 1. Playback has begun
-         *  - In this case, the page is simply blacked out.
-         * 2. Playback has ended
-         *  - Here, the blackout is removed, the emotion index is requestd,
-         *  {@link Angular.MediaPlaybackController#$scope#currentButtonLabel|$scope#currentButtonLabel}
-         *  is set to `'Continue'`, {@link Angular.MediaPlaybackController#$scope#mediaHasPlayed|$scope#mediaHasPlayed}
-         *  is set to `true`, and {@link Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled} is set to `true`.
-         * 3. The emotion index has been received
-         *  - In this last case, {@link Angular.TrialData|TrialData} is
-         *  updated with the received emotion index, {@link Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
-         *  is set to `false`, and the slide is advanced by calling
-         *  {@link Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
-         *
-         * The receipt of unexpected or malformed messages will result in a
-         * warning on the console.
-         *
-         * @function oscMessageReceivedListener
+         * @function playbackMessageListener
          * @memberof Angular.MediaPlaybackController
          * @instance
-         * @param {{}} data The data sent with the event
+         * @param {{}} msg The OSC message
          * @return {undefined}
-         * @see Node.module:SocketServerController
          */
-        this.oscMessageReceivedListener = function(data) {
+        this.playbackMessageListener = function playbackMessageListenerFn(msg) {
+            switch (parseInt(msg.args[0].value)) {
 
-            $log.debug('OSC message received.');
-            $log.debug(data);
+                // If it was a stop message
+                case 0:
 
-            var expectedMessageAddresses = [
-                '/eim/status/playback',
-                '/eim/status/emotionIndex'
-            ];
+                    // Request emotion index from Max
+                    thisController.requestEmotionIndex();
 
-            // Make sure data is an object with an address property, and that
-            // we expect the message
-            if (typeof data === 'object' &&
-                !Array.isArray(data) &&
-                data.hasOwnProperty('address') &&
-                expectedMessageAddresses.indexOf(data.address) >= 0) {
-
-                // If it was a media playback message
-                if (data.address === '/eim/status/playback') {
-
-                    // Check for start or stop message
-                    switch (parseInt(data.args[0].value)) {
-
-                        // If it was a stop message
-                        case 0:
-
-                            // Request emotion index from Max
-                            thisController.requestEmotionIndex();
-
-                            // Fade in screen
-                            $scope.showBody();
-
-                            // Update state
-                            $timeout(function() {
-                                $scope.$apply(function() {
-                                    $scope.currentButtonLabel = 'Continue';
-                                    $scope.mediaHasPlayed = true;
-                                    $scope.buttonDisabled = true;
-                                });
-                            });
-                            break;
-
-                        // If it was a start message
-                        case 1:
-
-                            // Fade out screen
-                            $scope.hideBody();
-                            break;
-                    }
-                }
-
-                // If it was an emotion index message
-                if (data.address === '/eim/status/emotionIndex') {
-
-                    var emotionIndex = parseInt(data.args[0].value);
-
-                    // Increment media play count
-                    TrialData.data.state.mediaPlayCount++;
-
-                    // Set emotion index in TrialData
-                    TrialData.setValueForPathForCurrentMedia(
-                        'data.answers.emotion_indices',
-                        emotionIndex
-                    );
+                    // Fade in screen
+                    $scope.showBody();
 
                     // Update state
                     $timeout(function() {
                         $scope.$apply(function() {
-                            $scope.buttonDisabled = false;
-                            ExperimentManager.advanceSlide();
+                            $scope.currentButtonLabel = 'Continue';
+                            $scope.mediaHasPlayed = true;
+                            $scope.buttonDisabled = true;
                         });
                     });
-                }
-            } else {
-                $log.warn(
-                    'MediaPlaybackController did not handle an OSC message.',
-                    data
-                );
+                    break;
+
+                // If it was a start message
+                case 1:
+
+                    // Fade out screen
+                    $scope.hideBody();
+                    break;
             }
         };
 
-        // Attach OSC message received listener
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
+        /**
+         * This method is called when the server fires the controller receives
+         * a message with the address `/eim/status/emotionIndex`. When this
+         * occurs, {@link Angular.TrialData|TrialData} is updated with the
+         * received emotion index, {@link
+         * Angular.MediaPlaybackController#$scope#buttonDisabled|$scope#buttonDisabled}
+         *  is set to `false`, and the slide is advanced by calling
+         *  {@link
+         *  Angular.ExperimentManager#advanceSlide|ExperimentManager#advanceSlide}.
+         *
+         * @function emotionIndexMessageListener
+         * @memberof Angular.MediaPlaybackController
+         * @instance
+         * @param {{}} msg The OSC message
+         * @return {undefined}
+         */
+        this.emotionIndexMessageListener =
+            function emotionIndexMessageListenerFn(msg) {
+
+                var emotionIndex = parseInt(msg.args[0].value);
+
+                // Increment media play count
+                TrialData.data.state.mediaPlayCount++;
+
+                // Set emotion index in TrialData
+                TrialData.setValueForPathForCurrentMedia(
+                    'data.answers.emotion_indices',
+                    emotionIndex
+                );
+
+                // Update state
+                $timeout(function() {
+                    $scope.$apply(function() {
+                        $scope.buttonDisabled = false;
+                        ExperimentManager.advanceSlide();
+                    });
+                });
+            };
+
+
+        /***** Initialization Logic *****/
+
+
+        // Attach OSC message received listeners
+        OSC.subscribe('/eim/status/playback', this.playbackMessageListener);
+        OSC.subscribe(
+            '/eim/status/emotionIndex',
+            this.emotionIndexMessageListener
         );
-
-        // Send a message to stop media playback when this controller is
-        // destroyed. Also, remove OSC message event listeners.
-        $scope.$on('$destroy', function stopMediaPlayback() {
-
-            $log.debug('MediaPlaybackController scope destroyed. Stopping' +
-                ' playback, removing OSC listener, and showing body.');
-
-            SocketIOService.emit('sendOSCMessage', {
-                oscType: 'message',
-                address: '/eim/control/stopMedia',
-                args: {
-                    type: 'string',
-                    value: '' + TrialData.data.metadata.session_number
-                }
-            });
-
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                thisController.oscMessageReceivedListener
-            );
-
-            $scope.showBody();
-        });
     }
 ]);
 
@@ -1659,7 +1723,7 @@ angular.module('core').controller('QuestionnaireController', [
     '$log',
     function($scope, TrialData, $log) {
 
-        $log.info('Loading QuestionnaireController.');
+        $log.debug('Loading QuestionnaireController.');
 
         /**
          * The `QuestionnaireController`'s `$scope` object. All properties on
@@ -1697,15 +1761,17 @@ angular.module('core').controller('QuestionnaireController', [
 
 angular.module('core').controller('SignalTestController', [
     '$scope',
-    'SocketIOService',
     'TrialData',
     '$timeout',
     '$log',
-    function($scope, SocketIOService, TrialData, $timeout, $log) {
+    'OSC',
+    function($scope, TrialData, $timeout, $log, OSC) {
 
         $log.debug('Loading SignalTestController.');
 
-        var thisController = this;
+
+        /***** $scope *****/
+
 
         /**
          * The `SignalTestController`'s `$scope` object. All properties on
@@ -1784,20 +1850,9 @@ angular.module('core').controller('SignalTestController', [
             return $scope.edaQuality && $scope.poxQuality;
         };
 
-        // Set a timeout to fire after 15 seconds
-        $timeout(
-            function() {
-                thisController.sendStopSignalTestMessage();
-                $timeout(
-                    function() {
-                        $scope.edaQuality = 1;
-                        $scope.poxQuality = 1;
-                    },
-                    2.5 * 1000
-                );
-            },
-            12.5 * 1000
-        );
+
+        /***** Inner members *****/
+
 
         /**
          * Sends a message to Max to start the signal quality test. This
@@ -1829,7 +1884,7 @@ angular.module('core').controller('SignalTestController', [
 
             $log.debug('Sending start signal test message to Max.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/signalTest',
                 args: [
@@ -1875,7 +1930,7 @@ angular.module('core').controller('SignalTestController', [
 
             $log.debug('Sending stop signal test message to Max.');
 
-            SocketIOService.emit('sendOSCMessage', {
+            var stopMessage = {
                 oscType: 'message',
                 address: '/eim/control/signalTest',
                 args: [
@@ -1888,118 +1943,145 @@ angular.module('core').controller('SignalTestController', [
                         value: '' + TrialData.data.metadata.session_number
                     }
                 ]
-            });
+            };
+
+            OSC.send(stopMessage);
         };
 
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected.
+         * This method is called when an EDA quality OSC message is received.
+         * {@link
+         * Angular.SignalTestController#$scope#edaQuality|$scope#edaQuality}
+         * is updated accordingly.
          *
-         * If the message is a signal quality message, {@link
-         * Angular.SignalTestController#$scope#edaQuality|$scope#edaQuality} or
+         * @function edaQualityMessageListener
+         * @memberof Angular.SignalTestController
+         * @instance
+         * @param {{}} msg The message sent with the event
+         * @return {undefined}
+         */
+        this.edaQualityMessageListener =
+            function edaQualityMessageListenerFn(msg) {
+                var edaQuality = msg.args[0].value;
+                if (edaQuality === 0) {
+                    $log.warn(
+                        'Bad EDA signal detected on terminal ' +
+                        TrialData.data.metadata.terminal +
+                        '.'
+                    );
+                }
+
+                // Update EDA signal quality
+                $scope.$apply(function updateEDAQuality() {
+                    $scope.edaQuality = edaQuality;
+                });
+            };
+
+        /**
+         * This method is called when a POX quality OSC message is received.
          * {@link
          * Angular.SignalTestController#$scope#poxQuality|$scope#poxQuality}
-         * is updated accordingly. If the message indicates that the test
-         * recording is complete, {@link
+         * is updated accordingly.
+         *
+         * @function poxQualityMessageListener
+         * @memberof Angular.SignalTestController
+         * @instance
+         * @param {{}} msg The data sent with the event
+         * @return {undefined}
+         */
+        this.poxQualityMessageListener =
+            function poxQualityMessageListenerFn(msg) {
+                var poxQuality = msg.args[0].value;
+                if (poxQuality === 0) {
+                    $log.warn(
+                        'Bad POX signal detected on terminal ' +
+                        TrialData.data.metadata.terminal +
+                        '.'
+                    );
+                }
+
+                // Update POX signal quality
+                $scope.$apply(function updatePOXQuality() {
+                    $scope.poxQuality = poxQuality;
+                });
+            };
+
+        /**
+         * This method is called when an OSC message indicating that the signal
+         * test recording is complete is received. {@link
          * Angular.SignalTestController#$scope#testRecordingComplete|$scope#testRecordingComplete}
          * is updated accordingly and {@link
          * Angular.SignalTestController#sendStopSignalTestMessage|sendStopSignalTestMessage}
          * is called.
          *
-         * The receipt of unexpected or malformed messages will result in a
-         * warning on the console.
-         *
-         * @function oscMessageReceivedListener
+         * @function recordingCompleteMessageListener
          * @memberof Angular.SignalTestController
          * @instance
-         * @param {{}} data The data sent with the event
          * @return {undefined}
-         * @see Node.module:SocketServerController
          */
-        this.oscMessageReceivedListener = function(data) {
+        this.recordingCompleteMessageListener =
+            function recordingCompleteMessageListenerFn() {
 
-            console.info('SignalTesttController received an OSC message.');
-            console.info(data);
+                // Update continue button
+                $scope.$apply(function() {
+                    $scope.testRecordingComplete = true;
+                });
 
-            var expectedMessageAddresses = [
-                '/eim/status/signalQuality/eda',
-                '/eim/status/signalQuality/pox',
-                '/eim/status/testRecordingComplete'
-            ];
+                this.sendStopSignalTestMessage();
+            };
 
-            // Make sure data is an object with an address property, and that
-            // we expect the message
-            if (typeof data === 'object' &&
-                !Array.isArray(data) &&
-                data.hasOwnProperty('address') &&
-                expectedMessageAddresses.indexOf(data.address) >= 0) {
 
-                // If it was an EDA signal quality message
-                if (data.address === '/eim/status/signalQuality/eda') {
+        /***** Initialization logic *****/
 
-                    var edaQuality = data.args[0].value;
-                    if (edaQuality === 0) {
-                        $log.warn(
-                            'Bad EDA signal detected on terminal ' +
-                            TrialData.data.metadata.terminal +
-                            '.'
-                        );
-                    }
 
-                    // Update EDA signal quality
-                    $scope.$apply(function updateEDAQuality() {
-                        $scope.edaQuality = edaQuality;
-                    });
-                }
+        var thisController = this;
 
-                // If it was a POX signal quality message
-                if (data.address === '/eim/status/signalQuality/pox') {
+        // Set a timeout to fire after 15 seconds
+        $timeout(
+            function() {
+                thisController.sendStopSignalTestMessage();
+                $timeout(
+                    function() {
+                        $scope.edaQuality = 1;
+                        $scope.poxQuality = 1;
+                    },
+                    2.5 * 1000
+                );
+            },
+            12.5 * 1000
+        );
 
-                    var poxQuality = data.args[0].value;
-                    if (poxQuality === 0) {
-                        $log.warn(
-                            'Bad POX signal detected on terminal ' +
-                            TrialData.data.metadata.terminal +
-                            '.'
-                        );
-                    }
-
-                    // Update POX signal quality
-                    $scope.$apply(function updatePOXQuality() {
-                        $scope.poxQuality = poxQuality;
-                    });
-                }
-
-                // If the test recording has complete
-                if (data.address === '/eim/status/testRecordingComplete') {
-
-                    // Update continue button
-                    $scope.$apply(function() {
-                        $scope.testRecordingComplete = true;
-                    });
-
-                    this.sendStopSignalTestMessage();
-                }
-            } else {
-                $log.warn('SignalTestController did not handle an OSC message.', data);
-            }
-        };
-
-        // Attach handler for incoming OSC messages
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
+        // Attach handlers for incoming OSC messages
+        OSC.subscribe(
+            '/eim/status/signalQuality/eda',
+            this.edaQualityMessageListener
+        );
+        OSC.subscribe(
+            '/eim/status/signalQuality/pox',
+            this.poxQualityMessageListener
+        );
+        OSC.subscribe(
+            '/eim/status/testRecordingComplete',
+            this.recordingCompleteMessageListener
         );
 
         // Destroy handler for incoming OSC messages when $scope is destroyed,
         // and send stop signal test message
         var controller = this;
         $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                controller.oscMessageReceivedListener
+            OSC.unsubscribe(
+                '/eim/status/signalQuality/eda',
+                controller.edaQualityMessageListener
             );
+            OSC.unsubscribe(
+                '/eim/status/signalQuality/pox',
+                controller.poxQualityMessageListener
+            );
+            OSC.unsubscribe(
+                '/eim/status/testRecordingComplete',
+                controller.recordingCompleteMessageListener
+            );
+
             controller.sendStopSignalTestMessage();
         });
 
@@ -2019,48 +2101,17 @@ angular.module('core').controller('SignalTestController', [
 
 angular.module('core').controller('SoundTestController', [
     '$scope',
-    'SocketIOService',
     'TrialData',
     'gettextCatalog',
     '$log',
-    function($scope, SocketIOService, TrialData, gettextCatalog, $log) {
+    'OSC',
+    function($scope, TrialData, gettextCatalog, $log, OSC) {
 
         $log.debug('Loading SoundTestController.');
 
-        // Get current language
-        var currentLanguage = gettextCatalog.currentLanguage;
 
-        // Send a message to Max to start the sound test
-        $log.debug('Sending start sound test message to Max.');
-        SocketIOService.emit('sendOSCMessage', {
-            oscType: 'message',
-            address: '/eim/control/soundTest',
-            args: [
-                {
-                    type: 'integer',
-                    value: 1
-                },
-                {
-                    type: 'string',
-                    value: currentLanguage
-                },
-                {
-                    type: 'string',
-                    value: '' + TrialData.data.metadata.session_number
-                }
-            ]
-        });
+        /***** $scope *****/
 
-        /**
-         * The `SoundTestController`'s `$scope` object. All properties on
-         * `$scope` are available to the view.
-         *
-         * @name $scope
-         * @namespace
-         * @instance
-         * @memberof Angular.SoundTestController
-         * @type {{}}
-         */
 
         /**
          * Sends a message to Max to stop the sound test. This message looks
@@ -2092,20 +2143,7 @@ angular.module('core').controller('SoundTestController', [
 
             $log.debug('Sending stop sound test message to Max.');
 
-            SocketIOService.emit('sendOSCMessage', {
-                oscType: 'message',
-                address: '/eim/control/soundTest',
-                args: [
-                    {
-                        type: 'integer',
-                        value: 0
-                    },
-                    {
-                        type: 'string',
-                        value: '' + TrialData.data.metadata.session_number
-                    }
-                ]
-            });
+            OSC.send(stopTestMessage);
         };
 
         /**
@@ -2119,12 +2157,72 @@ angular.module('core').controller('SoundTestController', [
          */
         $scope.destroyed = false;
 
+
+        /***** $scope Event Handlers *****/
+
+
         // Send stop sound test message when controller is destroyed
         $scope.$on('$destroy', function() {
 
             $log.debug('SoundTestController $scope destroyed.');
             $scope.stopSoundTest();
         });
+
+
+        /***** Initialization logic *****/
+
+
+        // Get current language
+        var currentLanguage = gettextCatalog.currentLanguage;
+
+        var startTestMessage = {
+            oscType: 'message',
+            address: '/eim/control/soundTest',
+            args: [
+                {
+                    type: 'integer',
+                    value: 1
+                },
+                {
+                    type: 'string',
+                    value: currentLanguage
+                },
+                {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            ]
+        };
+
+        /**
+         * The `SoundTestController`'s `$scope` object. All properties on
+         * `$scope` are available to the view.
+         *
+         * @name $scope
+         * @namespace
+         * @instance
+         * @memberof Angular.SoundTestController
+         * @type {{}}
+         */
+
+        var stopTestMessage = {
+            oscType: 'message',
+            address: '/eim/control/soundTest',
+            args: [
+                {
+                    type: 'integer',
+                    value: 0
+                },
+                {
+                    type: 'string',
+                    value: '' + TrialData.data.metadata.session_number
+                }
+            ]
+        };
+
+        // Send a message to Max to start the sound test
+        $log.debug('Sending start sound test message to Max.');
+        OSC.send(startTestMessage);
     }
 ]);
 'use strict';
@@ -2143,12 +2241,11 @@ angular.module('core').controller('StartController', [
     '$timeout',
     'TrialData',
     'ExperimentManager',
-    'SocketIOService',
     '$log',
-    function($scope, $timeout, TrialData, ExperimentManager, SocketIOService,
-             $log) {
+    'OSC',
+    function($scope, $timeout, TrialData, ExperimentManager, $log, OSC) {
 
-        $log.info('Loading StartController.');
+        $log.debug('Loading StartController.');
 
         /**
          * The `StartController`'s `$scope` object. All properties on `$scope`
@@ -2160,6 +2257,8 @@ angular.module('core').controller('StartController', [
          * @memberof Angular.StartController
          * @type {{}}
          */
+
+        /***** $scope *****/
 
         /**
          * Ready to advance method. Returns try if the Max helper
@@ -2174,68 +2273,61 @@ angular.module('core').controller('StartController', [
             return $scope.maxReady || $scope.debugMode;
         };
 
-        // Set the date on the TrialData service to now
-        var now = new Date();
-        console.info('Setting time on TrialData as ' + now.toISOString());
-        TrialData.data.date = now.toISOString();
-
         /**
-         * This method is called when the server fires the
-         * `oscMessageReceived` event on the socket.io socket to which the
-         * client is connected. The receipt of unexpected or malformed
-         * messages will result in a warning on the console.
+         * Flag indicating whether or not the Max application is ready.
          *
-         * @function oscMessageReceivedListener
-         * @memberof Angular.StartController#
-         * @param {{}} data The data sent with the event
-         * @return {undefined}
-         * @see Node.module:SocketServerController
+         * @name maxReady
+         * @memberof Angular.StartController#$scope
+         * @instance
+         * @type {boolean}
          */
-        this.oscMessageReceivedListener = function(data) {
+        $scope.maxReady = false;
 
-            console.info('StartController received an OSC message.');
-            console.info(data);
 
-            /* istanbul ignore else */
-            if (typeof data === 'object' &&
-                !Array.isArray(data) &&
-                data.hasOwnProperty('address') &&
-                data.address === '/eim/status/startExperiment') {
-                $scope.$apply(function() {
-                    $scope.maxReady = true;
-                });
-            } else {
-                $log.warn(
-                    'StartController did not handle an OSC message.',
-                    data
-                );
-            }
-        };
-
-        // Attach handler for incoming OSC messages
-        SocketIOService.on(
-            'oscMessageReceived',
-            this.oscMessageReceivedListener
-        );
+        /***** $scope Events *****/
 
         // Destroy handler for incoming OSC messages and remove error
         // timeout when $scope is destroyed
         var thisController = this;
         $scope.$on('$destroy', function removeOSCMessageReceivedListener() {
-            SocketIOService.removeListener(
-                'oscMessageReceived',
-                thisController.oscMessageReceivedListener
+            OSC.unsubscribe(
+                '/eim/status/startExperiment',
+                thisController.startMessageListener
             );
 
-            console.debug('Cancelling timeout on StartController.');
+            $log.debug('Cancelling timeout on StartController.');
             $timeout.cancel(thisController.errorTimeout);
         });
+
+
+        /***** Inner members *****/
+
+        /**
+         * This method is called when the server fires the
+         * `OSC` service receives a message with the address
+         * /eim/status/startExperiment
+         *
+         * @function startMessageListener
+         * @memberof Angular.StartController#
+         * @param {{}} msg The data sent with the event
+         * @return {undefined}
+         * @see Node.module:SocketServerController
+         */
+        this.startMessageListener = function startMessageListenerFn(msg) {
+
+            $log.info('StartController received an OSC message.');
+            $log.info(msg);
+
+            $scope.$apply(function() {
+                $scope.maxReady = true;
+            });
+        };
 
         /**
          * Send a message to the server indicating that the client is ready
          * to start the experiment. This method sets {@link
-            * Angular.StartController#$scope.maxReady} to `false` before
-         * sending the message.
+         * Angular.StartController#$scope.maxReady} to `false` before sending
+         * the message.
          *
          * @function sendExperimentStartMessage
          * @memberof Angular.StartController#
@@ -2243,18 +2335,12 @@ angular.module('core').controller('StartController', [
          */
         this.sendExperimentStartMessage = function() {
 
-            console.info('StartController sending experiment start message.');
+            $log.info('StartController sending experiment start message.');
 
-            /**
-             * Flag indicating whether or not the Max application is ready.
-             *
-             * @name maxReady
-             * @memberof Angular.StartController#$scope
-             * @instance
-             * @type {boolean}
-             */
+            // Sanity check
             $scope.maxReady = false;
-            SocketIOService.emit('sendOSCMessage', {
+
+            OSC.send({
                 oscType: 'message',
                 address: '/eim/control/startExperiment',
                 args: {
@@ -2263,8 +2349,6 @@ angular.module('core').controller('StartController', [
                 }
             });
         };
-
-        this.sendExperimentStartMessage();
 
         /**
          * When the controller is instantiated, this timeout is set. The
@@ -2275,8 +2359,7 @@ angular.module('core').controller('StartController', [
          * @type {$q.Promise}
          * @memberof Angular.StartController#
          */
-        this.errorTimeout = $timeout(function() {
-        }, 10000);
+        this.errorTimeout = $timeout(function() {}, 10000);
 
         this.errorTimeout.then(function() {
             if (!$scope.readyToAdvance()) {
@@ -2286,6 +2369,23 @@ angular.module('core').controller('StartController', [
                     'startExperiment message within 10 seconds.');
             }
         });
+
+
+        /***** Initialization logic *****/
+
+        // Listen for OSC messages sent to /eim/status/startExperiment
+        OSC.subscribe(
+            '/eim/status/startExperiment',
+            this.startMessageListener
+        );
+
+        // Set the date on the TrialData service to now
+        var now = new Date();
+        $log.info('Setting time on TrialData as ' + now.toISOString());
+        TrialData.data.date = now.toISOString();
+
+        // Tell Max to start the experiment
+        this.sendExperimentStartMessage();
     }
 ]);
 
@@ -3698,7 +3798,8 @@ angular.module('core').factory('ExperimentManager', [
     '$log',
     'rfc4122',
     '$rootScope',
-    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
+    'lodash',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope, lodash) {
 
         $log.debug('Instantiating ExperimentManager service.');
 
@@ -3757,8 +3858,8 @@ angular.module('core').factory('ExperimentManager', [
              *
              *  - Generates a new UUID for the session number
              *  - Fetches a random experiment schema from the backend
-             *  - Gets the terminal number (as specified in
-             *  `config/custom.js` for this specific machine
+             *  - Gets the custom metadata (as specified in
+             *  `config/custom.js`
              *
              *  The {@link Angular.TrialData|TrialData} service is then updated
              *  with these new data.
@@ -3776,9 +3877,6 @@ angular.module('core').factory('ExperimentManager', [
                 // Reset TrialData
                 TrialData.reset();
 
-                // Generate new session identifier and store it in TrialData
-                TrialData.data.metadata.session_number = rfc4122.v4();
-
                 // Get a new experiment setup from the backend
                 $http.get('/api/experiment-schemas/random')
                     .success(function(data) {
@@ -3793,8 +3891,33 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata.terminal =
-                                    data.metadata.terminal;
+                                TrialData.data.metadata =
+                                    lodash.merge(
+                                        TrialData.data.metadata,
+                                        data.metadata
+                                    );
+
+                                // Generate new session identifier and store it
+                                // in TrialData
+                                TrialData.data.metadata.session_number =
+                                    rfc4122.v4();
+
+                                // Get default language and set on TrialData
+                                if (data.hasOwnProperty('defaultLanguage') &&
+                                    typeof data.defaultLanguage === 'string' &&
+                                    data.defaultLanguage.length > 0) {
+
+                                    TrialData.data.metadata.language =
+                                        data.defaultLanguage;
+                                }
+
+                                if (data.hasOwnProperty('exportedProperties') &&
+                                    Array.isArray(data.exportedProperties)) {
+
+                                    TrialData.exportedProperties =
+                                        data.exportedProperties;
+                                }
+
                                 deferred.resolve();
                             })
                             .error(function() {
@@ -3833,6 +3956,286 @@ angular.module('core').factory('ExperimentManager', [
     }
 ]);
 
+/**
+ * Created by brennon on 10/13/15.
+ */
+
+'use strict';
+
+/**
+ * The `ExperimentValidator` service checks the validity of an
+ * `ExperimentSchema`.
+ *
+ * @class Angular.ExperimentValidator
+ * @memberof Angular
+ */
+
+angular.module('core').factory('ExperimentValidator', [
+    '$log',
+    function($log) {
+
+        $log.debug('Instantiating ExperimentValidator service.');
+
+        var returnObject = {
+
+            /**
+             * Advances the state to the next state as defined in the study
+             * specification document (see the [README](index.html)).
+             *
+             * @function advanceSlide
+             * @instance
+             * @memberof Angular.ExperimentValidator
+             * @return {*}
+             */
+            validateSchema: function(schema) {
+
+                var constraints = {
+                    structure: {
+                        presence: true
+                    },
+                    media: {
+                        presence: true
+                    }
+                };
+
+                // Initial validation
+                var isValid = validate(schema, constraints);
+                if (isValid !== undefined) {
+                    return isValid;
+                }
+
+                // Structure must be an array
+                isValid = validate.isArray(schema.structure);
+                if (isValid === false) {
+                    return isValid;
+                }
+
+                // Iterate over media array
+                for (var i = 0; i < schema.media.length; i++) {
+                    var item = schema.media[i];
+                    var itemIsValid = this.validateMediaEntry(item);
+                    if (itemIsValid !== undefined) {
+                        return itemIsValid;
+                    }
+                }
+
+                // Iterate over
+
+                return undefined;
+            },
+
+            validateMediaEntry: function validateMediaEntryFn(entry) {
+                var constraints = {
+                    artist: {
+                        presence: true
+                    },
+                    title: {
+                        presence: true
+                    },
+                    label: {
+                        presence: true
+                    }
+                };
+
+                var isValid = validate(entry, constraints);
+                if (isValid !== undefined) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.artist);
+                if (isValid === false) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.title);
+                if (isValid === false) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.label);
+                if (isValid === false) {
+                    return isValid;
+                }
+            },
+
+            validateStructureEntry: function validateStructureEntryFn(entry) {
+                var constraints = {
+                    name: {
+                        presence: true
+                    }
+                };
+
+                var isValid = validate(entry, constraints);
+                if (isValid !== undefined) {
+                    return isValid;
+                }
+
+                isValid = validate.isString(entry.name);
+                if (isValid === false) {
+                    return isValid;
+                }
+            }
+        };
+
+        return returnObject;
+    }
+]);
+
+/**
+ * Created by brennon on 10/8/15.
+ */
+
+'use strict';
+
+/**
+ * The `OSC` service exposes functionality for listening to incoming messages
+ * from the server and sending outgoing messages to the server.
+ *
+ * @class Angular.OSC
+ * @memberof Angular
+ */
+
+angular.module('core').factory('OSC', [
+    '$log',
+    'SocketIOService',
+    function($log, SocketIOService) {
+
+        // This service should:
+        //  - Listen for all incoming OSC messages from the socket
+        //  - Allow consumers to subscribe to receive messages by address
+        //  - Forwarded messages to subscribed consumers
+        //  - Log incoming messages for which no consumer is subscribed
+
+        $log.debug('Instantiating OSC service.');
+
+        var returnObject = {
+
+            /**
+             * Handles OSC messages received over socket.io. These messages are
+             * then passed on to any subscribers to the message address.
+             * Messages received for which there are no subscribers are logged
+             * to the console.
+             *
+             * @function incomingMessageHandler
+             * @param {{}} message Received OSC message
+             * @instance
+             * @memberof Angular.OSC
+             * @return {undefined}
+             */
+            incomingMessageHandler: function incomingMessageHandlerFn(message) {
+                var address = message.address;
+
+                if (returnObject.listeners.hasOwnProperty(address)) {
+                    var handlers = returnObject.listeners[address];
+                    for (var i = 0; i < handlers.length; i++) {
+                        handlers[i](message);
+                    }
+                } else {
+                    $log.info('Unhandled OSC message.', message);
+                }
+            },
+
+            /**
+             * Callback that will be called when a message is received for a
+             * specified address.
+             *
+             * @callback OSCSubscriberCallback
+             * @memberof Angular.OSC
+             * @param {{}} message The OSC message that was received
+             */
+
+            /**
+             * Subscribe to receive OSC messages for a particular address.
+             *
+             * @function subscribe
+             * @param {string} address The address of messages for which the
+             * caller would like to subscribe
+             * @param {Angular.OSC.OSCSubscriberCallback} callback The callback
+             * to be called when messages with the address in `address` are
+             * received
+             * @instance
+             * @memberof Angular.OSC
+             * @return {undefined}
+             */
+            subscribe: function subscribeFn(address, callback) {
+
+                if (address === undefined || callback === undefined) {
+                    return $log.error('You must specify both an address and ' +
+                        'a callback to subscribe.');
+                }
+
+                if (typeof address !== 'string') {
+                    return $log.error('Address must be a string.');
+                }
+
+                if (typeof callback !== 'function') {
+                    return $log.error('Callback must be a function.');
+                }
+
+                $log.debug('Attaching listener for incoming OSC messages to ' +
+                    'address: ' + address);
+
+                if (!this.listeners.hasOwnProperty(address)) {
+                    this.listeners[address] = [];
+                }
+
+                this.listeners[address].push(callback);
+            },
+
+            /**
+             * Stop receiving OSC messages with a particular address.
+             *
+             * @function unsubscribe
+             * @instance
+             * @memberof Angular.OSC
+             * @param {string} address The address of messages for which the
+             * caller would like to unsubscribe
+             * @param {Angular.OSC.OSCSubscriberCallback} callback The callback
+             * that was passed with the original call to Angular.OSC#subscribe}
+             * @returns {undefined}
+             */
+            unsubscribe: function unsubscribeFn(address, callback) {
+
+                if (address === undefined || callback === undefined) {
+                    return $log.error('You must specify both an address and ' +
+                        'a callback to unsubscribe.');
+                }
+
+                if (typeof address !== 'string') {
+                    return $log.error('Address must be a string.');
+                }
+
+                if (!this.listeners.hasOwnProperty(address) ||
+                    this.listeners[address].length === 0) {
+
+                    return $log.error('There are no subscribers for OSC ' +
+                        'messages to address: \'' + address + '\'');
+                }
+
+                var index = this.listeners[address].indexOf(callback);
+
+                if (index >= 0) {
+                    this.listeners[address].splice(index, 1);
+                }
+            },
+
+            send: function sendFn(message, callback) {
+                SocketIOService.emit('sendOSCMessage', message, callback);
+            },
+
+            listeners: {}
+        };
+
+        // Listen for all oscMessageReceived events
+        SocketIOService.on(
+            'oscMessageReceived',
+            returnObject.incomingMessageHandler
+        );
+
+        return returnObject;
+    }
+]);
+
 'use strict';
 
 // Service to wrap Socket.IO
@@ -3852,8 +4255,10 @@ angular.module('core').factory('SocketIOService', ['socketFactory',
  * @memberof Angular
  */
 
-angular.module('core').factory('TrialData', ['$log',
-    function($log) {
+angular.module('core').factory('TrialData', [
+    '$log',
+    'lodash',
+    function($log, lodash) {
 
         $log.info('Instantiating TrialData service.');
 
@@ -3900,9 +4305,9 @@ angular.module('core').factory('TrialData', ['$log',
                     end: null
                 },
                 metadata: {
-                    language: 'en',
+                    language: null,
                     session_number: null,
-                    location: 'taipei_city',
+                    location: null,
                     terminal: null
                 },
                 state: {
@@ -3932,10 +4337,74 @@ angular.module('core').factory('TrialData', ['$log',
              * @memberof Angular.TrialData#
              * @returns {string}
              */
-            toJson: function() {
+            toJson: function toJsonFn() {
                 $log.debug('TrialData service returning data as JSON.');
                 return angular.toJson(this.data, true);
             },
+
+            /**
+             * Converts the object in {@link Angular.TrialData#data|data},
+             * keeping only those properties specified in {@link
+             * Angular.TrialData#exportedProperties|exportedProperties},
+             * to JSON and returns it. If {@link
+             * Angular.TrialData#exportedProperties|exportedProperties} is an
+             * empty array, this method delegates to {@link
+             * Angular.TrialData#toJson|toJson}.
+             *
+             * @function toJsonCompact
+             * @memberof Angular.TrialData#
+             * @returns {string}
+             */
+            toJsonCompact: function toJsonCompactFn() {
+                $log.debug('TrialData service returning data as compact JSON.');
+
+                return angular.toJson(this.toCompact(), true);
+            },
+
+            /**
+             * Returns a copy of the object in {@link
+             * Angular.TrialData#data|data}, keeping only those properties
+             * specified in {@link
+             * Angular.TrialData#exportedProperties|exportedProperties},
+             * If {@link
+             * Angular.TrialData#exportedProperties|exportedProperties} is an
+             * empty array, this method returns {@link
+             * Angular.TrialData#data|data}.
+             *
+             * @function toCompact
+             * @memberof Angular.TrialData#
+             * @returns {{}}
+             */
+            toCompact: function toCompactFn() {
+                $log.debug('TrialData service returning compacted data.');
+
+                if (this.exportedProperties.length === 0) {
+                    return this.data;
+                }
+
+                var pruned = {};
+                var that = this;
+
+                this.exportedProperties.forEach(function(prop) {
+                    lodash.set(pruned, prop, lodash.get(that.data, prop));
+                });
+
+                return pruned;
+            },
+
+            /**
+             * The properties beneath {@link Angular.TrialData#data|data} that
+             * {@link Angular.TrialData#toJsonCompact|toJsonCompact} should
+             * include in the JSON it outputs. This should be an array of
+             * strings, each of which represent an individual property that
+             * should be exported. The strings should be dot-delimited paths.
+             * Wildcards are not supported.
+             *
+             * @var exportedProperties
+             * @type {string[]}
+             * @memberof Angular.TrialData#
+             */
+            exportedProperties: [],
 
             /**
              * Sets {@link Angular.TrialData#data|data} to a new
@@ -3946,7 +4415,7 @@ angular.module('core').factory('TrialData', ['$log',
              * @memberof Angular.TrialData#
              * @return {undefined}
              */
-            reset: function() {
+            reset: function resetFn() {
                 $log.info('Resetting TrialData service.');
                 this.data = new BlankDataObject();
             },
@@ -3981,7 +4450,7 @@ angular.module('core').factory('TrialData', ['$log',
              * array to `value`.
              * @return {undefined}
              */
-            setValueForPath: function(path, value, options) {
+            setValueForPath: function setValueForPathFn(path, value, options) {
 
                 $log.debug('Setting ' + path + ' in TrialData to: ' +
                     value, options);
@@ -4060,21 +4529,22 @@ angular.module('core').factory('TrialData', ['$log',
              * @param {*} value The value that this keypath should hold
              * @return {undefined}
              */
-            setValueForPathForCurrentMedia: function(path, value) {
+            setValueForPathForCurrentMedia:
+                function setValueForPathForCurrentMediaFn(path, value) {
 
-                $log.debug('Setting ' + path + ' in TrialData for current' +
-                    ' media to: ' + value + '.');
+                    $log.debug('Setting ' + path + ' in TrialData for current' +
+                        ' media to: ' + value + '.');
 
-                var index;
+                    var index;
 
-                // If no media have played (we're likely debugging)
-                if (this.data.state.mediaPlayCount <= 0) {
-                    index = 0;
-                } else {
-                    index = this.data.state.mediaPlayCount - 1;
-                }
+                    // If no media have played (we're likely debugging)
+                    if (this.data.state.mediaPlayCount <= 0) {
+                        index = 0;
+                    } else {
+                        index = this.data.state.mediaPlayCount - 1;
+                    }
 
-                this.setValueForPath(path, value, {array_index: index});
+                    this.setValueForPath(path, value, {array_index: index});
             },
 
             /**
@@ -4089,7 +4559,7 @@ angular.module('core').factory('TrialData', ['$log',
              * Angular.TrialData#data|data} is set after the call to this
              * method.
              */
-            language: function(newLanguage) {
+            language: function languageFn(newLanguage) {
 
                 if (typeof newLanguage === 'string') {
 

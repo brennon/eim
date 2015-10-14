@@ -62,7 +62,8 @@
 <li><p>To get started using with the default Emotion in Motion MongoDB databases, import the data from the <code>mongodb-dump</code> directory. From the root directory of the repository:</p>
 <pre class="prettyprint source"><code> mongorestore -d emotion-in-motion-dev --drop ./mongodb-dump/emotion-in-motion-dev
  mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
- mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production</code></pre></li>
+ mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production</code></pre><p> The first of these three databases represent the databases that are used in the development, test, and production <a href="#environments">Node environments</a>.</p>
+</li>
 <li><p>Start the Max helper project located at <code>EiMpatch/EmotionInMotion.maxproj</code>. You'll need <a href="https://cycling74.com/">Max 6</a> or later.</p>
 </li>
 <li><p>Start the server. In the root directory of the repository:</p>
@@ -70,24 +71,14 @@
 <li><p>Browse to <a href="http://localhost:3000/">http://localhost:3000/</a>.</p>
 </li>
 </ol>
-<h1>Custom Configuration</h1><p>There are a few things you'll likely want to change about your installation 
-straight away (the terminal numbers of the machines on which you install your
- app, the default language, etc.) All of these changes can be made in the 
- file at <code>config/custom.js</code>. The options for configuring this file are 
- described both in comments the file itself, as well as in the documentation 
- for the <code>CustomConfiguration</code> module.</p>
-<h1>Debug Mode</h1><p>As you dig into customizing the framework for your own use, you should be 
-aware of debugging mode. When viewing any page in your application, pressing 
-the <code>'D'</code> key twice will toggle debugging mode. This enables two things:</p>
+<h1>Environments</h1><p>Many commands described here behave differently depending on the Node environment, which is set on the command line by prepending the command with <code>NODE_ENV=environmentname</code>. For instance, to run the command listed in the sixth step of the <a href="#installation">Installation</a> sequence in the 'development' environment, use <code>NODE_ENV=development node_modules/grunt-cli/bin/grunt</code>.</p>
+<p>As an example of the differences that occur between environments, when the above mentioned command is run in the development environment, the original versions of all of the scripts in the framework are used when running the server. In the production environment, however, a 'minified' version is used (all 'extra' information is removed from all script files, and they are all glued together to be one long file). It is much more efficient for the web server to send this one minified file to a client than all of the individual scripts that this application uses. This is one example of how the production environment, in general, starts up a much faster, more efficient server. The development environment, on the other hand, is the environment you'll likely want to use when making changes to the framework. We will attempt to be clear in these documents when it is important to choose one environment over another.</p>
+<p>Of particular note here are the several database you'll see in your MongoDB database after loading the demo app data. Either the <code>emotion-in-motion-dev</code>, <code>emotion-in-motion-test</code>, or <code>emotion-in-motion-production</code> databases is chosen for use according to the current Node environment. </p>
+<h1>Custom Configuration</h1><p>There are a few things you'll likely want to change about your installation straight away (the terminal numbers of the machines on which you install your app, the default language, etc.) All of these changes can be made in the file at <code>config/custom.js</code>. The options for configuring this file are described both in comments the file itself, as well as in the documentation for the <code>CustomConfiguration</code> module.</p>
+<h1>Debug Mode</h1><p>As you dig into customizing the framework for your own use, you should be aware of debugging mode. When viewing any page in your application, pressing the <code>'D'</code> key twice will toggle debugging mode. This enables two things:</p>
 <ol>
-<li>View the current <a href="#objects"><code>TrialData</code></a> document. As you'll read
-below, this document is where all information about the current experiment 
-session is stored. In debugging mode, you can see it at the bottom of the 
-page as it updates in real time.</li>
-<li>Advance through the experiment without impediment. Some sections of your 
-design may require the user to, for instance, answer questions before being 
-allowed to proceed. In debugging mode, the right arrow key will advance you 
-to the next slide irrespective of these impediments.</li>
+<li>View the current <a href="#objects"><code>TrialData</code></a> document. As you'll read below, this document is where all information about the current experiment session is stored. In debugging mode, you can see it at the bottom of the page as it updates in real time.</li>
+<li>Advance through the experiment without impediment. Some sections of your design may require the user to, for instance, answer questions before being allowed to proceed. In debugging mode, the right arrow key will advance you to the next slide irrespective of these impediments.</li>
 </ol>
 <h1>Study Specification Structure</h1><p>A study using Emotion in Motion is described by a MongoDB document (much like a JSON file) stored in the MongoDB database. Specifying study structures in this way essentially means that only knowledge of JSON is required in order to create a new study that requires only the modification of components already present in the provided demonstration study. JSON is a simple, textual format for representing structured data--see <a href="http://blog.scottlowe.org/2013/11/08/a-non-programmers-introduction-to-json/">this site</a> for a gentle introduction.</p>
 <p>By default, the application looks in the <code>experimentschemas</code> collection in the database for study specification documents. If more than one of these documents are present, one is chosen at random for presenting your study to the participant. (Thus, if only one of these documents is present, the structure described by this document will be the structure that is always used.) The demo application contains and presents only one study with the following structure:</p>
@@ -202,7 +193,7 @@ to the next slide irrespective of these impediments.</li>
     ]
 }</code></pre><p>It should be clear how the names of these slides correspond to the sections referenced at the beginning of <a href="#study-specification-structure">Study Specification Structure</a>. To change the text or design of any of the slides that <em>only include a <code>name</code> property</em>, edit their corresponding HTML files in <code>public/modules/core/views/</code>. For instance, to change the text of the consent form, simply edit <code>public/modules/core/views/consent-form.client.view.html</code>.</p>
 <p>Other slides in the <code>structure</code> property's array may also have a <code>data</code> property. Such slides represent slides that are dynamically constructed automatically based on the information you provide in the data array. These often represent slides that present questionnaires, etc., where you may want to ask different questions than those included in the base Emotion in Motion application. In fact, at present, the only type of slide object that supports a <code>data</code> property <em>is</em> the <code>questionnaire</code> slide.</p>
-<h5>Questionnaire Slides</h5><p>For now, we expect that most people's needs will be me with the ability to design experiments that involve presenting some static information to participants, presenting them with a number preselected or randomly selected media excerpts, and asking them questions at various times. We'll describe below how to configure <a href="#media-slides">media slides</a>, and we've already discussed how to edit 'static' slides (see <a href="#adding-slides">Adding Slides</a> for instructions on how to add your own custom, static slides.) Here, we describe the third big piece of the puzzle, how to design questionnaires using the questionnaire slide type.</p>
+<h5>Questionnaire Slides</h5><p>For now, we expect that most people's needs will be met with the ability to design experiments that involve presenting some static information to participants, presenting them with a number of pre-selected or randomly selected media excerpts, and asking them questions at various times. We'll describe below how to configure <a href="#media-slides">media slides</a>, and we've already discussed how to edit 'static' slides (see <a href="#adding-slides">Adding Slides</a> for instructions on how to add your own custom, static slides.) Here, we describe the third big piece of the puzzle, how to design questionnaires using the questionnaire slide type.</p>
 <p>As noted previously, questionnaire slide objects support an additional <code>data</code> property:</p>
 <pre class="prettyprint source"><code>{
     &quot;structure&quot;: [
@@ -211,18 +202,18 @@ to the next slide irrespective of these impediments.</li>
             &quot;data&quot;: { ... }
         }
     ]
-}</code></pre><p>Much like the outer JSON object describes an overall study session, the <code>data</code> property of a <code>questionnaire</code>-<code>name</code>d slide describes a questionnaire-based slide itself. The <code>data</code> property takes an object as its value, and supports three properties on this object: <code>title</code>, <code>introductoryText</code>, and <code>structure</code>.</p>
-<h6>Questionnaire <code>title</code> Property</h6><p>The <code>title</code> property of a <code>questionnaire</code>'s <code>data</code> object takes a string that will be displayed as the title header of the screen. This property is <strong>required</strong>.</p>
-<h6>Questionnaire <code>introductoryText</code> Property</h6><p>The <code>introductoryText</code> property of a <code>questionnaire</code>'s <code>data</code> object takes a string that will be displayed below the title header. This property is optional.</p>
-<h6>Questionnaire <code>structure</code> Property</h6><p>The <code>structure</code> property of a <code>questionnaire</code>'s <code>data</code> object takes an array of objects that represent, in order, the individual questions presented on the questionnaire. This property is required. The allowed properties of the individual question objects are described here.</p>
+}</code></pre><p>Much like the outer JSON object describes an overall study session, the <code>data</code> property of a slide with the a <code>name</code> of <code>'questionnaire'</code> describes a questionnaire-based slide itself. The <code>data</code> property takes an object as its value, and supports three properties on this object: <code>title</code>, <code>introductoryText</code>, and <code>structure</code>.</p>
+<h6>Questionnaire <code>title</code> Property</h6><p>The <code>title</code> property of a <code>questionnaire</code>'s <code>data</code> object takes a string that will be displayed as the title heading of the screen. This property is optional.</p>
+<h6>Questionnaire <code>introductoryText</code> Property</h6><p>The <code>introductoryText</code> property of a <code>questionnaire</code>'s <code>data</code> object takes a string that will be displayed below the title heading. This property is optional.</p>
+<h6>Questionnaire <code>structure</code> Property</h6><p>The <code>structure</code> property of a <code>questionnaire</code>'s <code>data</code> object takes an array of objects that represent, in order, the individual questions presented on the questionnaire. This property is optional. The allowed properties of the individual question objects are described here.</p>
 <p><strong><code>questionType</code></strong></p>
-<p>A question object can be of one of four types: a Likert-type scale question, a group of radio buttons (from which one choice is allowed), a group of checkboxes (from which zero, one, or more choices are allowed), or a dropdown selection list. To specify the type of question, supply one of the following strings as the value for the <code>questionType</code> property: <code>&quot;likert&quot;</code>, <code>&quot;radio&quot;</code>, <code>&quot;checkbox&quot;</code>, or <code>&quot;dropdown&quot;</code>. This property is <strong>required</strong>.</p>
+<p>A question object can be of one of four types: a Likert-type scale question, a group of radio buttons (from which one choice is allowed), a group of checkboxes (from which zero, one, or more choices are allowed), or a dropdown selection list. To specify the type of question, supply one of the following strings as the value for the <code>questionType</code> property: <code>'likert'</code>, <code>'radio'</code>, <code>'checkbox'</code>, or <code>'dropdown'</code>. This property is <strong>required</strong>.</p>
 <p><strong><code>questionId</code></strong></p>
 <p>The <code>questionId</code> property is used to dynamically associate the various parts of the question together. This identifier must be a string and must be unique among all questions included in the questionnaire. This property is <strong>required</strong>.</p>
 <p><strong><code>questionLabel</code></strong></p>
-<p>The <code>questionLabel</code> property takes a string that is used as the question text itself. This property is <strong>required</strong>.</p>
+<p>The <code>questionLabel</code> property takes a string that is used as the question text itself. This property is optional.</p>
 <p><strong><code>questionLabelType</code></strong></p>
-<p>The <code>questionLabelType</code> property is not currently used.</p>
+<p>If the value of <code>questionLabelType</code> is <code>'labelLeft'</code>, the label of the question will be above the question an justified left. Otherwise, the label will be set in a larger font and centered above the question. This property is optional.</p>
 <p><strong><code>questionLikertMinimumDescription</code></strong></p>
 <p>The <code>questionLikertMinimumDescription</code> takes a string that is used as a description at the left-most end of the Likert-type scale. This property is optional.</p>
 <p><strong><code>questionLikertMaximumDescription</code></strong></p>
@@ -251,25 +242,31 @@ to the next slide irrespective of these impediments.</li>
 [ {&quot;label&quot; : &quot;Male&quot;, &quot;value&quot; : 1}, {&quot;label&quot; : &quot;Female&quot;, &quot;value&quot; : 2}, {&quot;label&quot; : &quot;Not Specified&quot;, &quot;value&quot; : 3} ]
 
 \\ Providing this value for `questionRadioOptions` would result in three radio buttons. The first would be given a label in the on-screen questionnaire of &quot;Male&quot;, the second would be given a label of &quot;Female&quot;, and the third would be given a label of &quot;Not Specified&quot;. Should the participant select the first button, the number 1 will be stored for their response. Similarly, the numbers 2 and 3 would be specified for the selection of the second or third buttons, respectively.</code></pre><p><strong><code>questionOptions</code></strong></p>
-<p>This (currently poorly named) property is used for <code>&quot;likert&quot;</code> questions much like the <code>questionRadioOptions</code> is used for <code>&quot;radio&quot;</code> questions. The value, again, should be an ordered array of objects that are used to label the points along a five-point Likert-type scale. Here, only labels are required:</p>
-<pre class="prettyprint source"><code>[
-    {&quot;label&quot;: &quot;Disagree strongly&quot;},
-    {&quot;label&quot;: &quot;Disagree a little&quot;},
-    {&quot;label&quot;: &quot;Neither agree nor disagree&quot;},
-    {&quot;label&quot;: &quot;Agree a little&quot;},
-    {&quot;label&quot;: &quot;Agree strongly&quot;}
-]</code></pre><p><strong><code>questionCheckboxOptions</code> and <code>questionDropdownOptions</code></strong></p>
-<p>As <code>questionRadioOptions</code> is to <code>&quot;radio&quot;</code> questions, <code>questionCheckboxOptions</code> is to <code>&quot;checkbox&quot;</code> questions, and <code>questionDropdownOptions</code> is to <code>&quot;dropdown&quot;</code> questions. This property takes an ordered array of strings to use as either the checkbox labels or the options available for selection in the dropdown selection list. For instance, to specify three checkboxes with the labels &quot;Apple&quot;, &quot;Orange&quot;, and &quot;Banana&quot;, give <code>questionCheckboxOptions</code> the following value:</p>
-<pre class="prettyprint source"><code>[ &quot;Apple&quot;, &quot;Orange&quot;, &quot;Banana&quot; ]</code></pre><p>On the other hand, to provide a dropdown list with the same values, but in a different order, give <code>questionDropdownOptions</code> the following value:</p>
-<pre class="prettyprint source"><code>[ &quot;Orange&quot;, &quot;Apple&quot;, &quot;Banana&quot; ]</code></pre><p><strong><code>questionDropdownOptions</code></strong></p>
-<p>Ordered array of strings to use as dropdown list.</p>
-<p><strong><code>questionLikertLeftImageSrc</code> and <code>questionLikertRightImageSrc</code></strong></p>
-<p>The optional <code>questionLikertLeftImageSrc</code> and <code>questionLikertRightImageSrc</code> properties take strings as value that represent the paths to images to be displayed at the left and right sides of a Likert-type scale, respectively:</p>
-<pre class="prettyprint source"><code>{
-    ...,
-    &quot;questionLikertLeftImageSrc&quot;: &quot;/modules/core/img/scale-left-engaged.png&quot;,
-    &quot;questionLikertRightImageSrc&quot;: &quot;/modules/core/img/scale-right-engaged.png&quot;,
-    ...
+<p>The <code>questionOptions</code> property is used and <strong>required</strong> by all question types. In general, each question tpe requires that this be an object that has a <code>choices</code> property, the value of which is an array. Each entry in the choices array should be an object that represents a single question choice. Each of these objects should have both a <code>label</code> and a <code>value</code> property. The value of the <code>label</code> property should be a string that is used for the display of this question type. The value of the <code>value</code> property should be the value that should be stored when this choice is selected by the user for their answer.</p>
+<pre class="prettyprint source"><code>// questionOptions example:
+{
+    choices: [
+        {
+            label: 'Strongly disagree',
+            value: 1
+        },
+        {
+            label: 'Somewhat disagree',
+            value: 2
+        },
+        {
+            label: 'Neither agree nor disagree',
+            value: 3
+        },
+        {
+            label: 'Somewhat agree',
+            value: 4
+        },
+        {
+            label: 'Strongly agree',
+            value: 5
+        }
+    ]
 }</code></pre><p><strong><code>questionLikertSingleImageSrc</code></strong></p>
 <p>The optional <code>questionLikertSingleImageSrc</code> property takes a string as its value that represents the path to an image to be displayed above and centered over a Likert-type scale:</p>
 <pre class="prettyprint source"><code>{
@@ -277,7 +274,7 @@ to the next slide irrespective of these impediments.</li>
     &quot;questionLikertSingleImageSrc&quot;: &quot;/modules/core/img/scale-above-positivity.png&quot;,
     ...
 }</code></pre><p><strong><code>questionIsAssociatedToMedia</code></strong></p>
-<p>The required <code>questionIsAssociatedToMedia</code> property specifies that a question corresponds to a particular media excerpt by taking a Boolean <code>true</code> or <code>false</code> as its value. When this value is set to <code>true</code>, multiple responses for questions with the same <code>questionStoragePath</code> property are stored in an ordered array that is used as the value for the <code>questionStoragePath</code> property in the final <code>trialData</code> document.</p>
+<p>The optional (default = <code>false</code>) <code>questionIsAssociatedToMedia</code> property specifies that a question corresponds to a particular media excerpt by taking a Boolean <code>true</code> or <code>false</code> as its value. When this value is set to <code>true</code>, multiple responses for questions with the same <code>questionStoragePath</code> property are stored in an ordered array that is used as the value for the <code>questionStoragePath</code> property in the final <code>trialData</code> document.</p>
 <p>For example, in the demonstration study provided with the framework, two media excerpts are played. We present the same questionnaire to the participant following each media excerpt. In order to specify that responses on the questionnaire following the first excerpt are associated with the first excerpt (and the same for the second questionnaire and excerpt), the values for <code>questionIsAssociatedToMedia</code> for all questions in these questionnaires are all set to <code>true</code>. So, for those questons with their <code>questionStoragePath</code> property set to <code>&quot;data.answers.positivity&quot;</code>, the corresponding section of a participant's <code>trialData</code> document might look something like this:</p>
 <pre class="prettyprint source"><code> {
     data: {
@@ -287,8 +284,8 @@ to the next slide irrespective of these impediments.</li>
     }
 }</code></pre><p>Here, the participant chose a value of <code>2</code> when responding to the positivity question following the first excerpt. Likewise, they chose a value of <code>5</code> when responding to the positivity question following the second excerpt.</p>
 <p><strong><code>questionRequired</code></strong></p>
-<p>Specifying <code>true</code> as the value for the <code>questionRequired</code> property indicates that the participant <em>must</em> answer this question before being allowed to proceed. Correspondingly, specifying <code>false</code> for this value indicates that the participant may proceed without answering this question.</p>
-<h5>Media Slides</h5><p>Media slides are created by giving a slide object the name <code>&quot;media-playback&quot;</code>. In addition to the <code>name</code> property, their objects take two more properties: <code>mediaType</code> and <code>media</code>.</p>
+<p>Specifying <code>true</code> as the value for the <code>questionRequired</code> property indicates that the participant <em>must</em> answer this question before being allowed to proceed. Correspondingly, specifying <code>false</code> for this value indicates that the participant may proceed without answering this question. This property is optional (default = <code>true</code>).</p>
+<h5>Media Slides</h5><p>Media slides are created by giving a slide object the name <code>'media-playback'</code>. In addition to the <code>name</code> property, their objects take two more properties: <code>mediaType</code> and <code>media</code>.</p>
 <p><strong><code>mediaType</code></strong></p>
 <p>The <code>mediaType</code> property is <strong>required</strong>, and specifies that this media excerpt is either pre-specified, or that this media excerpt is to be selected randomly from the media pool specified in the top-level <a href="#mediaPool"><code>mediaPool</code></a> property. To specify that the media is to be a set, pre-selected excerpt, give <code>mediaType</code> the value <code>&quot;fixed&quot;</code>. Use the value <code>&quot;random&quot;</code> to specify that the excerpt should be randomly selected from the media pool.</p>
 <p><strong><code>media</code></strong></p>
@@ -382,7 +379,7 @@ to the next slide irrespective of these impediments.</li>
     title: &quot;Media Title Here&quot;,
     label: &quot;First Part of Excerpt Filename Here (without extension)&quot;
 }</code></pre><h2>Max Application Media File Location</h2><p>The Max application looks for files in the <code>EiMpatch/media/</code> directory. If you add an excerpt to the database with the label <code>&quot;Bananarama&quot;</code>, then, Max will expect to find the file <code>EiMpatch/media/Bananarama.wav</code>.</p>
-<h1>Recorded Session Data</h1><p>In the demo applicaiton, two types of data are collected, recorded, and saved during a session: the data in the <code>trialData</code> document/object, and the data recorded from the sensors.  </p>
+<h1>Recorded Session Data</h1><p>In the demo application, two types of data are collected, recorded, and saved during a session: the data in the <code>trialData</code> document/object, and the data recorded from the sensors.  </p>
 <h2><code>trialData</code> Objects</h2><p><code>trialData</code> objects contain metadata <em>about</em> the experiment session as well as responses given by the participant during the session. The metadata contain, for instance, the date and time of the session, as well as a copy of the study specification structure that was used to generate the session. Every <code>trialData</code> object is associated with a UUID (universally unique identifier) generated by the applicaiton. Upon completion of a session, a JSON file containing the <code>trialData</code> object for the session is stored in the <code>trials/</code> directory.</p>
 <h2>Sensor Data</h2><p>Sensor data is collected, recorded, and saved by the Max helper application. A sensor data file is generated for every media excerpt playback, and these files are stored in the <code>EiMpatch/data/</code> directory. As an example, if the UUID <code>92a7d913-63d7-4e37-af01-a6ca19ae2be3</code> was generated by the application for a specific participant, the following files would be generated from the session:</p>
 <pre class="prettyprint source"><code># The sensor data files for media excerpts labeled &quot;C002&quot; and &quot;T018&quot;:
@@ -391,7 +388,50 @@ to the next slide irrespective of these impediments.</li>
 
 # The trialData JSON file:
 .\trials\92a7d913-63d7-4e37-af01-a6ca19ae2be3.trial.json</code></pre><h3>Sensor Data File Format</h3><p>In the demo app, sensor data is recorded into space-delimited CSV files with a single-line header giving the names of each column.</p>
-<h1>Helper Programs</h1><h2>The Max Patches</h2><h2>The Arduino Patches</h2><h1>Internationalization</h1><p>The use of the <code>translate</code> directive in any of your <a href="#constructing-the-html-file-for-your-slide">HTML code</a> will automatically translate the enclosed text to the language that the participant has selected. For this to work correctly, several things must be in place. We'll discuss these in terms of adding new text and translations for which the target language is already available as an option in the header menu, and adding a new language option to the menu itself.</p>
+<h1>Helper Programs</h1><h2>The Max Patches</h2><p>The framework uses the Max software to handle playback and data capture for the experiments. The patches are enclosed in the project named <code>EmotionInMotion.maxproj</code>. Opening this project will open the <code>MAIN.maxpat</code> and the <code>EiMsensors.maxpat</code> patches.</p>
+<h3>The MAIN Patch</h3><p>The <code>MAIN</code> patch is dived in three subpatches:</p>
+<ol>
+<li><code>p EiM_BRAIN</code>: This subpatch handles OSC communications with the server, receiving instructions for playback, experiment labels, language, and sending feedback regarding the development of the expreriment. It also has settings for configuring the different folders that contain the media and sensor data files. Additionally, it is possible to configure the header labels for the sensor data columns.</li>
+<li><code>p soundTest</code>: This subpatch checks the configuration of the sound parameters to make sure the soundcard is turned ON and that the headphones are correctly placed.</li>
+<li><code>p PLAYBACK&amp;RECORD</code>: This subpatch handles de playback of MEDIA and records sensor data into text files. The sensor data must be sent through an OSC message, with the label eim/sensorData followed by a list with each column representing a different channel of data.</li>
+</ol>
+<h3>The Sensor Patches</h3><p>Included in the project, there is a DEMO patch with an example of the configuration used in our experiments with Electrodermal Activity (EDA) and Pulse Oximetry (POX) sensors connected to an Arduino. In the <code>patchers</code> folder, the following patches are available:</p>
+<ol>
+<li><code>ArduinoEiM_EDA.maxpat</code>: Patch configured to receive data from an EDA sensor connected to an Arduino (see Arduino script).</li>
+<li><code>ArduinoEiM_POX.maxpat</code>: Patch configured to receive data from a POX sensor connected to an Arduino (see Arduino script).</li>
+<li><code>EDAtool.maxpat</code>: Patch that processes and extracts features from an EDA signal. It also evaluates and reports the signal's status.</li>
+<li><code>HRfromPOX.maxpat</code>: Patch that processes HR from the POX signal.  It also evaluates and reports the signal's status.</li>
+<li><code>testServer.maxpat</code>: Demonstration patch to test communication with the server.</li>
+</ol>
+<h2>Arduino Script</h2><p>An Arduino Script is available to be used with the DEMO patches. This script configures the Arduino to capture sensor data connected to an analog channel and stream it over the serial port to Max.</p>
+<pre class="prettyprint source"><code>#define SAMPLING_INTERVAL 10     // 10ms (100Hz) for EDA, 4ms (250Hz) for POX
+#define ANALOG_PIN 0            // Analog pin connected to sensor
+#define ARDUINO_HEADER 255      // Arduino Header to be identified by Max Patch. EDA=255, POX=254
+
+int analogData;
+
+// ************************************************************************
+
+void setup() {
+  Serial.begin(57600);
+}
+
+void loop() { 
+  long periodCheck = millis()%SAMPLING_INTERVAL;
+  if (periodCheck == 0)
+  {
+    SampleAndSend();
+//    Serial.println(millis()); // report time elapsed between SampleAndSend
+  }
+}
+
+void SampleAndSend() {
+  analogData = analogRead(ANALOG_PIN); // Read current analog pin value
+  Serial.write(analogData >> 7); // shift high bits into output byte
+  Serial.write(analogData % 128); // mod by 128 for the small byte
+  Serial.write(ARDUINO_HEADER); // end of packet signifier
+  delay(SAMPLING_INTERVAL*0.5); // delay to prevent multiple SampleAndSend per interval
+}</code></pre><h1>Internationalization</h1><p>The use of the <code>translate</code> directive in any of your <a href="#constructing-the-html-file-for-your-slide">HTML code</a> will automatically translate the enclosed text to the language that the participant has selected. For this to work correctly, several things must be in place. We'll discuss these in terms of adding new text and translations for which the target language is already available as an option in the header menu, and adding a new language option to the menu itself.</p>
 <h2>Adding New Translated Text</h2><p>If your target language is already available in the header menu, you'll need to generate a translation file for all strings in the application for your target language. We use the <a href="https://angular-gettext.rocketeer.be/">angular-gettext</a> tool for integrating internationalization into the application. angular-gettext provides an extraction tool for extracting all strings in the application that require translation, and a compilation tool for including translations in the application once the strings have been translated.</p>
 <h3>Extracting Strings for Translation</h3><p>To extract strings for translation, simply run</p>
 <pre class="prettyprint source"><code>node_modules\grunt-cli\bin\grunt nggettext_extract</code></pre><p>This will produce the file <code>po\template.pot</code>. The <code>.pot</code> file contains entries for every string present in the application and can be used with a number of software tools or web services (we use <a href="https://crowdin.com/">Crowdin</a>) to generate a <code>.po</code> file. a <code>.po</code> file contains the <em>translations</em> of all strings into a specific language.</p>
@@ -414,12 +454,13 @@ to the next slide irrespective of these impediments.</li>
 <pre class="prettyprint source"><code>node_modules\grunt-cli\bin\grunt nggettext_compile</code></pre><p>If and when this command completes successfully, the translations you provided in your <code>.po</code> file will be available to the application.</p>
 <h2>Adding New Languages</h2><p>If your target language for translation is not available in the dropdown menu from the header, it is straightforward to edit the application to make it available for your participants. To do so, edit the <code>public\modules\core\views\header.client.view.html</code> file. The <code>&lt;li&gt;...&lt;/li&gt;</code> sections represent the languages available in the dropdown menu. Here is the line that makes Taiwanese available as a selection</p>
 <pre class="prettyprint source"><code>&lt;li>&lt;a ng-click=&quot;setLanguage('zh_TW')&quot;>中文&lt;/a>&lt;/li></code></pre><p>Here, the string inside the parentheses should match the name of the <code>.po</code> file (you'll see in the demo app that a translation file is available for Taiwanese at <code>po/zh_TW.po</code>.) The text inside of the <code>&lt;a ...&gt;&lt;/a&gt;</code> tag gives the textual label that the participant will see in the dropdown list itself (here, '中文'). To add a language option for Zulu, then, we would need to add the file <code>po/zu.po</code>, and the following line to <code>public\modules\core\views\header.client.view.html</code></p>
-<pre class="prettyprint source"><code>&lt;li>&lt;a ng-click=&quot;setLanguage('zu')&quot;>Zulu&lt;/a>&lt;/li></code></pre><h2>Setting the Default Language</h2><p>The default language for your application is set in <code>public/application.js</code>. The demo app ships with English as the default language, as set by this line</p>
-<pre class="prettyprint source"><code>gettextCatalog.setCurrentLanguage('en');</code></pre><p>To choose a new default language, change <code>'en'</code> to be the language you would like to be the default (starting) language. For instance, to change this to use our Taiwanese translation as the default language, we would change this line to</p>
-<pre class="prettyprint source"><code>gettextCatalog.setCurrentLanguage('zh_TW');</code></pre><p>The default language only governs the language used when the first screen is initially loaded. After this point, participants are free to change the language using the dropdown menu in the header.</p>
+<pre class="prettyprint source"><code>&lt;li>&lt;a ng-click=&quot;setLanguage('zu')&quot;>Zulu&lt;/a>&lt;/li></code></pre><h2>Setting the Default Language</h2><p>The default language for your application is set in <code>config/custom.js</code>. The demo app ships with English as the default language, as set by this line</p>
+<pre class="prettyprint source"><code>customConfiguration.defaultLanguage = 'en';</code></pre><p>To choose a new default language, change <code>'en'</code> to be the language you would like to be the default (starting) language. For instance, to change this to use our Taiwanese translation as the default language, we would change this line to</p>
+<pre class="prettyprint source"><code>gettextCatalog.setCurrentLanguage('zh_TW');</code></pre><p>The default language only governs the language used when the first screen is initially loaded. After this point, participants are free to change the language using the dropdown menu in the header. Note that the language tag you specify (in the second example, <code>'zh_TW'</code>) must have a corresponding <code>.po</code> file in the <code>po/</code> directory(for this example, <code>po/zh_TW.po</code>), and must be compiled using the <code>nggettext_compile</code> grunt task (see the above sections.) </p>
 <h1>Building a Production Version of Your Study Application</h1><p>Running the application with <code>node_modules/grunt-cli/bin/grunt</code> starts a Node.js web server. By default, this runs in <em>development</em> mode, which can be considerably slower than running in <em>production</em> mode. Running in production mode requires that you have built a production-ready version of your application. To do so, run the following command from the root directory of the repository:</p>
-<pre class="prettyprint source"><code>node_modules/grunt-cli/bin/grunt build</code></pre><p>Once this successfully completes, use the following modification of the server startup command to run in production mode:</p>
-<pre class="prettyprint source"><code>NODE_ENV=production node_modules/grunt-cli/bin/grunt</code></pre><h1>Adding Custom Directives</h1><p>AngularJS directives provide much of the <em>special sauce</em> in the Emotion in Motion framework; they are, for instance, how questionnaires are automatically built based on the information you provide in the study specification structure document. There's plenty more that one can accomplish with additional custom directives, and we encourage you to write your own (and <a href="#contributing-changes">submit them</a> for the rest of us to use!). To do so, you'll need to get your feet wet with <a href="https://angularjs.org">AngularJS</a>, but feel free to look through what we've already written in <code>public/modules/core/directives/</code> to get started.</p>
+<pre class="prettyprint source"><code>NODE_ENV=development node_modules/grunt-cli/bin/grunt build</code></pre><p>Once this successfully completes, use the following modification of the server startup command to run in production mode:</p>
+<pre class="prettyprint source"><code>NODE_ENV=production node_modules/grunt-cli/bin/grunt</code></pre><p>See the <a href="#environments">comments above</a> about the database that will be used based on the <code>NODE_ENV</code> you specify.</p>
+<h1>Adding Custom Directives</h1><p>AngularJS directives provide much of the <em>special sauce</em> in the Emotion in Motion framework; they are, for instance, how questionnaires are automatically built based on the information you provide in the study specification structure document. There's plenty more that one can accomplish with additional custom directives, and we encourage you to write your own (and <a href="#contributing-changes">submit them</a> for the rest of us to use!). To do so, you'll need to get your feet wet with <a href="https://angularjs.org">AngularJS</a>, but feel free to look through what we've already written in <code>public/modules/core/directives/</code> to get started.</p>
 <h1>Contributing Changes</h1><p>The development of the Emotion in Motion framework is still in its early stages. If you would like to contribute to this ongoing work, please <a href="https://github.com/brennon/eim/pulls">submit a pull request</a>!</p>
 <p>If you do make changes, please ensure that you've added the appropriate tests
 . In addition, creating links to these pre- and post-commit git hooks will 
@@ -437,13 +478,13 @@ ln -s ../../post-commit.sh .git/hooks/post-commit</code></pre></article>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_SocketServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="Node.module_CoreServerRoutes.html">CoreServerRoutes</a></li><li><a href="Node.module_CustomConfiguration.html">CustomConfiguration</a></li><li><a href="Node.module_ExperimentSchemaServerController.html">ExperimentSchemaServerController</a></li><li><a href="Node.module_ExperimentSchemaServerModel.html">ExperimentSchemaServerModel</a></li><li><a href="Node.module_ExperimentSchemaServerRoutes.html">ExperimentSchemaServerRoutes</a></li><li><a href="Node.module_MediaServerModel.html">MediaServerModel</a></li><li><a href="Node.module_OSCServerController.html">OSCServerController</a></li><li><a href="Node.module_OSCServerRoutes.html">OSCServerRoutes</a></li><li><a href="Node.module_SocketServerController.html">SocketServerController</a></li><li><a href="Node.module_TrialServerController.html">TrialServerController</a></li><li><a href="Node.module_TrialServerRoutes.html">TrialServerRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="Angular.checkboxQuestionDirective.html">checkboxQuestionDirective</a></li><li><a href="Angular.DemographicsController.html">DemographicsController</a></li><li><a href="Angular.displayTrialDataDirective.html">displayTrialDataDirective</a></li><li><a href="Angular.dropdownQuestionDirective.html">dropdownQuestionDirective</a></li><li><a href="Angular.EmotionIndexController.html">EmotionIndexController</a></li><li><a href="Angular.ExperimentManager.html">ExperimentManager</a></li><li><a href="Angular.ExperimentValidator.html">ExperimentValidator</a></li><li><a href="Angular.HomeController.html">HomeController</a></li><li><a href="Angular.LastScreenController.html">LastScreenController</a></li><li><a href="Angular.MasterController.html">MasterController</a></li><li><a href="Angular.MediaPlaybackController.html">MediaPlaybackController</a></li><li><a href="Angular.MissingKeys.html">MissingKeys</a></li><li><a href="Angular.OSC.html">OSC</a></li><li><a href="Angular.QuestionnaireController.html">QuestionnaireController</a></li><li><a href="Angular.questionnaireDirective.html">questionnaireDirective</a></li><li><a href="Angular.radioQuestionDirective.html">radioQuestionDirective</a></li><li><a href="Angular.Routes.html">Routes</a></li><li><a href="Angular.scaleQuestionDirective.html">scaleQuestionDirective</a></li><li><a href="Angular.SignalTestController.html">SignalTestController</a></li><li><a href="Angular.SoundTestController.html">SoundTestController</a></li><li><a href="Angular.StartController.html">StartController</a></li><li><a href="Angular.TrialData.html">TrialData</a></li></ul><h3>Events</h3><ul><li><a href="Node.module_OSCServerController.html#~event:oscMessageReceived">oscMessageReceived</a></li><li><a href="Node.module_SocketServerController.html#~event:oscMessageSent">oscMessageSent</a></li></ul><h3>Namespaces</h3><ul><li><a href="Angular.html">Angular</a></li><li><a href="Angular.DemographicsController_$scope.html">$scope</a></li><li><a href="Angular.EmotionIndexController_$scope.html">$scope</a></li><li><a href="Angular.HomeController_$scope.html">$scope</a></li><li><a href="Angular.MasterController_$scope.html">$scope</a></li><li><a href="Angular.MediaPlaybackController_$scope.html">$scope</a></li><li><a href="Angular.QuestionnaireController_$scope.html">$scope</a></li><li><a href="Angular.questionnaireDirective_data.html">data</a></li><li><a href="Angular.SignalTestController_$scope.html">$scope</a></li><li><a href="Angular.SoundTestController_$scope.html">$scope</a></li><li><a href="Angular.StartController_$scope.html">$scope</a></li><li><a href="Node.html">Node</a></li><li><a href="Node.module_CustomConfiguration-customConfiguration.html">customConfiguration</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 07 2015 20:16:20 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Wed Oct 14 2015 21:29:13 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

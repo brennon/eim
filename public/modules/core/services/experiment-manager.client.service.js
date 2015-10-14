@@ -17,7 +17,8 @@ angular.module('core').factory('ExperimentManager', [
     '$log',
     'rfc4122',
     '$rootScope',
-    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope) {
+    'lodash',
+    function(TrialData, $q, $http, $state, $log, rfc4122, $rootScope, lodash) {
 
         $log.debug('Instantiating ExperimentManager service.');
 
@@ -76,8 +77,8 @@ angular.module('core').factory('ExperimentManager', [
              *
              *  - Generates a new UUID for the session number
              *  - Fetches a random experiment schema from the backend
-             *  - Gets the terminal number (as specified in
-             *  `config/custom.js` for this specific machine
+             *  - Gets the custom metadata (as specified in
+             *  `config/custom.js`
              *
              *  The {@link Angular.TrialData|TrialData} service is then updated
              *  with these new data.
@@ -95,9 +96,6 @@ angular.module('core').factory('ExperimentManager', [
                 // Reset TrialData
                 TrialData.reset();
 
-                // Generate new session identifier and store it in TrialData
-                TrialData.data.metadata.session_number = rfc4122.v4();
-
                 // Get a new experiment setup from the backend
                 $http.get('/api/experiment-schemas/random')
                     .success(function(data) {
@@ -112,8 +110,33 @@ angular.module('core').factory('ExperimentManager', [
                             .success(function(data) {
 
                                 // Specify this terminal from custom config
-                                TrialData.data.metadata.terminal =
-                                    data.metadata.terminal;
+                                TrialData.data.metadata =
+                                    lodash.merge(
+                                        TrialData.data.metadata,
+                                        data.metadata
+                                    );
+
+                                // Generate new session identifier and store it
+                                // in TrialData
+                                TrialData.data.metadata.session_number =
+                                    rfc4122.v4();
+
+                                // Get default language and set on TrialData
+                                if (data.hasOwnProperty('defaultLanguage') &&
+                                    typeof data.defaultLanguage === 'string' &&
+                                    data.defaultLanguage.length > 0) {
+
+                                    TrialData.data.metadata.language =
+                                        data.defaultLanguage;
+                                }
+
+                                if (data.hasOwnProperty('exportedProperties') &&
+                                    Array.isArray(data.exportedProperties)) {
+
+                                    TrialData.exportedProperties =
+                                        data.exportedProperties;
+                                }
+
                                 deferred.resolve();
                             })
                             .error(function() {

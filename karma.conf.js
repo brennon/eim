@@ -30,7 +30,7 @@ module.exports = function(config) {
 
 		// Level of logging
 		// Possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-		logLevel: config.LOG_INFO,
+		logLevel: config.LOG_WARN,
 
 		// Enable / disable watching file and executing tests whenever any file changes
 		autoWatch: true,
@@ -64,6 +64,13 @@ module.exports = function(config) {
 		coverageReporter: {
 			type: 'lcov',
 			dir: 'coverage/client'
-		}
+		},
+
+		// Don't show a pile of console.log junk...
+		client: {
+			captureConsole: false
+		},
+
+		reportSlowerThan: 100
 	});
 };

@@ -8,8 +8,10 @@
  * @memberof Angular
  */
 
-angular.module('core').factory('TrialData', ['$log',
-    function($log) {
+angular.module('core').factory('TrialData', [
+    '$log',
+    'lodash',
+    function($log, lodash) {
 
         $log.info('Instantiating TrialData service.');
 
@@ -56,9 +58,9 @@ angular.module('core').factory('TrialData', ['$log',
                     end: null
                 },
                 metadata: {
-                    language: 'en',
+                    language: null,
                     session_number: null,
-                    location: 'taipei_city',
+                    location: null,
                     terminal: null
                 },
                 state: {
@@ -88,10 +90,74 @@ angular.module('core').factory('TrialData', ['$log',
              * @memberof Angular.TrialData#
              * @returns {string}
              */
-            toJson: function() {
+            toJson: function toJsonFn() {
                 $log.debug('TrialData service returning data as JSON.');
                 return angular.toJson(this.data, true);
             },
+
+            /**
+             * Converts the object in {@link Angular.TrialData#data|data},
+             * keeping only those properties specified in {@link
+             * Angular.TrialData#exportedProperties|exportedProperties},
+             * to JSON and returns it. If {@link
+             * Angular.TrialData#exportedProperties|exportedProperties} is an
+             * empty array, this method delegates to {@link
+             * Angular.TrialData#toJson|toJson}.
+             *
+             * @function toJsonCompact
+             * @memberof Angular.TrialData#
+             * @returns {string}
+             */
+            toJsonCompact: function toJsonCompactFn() {
+                $log.debug('TrialData service returning data as compact JSON.');
+
+                return angular.toJson(this.toCompact(), true);
+            },
+
+            /**
+             * Returns a copy of the object in {@link
+             * Angular.TrialData#data|data}, keeping only those properties
+             * specified in {@link
+             * Angular.TrialData#exportedProperties|exportedProperties},
+             * If {@link
+             * Angular.TrialData#exportedProperties|exportedProperties} is an
+             * empty array, this method returns {@link
+             * Angular.TrialData#data|data}.
+             *
+             * @function toCompact
+             * @memberof Angular.TrialData#
+             * @returns {{}}
+             */
+            toCompact: function toCompactFn() {
+                $log.debug('TrialData service returning compacted data.');
+
+                if (this.exportedProperties.length === 0) {
+                    return this.data;
+                }
+
+                var pruned = {};
+                var that = this;
+
+                this.exportedProperties.forEach(function(prop) {
+                    lodash.set(pruned, prop, lodash.get(that.data, prop));
+                });
+
+                return pruned;
+            },
+
+            /**
+             * The properties beneath {@link Angular.TrialData#data|data} that
+             * {@link Angular.TrialData#toJsonCompact|toJsonCompact} should
+             * include in the JSON it outputs. This should be an array of
+             * strings, each of which represent an individual property that
+             * should be exported. The strings should be dot-delimited paths.
+             * Wildcards are not supported.
+             *
+             * @var exportedProperties
+             * @type {string[]}
+             * @memberof Angular.TrialData#
+             */
+            exportedProperties: [],
 
             /**
              * Sets {@link Angular.TrialData#data|data} to a new
@@ -102,7 +168,7 @@ angular.module('core').factory('TrialData', ['$log',
              * @memberof Angular.TrialData#
              * @return {undefined}
              */
-            reset: function() {
+            reset: function resetFn() {
                 $log.info('Resetting TrialData service.');
                 this.data = new BlankDataObject();
             },
@@ -137,7 +203,7 @@ angular.module('core').factory('TrialData', ['$log',
              * array to `value`.
              * @return {undefined}
              */
-            setValueForPath: function(path, value, options) {
+            setValueForPath: function setValueForPathFn(path, value, options) {
 
                 $log.debug('Setting ' + path + ' in TrialData to: ' +
                     value, options);
@@ -216,21 +282,22 @@ angular.module('core').factory('TrialData', ['$log',
              * @param {*} value The value that this keypath should hold
              * @return {undefined}
              */
-            setValueForPathForCurrentMedia: function(path, value) {
+            setValueForPathForCurrentMedia:
+                function setValueForPathForCurrentMediaFn(path, value) {
 
-                $log.debug('Setting ' + path + ' in TrialData for current' +
-                    ' media to: ' + value + '.');
+                    $log.debug('Setting ' + path + ' in TrialData for current' +
+                        ' media to: ' + value + '.');
 
-                var index;
+                    var index;
 
-                // If no media have played (we're likely debugging)
-                if (this.data.state.mediaPlayCount <= 0) {
-                    index = 0;
-                } else {
-                    index = this.data.state.mediaPlayCount - 1;
-                }
+                    // If no media have played (we're likely debugging)
+                    if (this.data.state.mediaPlayCount <= 0) {
+                        index = 0;
+                    } else {
+                        index = this.data.state.mediaPlayCount - 1;
+                    }
 
-                this.setValueForPath(path, value, {array_index: index});
+                    this.setValueForPath(path, value, {array_index: index});
             },
 
             /**
@@ -245,7 +312,7 @@ angular.module('core').factory('TrialData', ['$log',
              * Angular.TrialData#data|data} is set after the call to this
              * method.
              */
-            language: function(newLanguage) {
+            language: function languageFn(newLanguage) {
 
                 if (typeof newLanguage === 'string') {
 
