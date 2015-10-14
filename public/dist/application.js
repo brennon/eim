@@ -4258,9 +4258,9 @@ angular.module('core').factory('TrialData', ['$log',
                     end: null
                 },
                 metadata: {
-                    language: 'en',
+                    language: null,
                     session_number: null,
-                    location: 'taipei_city',
+                    location: null,
                     terminal: null
                 },
                 state: {

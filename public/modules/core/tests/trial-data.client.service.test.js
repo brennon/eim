@@ -17,9 +17,9 @@
                 end: null
             },
             metadata: {
-                language: 'en',
+                language: null,
                 session_number: null,
-                location: 'taipei_city',
+                location: null,
                 terminal: null
             },
             state: {
@@ -56,7 +56,7 @@
                 expect(TrialData.data.timestamps.media).toBeDefined();
                 expect(TrialData.data.timestamps.media.length).toBe(0);
                 expect(TrialData.data.metadata.session_number).toBeNull();
-                expect(TrialData.data.metadata.location).toBe('taipei_city');
+                expect(TrialData.data.metadata.location).toBeNull();
                 expect(TrialData.data.metadata.terminal).toBeNull();
                 expect(TrialData.data.state.currentSlideIndex).toBe(-1);
                 expect(TrialData.data.state.mediaPlayCount).toBe(0);
