@@ -121,6 +121,15 @@ angular.module('core').factory('ExperimentManager', [
                                 TrialData.data.metadata.session_number =
                                     rfc4122.v4();
 
+                                // Get default language and set on TrialData
+                                if (data.hasOwnProperty('defaultLanguage') &&
+                                    typeof data.defaultLanguage === 'string' &&
+                                    data.defaultLanguage.length > 0) {
+
+                                    TrialData.data.metadata.language =
+                                        data.defaultLanguage;
+                                }
+
                                 if (data.hasOwnProperty('exportedProperties') &&
                                     Array.isArray(data.exportedProperties)) {
 
