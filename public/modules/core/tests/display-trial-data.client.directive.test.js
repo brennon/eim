@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-    describe('display=trial-data directive', function() {
+    describe('display-trial-data directive', function() {
 
         // Initialize global variables
         var $scope, $compile, element, TrialData;
@@ -9,10 +9,11 @@
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$rootScope_, _$compile_, _TrialData_) {
+        beforeEach(inject(function(_$rootScope_, _$compile_, _TrialData_, _$httpBackend_) {
             $scope = _$rootScope_.$new();
             $compile = _$compile_;
             TrialData = _TrialData_;
+            _$httpBackend_.whenGET('/api/config').respond();
         }));
 
         it('should add row and column divs', function() {

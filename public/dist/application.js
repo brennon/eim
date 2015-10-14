@@ -44,11 +44,32 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 angular.module(ApplicationConfiguration.applicationModuleName)
     .config(['LogglyLoggerProvider', function(LogglyLoggerProvider) {
         LogglyLoggerProvider
-            .inputToken('81009487-63da-400f-af48-4b3f91d3bbd5')
             .includeUrl(true)
             .includeTimestamp(true)
             .sendConsoleErrors(true)
             .inputTag('AngularJS');
+    }]);
+
+angular.module(ApplicationConfiguration.applicationModuleName)
+    .run(['LogglyLogger', '$http', '$log', function(LogglyLogger, $http, $log) {
+
+        // Get custom configuration information from the backend
+        $http.get('/api/config')
+            .success(function(data) {
+
+                if (data.hasOwnProperty('logglyToken') &&
+                    typeof data.logglyToken === 'string' &&
+                    data.logglyToken.length > 0) {
+
+                    LogglyLogger.inputToken(data.logglyToken);
+
+                    $log.debug('Loggly input token retrieved from server.');
+                }
+            })
+            .error(function() {
+                $log.error('The configuration could not be fetched from the ' +
+                    'server.');
+            });
     }]);
 
 // Configure nggettext

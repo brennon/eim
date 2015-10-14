@@ -9,10 +9,11 @@
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$controller_, $rootScope, _$q_) {
+        beforeEach(inject(function(_$controller_, $rootScope, _$q_, _$httpBackend_) {
             $controller = _$controller_;
             mockScope = $rootScope.$new();
             $q = _$q_;
+            _$httpBackend_.whenGET('/api/config').respond();
         }));
 
         describe('initialization', function() {

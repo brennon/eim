@@ -21,6 +21,12 @@
             OSC = _OSC_;
         }));
 
+        beforeEach(function() {
+            $httpBackend.whenGET('/api/config').respond();
+            $httpBackend.whenGET('modules/core/views/home.client.view.html')
+                .respond();
+        });
+
         describe('initialization', function() {
             it('should set the date on the TrialData object', function() {
                 $controller('StartController',
@@ -184,11 +190,6 @@
                         $timeout: $timeout
                     });
 
-                    $httpBackend.expect(
-                        'GET',
-                        'modules/core/views/home.client.view.html'
-                    ).respond();
-
                     mockScope.readyToAdvance = function() {
                         return true;
                     };
@@ -209,11 +210,6 @@
                 mockScope.readyToAdvance = function() {
                     return false;
                 };
-
-                $httpBackend.expect(
-                    'GET',
-                    'modules/core/views/home.client.view.html'
-                ).respond();
 
                 try {
                     $timeout.flush();

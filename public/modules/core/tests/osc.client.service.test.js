@@ -10,6 +10,10 @@
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
+        beforeEach(inject(function(_$httpBackend_) {
+            _$httpBackend_.whenGET('/api/config').respond();
+        }));
+
         describe('initialization', function() {
             it('should listen for all incoming OSC messages', function() {
 

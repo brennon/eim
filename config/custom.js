@@ -74,7 +74,7 @@ customConfiguration.defaultLanguage = 'en';
  * @inner
  * @type {string}
  */
-customConfiguration.logglyToken = '81009487-63da-400f-af48-4b3f91d3bbd5';
+customConfiguration.logglyToken = '';
 
 module.exports = {
     customConfiguration: customConfiguration

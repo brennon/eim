@@ -9,7 +9,7 @@
     "angular-cookies": "~1.2",
     "angular-gettext": "~1.1.4",
     "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.5.0",
-    "angular-loggly-logger": "~0.1.3",
+    "angular-loggly-logger": "brennon/angular-loggly-logger#feature/service-token-access",
     "angular-mocks": "~1.2",
     "angular-resource": "~1.2",
     "angular-sanitize": "~1.2",

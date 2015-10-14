@@ -4,7 +4,7 @@
     describe('scaleQuestion directive', function() {
 
         // Initialize global variables
-        var $scope, $compile, element, TrialData;
+        var $scope, $compile, element, TrialData, $httpBackend;
 
         // Valid options
         var validQuestionOptions = {
@@ -28,27 +28,40 @@
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
-        beforeEach(inject(function(_$rootScope_, _$compile_, _TrialData_) {
-            $scope = _$rootScope_.$new();
-            $compile = _$compile_;
-            element = angular.element(
-                '<scale-question question-label="' + validQuestionText + '" ' +
-                'single-img-src="' + validSingleImgSrc + '" ' +
-                'question-id="' + validQuestionId + '" ' +
-                'minimum-description="' + validMinimumDescription + '" ' +
-                'maximum-description="' + validMaximumDescription + '" ' +
-                'controller-data-path="' + validPath + '">' +
-                '</scale-question>'
-            );
-            TrialData = _TrialData_;
+        beforeEach(
+            inject(
+                function(_$rootScope_, _$compile_, _TrialData_,
+                         _$httpBackend_) {
+                    $scope = _$rootScope_.$new();
+                    $compile = _$compile_;
+                    element = angular.element(
+                        '<scale-question question-label="'+validQuestionText+
+                        '" '+
+                        'single-img-src="' + validSingleImgSrc +
+                        '" ' +
+                        'question-id="' + validQuestionId +
+                        '" ' +
+                        'minimum-description="' + validMinimumDescription +
+                        '" ' +
+                        'maximum-description="' + validMaximumDescription +
+                        '" ' +
+                        'controller-data-path="' + validPath + '">' +
+                        '</scale-question>'
+                    );
+                    TrialData = _TrialData_;
 
-            // Attach question options to question
-            element.data('questionOptions', validQuestionOptions);
+                    // Attach question options to question
+                    element.data('questionOptions', validQuestionOptions);
 
-            // Compile the element and process scope
-            $compile(element)($scope);
-            $scope.$digest();
-        }));
+                    $httpBackend = _$httpBackend_;
+                    $httpBackend.whenGET('/api/config').respond();
+
+                    // Compile the element and process scope
+                    $compile(element)($scope);
+                    $scope.$digest();
+                }
+            )
+        );
 
         describe('header', function() {
             it('should be added', function() {

@@ -42,6 +42,7 @@
                 $httpBackend.whenGET('modules/core/views/home.client.view.html')
                     .respond(200);
                 $httpBackend.expectGET('/api/config').respond();
+                $httpBackend.expectGET('/api/config').respond();
 
                 // Instantiate controller
                 $controllerConstructor('MasterController', {

@@ -4,14 +4,17 @@
     describe('SignalTestController', function() {
 
         //Initialize global variables
-        var mockScope, $controller, mockTrialData, $timeout, $log, OSC;
+        var mockScope, $controller, mockTrialData, $timeout, $log, OSC,
+            $httpBackend;
 
         // Load the main application module
         beforeEach(module(ApplicationConfiguration.applicationModuleName));
 
         beforeEach(
             inject(
-                function(_$controller_, $rootScope, _$timeout_, _$log_, _OSC_) {
+                function(_$controller_, $rootScope, _$timeout_, _$log_, _OSC_,
+                _$httpBackend_) {
+
                     $controller = _$controller_;
                     mockScope = $rootScope.$new();
                     mockTrialData = {
@@ -24,6 +27,9 @@
                     $timeout = _$timeout_;
                     $log = _$log_;
                     OSC = _OSC_;
+                    $httpBackend = _$httpBackend_;
+
+                    $httpBackend.whenGET('/api/config').respond();
                 }
             )
         );

@@ -16,10 +16,12 @@
             mockScope = $rootScope.$new();
             $timeout = _$timeout_;
             ExperimentManager = _ExperimentManager_;
-            $httpBackend = _$httpBackend_;
             TrialData = _TrialData_;
             $log = _$log_;
             OSC = _OSC_;
+
+            $httpBackend = _$httpBackend_;
+            $httpBackend.whenGET('/api/config').respond();
         }));
 
         describe('initialization', function() {

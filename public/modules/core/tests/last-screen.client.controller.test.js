@@ -17,6 +17,8 @@
                     mockScope = $rootScope.$new();
                     $httpBackend = _$httpBackend_;
                     TrialData = _TrialData_;
+
+                    _$httpBackend_.whenGET('/api/config').respond();
                 }
             )
         );
@@ -49,14 +51,16 @@
                 $httpBackend.verifyNoOutstandingExpectation();
             });
 
-            it('should log an error if it received an error from the server', function() {
+            it('should log an error if it received an error from the server',
+                function() {
 
-                $httpBackend.expectPOST('/api/trials').respond(500);
-                $controller('LastScreenController',
-                    { $scope: mockScope });
+                    $httpBackend.expectPOST('/api/trials').respond(500);
+                    $controller('LastScreenController',
+                        {$scope: mockScope});
 
-                expect($httpBackend.flush).toThrow();
-            });
+                    expect($httpBackend.flush).toThrow();
+                }
+            );
         });
     });
 })();

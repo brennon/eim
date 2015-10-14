@@ -369,6 +369,7 @@
 
                 describe('on failure', function() {
                     it('should reject the promise', function(done) {
+                        $httpBackend.expectGET('/api/config').respond({});
                         $httpBackend
                             .expectGET(
                                 'modules/core/views/home.client.view.html'
