@@ -1,0 +1,31 @@
+<div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}"
+           close="closeAlert($index)">{{alert.msg | translate}}
+    </alert>
+</div>
+
+<div data-ng-controller="StroopController">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 translate>Paced Stroop Test</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p translate>Paced Stroop Test content...</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!--<button class="btn btn-primary btn-lg btn-danger"-->
+                <!--ng-click="startOver()" translate>Cancel-->
+            <!--Experiment-->
+        <!--</button>-->
+        <button class="btn btn-primary btn-lg btn-success"
+                ng-click="advanceSlide()" translate>Continue
+        </button>
+    </div>
+</div>

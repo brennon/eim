@@ -38,6 +38,8 @@ var customConfiguration = {};
 customConfiguration.metadata = {};
 customConfiguration.metadata.terminal = 1;
 customConfiguration.metadata.location = 'taichung';
+customConfiguration.experimentId = '5987599bdd03906fdb65f333';
+customConfiguration.useRandomExperiment = false;
 
 /**
  * The strings in this array specify those inner properties on {@link

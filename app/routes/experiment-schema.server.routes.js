@@ -18,4 +18,7 @@ module.exports = function(app) {
    * @name Random experiment schema
    */
   app.route('/api/experiment-schemas/random').get(controller.random);
+
+  app.route('/api/experiment-schemas/:id')
+      .get(controller.getExperimentSchemaById);
 };

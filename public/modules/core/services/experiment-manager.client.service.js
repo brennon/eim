@@ -96,57 +96,73 @@ angular.module('core').factory('ExperimentManager', [
                 // Reset TrialData
                 TrialData.reset();
 
-                // Get a new experiment setup from the backend
-                $http.get('/api/experiment-schemas/random')
-                    .success(function(data) {
+                var schemaPath = '/api/experiment-schemas/random';
+                var configData;
 
-                        // Assign the media property from the ExperimentSchema
-                        // we received as the media property on the TrialData
-                        TrialData.data.media = data.media;
-                        TrialData.data.schema = data.structure;
+                $http.get('/api/config')
+                    .then(function(response) {
 
-                        // Get custom configuration information from the backend
-                        $http.get('/api/config')
-                            .success(function(data) {
+                        configData = response.data;
 
-                                // Specify this terminal from custom config
-                                TrialData.data.metadata =
-                                    lodash.merge(
-                                        TrialData.data.metadata,
-                                        data.metadata
-                                    );
+                        // TODO: Can we not just merge TrialData and the data returned from /api/config?
 
-                                // Generate new session identifier and store it
-                                // in TrialData
-                                TrialData.data.metadata.session_number =
-                                    rfc4122.v4();
+                        // Are we using a random experiment schema, or a
+                        // specific one?
+                        if (response.data.hasOwnProperty('useRandomExperiment') &&
+                            response.data.useRandomExperiment === false &&
+                            response.data.hasOwnProperty('experimentId')) {
 
-                                // Get default language and set on TrialData
-                                if (data.hasOwnProperty('defaultLanguage') &&
-                                    typeof data.defaultLanguage === 'string' &&
-                                    data.defaultLanguage.length > 0) {
+                            schemaPath = '/api/experiment-schemas/' +
+                                response.data.experimentId;
+                        }
 
-                                    TrialData.data.metadata.language =
-                                        data.defaultLanguage;
-                                }
+                        // Specify this terminal from custom config
+                        TrialData.data.metadata =
+                            lodash.merge(
+                                TrialData.data.metadata,
+                                configData.metadata
+                            );
 
-                                if (data.hasOwnProperty('exportedProperties') &&
-                                    Array.isArray(data.exportedProperties)) {
+                        // Generate new session identifier and store it
+                        // in TrialData
+                        TrialData.data.metadata.session_number =
+                            rfc4122.v4();
 
-                                    TrialData.exportedProperties =
-                                        data.exportedProperties;
-                                }
+                        // Get default language and set on TrialData
+                        if (configData.hasOwnProperty('defaultLanguage') &&
+                            typeof configData.defaultLanguage === 'string' &&
+                            configData.defaultLanguage.length > 0) {
+
+                            TrialData.data.metadata.language =
+                                configData.defaultLanguage;
+                        }
+
+
+                        if (configData.hasOwnProperty('exportedProperties') &&
+                            Array.isArray(configData.exportedProperties)) {
+
+                            TrialData.exportedProperties =
+                                configData.exportedProperties;
+                        }
+
+                        // Get a new experiment setup from the backend
+                        $http.get(schemaPath)
+                            .then(function(response) {
+
+                                // Assign the media property from the
+                                // ExperimentSchema we received as the media
+                                // property on the TrialData
+                                TrialData.data.media = response.data.media;
+                                TrialData.data.schema = response.data.structure;
 
                                 deferred.resolve();
-                            })
-                            .error(function() {
-                                deferred.reject('The configuration could not' +
-                                    'be fetched from the server.');
                             });
                     })
-                    .error(function() {
-                        deferred.reject('An experiment schema could not be ' +
-                            'fetched from the server');
+                    .catch(function(response) {
+                        var message = 'There was a problem retrieving the' +
+                            ' experiment schema from the server.';
+                        $log.error(message, response);
+                        throw new Error(message);
                     });
 
                 return deferred.promise;

@@ -18,6 +18,8 @@ void setup() {
   Serial.begin(57600);
 }
 
+int counter = 
+
 void loop() { 
   long periodCheck = millis()%SAMPLING_INTERVAL;
   if (periodCheck == 0)
@@ -25,6 +27,7 @@ void loop() {
     SampleAndSend();
 //    Serial.println(millis()); // report time elapsed between SampleAndSend
   }
+  Serial.write(millis());
 }
 
 void SampleAndSend() {

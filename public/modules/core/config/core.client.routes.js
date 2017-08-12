@@ -108,6 +108,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             .state('thank-you', {
                 url: '/thank-you',
                 templateUrl: 'modules/core/views/thank-you.client.view.html'
+            })
+            .state('stroop', {
+                url: '/stroop',
+                templateUrl: 'modules/core/views/stroop.client.view.html'
             });
     }
 ]);
