@@ -23,16 +23,25 @@ Complete documentation is available [here](https://brennon.github.io/eim/).
     ```
     brew install mongodb
     ```
+    
+    Otherwise, [installers](https://www.mongodb.com/download-center) are available for various platforms.
 
 4. Start `mongod` on the default port. If you installed with Homebrew:
 
     ```
     mongod --config /usr/local/etc/mongod.conf
     ```
+    
+    If you're on Windows, you'll need to first create the default data directory, then run `mongod`:
+    
+    ```
+    mkdir C:\data\db\
+    "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe"
+    ```
 
 3. Install [Node.js](https://nodejs.org/). The framework currently runs best on Node.js [v0.12.7](https://nodejs.org/dist/v0.12.7/). We recommend downloading the Node.js installer from this link, instead of installing with Homebrew.
 
-4. Install app Node dependencies using `npm`:
+4. Install app Node dependencies using `npm` in the root of the repository:
 
     ```
     npm install
@@ -41,19 +50,31 @@ Complete documentation is available [here](https://brennon.github.io/eim/).
 5. To get started using with the default Emotion in Motion MongoDB databases, import the data from the `mongodb-dump` directory. From the root directory of the repository:
 
     ```
-    mongorestore -d emotion-in-motion-dev --drop ./mongodb-dump/emotion-in-motion-dev
-    mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test
-    mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production
+    mongorestore -d emotion-in-motion-dev --drop ./mongodb-dump/emotion-in-motion-dev /noIndexRestore
+    mongorestore -d emotion-in-motion-test --drop ./mongodb-dump/emotion-in-motion-test /noIndexRestore
+    mongorestore -d emotion-in-motion-production --drop ./mongodb-dump/emotion-in-motion-production /noIndexRestore
     ```
     
     The first of these three databases represent the databases that are used in the development, test, and production [Node environments](#environments).
 
-5. Start the Max helper project located at `EiMpatch/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
+5. Start the Max helper project located at `MaxMSP/EmotionInMotion/EmotionInMotion.maxproj`. You'll need [Max 6](https://cycling74.com/) or later.
 
-6. Start the server. In the root directory of the repository:
+6. Install the `grunt-cli` package globally:
 
     ```
-    node_modules/grunt-cli/bin/grunt
+    npm install -g grunt-cli
+    ```
+    
+   If your machine is running Windows and attached to a domain, you may need to add the following to your path:
+   
+   ```
+   %USERPROFILE%\AppData\Roaming\npm
+   ```
+
+7. Start the server. In the root directory of the repository:
+
+    ```
+    grunt
     ```
 
 7. Browse to [http://localhost:3000/](http://localhost:3000/).
