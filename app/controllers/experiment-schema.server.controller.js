@@ -119,7 +119,7 @@ exports.getExperimentSchemaById = function(req, res) {
 
     // TODO: This doesn't handle malformed IDs
 
-    ExperimentSchema.find({'_id': req.params.id})
+    ExperimentSchema.findOne({'_id': req.params.id})
         .populate('mediaPool', 'artist title label')
         .exec(function(err, schema) {
 
@@ -133,19 +133,24 @@ exports.getExperimentSchemaById = function(req, res) {
 
             // Using the controller, build an experiment from this
             // schema
-            schema[0].buildExperiment(function(err, builtExperiment) {
+            if (schema !== null) {
+                schema.buildExperiment(function (err, builtExperiment) {
 
-                if (err) {
+                    if (err) {
 
-                    // Report the error and set the response
-                    console.error('Error building experiment from' +
-                        ' ExperimentSchema', err);
-                    res.status(500).json({error: err.message});
-                } else {
+                        // Report the error and set the response
+                        console.error('Error building experiment from' +
+                            ' ExperimentSchema', err);
+                        res.status(500).json({error: err.message});
+                    } else {
 
-                    // Send the response
-                    res.status(200).json(builtExperiment);
-                }
-            });
+                        // Send the response
+                        res.status(200).json(builtExperiment);
+                    }
+                });
+            } else {
+                console.error('Error building experiment from ExperimentSchema');
+                res.status(500).json({error: 'No experiment schema with ID ' + req.params.id + ' was found.'});
+            }
         });
 };
