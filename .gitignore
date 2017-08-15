@@ -10,8 +10,8 @@ daemon/
 application.log
 config/custom.js
 .foreverignore
-EiMpatch/data/**
-EiMpatch/_DeletedItems
+MaxMSP/EmotionInMotion/data/**
+MaxMSP/EmotionInMotion/_DeletedItems
 .coveralls.yml
 coverage/
 server-coverage.sh

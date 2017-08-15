@@ -38,7 +38,7 @@ var customConfiguration = {};
 customConfiguration.metadata = {};
 customConfiguration.metadata.terminal = 1;
 customConfiguration.metadata.location = 'taichung';
-customConfiguration.experimentId = '5987599bdd03906fdb65f333';
+customConfiguration.experimentId = '53e91194201fbd39909a9df5';
 customConfiguration.useRandomExperiment = false;
 
 /**
@@ -81,3 +81,4 @@ customConfiguration.logglyToken = '';
 module.exports = {
     customConfiguration: customConfiguration
 };
+

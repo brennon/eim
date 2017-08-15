@@ -9,8 +9,8 @@
  * @class Angular.HomeController
  */
 
-angular.module('core').controller('HomeController', ['ExperimentManager', '$scope', '$log',
-    function(ExperimentManager, $scope, $log) {
+angular.module('core').controller('HomeController', ['ExperimentManager', '$scope', '$log', 'OSC',
+    function(ExperimentManager, $scope, $log, OSC) {
 
         $log.debug('Loading HomeController.');
 
@@ -25,6 +25,12 @@ angular.module('core').controller('HomeController', ['ExperimentManager', '$scop
                     'from the server');
             }
         );
+
+        // Start a new physio recording
+        OSC.send({
+            oscType: 'message',
+            address: '/eim/control/startSignalRecording'
+        });
 
         /**
          * The `HomeController`'s `$scope` object. All properties on `$scope`
