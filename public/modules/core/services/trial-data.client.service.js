@@ -51,12 +51,7 @@ angular.module('core').factory('TrialData', [
                 answers: {},
                 date: null,
                 media: [],
-                timestamps: {
-                    start: null,
-                    test: null,
-                    media: [],
-                    end: null
-                },
+                timestamps: [],
                 metadata: {
                     language: null,
                     session_number: null,
