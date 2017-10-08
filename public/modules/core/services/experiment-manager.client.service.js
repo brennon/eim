@@ -59,6 +59,13 @@ angular.module('core').factory('ExperimentManager', [
                     if (currentSlideIndex === TrialData.data.schema.length) {
                         $state.go('home', {}, {reload: true});
                     } else {
+                        var timestamp = new Date();
+                        TrialData.data.timestamps.push(
+                            {
+                                slide: TrialData.data.schema[TrialData.data.state.currentSlideIndex].name,
+                                timestamp: timestamp.toISOString()
+                            });
+
                         $state.go(
                             TrialData.data.schema[currentSlideIndex].name,
                             {},

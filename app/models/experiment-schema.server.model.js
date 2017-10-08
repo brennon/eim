@@ -135,7 +135,7 @@ ExperimentSchemaSchema.methods.buildExperiment = function(callback) {
     for (var i = 0; i < schemaSubset.structure.length; i++) {
         var slide = schemaSubset.structure[i];
 
-        if (slide.name === 'media-playback' && slide.mediaType === 'fixed') {
+        if ((slide.name === 'media-playback' && slide.mediaType === 'fixed') || slide.name === 'impulse-playback') {
             promises.push(
                 updateSchemaForFixedMedia(
                     schemaSubset,

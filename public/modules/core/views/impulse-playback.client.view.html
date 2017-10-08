@@ -1,0 +1,26 @@
+<div class="row">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}"
+           close="closeAlert($index)">{{alert.msg | translate}}
+    </alert>
+</div>
+
+<div data-ng-controller="ImpulsePlaybackController">
+    <div class="row">
+        <div class="col-md-12">
+
+            <h1 translate>Final Calibration</h1>
+
+            <p translate>We must perform a final calibration of the sensors before the experiment can be completed.
+                Please relax and click the Continue button. This will only take about thirty seconds.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary btn-lg" ng-click="buttonAction()"
+                    ng-disabled="buttonDisabled">{{currentButtonLabel |
+                translate}}
+            </button>
+        </div>
+    </div>
+</div>

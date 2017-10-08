@@ -36,8 +36,8 @@ var customConfiguration = {};
  * recorded for every session on this computer
  */
 customConfiguration.metadata = {};
-customConfiguration.metadata.terminal = 1;
-customConfiguration.metadata.location = 'taichung';
+customConfiguration.metadata.terminal = 0;
+customConfiguration.metadata.location = 'washington';
 
 /**
  * The strings in this array specify those inner properties on {@link
@@ -54,7 +54,7 @@ customConfiguration.metadata.location = 'taichung';
  * @type {string[]}
  */
 customConfiguration.exportedProperties =
-    ['answers', 'date', 'media', 'metadata'];
+    ['answers', 'date', 'media', 'metadata', 'timestamps'];
 
 /**
  * The default language for your installation

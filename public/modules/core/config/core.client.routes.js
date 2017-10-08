@@ -101,6 +101,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
                 url: '/media-questionnaire',
                 templateUrl: 'modules/core/views/media-questionnaire.client.view.html'
             })
+            .state('impulse-playback', {
+                url: '/impulse-playback',
+                templateUrl: 'modules/core/views/impulse-playback.client.view.html'
+            })
             .state('emotion-index', {
                 url: '/emotion-index',
                 templateUrl: 'modules/core/views/emotion-index.client.view.html'
