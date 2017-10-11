@@ -2,11 +2,12 @@
 // Emotion in Motion
 // Sensor Data Acquisition
 // By Javier Jaimovich 2014
-// Version: 0.2
+// Modified by Brennon Bortz 2017
+// Version: 0.2.1
 
 // Reads voltage on Analog channel and sends over serial
 
-#define SAMPLING_INTERVAL 10     // 10ms (100Hz) for EDA, 4ms (250Hz) for POX
+#define SAMPLING_INTERVAL 4     // 10ms (100Hz) for EDA, 4ms (250Hz) for POX
 #define ANALOG_PIN 0            // Analog pin connected to sensor
 #define ARDUINO_HEADER 255      // Arduino Header to be identified by Max Patch. EDA=255, POX=254
 
@@ -31,6 +32,11 @@ void SampleAndSend() {
   analogData = analogRead(ANALOG_PIN); // Read current analog pin value
   Serial.write(analogData >> 7); // shift high bits into output byte
   Serial.write(analogData % 128); // mod by 128 for the small byte
+  if (ARDUINO_HEADER == 254) {
+    analogData = analogRead(2); // Read current analog pin value
+    Serial.write(analogData >> 7); // shift high bits into output byte
+    Serial.write(analogData % 128); // mod by 128 for the small byte
+  }
   Serial.write(ARDUINO_HEADER); // end of packet signifier
   delay(SAMPLING_INTERVAL*0.5); // delay to prevent multiple SampleAndSend per interval
 }
