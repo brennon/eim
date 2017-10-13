@@ -212,3 +212,7 @@ img.photo {
 .btn-signal {
     margin-bottom: 10px;
 }
+
+.emotion-qr-code {
+    width: 200px;
+}
