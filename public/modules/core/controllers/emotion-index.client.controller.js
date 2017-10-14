@@ -27,6 +27,8 @@ angular.module('core').controller('EmotionIndexController', [
          * @type {{}}
          */
 
+        $scope.signalsPlotLocation = 'modules/core/img/plots/' + '024b1c4a-e69b-480b-92c5-7432c29664ff' + '_results.png';
+
         /**
          * Available emotion indices.
          *
@@ -50,16 +52,22 @@ angular.module('core').controller('EmotionIndexController', [
 
         var emotionIndex = $scope.emotionIndices[1];
         $scope.qrCode = "modules/core/img/qr1.png";
+        $scope.modelImage = "modules/core/img/model1.png";
         if (emotionIndex <= 20) {
             $scope.qrCode = "modules/core/img/qr1.jpg";
+            $scope.modelImage = "modules/core/img/model1.png";
         } else if (emotionIndex > 20 && emotionIndex <= 40) {
             $scope.qrCode = "modules/core/img/qr2.jpg";
+            $scope.modelImage = "modules/core/img/model2.png";
         } else if (emotionIndex > 40 && emotionIndex <= 60) {
             $scope.qrCode = "modules/core/img/qr3.jpg";
+            $scope.modelImage = "modules/core/img/model3.png";
         } else if (emotionIndex > 60 && emotionIndex <= 80) {
             $scope.qrCode = "modules/core/img/qr4.jpg";
+            $scope.modelImage = "modules/core/img/model4.png";
         } else if (emotionIndex > 80) {
             $scope.qrCode = "modules/core/img/qr5.jpg";
+            $scope.modelImage = "modules/core/img/model5.png";
         }
     }
 ]);

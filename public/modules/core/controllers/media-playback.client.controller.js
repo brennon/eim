@@ -159,6 +159,8 @@ angular.module('core').controller('MediaPlaybackController', [
                 }
             });
 
+            ExperimentManager.generatePlot();
+
             OSC.unsubscribe(
                 '/eim/status/playback',
                 thisController.playbackMessageListener

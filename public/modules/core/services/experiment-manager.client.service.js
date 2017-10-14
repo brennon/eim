@@ -75,6 +75,10 @@ angular.module('core').factory('ExperimentManager', [
                 }
             },
 
+            generatePlot: function() {
+                $http.get('/api/generate-plots/' + TrialData.metadata.session_number + '/' + TrialData.data.media[TrialData.data.state.currentSlideIndex].label);
+            },
+
             /**
              * Resets the experiment session.
              *

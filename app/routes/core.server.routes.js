@@ -49,4 +49,6 @@ module.exports = function(app) {
     app.get('/api/config', function(req, res) {
         return res.status(200).json(config.customConfiguration);
     });
+
+    app.get('/api/generate-plots/:sessionId/:mediaId', controller.generatePlots);
 };

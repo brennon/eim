@@ -9,11 +9,20 @@
         <div class="col-md-12">
             <h1 translate>Results</h1>
 
+            <p>The plot below shows two of your signals recorded while you sere listening to the music selection.
+                The red line traces how your heart rate changed over time, and the blue line traces how your "tonic"
+                electrodermal activity changed over time. Each of these signals tends to increase as your level of
+                arousal increases.</p>
+
+            <div class="col-md-12 text-center">
+                <img class="signals-plot" src="{{ signalsPlotLocation }}"/>
+            </div>
+
             <p translate>Here, we are displaying the ‘Arousal Index’ we
-                calculated from your physiological signals while you were
-                listening to the media excerpt, on a scale from 1 to 100. A
-                higher index indicates that you were more emotionally aroused
-                to the excerpt you heard as compared to a lower index.</p>
+                calculated from your physiological, on a scale from 1 to 100. We talk about "emotions" having two
+                parts: valence and arousal. Valence is a measure of how positive or negative an emotion is, and arousal
+                is simply a measure of the intensity of emotion. The score below reflects how much your arousal
+                increased as you listened to the music selection.</p>
 
             <h2 class="text-center" translate>Your emotion index:</h2>
 
@@ -23,8 +32,12 @@
                 for a link to a 3D model of your "arousal" that you can print!
             </p>
 
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 row text-center">
                 <img class="emotion-qr-code" src="{{ qrCode }}"/>
+            </div>
+
+            <div class="col-md-12 row text-center">
+                <img class="emotion-model-image" src="{{ modelImage }}"/>
             </div>
 
             <p><a class="btn btn-primary btn-lg" ng-click="advanceSlide()"
