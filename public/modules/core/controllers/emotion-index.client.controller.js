@@ -27,7 +27,7 @@ angular.module('core').controller('EmotionIndexController', [
          * @type {{}}
          */
 
-        $scope.signalsPlotLocation = 'modules/core/img/plots/' + '024b1c4a-e69b-480b-92c5-7432c29664ff' + '_results.png';
+        $scope.signalsPlotLocation = 'modules/core/img/plots/' + TrialData.data.metadata.session_number + '_results.png';
 
         /**
          * Available emotion indices.
