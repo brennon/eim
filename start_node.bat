@@ -10,5 +10,5 @@ REM Switch to EiM directory
 CD c:\eim
 
 REM Start Node.js server
-#C:\Users\EmotionInMotionV2\AppData\Roaming\npm\grunt default
+:: C:\Users\EmotionInMotionV2\AppData\Roaming\npm\grunt default
 node server.js
