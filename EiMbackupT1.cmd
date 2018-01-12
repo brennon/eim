@@ -3,7 +3,7 @@
 @echo off
 
 :: Folder with bio files
-set dataFolder="C:\eim\EiMpatch\data"
+set dataFolder="C:\eim\MaxMSP\EmotionInMotion\data"
 
 :: Folder with trial files
 set trialFolder="C:\eim\trials"
