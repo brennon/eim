@@ -37,7 +37,7 @@ var customConfiguration = {};
  */
 customConfiguration.metadata = {};
 customConfiguration.metadata.terminal = 0;
-customConfiguration.metadata.location = 'washington';
+customConfiguration.metadata.location = 'houston';
 
 /**
  * The strings in this array specify those inner properties on {@link
